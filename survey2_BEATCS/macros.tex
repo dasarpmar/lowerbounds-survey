@@ -1,0 +1,144 @@
+
+%% \newenvironment{problem}[1]{\stepcounter{problem}
+%% \paragraph{Problem \theproblem. #1}
+
+%% }
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{theorem*}{Theorem}
+\newtheorem{axiom}{Axiom}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\def\lemmaautorefname{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{nclaim}{Claim}
+\newtheorem{fact}[]{Fact}
+\newtheorem{subclaim}[theorem]{Subclaim}
+\newtheorem{problem}[]{Problem}
+\newtheorem{openproblem}[]{Open Problem}
+
+\newenvironment{myproof}[1]%
+{\vspace{1ex}\noindent{\em Proof.}\hspace{0.5em}\def\myproof@name{#1}}%
+{\hfill{\tiny \qed\ (\myproof@name)}\vspace{1ex}}
+
+
+%Useful for recalling theorems. (hat-tip texexchange)
+\makeatletter
+\newtheorem*{rep@theorem}{\rep@title}
+\newcommand{\newreptheorem}[2]{%
+\newenvironment{rep#1}[1]{%
+ \def\rep@title{#2 \ref{##1} (restated)}%
+ \begin{rep@theorem}}%
+ {\end{rep@theorem}}}
+\makeatother
+
+\newreptheorem{theorem}{Theorem}
+\newreptheorem{lemma}{Lemma}
+\newreptheorem{conjecture}{Conjecture}
+\newreptheorem{problem}{Problem}
+
+\newenvironment{proof-sketch}{\medskip\noindent{\em Sketch of Proof.}\hspace*{1em}}{\qed\bigskip}
+\newenvironment{proof-attempt}{\medskip\noindent{\em Proof attempt.}\hspace*{1em}}{\bigskip}
+
+\newenvironment{proofof}[1]{\medskip\noindent\emph{Proof of #1.}\hspace*{1em}}{\qed\bigskip}
+
+
+
+\newcommand{\inparen }[1]{\left(#1\right)}             %\inparen{x+y}  is (x+y)
+\newcommand{\inbrace }[1]{\left\{#1\right\}}           %\inbrace{x+y}  is {x+y}
+\newcommand{\insquare}[1]{\left[#1\right]}             %\insquar{x+y}  is [x+y]
+\newcommand{\inangle }[1]{\left\langle#1\right\rangle} %\inangle{A}    is <A>
+
+\newcommand{\abs}[1]{\left|#1\right|}                  %\abs{x}        is |x|
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}         %\norm{x}       is ||x||
+
+\newcommand{\fspan}[1]{\F\text{-span}\inbrace{#1}}
+
+\newcommand{\union}{\cup}
+\newcommand{\Union}{\bigcup}
+\newcommand{\intersection}{\cap}
+\newcommand{\Intersection}{\bigcap}
+
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+
+
+\newcommand{\eqdef}{\stackrel{\text{def}}{=}}
+\newcommand{\setdef}[2]{\inbrace{{#1}\ : \ {#2}}}      % E.g: \setdef{x}{f(x) = 0}
+\newcommand{\set}[1]{\inbrace{#1}}
+\newcommand{\innerproduct}[2]{\left\langle{#1},{#2}\right\rangle} %\innerproduct{x}{y} is <x,y>.
+\newcommand{\zo}{\inbrace{0,1}}                        % Well just something that is used often!
+\newcommand{\parderiv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pderiv}[2]{\partial_{#2}\inparen{#1}}
+\newcommand{\zof}[2]{\inbrace{0,1}^{#1}\longrightarrow \inbrace{0,1}^{#2}}
+
+
+% Commonly used blackboard letters
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\zigzag}{\textcircled{z}}  % for the zig-zag product
+
+
+% \newcommand{\char}{\textrm{char}}
+% \newcommand{\rank}{\textrm{rank}}
+% \newcommand{\dim}{\textrm{dim}}
+
+
+
+%% accented words
+\newcommand{\Hastad}{H{\aa}stad }
+\newcommand{\Godel}{G\"{o}del }
+\newcommand{\Mobius}{M\"{o}bius }
+\newcommand{\Gauss}{Gau{\ss} }
+\newcommand{\naive}{na\"{\i}ve }
+\newcommand{\Naive}{Na\"{\i}ve }
+\newcommand{\grobner}{gr\"{o}bner }
+
+\newcommand{\Det}{\mathsf{Det}}
+\newcommand{\Perm}{\mathsf{Perm}}
+\newcommand{\ESym}{\mathrm{Esym}}
+\newcommand{\PSym}{\mathrm{Pow}}
+
+%% Bold letters
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecc}{\mathbf{c}}
+\newcommand{\vecd}{\mathbf{d}}
+\newcommand{\vece}{\mathbf{e}}
+\newcommand{\vecf}{\mathbf{f}}
+\newcommand{\vecg}{\mathbf{g}}
+\newcommand{\vech}{\mathbf{h}}
+\newcommand{\veci}{\mathbf{i}}
+\newcommand{\vecj}{\mathbf{j}}
+\newcommand{\veck}{\mathbf{k}}
+\newcommand{\vecl}{\mathbf{l}}
+\newcommand{\vecm}{\mathbf{m}}
+\newcommand{\vecn}{\mathbf{n}}
+\newcommand{\veco}{\mathbf{o}}
+\newcommand{\vecp}{\mathbf{p}}
+\newcommand{\vecq}{\mathbf{q}}
+\newcommand{\vecr}{\mathbf{r}}
+\newcommand{\vecs}{\mathbf{s}}
+\newcommand{\vect}{\mathbf{t}}
+\newcommand{\vecu}{\mathbf{u}}
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecw}{\mathbf{w}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\vecy}{\mathbf{y}}
+\newcommand{\vecz}{\mathbf{z}}
+

@@ -1,0 +1,1280 @@
+\PassOptionsToPackage{colorlinks}{hyperref}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL lb2_old.tex   Mon Sep 29 15:45:26 2014
+%DIF ADD lb2.tex       Mon Sep 29 15:42:26 2014
+\documentclass{beatcs}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+\hypersetup{
+  citecolor={blue}
+}
+
+\usepackage{todonotes}
+
+\newcommand{\FM}{\mathrm{FM}}
+\newcommand{\NW}{\mathrm{NW}}
+\newcommand{\IMM}{\mathrm{IMM}}
+\newcommand{\Mon}{\mathrm{Mon}}
+
+
+\newcommand{\poly}{\mathsf{poly}}
+
+\newcommand{\rank}{\mathrm{rank}}
+\newcommand{\CM}[1]{\Gamma^{\mathrm{[#1]}}}
+\newcommand{\spaced}[1]{\quad#1\quad}
+\newcommand{\bezout}{b\'{e}zout}
+\newcommand{\Bezout}{B\'{e}zout}
+\newcommand{\SPD}[3]{\inangle{\partial^{=#1}\inparen{#3}}_{\leq #2}}
+
+
+
+
+
+%%% Circuit classes
+\newcommand{\SPS}{\Sigma\Pi\Sigma}
+\newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
+\newcommand{\SPSE}{\Sigma\Pi\Sigma\wedge}
+\newcommand{\SPSPfanin}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
+\newcommand{\SPSPsupp}[1]{\Sigma\Pi\Sigma\Pi^{\{#1\}}}
+\newcommand{\SESES}{\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma}
+
+\input{macros}
+
+%%RP: Personal preferences 
+\parindent 0pt
+\renewcommand{\epsilon}{\varepsilon}
+
+% for inline commenting by authors
+\newcommand{\authnote}[2]{{\color{red}\{$<<<${\bf \footnotesize #1 notes: #2}$>>>$\}}}
+\newcommand{\Rnote}[1]{\todo[color=green!40,fancyline,size=\tiny]{RP: #1}}
+\newcommand{\Nnote}[1]{\todo[color=blue!30,fancyline,size=\tiny]{N: #1}}
+\newcommand{\Rnoteinline}[1]{\todo[color=green!40,inline,size=\tiny]{RP: #1}}
+\newcommand{\Nnoteinline}[1]{\todo[color=blue!30,inline,size=\tiny]{N: #1}}
+
+\newcommand{\VP}{\mathsf{VP}}
+\newcommand{\VNP}{\mathsf{VNP}}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\BPP}{\mathsf{BPP}}
+%DIF < 
+%DIF < 
+%DIF < \title{Recent Progress on Arithmetic Circuit Lower Bounds}
+%DIF < \author{Ramprasad Saptharishi\\
+%DIF < Microsoft Research India\\
+%DIF < {\tt ramprasad@cmi.ac.in}
+%DIF < }
+%DIF DELETED TITLE COMMANDS FOR MARKUP
+\author{}%DIFAUXCMD
+\title{}%DIFAUXCMD
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+\DIFaddbegin \beatcsColumn{complexity}{It is widely believed that the
+Permanent polynomial requires superpolynomial size arithmetic
+circuits. This is the central problem in the area of arithmetic circuit
+complexity. In the last couple of years there has been exciting
+progress on this problem with several new arithmetic circuit lower
+bound results. Ramprasad Saptharishi's nicely written survey article
+explains these new developments. He shares with the reader intuitions
+and proof insights.}
+
+\newpage
+
+
+\title{\DIFadd{Recent Progress on Arithmetic Circuit Lower Bounds}}
+\author{\DIFadd{Ramprasad Saptharishi}\\
+\DIFadd{Microsoft Research India}\\ {\tt \DIFadd{ramprasad@cmi.ac.in}} }
+
+
+
+
+\DIFaddend \maketitle
+\begin{abstract}
+The field of arithmetic circuit complexity has lately seen a flurry of results. Several of these results are centered homogeneous depth four circuits, and come tantalizingly close to separating the algebraic analogue of $\mathsf{P}$ from the algebraic analogue of $\NP$. In this article, we survey some of the more recent results and present the key intuitions. We also look at some results on depth reduction and some approaches aimed towards proving super-polynomial lower bounds for homogeneous formulas. 
+\end{abstract}
+
+\section{Introduction} \label{sec:intro}
+
+``What is the best way to compute a given polynomial $f(x_1,\dots, x_n)$ from basic operations such as $+$ and $\times$?'' This is the main motivating problem in the field of arithmetic circuit complexity. The notion of \emph{complexity} of a polynomial is measured via the size of the smallest arithmetic circuit computing it. Arithmetic circuits provide a robust model of computation for polynomials. Formally, these are directed acyclic graphs with a unique sink vertex, where internal nodes are labelled by $+$ and $\times$ and each source node labelled with either a variable or a field constant. Each $+$ gate computes the sum of the polynomials computed at its children, and $\times$ gates the product. The unique sink vertex is called the root or the output gate, and the polynomial computed by that gate is the polynomial computed by the circuit. 
+
+There are several interesting questions that can be asked about arithmetic circuits, and polynomials that they compute. One category of problems are of the form, ``Is there an explicit polynomial $f(x_1,\dots, x_n)$ that require (perhaps restricted) arithmetic circuits of size $2^{\Omega(n)}$ to compute them?'', or questions about proving lower bounds. Another category of problems are of the form, ``Is the given circuit computing the $0$ polynomial?'', which is also called `Polynomial Identity Testing (PIT)'. Yet another class of questions are of the form ``Given oracle access to a circuit, can you write down the polynomial computed by this circuit?'', which are also called `polynomial reconstruction'. Several of these problems have very strong connections between each other despite being of very different flavours. Formal connections between PIT and lower bounds have been shown by \cite{ki03,a05}. Further, strong lower bounds for restricted models have often been succeeded by reconstruction algorithms (at least on average). In this article we shall mainly be looking at lower bounds. For more on reconstruction and PIT questions, the author is invited to read other excellent surveys such as \cite{sy10,ckw11}. 
+
+\subsection{Arithmetic complexity classes}
+In the seminal paper of \cite{v79}, Valiant defined two classes of polynomials which we now call $\VP$ and $\VNP$. 
+
+\begin{definition}
+The class $\VP$ is defined as the set of all polynomial $f(x_1,\dots, x_n)$ with $\deg(f) = n^{O(1)}$ that can be computed by an arithmetic circuit of size $s = n^{O(1)}$. 
+
+The class $\VNP$ is defined as the set of all polynomial $f(x_1,\dots, x_n)$ such that there exists a $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = n^{O(1)}$ such that
+\[
+f(x_1,\dots, x_n) \quad = \quad \sum_{y_1=0}^1\dots \sum_{y_m=0}^1 g(x_1,\dots, x_n, y_1,\dots, y_m)
+\]
+\end{definition}
+The class $\VP$ is synonymous to what we understand as \emph{efficiently computable} polynomials. The class $\VNP$, whose definition is similar to the boolean class $\NP$, is in some sense a notion of what deem as \emph{explicit}. 
+
+\begin{fact}\label{fact:VNP-explicit}
+Let $f(x_1,\dots, x_n)$ be a polynomial such that $\deg(f) = n^{O(1)}$ and given any exponent vector $e_1,\dots, e_n$, the coefficient of the monomial $x_1^{e_1}\dots x_n^{e_n}$ in $f$ can be computed in polynomial time. Then, $f \in \VNP$. 
+\end{fact}
+
+For example, consider the permanent of a symbolic $n\times n$ matrix. In fact, \cite{v79} showed that the symbolic $n\times n$ permanent is in some sense complete for the class $\VNP$. Further, he also showed that the determinant of a symbolic  $n\times n$ matrix is (almost) complete for the class $\VP$. Separating the determinant and the permanent is the Holy Grail in the field of arithmetic circuit complexity. \\
+
+{\bf Remark.} Note that the above fact merely gives a sufficient condition for a polynomial to be in $\VNP$. There are examples of polynomials $f$ where computing the coefficient of a given monomial is believed to be very hard but $f\in \VNP$.\footnote{For example, consider the $n^2$ variate multilinear polynomial $f$ such that the coefficient $x_{11}^{e_{11}}\dots x_{nn}^{e_{nn}}$ is the permanent of the $n\times n$ matrix $(\!(e_{ij})\!)_{i,j}$. Turns out $f \in \VNP$. In fact, a necessary and sufficient condition is that the coefficient of a given monomial can be computed in $\#\mathsf{P}/\poly$. }  In this article however, all the polynomials we shall be dealing with would have this property that the coefficient of a given monomial can be efficiently computed. For more about completeness classes in arithmetic complexity, \cite{bcs97} is a wonderful text. 
+
+
+\subsection{Prior lower bounds}
+
+Proving lower bounds is generally considered challenging, in most models of computation. For general circuits, the best lower bound we have for an explicit polynomial is by \cite{BS83} who prove an $\Omega(n\log n)$ lower bound. For the subclass of arithmetic formulas, \cite{k85} has shown a $\Omega(n^{3/2})$ lower bound. On the other hand, we know by standard counting methods that most $n$-variate degree $d$ polynomials require circuits of size $\Omega\inparen{\sqrt{\binom{n+d}{d}}}$.
+
+To gain better understanding of computation by arithmetic circuits, researchers \DIFdelbegin \DIFdel{focussed }\DIFdelend \DIFaddbegin \DIFadd{focused }\DIFaddend on proving lower bounds for restricted models of computation. One very natural restriction is the depth of the circuit. Proving lower bounds for depth two circuits are trivial. For general depth three circuits, the best lower bound we have is by \cite{sw2001} who present an $\Omega(n^2)$ lower bound. Exponential lower bounds are known with additional restrictions like \emph{homogeneity} \cite{nw1997}, \emph{multilinearity} \cite{raz2004,raz-yehudayoff}, over finite fields \cite{gr00,grigoriev98}, \emph{monotonicity} \cite{js82} etc. 
+
+For multilinear models, more is known for even larger depth. \cite{raz2004} showed an $n^{\Omega(\log n)}$ lower bound for the class of multilinear formulas. \cite{raz-yehudayoff} extended those techniques to show an $2^{n^{\Omega(1/\Delta)}}$ lower bound for multilinear formulas of depth $\Delta$. 
+
+\subsection{Relevance of shallow circuits for ``$\VP$ vs $\VNP$''}
+
+The study of lower bounds for shallow circuits is not just an attempt to simplify the problem and gain insight on the larger goal. The class of shallow arithmetic circuits are surprisingly powerful, unlike the boolean case. Shallow circuits in the arithmetic world almost capture the entire computational power of unrestricted circuits! 
+
+There has been a long series of results that simulate a general arithmetic circuit $C$ by a \emph{shallow} circuit of size comparable to the size of $C$. This task simulating a circuit but another not-too-large circuit of small depth is called \emph{depth reduction}. The first result in this regard is by \cite{vsbr83} who proved the following. 
+
+\begin{theorem}[\cite{vsbr83}] \label{thm:vsbr}
+Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$ of size $s$. Then, $f$ can be equivalently computed by a homogeneous circuit $C'$ of depth $O(\log d)$ with unbounded fan-in $+$ and $\times$ gates and size $s' = (nds)^{O(1)}$. 
+\end{theorem}
+
+In fact, the resulting circuit $C'$ has the following useful structure. 
+
+\begin{itemize}
+\item The circuit is made up of alternating layers consisting of $+$ and $\times$  gates. 
+\item All multiplication gates have fan-in at most $5$.
+\item If $g$ is the polynomial computed at a multiplication gate, and $g'$ is the polynomial computed at one of its children, then $\deg(g') \leq \deg(g)/2$. 
+\end{itemize}
+
+The above theorem allows us to focus on just homogeneous circuits of $O(\log d)$ depth and attempt lower bounds for this model. Any super-polynomial lower bound for the class of $O(\log d)$ depth circuits automatically yields a super-polynomial lower bound for general circuits. \\
+
+However, if we really hope to prove much stronger lower bounds for $\Perm_n$ like say $2^{\Omega(n)}$, maybe we can afford to incur a slightly larger blow-up in size to obtain an even shallower circuit. This line was first pursued by \cite{av08}, and subsequently strengthened by \cite{koiran} and \cite{Tav13} to yield the following result. 
+
+\begin{theorem}[\cite{av08,koiran,Tav13}] \label{thm:av}
+  Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$. Then $f$ can be computed by a homogeneous $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit of size $s' \leq s^{O(\sqrt{d})}$
+
+More generally, for any $0\leq r\leq d$, there is a homogeneous $\SPSPfanin{O(d/r)}{r}$ circuit of top fan-in at most $s^{O(d/t)}$ computing $f$. 
+\end{theorem}
+
+Recall that a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit computes a polynomial of the form
+\[
+f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ia} \quad,\quad \text{where $a = O(\sqrt{d})$ and $\deg Q_{ij} \leq \sqrt{d}$}
+\]
+
+In other words, if we can prove a lower bound of $n^{\omega(\sqrt{d})}$ for the class of $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits, we would have a super-polynomial lower bound for the class of general arithmetic circuits! In fact, the model of depth $4$ circuits seem so central in that almost all known lower bounds for other restricted models proceed by proving a suitable lower bound for a depth $4$ analogue. Several examples of this may be seen in \cite{KayalRP}. \\
+
+The first breakthrough was obtained by \cite{gkks13} who showed an $2^{\Omega(\sqrt{d})}$ lower bound for such circuits computing the symbolic $d\times d$ determinant or permanent. Subsequently, there was a flurry of activity\footnote{so much this is the second survey on arithmetic circuit lower bounds that the author is involved in within a year!} towards achieving the goal of proving $n^{\omega(\sqrt{d})}$ lower bounds \cite{KSS13,FLMS13,KS14a}, and this is where we currently stand. 
+
+\begin{theorem}
+There is an explicit homogeneous $n$-variate degree $d$ polynomial $f$ that can be computed by a homogeneous depth $4$ circuit of size $n^{O(1)}$ but any $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ computing it requires top fanin $s = n^{\Omega(\sqrt{d})}$.
+\end{theorem}
+
+If we could change the $n^{\Omega(\sqrt{d})}$ to $n^{\omega(\sqrt{d})}$ in the above theorem (of course, the polynomial $f$ cannot then have a small arithmetic circuit computing it), we would have proved a super-polynomial lower bound for general arithmetic circuits! The following is the simplest formulation of a lower bound of shallow circuit that would imply lower bounds for general circuits. \\
+
+\begin{mdframed}
+\begin{openproblem}\label{openprob:main} Find an explicit $n$-variate degree $d$ polynomial $f$ such that any expression of the form
+\[
+f \quad=\quad (Q_1)^{\sqrt{d}} + \dots + (Q_{s})^{\sqrt{d}}\quad,\quad \deg(Q_i) \leq \sqrt{d} \text{ for all $i$}
+\]
+must have $s = n^{\omega(\sqrt{d})}$. 
+\end{openproblem}
+\end{mdframed}
+\bigskip 
+
+Subsequent to this line of work, several researchers addressed the task of proving lower bounds for homogeneous depth $4$ circuits without any restriction on the fan-ins. It is worth noting that a lower bound for homogeneous depth $4$ circuits must be on the total size and not the top fan-in, as otherwise one could just compute the polynomial $f$ in a single gate of the bottom two layers. 
+
+\pagebreak[4]
+\subsection*{Why another survey?}
+
+\begin{quote}
+So why are super polynomial lower bounds still not proved?  Maybe it's because not enough people are working on it.  
+\begin{flushright}
+-- Ran Raz (in \cite{raz10fool})
+\end{flushright}
+\end{quote}
+
+
+We strongly believe that the above statement really hits the nail on the head. Fortunately, over the last few years we have seen such a phenomenal activity in arithmetic circuit lower bounds and an increased optimism that we can indeed soon separate $\VP$ and $\VNP$. The open problem stated above is simple enough (to state!) that any one can start thinking about it. Further, we already have an $n^{\Omega(\sqrt{d})}$ lower bound, and we only need to make that $n^{\omega(\sqrt{d})}$. We believe that separating $\VP$ and $\VNP$ would be solved in the not-so-distant future and the hope is that the recent surveys would assist people familiarize with the known lower bounds and develop the necessary tools. As a student, the surveys of \cite{sy10,ckw11} were immensely helpful and this is an attempt to give back to the community. 
+
+
+Recently, with Neeraj Kayal  \cite{KayalRP}, we presented a comprehensive exposition of almost all known lower bounds known until then with nearly complete proofs. We tried to present all of them from a single perspective of constructing \emph{complexity measures} for appropriate depth $4$ analogues. Subsequently, there has been fresh lower bounds which, although are modifications of the earlier measures, are much more delicate to analyze and employ several new ideas to assist in the calculations. The goal of this survey is to complement \cite{KayalRP} and present the key intuitions in the newer lower bounds for restricted arithmetic circuits. This article would not have complete proofs of the newer lower bounds but would hopefully present the main subtleties involved to help the interested reader to work through the full proofs themselves. 
+
+\subsection*{Organization}
+
+We first begin with some preliminaries and notation that would be required in Section~\ref{sec:notation}. We then move on to present the depth reduction to depth $4$ circuits to put the lower bounds in context. We then outline the general road map followed by almost all lower bound proofs in Section~\ref{sec:natural-proofs} and then proceed to the lower bounds of \cite{KLSS} and \cite{KS14} in Section~\ref{sec:hom-d4-lb}. In Section~\ref{sec:kayalsaha}, we focus on non-homogeneous depth $3$ circuits and present the depth reduction of \cite{gkks13b} and the recent lower bound of \cite{KayalSaha14} for depth three circuits with small bottom fan-in. We look at some speculative approaches towards proving superpolynomial lower bounds for homogeneous formulas in Section~\ref{sec:hom-formulas} before concluding in Section~\ref{sec:conc}. 
+
+
+\section{Notation and preliminaries}\label{sec:notation}
+
+\subsection{Subclasses of circuits}
+
+We shall be considering various subclass of constant depth circuits in this article and it would be useful to fix some notation for the parameters involved. 
+\begin{itemize}
+\item A $\SPSPfanin{a}{b}$ circuit computes a polynomial of the form 
+\[
+f \spaced{=} \sum_i Q_{i1}\dots Q_{ia} \spaced{\text{where}} \deg Q_{ij} \leq b
+\]
+\item A $\wedge$ refers to a layer of exponentiation gates. For example, a $\Sigma\!\wedge\!\Sigma$ circuit computes a polynomial of the form 
+\[
+f \quad = \quad \ell_1^{d_1} + \dots + \ell_s^{d_s}
+\]
+where each $\ell_i$ is a linear polynomial. 
+\item In general, we shall add super script such as $\Sigma^{[a]}$ or $\Pi^{[a]}$ to denote a bound on the fan-in of gates in that layer. For example, $\Sigma\Pi\Sigma^{[a]}$ would refer to depth three circuits where every linear polynomial depends on at most $a$ variables. 
+\end{itemize}
+
+Throughout the article, we would be dealing mainly with multilinear polynomials with zero-one coefficients. Thus, it would be useful to identify such any monomial of such a polynomial $P(x_1,\dots, x_n)$ by the set of variables that divide it. This shall allow us to say ``$m_1 \intersection m_2$'' instead of $\gcd(m_1,m_2)$. Further, we shall abuse notation and say ``$m\in P(\vecx)$'' to mean that the monomial $m$ has a non-zero coefficient in $P(\vecx)$. 
+
+\subsection{Some useful estimates}
+
+We shall be seeing a lot of binomial coefficients and the following lemma would be useful to have a handle on how large they are. 
+
+\begin{lemma}\label{lem:binom-approx}
+Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. For any $a, b$ such that $a,b = O(\sqrt{n})$, 
+\[
+\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \poly(n)
+\]
+\end{lemma}
+\begin{proof}
+The proof of the above lemma would repeated use \cite[Lemma 6]{gkks13} that 
+\[
+(n+a)! \quad = \quad n! \cdot n^{a} \cdot \poly(n)
+\]
+for any $a = O(\sqrt{n})$. 
+
+Hence,
+\begin{eqnarray*}
+\frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
+& \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
+& = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
+& \stackrel{\poly}{\approx} & 2^{-a} \cdot (1+\epsilon)^{a - 2b}
+\end{eqnarray*}
+\end{proof}
+
+\subsection{Polynomials of interest}
+
+There are a few polynomials that are the usual suspects while proving lower bounds. The polynomials that we would be dealing with in this article are defined below. 
+
+\subsubsection*{The determinant and the permanent families}
+
+The determinant of an $n\times n$ symbolic matrix shall be denoted by $\Det_n$ and is defined as
+\[
+\Det_n \spaced{=} \sum_{\sigma \in S_n} \text{sign}(\sigma) x_{1,\sigma(1)}\dots x_{n,\sigma(n)}
+\]
+The permanent of an $n\times n$ symbolic matrix shall be denoted by $\Perm_n$ and is defined as
+\[
+\Perm_n \spaced{=} \sum_{\sigma \in S_n}x_{1,\sigma(1)}\dots x_{n,\sigma(n)}
+\]
+
+Both of these polynomials are of degree $n$ and over $n^2$ variables. We know that $\Det_n$ can be computed by a polynomial sized arithmetic circuit and it is widely believed that the permanent requires circuits of size $2^{\Omega(n)}$. 
+
+
+
+\subsubsection*{The Nisan-Wigderson polynomial families}
+
+Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\leq m$. Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\F_m$ of $m$ elements. Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_{n,m,d}$ is defined as
+\[
+\NW_{n,m,d}(\vecx) \spaced{=} \sum_{\substack{p(t) \in \F_m[t]\\ \deg(p) \leq d}} x_{1,p(1)}\dots x_{n,p(n)}
+\]
+That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. This is a polynomial of degree $n$ over $mn$ variables.
+
+This monomials of this polynomial satisfy a very useful low-pairwise-intersection property. 
+
+\begin{lemma}\label{lem:NW-low-intersection}
+Let $m_1$ and $m_2$ be any two distinct monomials in $\NW_{n,m,d}(\vecx)$. Then, there are at most $d$ variables that divide both $m_1$ and $m_2$. 
+\end{lemma}
+\begin{proof}
+Let $m_1$ and $m_2$ correspond to univariates $p_1(t), p_2(t) \in \F_m[t]$ of degree at most $d$. Then if $x_{ij}$ divides $m_1$, then $p_1(i) = j$, similarly for $m_2$. But since $p_1$ and $p_2$ are two distinct polynomials of degree at most $d$, they can agree in at most $d$ evaluations. Thus, there can be at most $d$ variables that divide both $m_1$ and $m_2$. 
+\end{proof}
+
+For most generic choices of the parameters, the polynomial $\NW_{n,m,d}$ is believed to require circuits of exponential size to compute them. 
+
+\subsubsection*{The Iterated-Matrix-Multiplication polynomial}
+
+For parameters $n$ and $d$, the Iterated-Matrix-Multiplication polynomial, denoted by $\IMM_{n,d}$, is defined as follows
+$$
+\IMM_{n,d} \spaced{=} \sum_{1\leq i_1,\dots, i_d\leq n} x_{1,i_1}^{(1)}x_{i_1,i_2}^{(2)}\dots x_{i_{d-2},i_{d-1}}^{(d-1)}x_{i_{d-1},1}^{(d)}.
+$$
+An equivalent way of defining the polynomial as the $(1,1)$-th entry of the product of $d$ generic $n\times n$ matrices:
+$$
+\IMM_{n,d} \spaced{=} \inparen{\insquare{\begin{array}{ccc} x_{11}^{(1)} & \dots & x_{1n}^{(1)}\\ \vdots & \ddots & \vdots \\ x_{n1}^{(1)} & \dots & x_{nn}^{(1)}\end{array}} \cdots \insquare{\begin{array}{ccc} x_{11}^{(d)} & \dots & x_{1n}^{(d)}\\ \vdots & \ddots & \vdots \\ x_{n1}^{(d)} & \dots & x_{nn}^{(d)}\end{array}}}_{(1,1)}.
+$$
+
+It is often useful to think of this as the polynomial computed by a \emph{generic algebraic branching program} of width $n$ and depth $n$ (where the edge connecting vertex $i$ of layer $\ell$ to vertex $j$ of layer $\ell+1$ has weight $x_{ij}^{(\ell)}$). 
+
+This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
+
+\section{A primer on depth reduction to depth $4$ circuits}\label{sec:depth-red}
+
+In this section, we shall look at depth reduction for arithmetic circuits. As mentioned earlier, the starting point of all known depth reductions is the result of \cite{vsbr83}. \\
+
+{\bf Theorem~\ref{thm:vsbr} (restated).} {\em Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$ of size $s$. Then, $f$ can be equivalently computed by a homogeneous circuit $C'$ of depth $O(\log d)$ with unbounded fan-in $+$ and $\times$ gates and size $s' = (nds)^{O(1)}$. 
+
+Further, the circuit $C'$ has the following structure:
+\begin{itemize}
+\item The circuit is made up of alternating layers consisting of $+$ and $\times$  gates. 
+\item All multiplication gates have fan-in at most $5$.
+\item If $g$ is the polynomial computed at a multiplication gate, and $g'$ is the polynomial computed at one of its children, then $\deg(g') \leq \deg(g)/2$. 
+\end{itemize}
+}
+
+\bigskip 
+
+We shall not be proving this theorem here but with this as the starting point, we shall given an alternate proof of the depth reduction by \cite{av08,koiran,Tav13}. This alternate proof was obtained jointly with V Vinay. \\
+
+{\bf Theorem~\ref{thm:av} (restated). }{\em 
+  Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$. Then $f$ can be computed by a homogeneous $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit of size $s' \leq s^{O(\sqrt{d})}$
+}
+
+\begin{proof}
+Start with the circuit $C'$ obtained from Theorem~\ref{thm:vsbr} computing $f$ of size $s' = s^{O(1)}$. Let $g$ be the \DIFdelbegin \DIFdel{polynmomial }\DIFdelend \DIFaddbegin \DIFadd{polynomial }\DIFaddend computed at any arbitrary gate in the circuit. From the structure of $C'$, we have that
+\begin{equation}\label{eqn:vsbr}
+g \spaced{=} \sum_{i=1}^{s'} g_{i1}\cdot g_{i2}\cdot g_{i3}\cdot g_{i4}\cdot g_{i5}
+\end{equation}
+with $\deg(g_{i1}) + \dots + \deg(g_{i5}) \leq \deg(g)$ and $\deg(g_{ij})\leq \deg(g)/2$ for all $i,j$. 
+
+{\bf Key Observation. } For each $i$, there must be at least two $j$'s such that $\deg(g_{ij}) \geq \deg(g)/8$. \\
+
+Since the above decomposition is true for any gate in the circuit, $f$,  polynomial computed at the root, can be written as
+\begin{equation}\label{eqn:vsbr-f}
+f \spaced{=} \sum_{i=1}^{s'} f_{i1}\cdot f_{i2}\cdot f_{i3}\cdot f_{i4}\cdot f_{i5}. 
+\end{equation}
+The RHS is a $\SPSPfanin{5}{d/2}$  circuit of top fan-in $s'$. The goal would be to progressively reduce the bottom fan-in at the cost of increasing the top fan-in slightly. Eventually, we want an expression where all $f_{ij}$'s involved have degree at most $\sqrt{d}$. 
+
+We shall follow an extremely natural strategy: 
+\begin{mdframed}
+\begin{quote}
+Start with (\ref{eqn:vsbr-f}) for $f$. 
+
+For each summand $f_{i1}\dots f_{ir}$ in the RHS, if the largest degree $f_{ij}$ has degree more than $\sqrt{d}$, expand that $f_{ij}$ with the its corresponding representation using (\ref{eqn:vsbr}). 
+
+Repeat this process until all $f_{ij}$'s on the RHS have degree at most $\sqrt{d}$. 
+\end{quote}
+\end{mdframed}
+
+In every round of the above routine, the initial equation (\ref{eqn:vsbr-f}) for $f$ slowly evolves. 
+At the end of each round, the top fan-in increases by a factor of $s'$ but there is some drop in the degree of terms involved. We now need to show that by $O(\sqrt{d})$ rounds, all of the $f_{ij}$'s involved would have degree bounded by $\sqrt{d}$. This would imply that the top fan-in of that equation is bounded by $s^{O(\sqrt{d})}$ as claimed. 
+
+If we take any term $f_{i1}\dots f_{ir}$ with $\deg(f_{i1})\geq \sqrt{d}$ and expand $f_{ij}$ via (\ref{eqn:vsbr}), each term in the expansion of $f_{i1}$ must have at least two factors of degree more than $\sqrt{d}/8$ (by the key observation). Thus, in each term obtained by expanding $f_{i1}$ in $f_{i1}\dots f_{ir}$ must have the number of factors of degree more than $\sqrt{d}/8$ increased by at least one. Since we know that no term can have more than $8\sqrt{d}$ such factors, this must imply that the number of rounds is bounded by $8\sqrt{d}$. 
+
+Thus we eventually have an equation of the form
+\[
+f\quad=\quad \sum_{i=1}^{s'^{8\sqrt{d}}} f_{i1}\dots f_{ir}\quad\text{where for each $i,j$,}\quad \deg(f_{ij})\leq \sqrt{d} 
+\]
+To ensure that $r\leq O(\sqrt{d})$, the standard trick is to take any ensure that $\deg(f_{ij}) \geq \sqrt{d}/2$ by multiplying out factors of degree smaller than $\sqrt{d}/2$. Thus, we have a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit of top fan-in $s^{O(\sqrt{d})}$ computing $f$. 
+\end{proof}
+
+The original proof of Tavenas was not much involved either, but the above proof would be able to offer more insights towards proving homogeneous formula lower bounds. We shall however defer this discussion to Section~\ref{sec:hom-formulas}. 
+\\
+
+Surprisingly, it was shown by \cite{gkks13b} that over characteristic zero fields, any $n$-variate degree $d$ polynomial $f$ can be computed by a depth $3$ circuit of size $n^{O(\sqrt{d})}$. We shall present its proof in Section~\ref{sec:kayalsaha} where it would better placed alongside the recent lower bound for depth $3$ circuits by \cite{KayalSaha14}. 
+
+
+\section{`Natural' proof strategies}\label{sec:natural-proofs}
+
+Most lower bounds follow the plan outlined below. There are a few notable exceptions but by and large this is the general strategy followed by almost all known lower bound proofs. 
+
+\begin{quote}
+{\bf Step 1 (normal forms)} For every circuit in the circuit class $\mathcal{C}$ of interest, express the polynomial computed as a \emph{small sum of simple building blocks}. 
+\end{quote}
+
+For example, every $\Sigma\Pi\Sigma$ circuit is a \emph{small} sum of \emph{products of linear polynomials} which are the building blocks here. In this case, the circuit model naturally admits such a representation. There are cases when obtaining this representation might itself be non-trivial. 
+
+\begin{quote}
+{\bf Step 2 (complexity measure)} Construct a map $\Gamma: \F[x_1,\dots, x_n] \rightarrow \Z_{\geq 0}$ with that is \emph{sub-additive} i.e. $\Gamma(f_1 + f_2)\leq \Gamma(f_1) + \Gamma(f_2)$
+\end{quote}
+
+This is really the most crucial part of the lower bounds. In most cases, $\Gamma(f)$ is the rank of a large matrix whose entries are linear functions in the coefficients of $f$. This would be the case in the lower bounds considered in this article as well. In such cases, we immediately get that $\Gamma$ is sub-additive. 
+
+The strength of the choice of $\Gamma$ is determined by the next step. 
+
+\begin{quote}
+{\bf Step 3 (potential usefulness)} Show that if $B$ is a \emph{simple building block}, then $\Gamma(B)$ is \emph{small}.
+Further, check if $\Gamma(f)$ for a \emph{random polynomial} $f$ is large (potentially). 
+\end{quote}
+
+This would suggest that if any $f$ with large $\Gamma(f)$ is to be written as a sum of $B_1 + \dots + B_s$, then sub-additivity and the fact that $\Gamma(B_i)$ is small for each $i$ and $\Gamma(f)$ is large immediately imply that $s$ must be large. This implies that the complexity measure $\Gamma$ does indeed have a potential to prove a lower bound for the class. The next step is just to replace the \emph{random polynomial} by an explicit polynomial. 
+
+\begin{quote}
+{\bf Step 4 (explicit lower bound)} Find an explicit polynomial $f$ for which $\Gamma(f)$ is large. 
+\end{quote} 
+
+The bulk of all lower bound proofs goes into this step. In several cases, there are natural candidate polynomials for which one can show $\Gamma(f)$ is large. In some cases, it might be easier to \emph{engineer} a polynomial for which it is easier to show that $\Gamma(f)$ is large. \\
+
+With this general strategy in mind, we can go ahead to see the lower bounds of \cite{KLSS, KS14}. 
+
+\section{Lower bounds for homogeneous depth four circuits}\label{sec:hom-d4-lb}
+
+The model for which we shall be interested in proving lower bounds are homogenous depth four circuits. These circuits compute polynomials of the form
+\[
+f \spaced{=} \sum_{i} Q_{i1}\dots Q_{ia_i}
+\]
+where each $Q_{ij}$ is a homogeneous polynomial. This immediately forces that $\sum_{j=1}^{a_i} \deg(Q_{ij}) = \deg(f)$ for all $i$. \\
+
+{\bf Goal. } Find an explicit polynomial $f$ (of degree $d$, and over $n$ variables) such that any homogeneous depth four circuit requires size $n^{\Omega(\sqrt{d})}$. That is, if
+\[
+f \spaced{=} \sum_{i} Q_{i1}\dots Q_{ia_i}
+\]
+for homogeneous polynomials $Q_{ij}$'s, then the total number of monomials present among the $Q_{ij}$'s must be $n^{\Omega(\sqrt{d})}$. 
+
+\subsubsection*{Intuition towards the measure - (1)}
+
+Consider an expression of the form
+\[
+C \spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ia_i}
+\]
+We shall call a summand $Q_{i1}\dots Q_{ia_i}$ \emph{good} if the degree of each $Q_{ij} \leq \sqrt{d}$. Let us split the above sum into \emph{good} terms and the rest. 
+\begin{eqnarray}
+C_1 &=& \sum_{i=1}^{s_1} Q_{i1}\dots Q_{ia_i} \spaced{\text{where}} \deg(Q_{ij}) \leq \sqrt{d} \spaced{\text{for all $i,j$}}\label{eqn:int11}\\
+C_2 &=& \sum_{i=s_1+1}^{s} Q_{i1}\dots Q_{ia_i} \spaced{\text{where}} \deg(Q_{i1}) > \sqrt{d} \spaced{\text{for all $i > s_1$}}\label{eqn:int12}
+\end{eqnarray}
+
+If one were to just prove a lower bound for (\ref{eqn:int11}), then using the dimension of shifted partial derivatives we can obtain a lower bound of $n^{\Omega(\sqrt{d})}$. Hence let us focus on an expression of the form (\ref{eqn:int12}) and see if we can come up with a measure that gives a $n^{\Omega(\sqrt{d})}$ lower bound there as well. 
+
+Starting with (2), let us expand each $Q_{i1}$ as a sum of monomials to obtain an expression of the form
+\[
+C_2 \spaced{=} \sum_{i=1}^{s'} m_i\cdot  Q_i'
+\]
+where each $m_i$ is a monomial of degree greater than $\sqrt{d}$, and $Q_i'$ some polynomial of degree $d - \deg(m_i)$. The number of summands $s'$ would be at most the size of the circuit we started out with.\\
+
+{\bf Key Idea:} Suppose the polynomial $C_2$ was multilinear, i.e. the degree in each variable is bounded by $1$.  Further, say $s' \leq n^{\sqrt{d}/10}$. Apply a random restriction $\rho$ on the variables by setting each variable independently to zero with probability $p < \frac{1}{n^{1/20}}$. 
+
+If $m$ was any monomial that was divisible by $\sqrt{d}$ disjoint variables, then $\rho(m) \neq 0$ with probability at most $\frac{1}{n^{\sqrt{d}/20}}$. Hence, the probability that $\rho(m_i) \neq 0$ for some $i\leq s'$ that is divisible  by $\sqrt{d}$ variables is at most $\frac{1}{n^{\sqrt{d}/10}}$. Hence, the only terms that would survive on the RHS are terms of the form $\rho(m_i \cdot Q_i')$ where $m_i$ is divisible by at most $\sqrt{d}$ distinct variables. But recall that $\deg(m_i) > \sqrt{d}$ and this implies that $m_i$ is non-multilinear. If that is the case, then every monomial on the RHS is non-multilinear! Thus as long as $\rho(C_2) \neq 0$, there would be at least one multilinear monomial that survives. This would contradict our original assumption that $s' \leq n^{\sqrt{d}/10}$, giving us the lower bound we were after. \\
+
+Thus, the measure for the sum of \emph{good} terms is the dimension of shifted partial derivatives. The measure for the sum of non-\emph{good} terms was \emph{the number of non-zero multilinear monomials after a random restriction}. Hopefully some combination of these measures would give us a measure for their sum.\footnote{There are some instances when this strategy can fail spectacularly. See \cite{KS14a}}
+
+\subsubsection*{Intuition towards the measure - (2)}
+
+The idea of using random restrictions as defined above essentially kills all monomials that are divisible by `too many' variables. Let us consider an extreme case where every monomials in each $Q_{ij}$ is just a power of a single variable. We shall first try to prove a lower bound for expression of the form
+\[
+C\spaced{=} \sum_{i}Q_{i1}\cdots Q_{ia_i}
+\]
+where every monomial in any $Q_{ij}$ is a power of a single variable, i.e. each $Q_{ij}$ is a sum of univariate polynomials. 
+
+Define the operator $\mathrm{MultiQuad}$ that acts on any polynomial $Q$ such that $\mathrm{MultiQuad}(Q)$ is just the sum of monomials of $Q$ of degree at most $2$ in every variable. Then,
+\begin{eqnarray*}
+C &=&  \sum_{i}\mathrm{MultiQuad}(Q_{i1})\cdots \mathrm{MultiQuad}(Q_{ia_i}) \spaced{+} \text{other terms}\\
+  & = & \qquad C_1 \spaced{+} C_2
+\end{eqnarray*}
+
+Notice that $C_1$ corresponds to a $\SPSPfanin{d/2}{2}$ circuit since we assume that each $Q_{ij}$ is a sum of univariates. The dimension of shifted partial derivatives would yield a lower bound for such $\SPSPfanin{d/2}{2}$ circuits. But what really happens to $C_2$ as we take some partial derivative?\\
+
+{\bf Key Observation. } For any multilinear monomial $m$, the partial derivative $\partial_m(C_2)$ only consists of non-multilinear monomials. \\
+
+Thus, this points towards the following modification of the traditional dimension of shifted partial derivatives: 
+\begin{quote}
+  For any polynomial $P$, look at the set of polynomials of obtained as $m_1 \cdot \partial_{m_2}(P)$ where $m_1$ and $m_2$ are \emph{multilinear monomials} of a certain degree, and compute the dimension of the \emph{multilinear component} of these polynomials i.e. erase all monomials that are non-multilinear and then compute the dimension of the residual polynomials. 
+\end{quote}
+This basically allows us to completely ignore the contribution of $C_2$ as we have that multilinear component of $m_1 \partial_{m_2}(C_2))$ is zero for every $m_1$ and $m_2$ that are multilinear. \\
+
+
+Both these point us to a modification of the shifted partials, which \cite{KLSS,KS14} refer to as \emph{projected shifted partial derivatives}. 
+
+\begin{definition}[Projected Shifted Partial Derivatives]
+Fix parameters $k,\ell > 0$. For any polynomial $P$, the set of projected shifted partials of $P$, denoted by $\mathrm{PSD}_{k,\ell}(P)$ is defined as follows
+\[
+\mathrm{PSD}_{k,\ell}(P) \spaced{=} \setdef{\mathrm{mult}(m_1 \cdot \partial_{m_2}(P))}{\begin{array}{c}\deg(m_1) = \ell\;,\; \deg(m_2) = k,\\ \text{$m_1$ and $m_2$ are multilinear}\end{array}}
+\]
+where $\mathrm{mult}(f)$ refers to the polynomial $f$ projected to only the multilinear monomials of $f$. 
+
+The measure $\Gamma^{\mathrm{PSD}}_{k,\ell}(P)$ is defined as the dimension of the above set of polynomials, i.e.
+\[\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \spaced{=} \dim\inparen{\mathrm{span}(\mathrm{PSD}_{k,\ell})}\]
+\end{definition}
+
+The works of \cite{KLSS,KS14} use this measure to prove a lower bound for ``\emph{low-support} depth $4$ circuits''. As sketched earlier, the task of proving lower bounds for general homogeneous depth $4$ circuits can be reduced to the \emph{low-support} depth $4$ circuits via random restrictions. 
+
+\subsection{Reducing to `low-support' depth $4$ circuits}\label{sec:red-to-low-support}
+
+We have already seen a sketch of how this can be done via a random restriction but let us formalize this as a lemma. 
+
+\begin{lemma}\label{lem:red-to-low-supp}
+Let $P$ be an $n$-variate degree $d$ polynomial computed by a homogeneous depth $4$ circuit $C$ of size $s \leq n^{c\sqrt{d}}$, for some $c>0$. Let $\rho$ be a random restriction that sets each variable to zero \DIFdelbegin \DIFdel{independantly }\DIFdelend \DIFaddbegin \DIFadd{independently }\DIFaddend with probability $1 - 1/n^{2c}$. Then with probability at least $(1 - 1/s)$, the polynomial $\rho(P)$ is computed by a homogeneous depth $4$ circuit $C'$ with bottom support at most $\sqrt{d}$ and size at most $s$. 
+\end{lemma}
+\begin{proof}
+Let $\inbrace{m_1,\dots, m_r}$ be the set of all monomials computed at the lowest layer of the depth $4$ circuit $C$ that are divisible by more than $\sqrt{d}$ distinct variables. Since the size of $C$ is at most $s$, we also have that $r\leq s$. Then,
+\begin{eqnarray*}
+\forall i\in [r] \qquad \Pr[\rho(m_i) \neq 0] & \leq & \frac{1}{n^{2c\sqrt{d}}}\\
+\implies \qquad \Pr[\exists i \;:\; \rho(m_i) \neq 0] & \leq & \frac{r}{n^{2c\sqrt{d}}} \leq \frac{1}{n^{c\sqrt{d}}} \leq \frac{1}{s}
+\end{eqnarray*}
+Thus, with probability at least $(1 - 1/s)$, all the large support monomials are killed and $C$ reduces to a homogeneous depth $4$ circuit of bottom support at most $\sqrt{d}$. 
+\end{proof}
+
+\subsubsection{Handling random restrictions}
+
+The previous section outlined how in \DIFdelbegin \DIFdel{essense}\DIFdelend \DIFaddbegin \DIFadd{essence}\DIFaddend , it would suffice to try and find an explicit polynomial for which we can prove a good enough lower bound for bounded bottom-support depth $4$ circuits. Let us say that we have found an explicit polynomial $g$ that requires depth $4$ circuits of size at least $n^{\sqrt{d}/100}$. Are we done? Let us write things down formally to see exactly what we need. 
+
+Say the polynomial we wish to show requires large homogeneous depth $4$ circuits is $f$. Let us assume on the contrary that $f$ can be computed by homogeneous depth $4$ circuits of size $s < n^{\sqrt{d}/10000}$. Then, by Lemma~\ref{lem:red-to-low-supp}, $\rho(f)$ can be computed by a homogeneous depth $4$ circuits of bottom support bounded by $\sqrt{d}/1000$ of size $s$. We want to be able to say that this is a contradiction. We might be able to say that if $\rho(f)$ has $g$ as \emph{a projection}, that is, but setting more variables to zero in $\rho(f)$ we obtain $g$. 
+
+Both the results of \cite{KLSS} and \cite{KS14} proceed by showing that the polynomial $g$, for which they show a lower bound for bounded bottom support circuits, is robust enough to yield the lower bound even after random restriction. The calculations become trickier because the calculations of $\Gamma^{[\mathrm{PSD}]}_{k,\ell}(\rho(f))$. However, in this survey we shall use an easier approach to generically lift any $g$ to a different polynomial $f$ such that $\rho(f)$ has $g$ as a projection. This trick came up during discussions with Mrinal Kumar. 
+
+\begin{lemma}\label{lem:lin-transform-trick}
+Let $\rho$ be a random restriction that sets each variable to zero independently with probability $1 - p$. For any polynomial $f(y_1,\dots y_n)$, define $f \circ \mathrm{Lin}_p$ as
+\[
+f \circ \mathrm{Lin}_p \spaced{=} f\inparen{\sum_{i=1}^t y_{1i}, \cdots, \sum_{i=1}^t y_{nt}}\quad \text{where $t = \inparen{\frac{1}{p}} n \log n$}
+\]
+Then, $\rho(f \circ \mathrm{Lin}_p)$ has $f$ as a projection with probability $1 - 1/2^{n}$. 
+\end{lemma}
+\begin{proof} For any $i = 1, \dots, n$
+\begin{eqnarray*}
+\quad \Pr[\rho(y_{i1}) = \dots \rho(y_{it}) = 0 ] & = & \inparen{1 - p}^t\\ 
+& = & \frac{1}{n\cdot 2^n}\\
+\implies \Pr[\exists i\;:\;\rho(y_{i1}) = \dots \rho(y_{it}) = 0 ]  & \leq  & \frac{1}{2^n} 
+\end{eqnarray*}
+Hence, with probability at least $1 - 1/2^n$, for each $i$ there is some $j$ such that $\rho(y_{ij}) \neq 0$. Therefore, with probability at least $1 - 1/2^n$, the polynomial $f$ is a projection of $\rho(f \circ \mathrm{Lin}_p)$. \end{proof}
+
+In all the applications, as in Lemma~\ref{lem:red-to-low-supp}, we would have $p = 1/n^{O(1)}$. Thus, we would only incur a polynomial blow-up in the number of variables from $f$ to $f\circ \mathrm{Lin}_p$. Hence, we can focus on proving a lower bound  a homogeneous depth $4$ circuit of bottom support at most $r$ (which would eventually be something like $\sqrt{d}/100$). 
+
+\begin{lemma}[\cite{KLSS}]\label{lem:upper-bound-low-supp}
+Let $P$ be an $n$-variate degree $d$ polynomial computed by a homogeneous depth $4$ circuit of size $s$ and bottom-support at most $r$. Then for any $k,\ell$ such that $\ell + rk \leq n/2$, 
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \quad \leq \quad s \cdot \binom{\frac{2d}{r}+k}{k}\cdot \binom{n}{\ell+rk}. 
+\]
+\end{lemma}
+
+The proof of this lemma is exactly along the description in of Intuition - (2): split the circuit into multiquadratic and non-multiquadratic part, and show that the \DIFdelbegin \DIFdel{non-mulitquadratic }\DIFdelend \DIFaddbegin \DIFadd{non-multiquadratic }\DIFaddend part contributes no multilinear monomials. But to just put things in perspective, we shall be dealing with parameters $r = \sqrt{d}/100$, $k = \sqrt{d}$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$. The above bound, by Lemma~\ref{lem:binom-approx}, can be seen to reduce to
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \quad \leq \quad s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{2rs} \cdot 2^{O(\sqrt{d})}
+\]
+
+
+\subsubsection*{Sanity checks}
+
+Let us first check if this measure can at least in principle yield a lower bound for us. The best way to do this is to get some heuristic estimate of what we expect the measure to be for a random $n$-variate degree $d$ polynomial $R$. \\
+
+{\bf Heuristic Estimate. } For a random $n$-variate degree $d$ polynomial $R$, we expect the $\Gamma^{\mathrm{PSD}}_{k,\ell}(R)$ to be as large as it can be, i.e.
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(R) \spaced{\approx} \min\inparen{\binom{n}{k}\cdot \binom{n}{\ell}, \binom{n}{\ell + d-k}}
+\]
+
+As a first step, one should first check that if we could indeed find a polynomial $P$ for which the bound is as large as stated above, do we get a useful lower bound from Lemma~\ref{lem:upper-bound-low-supp}? Turns out that if we were to choose our parameters carefully, we do indeed get the lower bound. Just to give a sense of how \emph{careful} we need to be, here is some of the parameters that are chosen in \cite{KLSS,KS14}. 
+
+\begin{itemize}
+\item The number of variables $n$ is at least the cube of the degree $d$. 
+\item The model we shall be working with is bottom-support $r$ where $r = \sqrt{d}/1000$. 
+\item The order of derivatives $k = \sqrt{d}$. 
+\item The degree of the shift $\ell$ shall be chosen as $\ell = \frac{n}{2}\inparen{1 - \epsilon}$ where $\epsilon = \frac{\log d}{c\sqrt{d}}$ for a suitable constant $c$. 
+\end{itemize}
+
+The above choice of parameters might already seem pretty fragile but these are not the most delicate choices! While proving the lower bound on $\Gamma^{\mathrm{PSD}}_{k,\ell}$ for an explicit polynomial, the number of monomials etc. need to be tailored to perfection to make the proof work. 
+
+\subsection{The surrogate rank approach of \cite{KLSS}}
+
+The goal is now to find an explicit polynomial $P$ such that $\mathrm{PSD}_{k,\ell}(P)$ has large rank. One way to prove that a set of polynomials are linearly independent is to show that they have distinct leading monomials (as used \cite{gkks13} etc.) Another method is to show that these polynomials are \emph{almost orthogonal}. An example of this phenomenon can be seen in the following fact. 
+
+\begin{fact}
+Let $M$ be a square matrix such that the absolute value of the diagonal entry is larger than sum of the absolute values of the non-diagonal entries in that row or column, i.e. $\abs{M_{ii}} \geq \sum_{j\neq i} \abs{M_{ij}}$ for all $i$. Then the matrix $M$ is full rank. 
+\end{fact}
+
+Such matrices are also called \emph{diagonally dominant matrices}, and captures the notion of \emph{almost orthogonal} vectors alluded to earlier. For symmetric matrices $M$, the following bound of Alon~\cite{Alo09}.
+
+\begin{lemma}[\cite{Alo09}]\label{lem:trace-bound} For any real symmetric matrix $M$, 
+\[
+\rank(M) \spaced{\geq} \frac{(\mathrm{Tr}(M))^2}{\mathrm{Tr}(M^2)}
+\]
+\end{lemma}
+
+We'll see the proof of this shortly but it would shed some more intuition to see what the above lemma yields for a diagonally dominant matrix. Let $M$ be a matrix of the form
+\[
+M \spaced{=} \insquare{\begin{array}{cccc}
+D &  d & \dots &  d\\
+ d & D & \dots & d\\
+\vdots & \vdots & \ddots & \vdots \\
+d & d & \dots & D
+\end{array}}_{r \times r}
+\]
+Then, $\mathrm{Tr}(M) = D\cdot r$, and $\mathrm{Tr}(M^2) = (D^2 + (r-1)d^2)r = O(D^2 r + r^2 d^2)$. If $D > (r-1)d^2$, then $\mathrm{Tr}(M^2) = O(D^2r)$. Thus, the above lemma gives that $\rank(M) = \Omega(r)$. 
+\begin{proof}
+By the spectral theorem, any real symmetric matrix has a basis of \DIFdelbegin \DIFdel{eigenvectors }\DIFdelend \DIFaddbegin \DIFadd{eigen vectors }\DIFaddend with eigenvalues $\lambda_1,\dots, \lambda_n$ where $n$ is the dimension of the matrix. If $\lambda_1,\dots, \lambda_r$ are the non-zero eigenvalues, then 
+\begin{eqnarray*}
+\mathrm{Tr}(M) &   =  & \sum_{i=1}^r \lambda_i\\
+& \leq & \sqrt{r} \;\cdot \; \inparen{\sum_{i=1}^r \lambda_i^2} = \sqrt{r}\;\cdot \; \mathrm{Tr}(M^2)\\
+\implies r & \geq & \frac{(\mathrm{Tr}(M))^2}{\mathrm{Tr}(M^2)}
+\end{eqnarray*}
+\end{proof}
+
+The bound of \cite{KLSS} for an explicit polynomial $P$ proceeds by considering the matrix $B$ where each row is indexed by a pair of multilinear monomials $(m_1,m_2)$  of degree $k$ and $\ell$ respectively, and the row is just the coefficients of the monomials of $\mathrm{mult}(m_2 \partial_{m_1}(P))$ in a fixed order. Note that $B$ is not even a square matrix, and certainly not symmetric. However, the matrix $M = B B^T$ is a symmetric square matrix such that $\rank(M) \leq \rank(B)$. \\
+
+Let us spend some time understand the entries of $M$. The $(i,j)$-th entry of $M$ is precisely the inner-product of row $i$ and row $j$ of $B$. If $P$ is a polynomial with just zero-one coefficients, then the $i$-th diagonal entry is precisely the number of non-zero entries in row $i$ of $B$. Thus,
+\begin{eqnarray*}
+\mathrm{Tr}(M) & = & \text{number of non-zero entries in $B$}\\
+  & = & \text{(\# cols of $B$)} \cdot \mathop{\mathbb{E}}_i[\text{\# non-zero entries in $i$-th col of $B$}] 
+\end{eqnarray*}
+The calculation for $\mathrm{Tr}(M^2)$ requires a little more care. Let $M_i$ refer to the $i$-th row of $M$ and $B_i$ refer to the $i$-th row of $B$. Then,
+\begin{eqnarray*}
+\mathrm{Tr}(M^2) & = & \sum_{i} \inangle{M_i, M_i}\\
+ & = & \sum_{i} \sum_j \inangle{B_i, B_j}^2 \spaced{=}\sum_{i} \sum_j \inparen{\sum_m B_{im} B_{jm}}^2\\
+ & = & \sum_{i} \sum_j \sum_m B_{im}^2 B_{jm}^2  \spaced{+} \sum_i \sum_j \sum_{m\neq m'} B_{im}B_{im'}B_{jm}B_{jm'}\\
+ & = & \sum_{m} \inparen{\sum_i \sum_j B_{im} B_{jm}}  \spaced{+} \sum_i \sum_j \sum_{m\neq m'} B_{im}B_{im'}B_{jm}B_{jm'}\\
+ & = & \quad\quad\quad T_1 \quad\quad\quad\quad\quad\quad + \quad\quad\quad\quad\quad\quad T_2
+\end{eqnarray*}
+The first term $T_1$ is easy to calculate:
+\begin{eqnarray*}
+T_1 & = & \text{(\# cols of $B$)} \cdot \mathop{\mathbb{E}}_i[\inparen{\text{\# non-zero entries in $i$-th col of $B$}}^2] \\
+ & \stackrel{\tiny \text{(hopefully)}}{\approx} & \text{(\# cols of $B$)} \cdot \mathop{\mathbb{E}}_i[\inparen{\text{\# non-zero entries in $i$-th col of $B$}}]^2
+\end{eqnarray*}
+The term $T_2$ roughly corresponds to the number of $2\times 2$ submatrices of $B$ that is $\insquare{\begin{array}{cc}1 & 1 \\ 1 & 1\end{array}}$. If we could somehow show that there are not too many such submatrices, then $\mathrm{Tr}(M^2)$ is essentially dominated by $T_1$. That would then yield that $\rank(M) \gtrapprox \text{(\# cols of $B$)}$. 
+
+\subsubsection*{Obtaining a bound on $T_2$:}
+
+\[
+T_2 \spaced{=} \sum_i \sum_j \sum_{m\neq m'} B_{im}B_{im'}B_{jm}B_{jm'}
+\]
+Each term $B_{im}B_{im'}B_{jm}B_{jm'}$ that is non-zero corresponds to a $2\times 2$ submatrix of $B$ (indexed by rows $i,j$ and columns $m,m'$) that is $\insquare{\begin{array}{cc} 1 & 1\\ 1&1
+  \end{array}}$. \\
+
+The columns of $B$ are indexed by multilinear monomials of degree $\ell + d - k$, and the rows of $B$ are indexed by a derivative and a shift. Let row $i$ correspond to $\mathrm{mult}(\gamma_1 \cdot \partial_{\alpha_1}(P))$ and row $j$ to $\mathrm{mult}(\gamma_1 \cdot \partial_{\alpha_1}(P))$. Thus, if the $2\times 2$ minor indexed by rows $i,j$ and columns $m,m'$ equals $\insquare{\begin{array}{cc} 1 & 1\\ 1&1 \end{array}}$, then there exists $\beta_1, \beta_2,\beta_3,\beta_4 \in P$ such that
+\begin{eqnarray*}
+m \spaced{=} \frac{\beta_1}{\alpha_1}\cdot \gamma_1 & = & \frac{\beta_3}{\alpha_2} \cdot  \gamma_2\\
+m' \spaced{=} \frac{\beta_2}{\alpha_1}\cdot \gamma_1 & = & \frac{\beta_4}{\alpha_2}\cdot \gamma_2\\
+\implies \frac{\beta_1}{\beta_3} & = & \frac{\beta_2}{\beta_4}
+\end{eqnarray*}
+Following notation used in \cite{KLSS}, we shall call $\beta_1,\beta_2,\beta_3,\beta_4$ as the \emph{label} of the $2\times 2$ minor. 
+Since $m\neq m'$, we also have that $\beta_1 \neq \beta_2$. What we'd like to say that the only way $\beta_1/\beta_3 = \beta_2/\beta_4$ is if $\beta_3 = \beta_1$ and $\beta_2 = \beta_4$. This need not be true in general of course, but this is where the choice of the polynomial comes in. 
+
+\begin{claim}
+If $P$ is the $\NW_{d,d^3, e}$ polynomial for $e = \frac{d}{3}$ then any $2\times 2$ minor of $B$ (with the order of derivatives $k = o(d)$) that is $\insquare{\begin{array}{cc} 1&1\\1&1\end{array}}$ has label $\beta_1,\beta_2,\beta_3,\beta_4$ where $\beta_1 = \beta_3$ and $\beta_2 = \beta_4$, or $\beta_1 = \beta_2$ and $\beta_3 = \beta_4$. 
+\end{claim}
+\begin{proof}
+Assume that $\beta_1 \neq \beta_3$. Then by Lemma~\ref{lem:NW-low-intersection} we know that they differ in at least $2d/3$ places. But then, $\beta_1/\beta_3 = \beta_2/\beta_4$ forces that $\beta_1$ and $\beta_3$ must agree at least $2d/3$ places forcing $\beta_1 = \beta_2$. 
+\end{proof}
+
+Thus, for the $\NW$-polynomial the number of such boxes is quite small. Using this, albeit with a reasonable amount of sweat, one can estimate $T_2$ to show that $T_2 = O(T_1)$. Thus, \cite{KLSS} obtain the following bound. 
+
+\begin{lemma}[\cite{KLSS}]
+For the polynomial $\NW_{d,d^3,e}$, for $e = \frac{d}{3}$, and $k = \sqrt{d}$ and $\ell = \frac{n}{2}\inparen{1 - \frac{\log d}{\sqrt{d}}}$ we have the bound
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \min\inparen{\binom{n}{\ell + d - k}, \binom{d}{k}^2 \cdot d^k \cdot k! \cdot \binom{n}{\ell}}
+\]
+\end{lemma}
+Note that the first term of the $\min$ in the RHS is the number of columns of $B$, as we had heuristically estimated. Simplifying the RHS using Lemma~\ref{lem:binom-approx}, we get
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \binom{n}{\ell}\cdot \exp\inparen{c\cdot \epsilon (d - k)}
+\]
+for some constant $c > 0$. Since $\epsilon = \frac{\log d}{\sqrt{d}}$, we get 
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \binom{n}{\ell}\cdot \exp\inparen{c\cdot \sqrt{d}\cdot \log d}
+\]
+With the above bound and Lemma~\ref{lem:upper-bound-low-supp}, we get the lower bound of \cite{KLSS}. 
+\begin{theorem}[\cite{KLSS}]\label{thm:KLSS-lowsupp}
+Any depth $4$ homogeneous circuit of bottom support $r = \sqrt{d}/1000$ computing the polynomial $\NW_{d,d^3,d/3}$ over a characteristic zero field must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
+
+In fact, more \DIFdelbegin \DIFdel{generaly}\DIFdelend \DIFaddbegin \DIFadd{generally}\DIFaddend , any homogeneous depth $4$ circuit of bottom support bounded by $r$ computing $\NW_{d,m,e}$ for suitably chosen parameters must have top fanin $s = d^{\Omega(d/r)}$. 
+\end{theorem}
+
+Coupling with Lemma~\ref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their main theorem. 
+
+\begin{theorem}[\cite{KLSS}]\label{thm:KLSS-main}
+Any depth $4$ homogeneous computing the polynomial $\NW_{d,d^3,d/3}\circ \mathrm{Lin}$ over a characteristic zero field must have size $s = d^{\Omega(\sqrt{d})}$. 
+\end{theorem}
+
+\subsection{The leading monomial approach of \cite{KS14}}
+
+Shortly after \cite{KLSS}, a purely combinatorial proof of the result was presented by \cite{KS14}. More over, they were able to prove the lower bound of $n^{\Omega(\sqrt{d})}$ for the size of any homogeneous depth $4$ circuit computing $\IMM_{n,d}$ (for some suitable choices of $n$ and $d$). This was a strengthening of \cite{KLSS} in two ways -- (1) it worked over any field, and (2) the lower bound was for a polynomial that we know can be computed small arithmetic circuit. 
+
+The calculations of \cite{KS14} are much more trickier than \cite{KLSS} but there are quite a few interesting ideas that would even have application in other areas. \\
+
+The earlier lower bounds of \cite{gkks13,KSS13,FLMS13} required a lower bound on the dimension of shifted partial derivatives of a polynomial $P$, and this was obtained by finding a \emph{large} set \DIFdelbegin \DIFdel{ot }\DIFdelend \DIFaddbegin \DIFadd{of }\DIFaddend \emph{distinct leading monomials}. In \cite{KS14}, they take this approach but require a very careful analysis. The key difference in this setting is the following: 
+
+\begin{quote}
+  If $\beta$ is the leading monomial of a polynomial $P$, then for any monomial $\gamma$, we also have that $\beta \cdot \gamma$ is the leading monomial of $\gamma P$. 
+
+  However, the leading monomial of $\mathrm{mult}(\gamma P)$ could be $\beta' \cdot \gamma$ for some $\beta' \neq \beta$ (as higher monomials could be made non-multilinear during the shift by $\gamma$). 
+\end{quote}
+
+The multilinear projection makes the task of counting leading monomials much harder and \cite{KS14} come up with a clever method to estimate this. 
+
+\subsubsection*{Leading monomials after multilinear projections}
+
+Let $P$ the polynomial for which we are trying to lower bound $\Gamma^{\mathrm{PSD}}_{k,\ell}(P)$. For every monomial multilinear monomial $\alpha$ of degree $k$, and a monomial $\beta \in \partial_\alpha(P)$, define the set $A(\alpha, \beta)$ as
+\[
+A(\alpha, \beta) \spaced{=} \setdef{\gamma}{\begin{array}{c}\deg(\gamma) = \ell + d - k\;\text{and there is a $\gamma'$ of degree $\ell$}\\\text{such that }\gamma  = \mathrm{LM}(\mathrm{mult}(\gamma' \cdot \partial_\alpha(P))) = \gamma' \cdot \beta \end{array}}
+\]
+In other words, we want the number of distinct monomials that are contributed by $\beta$, which are also distinct leading monomials obtained from $\partial_\alpha(P)$ that are divisible by $\beta$. We then have
+\begin{equation}\label{eqn:union-of-As}
+\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \spaced{\geq} \abs{\Union_{\alpha, \beta} A(\alpha, \beta)}
+\end{equation}
+The standard technique to obtain a lower bound on the union of sets is via the \emph{Inclusion-Exclusion} principle. 
+
+\begin{lemma}[Inclusion-Exclusion Principle]\label{lem:inc-exc}
+For any collection of sets $A_1,\dots, A_r$,
+\[
+\abs{\Union_i A_i} \spaced{\geq} \sum_{i} \abs{A_i} \spaced{-} \sum_{i\neq j}\abs{A_i\intersection A_j}
+\]
+\end{lemma}
+
+If we were to somehow show that $\sum_{i\neq j}\abs{A_i\intersection A_j} \leq \frac{1}{2}\sum_i \abs{A_i}$, then we obtain that $\abs{\union_i A_i} \geq \frac{1}{2}\cdot \sum_i \abs{A_i}$. This is what shall be employed for the sets $A(\alpha, \beta)$, except that we quickly run into two immediate problems. 
+
+\begin{enumerate}
+  \item How do we even estimate $A(\alpha, \beta)$? The set of $\gamma'$ such that $\gamma' \beta = \mathrm{LM}(\partial_\alpha(P))$ do not seem to have any nice combinatorial structure. 
+  \item What if it so happens that $\sum \abs{A(\alpha_1,\beta_1)\intersection A(\alpha_2,\beta_2)} = 100 \sum \abs{A(\alpha,\beta)}$? Inclusion-Exclusion does not yield anything in that case. 
+\end{enumerate}
+
+
+It so turns out that the second point actually is the case. In fact for $\IMM_{n,d}$, the second term turns out to be greater than the first term by a factor of $n^{\sqrt{d}/1000}$ or so! In \cite{KS14}, they prove a wonderful \DIFdelbegin \DIFdel{strenghtened }\DIFdelend \DIFaddbegin \DIFadd{strengthened }\DIFaddend version of the Inclusion-Exclusion principle which allows them to handle the second hurdle. 
+
+\begin{lemma}[Stronger Inclusion-Exclusion \cite{KS14}]\label{lem:str-inc-exc}
+Let $A_1,\dots, A_r$ be sets such that there is some $\lambda > 1$ such that
+\[
+\sum_{i\neq j} \abs{A_i \intersection A_j} \spaced{\leq} \sum_i \lambda \cdot \abs{A_i}
+\]
+Then, 
+\[
+\abs{\Union_i A_i} \spaced{\geq} \inparen{\frac{1}{4\lambda}} \cdot \inparen{\sum_i \abs{A_i}}
+\]
+\end{lemma}
+
+In other words, as long as the second term of the Inclusion-Exclusion principle is \emph{not too much larger} than the first term, we still can get non-trivial bounds on the union. 
+
+\begin{proof}
+Let $p = \frac{1}{2\lambda} < 1$. Define sets $A_1',\dots, A_r'$ such that $A_i' \subseteq A_i$ obtained by adding each element of $A_i$ to $A_i'$ independently with probability $p$. Since $A_i' \subseteq A_i$, we also have that $\abs{\union A_i} \geq \abs{\union  A_i'}$. By linearity of expectation, 
+\[
+\E\insquare{\sum_i \abs{A_i'}} \spaced{=} p \sum_{i} \abs{A_i} 
+\]
+More importantly, by the sampling process,
+\[
+\E\insquare{\abs{A_i' \intersection A_j'}} \spaced{=} p^2 \cdot \abs{A_i \intersection A_j}
+\]
+as any common element must be added to both $A_i'$ \emph{and} $A_j'$, and either of these events happen independently with probability $p$ each. Since $\sum_{i,j}\abs{A_i' \intersection A_j'}$ drops by a factor of $p^2$, we are now in a position to apply the Lemma~\ref{lem:inc-exc} to the $A_i'$s. 
+\begin{eqnarray*}
+\abs{\Union A_i} & \geq &  \E\insquare{\abs{\Union A_i'}}\\
+& \geq & \E\insquare{\sum_i \abs{A_i'}} \spaced{-} \E\insquare{\abs{A_i' \intersection A_j'}}\\
+& = & p \inparen{\sum_i \abs{A_i}} \spaced{-} p^2\inparen{\sum_{i\neq j}\abs{A_i \intersection A_j}}\\
+& \geq & p \inparen{\sum_i \abs{A_i}} \spaced{-} p^2 \lambda \inparen{\sum_i \abs{A_i}}\\
+& \geq & \frac{p}{2} \inparen{\sum_i \abs{A_i}} \spaced{=} \frac{1}{4\lambda} \inparen{\sum_i \abs{A_i}}
+\end{eqnarray*}
+\end{proof}
+
+We can now proceed to lower bound $\abs{\Union A(\alpha, \beta)}$ via inclusion exclusion.
+
+\subsubsection*{Estimating $\abs{\Union A(\alpha, \beta)}$ via Inclusion-Exclusion}
+\[
+\abs{\Union_{\alpha, \beta}A(\alpha,\beta)}\spaced{\geq} \sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{-} \sum_{(\alpha, \beta)\neq (\alpha',\beta')}\abs{A(\alpha, \beta) \intersection A(\alpha',\beta')}
+\]
+
+ Let us first address the term $\sum \abs{A(\alpha, \beta)}$. As mentioned earlier, it is not an easy task to get a good handle on the set $A(\alpha, \beta)$ for polynomial such as $\NW$ or $\IMM$, for any reasonable monomial ordering. However, \cite{KS14} circumvent this difficult by using an indirect approach to estimate this term. 
+
+For any derivative $\alpha$ and $\beta \in \partial_\alpha(P)$, define the set $S(\alpha, \beta)$ as the following set of multilinear monomials of degree $\ell$ that is disjoint from $\beta$. 
+\[
+S(\alpha, \beta) \spaced{=} \setdef{\gamma}{\begin{array}{c}\text{$\gamma$ is multilinear, has}\\\text{degree $\ell$ and $\gcd(\beta,\gamma)=1$ }\end{array}}
+\]
+This on the other hand is independent of any monomial ordering, and is also easy to calculate:
+\[
+\text{For every $\alpha, \beta$}\quad\quad \abs{S(\alpha, \beta)} \spaced{=} \binom{n - d + k}{\ell}.
+\] 
+\begin{lemma}[\cite{KS14}]\label{lem:As-to-Ss}
+For any $\alpha$, 
+\[
+\sum_{\beta} \abs{A(\alpha, \beta)} \spaced{\geq} \abs{\Union_{\beta} S(\alpha, \beta)}
+\]
+\end{lemma}
+\begin{proof}
+Consider any $\gamma \in \Union_{\beta}S(\alpha, \beta)$. By definition, there is at least one non-multilinear monomial in $\gamma \cdot \partial_\alpha(P)$. Thus, in particular $\mathrm{LM}(\mathrm{mult}(\gamma \cdot \partial_\alpha(P))$ is non-zero and equal to some $\gamma \cdot \beta$ for some monomial $\beta \in \partial_\alpha(P)$. This also implies that $\gamma' = \gamma\cdot \beta \in A(\alpha, \beta)$. This yields an injective map $\phi$ 
+\[
+\phi:\Union_\beta S(\alpha,\beta) \spaced{\rightarrowtail} \setdef{(\beta, \gamma')}{\beta\in \partial_\alpha(P)\;,\;\gamma' \in A(\alpha, \beta)}
+\] 
+Since the size of the RHS is precisely $\sum_\beta \abs{A(\alpha, \beta)}$, the lemma follows. 
+\end{proof}
+
+Thus, by another use of Inclusion-Exclusion on the $S(\alpha, \beta)$'s, we get
+\begin{eqnarray*}
+\abs{\Union_{\alpha, \beta}(\alpha,\beta)}&\geq& \sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{-} \sum_{(\alpha, \beta)\neq (\alpha',\beta')}\abs{A(\alpha, \beta) \intersection A(\alpha',\beta')}\\
+ & \geq & \sum_\alpha \inparen{\sum_\beta \abs{S(\alpha, \beta)}} \spaced{-} \sum_\alpha \inparen{\sum_{\beta \neq \beta'}\abs{S(\alpha, \beta)\intersection S(\alpha,\beta')}}\\
+ & & \quad\quad \spaced{-} \sum_{(\alpha, \beta)\neq (\alpha',\beta')}\abs{A(\alpha, \beta) \intersection A(\alpha',\beta')}
+\end{eqnarray*}
+Let us call the three terms in the RHS of the last equation as $T_1$, $T_2$ and $T_3$ respectively. Since we know the size of each $S(\alpha, \beta)$ exactly, the value of $T_1$ is easily obtained. 
+\begin{lemma}[\cite{KS14}]\label{lem:T_1-value}
+\begin{eqnarray*}
+T_1 &=& \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n-d+k}{\ell}\\
+    & \approx & \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{d-k}\\
+\end{eqnarray*}
+\end{lemma}
+Let $T_1(\alpha) =\sum_\beta \abs{S(\alpha, \beta)}$ for any choice of $\alpha$. 
+So far we have not used any property of the polynomial $P$. But this becomes crucial in the calculation of $T_2$ and $T_3$. To get a sense of how these calculations proceed in \cite{KS14}, we outline the calculation of $T_2$ for the case of $P = \NW_{d,m,e}$ for suitable choices of the parameters $m,d,e$. 
+\begin{lemma}[\cite{KS14}]\label{lem:T_2-for-NW}
+For the polynomial $\NW_{d,m,e}$, if $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$
+\[
+T_2 \quad \leq \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}
+\]
+\end{lemma}
+\begin{proof}
+For any fixed derivative $\alpha$, define \[T_2(\alpha) = \sum_{\beta\neq \beta'}\abs{S(\alpha, \beta)\intersection S(\alpha, \beta')}.\] 
+For any pair of multilinear degree $(d-k)$ monomials $\beta \neq \beta' \in \partial_\alpha(P)$ such that $\deg(\gcd(\beta, \beta')) = t$, we know that 
+\[
+\abs{S(\alpha, \beta)\intersection S(\alpha, \beta')} \spaced{=} \binom{n - 2d + 2k +t}{\ell}
+\]
+Thus, if we can count the number of pairs $(\beta, \beta')$ that agree on exactly $t$ places, we can obtain $T_2(\alpha)$. Note that for $\NW_{d,m,e}$, any two $\beta, \beta' \in\partial_\alpha(\NW_{d,m,e})$ can agree on at most $e-k$ places. Further, the number of pairs that agree in exactly $0\leq t\leq e-k$ places is at most
+\[
+m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t}
+\]
+as there are $m^{e-k}$ choices for $\beta$, and $\binom{d-k}{t}$ choices for places where they may agree, and $(m-1)^{e-t}$ choices for $\beta'$ that agree with $\beta$ on those $t$ places. Thus,
+\begin{eqnarray*}
+T_2(\alpha) &\leq& \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t} \cdot  \binom{n - 2d + 2k +t}{\ell}\\
+& \approx  & \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t} \cdot  \binom{n}{\ell} \frac{1}{2^{2d-2k -t}}\cdot (1+\epsilon)^{2d - 2k - t}\\
+& \leq & m^{2e}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot\sum_{t=0}^{e-k}\binom{d-k}{t}\inparen{\frac{2}{(1+\epsilon)m}}^t\\
+& \leq & m^{2e}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot \inparen{1+\frac{2}{(1+\epsilon)m}}^{d-k}\\
+& = & m^{2e}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot O(1) \qquad\text{if $m = \Omega(d)$}
+\end{eqnarray*}
+Thus,
+\[
+T_2 \quad \leq \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}
+\]
+\end{proof}
+Combining this with Lemma~\ref{lem:T_1-value} and using Lemma~\ref{lem:str-inc-exc},
+\[
+\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}
+\]
+To maximize this, if we choose the parameters $m,d,e$ such that $T_1(\alpha) = T_2(\alpha)$, we obtain the following corollary. 
+\begin{corollary}\label{cor:T2-bound}
+Consider the polynomial $\NW_{d,m,e}$ with $n = md$ and $m = \Omega(d)$. If $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$ and $e$ chosen so that
+\[
+m^{e-k} \quad = \quad \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+\]
+then
+\[
+\sum_{\alpha, \beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot  \binom{n}{\ell} \cdot 2^{\Theta(\sqrt{d})}
+\]
+\end{corollary}
+\begin{proof}
+If $T_1(\alpha) = T_2(\alpha) \cdot 2^{-\Theta(\sqrt{d})}$ then
+\begin{eqnarray*}
+\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} &\geq& \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}\\
+ & = & \text{(\# derivs)} \cdot \frac{T_1(\alpha)^2}{4 T_2(\alpha)}\\
+ & = & \text{(\# derivs)} \cdot \binom{n}{\ell} \cdot 2^{\Theta(\sqrt{n})}
+\end{eqnarray*}
+Note that $T_1(\alpha) = T_2(\alpha) \cdot 2^{-\Theta(\sqrt{d})}$ forces 
+\[
+\text{(\# mon per deriv)} \spaced{=}  m^{e-k} \spaced{=}  \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+\]
+\end{proof}
+
+Note that $e$ needs to tailored very precisely to force the above condition! If $e$ is chosen too large or small, we get nothing from this whole exercise!
+
+In the case of $\IMM$ this calculations gets a lot messier. The calculation would similarly force that the number of monomials must be in a very narrow range. This is achieved by instead looking at a random subgraph of the generic ABP of suitable sparsity to ensure the following two properties:
+\begin{itemize}
+  \item The number of monomials in any derivative is exactly as demanded. 
+  \item `Most' pairs of monomials $(\beta, \beta')$ agree on `few' places. 
+\end{itemize}
+
+\subsubsection*{Upper bounding $\sum \abs{A(\alpha,\beta)\intersection A(\alpha',\beta')}$}
+
+We are still left with the task of upper bounding
+\[
+T_3 \quad = \quad \sum_{(\alpha, \beta)\neq (\alpha',\beta')} \abs{A(\alpha, \beta) \intersection A(\alpha',\beta')}
+\]
+As mentioned earlier, we really do not have a good handle on the set $A(\alpha, \beta)$, and certainly not on the intersection of two such sets. Once again, we shall use a proxy that is easier to estimate to upper bound $T_3$. 
+
+The set $A(\alpha, \beta) \intersection A(\alpha',\beta')$ consists of multilinear monomials $\gamma$ of degree $\ell + d -k$ such that there exists multilinear monomials $\gamma', \gamma''$ of degree $\ell$ satisfying
+\begin{eqnarray*}
+\gamma & = & \gamma' \beta \spaced{=} \gamma'' \beta',\\
+ \gamma'\beta & = & \mathrm{LM}(\mathrm{mult}(\gamma' \partial_\alpha(P)))\\
+\text{and}\quad \gamma''\beta' & = & \mathrm{LM}(\mathrm{mult}(\gamma'' \partial_{\alpha'}(P)))
+\end{eqnarray*}
+This in particular implies that $\gamma$ must be divisible by both $\beta$ and $\beta'$. 
+
+\begin{observation}\label{obs:T3-proxy}
+If $\deg(\gcd(\beta, \beta')) = t$, then
+\[
+\abs{A(\alpha, \beta) \intersection A(\alpha', \beta')} \spaced{\leq} \binom{n - 2d + 2k + t}{\ell - d + k +t}
+\]
+\end{observation}
+\begin{proof}
+Every monomial $\gamma \in A(\alpha, \beta) \intersection A(\alpha', \beta')$ must be divisible by $\beta$ and $\beta'$. Since $\abs{\beta \union \beta'} = 2d - 2k - t$, the number of choices of $\gamma$ is precisely
+\[
+\binom{n - (2d - 2k -t)}{(\ell + d - k) - (2d - 2k - t)} \quad = \quad \binom{n - 2d + 2k + t}{\ell - d + k + t}\qedhere
+\]
+\end{proof}
+
+One needs a similar argument as in the case of $T_2$ to figure out how many pairs $(\alpha, \beta) \neq (\alpha',\beta')$ are there with $\deg(\gcd(\beta, \beta')) = t$ and sum them up accordingly. We shall just state the bound of \cite{KS14} here without proof. 
+
+\begin{lemma}[\cite{KS14}] \label{lem:T3-bound}
+For the polynomial $\NW_{d,m,e}$, and $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$, 
+\[
+T_3 \quad \leq \quad \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}
+\]
+\end{lemma}
+
+Recalling that we have chosen our parameters so that 
+\[
+\text{(\# mons per deriv)} = \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+\]
+the above equation reduces to 
+\[
+T_3 \quad \leq \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
+\]
+Combining with Corollary~\ref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$. 
+
+\begin{lemma}
+Consider polynomial $\NW_{d,m,e}$ where $n = md$ and $e$ chosen so that
+\[m^{e-k} \spaced{=}  \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}\]
+If $\epsilon = \frac{\log d}{c\sqrt{d}}$ for a large enough constant $c$, and $k = O(\sqrt{d})$ and $\ell = \frac{n}{2}(1 - \epsilon)$, then
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,m,e})\spaced{\geq}\abs{\Union_{\alpha, \beta} A(\alpha, \beta)} \spaced{\geq} \binom{n}{\ell} \cdot (1+\epsilon)^{2d-2k} \cdot 2^{\Theta(\sqrt{d})}
+\] 
+\end{lemma}
+
+With Lemma~\ref{lem:upper-bound-low-supp}, we obtain the lower bound for low-bottom-support homogeneous depth $4$ circuits. 
+
+\begin{theorem}[\cite{KS14}]\label{thm:IMM-lowsup-lb}
+Any homogeneous depth $4$ circuit with bottom support bounded by $r = \sqrt{d}/1000$ computing, over any field $\F$, the polynomial $\NW_{d,m,e}$ with parameters as defined above must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
+
+In fact, more \DIFdelbegin \DIFdel{generaly}\DIFdelend \DIFaddbegin \DIFadd{generally}\DIFaddend , any homogeneous depth $4$ circuit of bottom support bounded by $r$ computing $\NW_{d,m,e}$ for suitably chosen parameters must have top fanin $s = d^{\Omega(d/r)}$. 
+\end{theorem}
+
+Again, coupling with Lemma~\ref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their theorem. 
+
+\begin{theorem}[\cite{KLSS}]\label{thm:IMM-lb}
+Any homogeneous depth $4$ circuit computing, over any field $\F$,  the polynomial $\NW_{d,m,e}\circ \mathrm{Lin}$ with parameters as defined above must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
+
+A similar lower bound $d^{\Omega(\sqrt{d})}$ holds also for the polynomial $\mathrm{IMM}_{n,d} \circ \mathrm{Lin}$ for suitable choices of $n$ and $d$. 
+\end{theorem}
+
+\section{Non-homogeneous depth $3$ circuits}\label{sec:kayalsaha}
+
+In a very recent result, \cite{KayalSaha14} show that similar techniques can also be used to prove lower bounds for subclasses of non-homogeneous depth three circuits, namely depth three circuits with \emph{bounded bottom fan-in}. We shall denote the class of depth three circuits of bottom fan-in bounded by $r$ as $\SPS^{[r]}$ circuits. 
+
+But before we see this lower bound, let us first understand the computational power of depth three circuits, and the depth reduction of \cite{gkks13b}. 
+
+\subsection{Computational power of depth three circuits}
+
+A $\Sigma\Pi\Sigma$ circuit computes a polynomial of the form
+\[
+f\quad=\quad \sum_{i=1}^s \ell_{i1}\dots \ell_{iD}
+\]
+If the circuit is non-homogeneous, the degree of the circuit $D$ could potentially be much larger than $\deg(f)$. \\
+
+The class of depth three arithmetic circuits can compute polynomials in non-trivial ways. To illustrate a couple of examples, there is a homogeneous $\SPS$ circuit for $\Perm_n$ of size $2^{O(n)}$ called Ryser's Formula \cite{rys63}
+\begin{equation}\label{eqn:ryser}
+\Perm_n \spaced{=} \sum_{S \subseteq[n]} (-1)^{n - |S|} \prod_{i=1}^n \inparen{\sum_{j\in S} x_{ij}}
+\end{equation}
+On the other hand, no $\SPS$ circuit for the $\Det_n$ significantly better than writing it as a sum of $n!$ monomials was known (until \cite{gkks13b}). 
+Further, the elementary symmetric polynomials $\ESym_k(x_1,\dots, x_n)$ of degree $k$ defined as
+\[
+\ESym_k(\vecx) \spaced{=} \sum_{\substack{S\subset \vecx\\|S| = k}} \prod_{x_i\in S}x_i
+\]
+can be computed by a non-homogeneous depth $3$ circuit of size $O(n^2)$ over any characteristic zero field. In stark contrast, \cite{nw1997} showed that any homogeneous depth $3$ circuit computing $\ESym_k$ requires size $n^{\Omega(k)}$. \cite{nw1997} also showed a $2^{\Omega(n)}$ lower bound for homogeneous depth $3$ circuits computing $\Perm_n$ or $\Det_n$. 
+
+Also, the results of \cite{gr00,grigoriev98} showed a $2^{\Omega(n)}$ lower bound for $\SPS$ circuits \emph{over finite fields} that compute $\Det_n$ or $\Perm_n$. All these results seemed to suggest that there perhaps is an $2^{\Omega(n)}$ 
+lower bound for $\SPS$ circuits computing $\Det_n$ over characteristic zero fields as well. If it was true over finite fields, and for homogeneous $\SPS$ circuits, how much power can characteristic zero fields and non-homogeneity add? As it turns out, quite a lot!
+
+\begin{theorem}[\cite{gkks13b}] \label{thm:chasm-at-3}
+Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$ over any characteristic zero field. Then there is a $\SPS$ circuit of size $s' \leq s^{O(\sqrt{d})}$ that computes $f$. 
+\end{theorem}
+\begin{corollary}[\cite{gkks13b}]\label{cor:det-sps}
+There is a $\SPS$ circuit over $\Q$, the field of rational numbers, of size $n^{O(\sqrt{n})}$. 
+\end{corollary}
+
+The proof is quite short and comprises of two steps using known reductions, and going through a bizarre intermediate model of \emph{depth $5$ powering circuits}. Simply presenting the proof step-by-step would rob the readers of the intuition as to why one would study depth $5$ powering circuits. This result was really a bi-product of an attempt to prove a stronger lower bound for depth $4$ circuits. We believe this perspective, albeit lengthier, is more insightful than seeing the proof directly. 
+
+\subsubsection{Towards proving better lower bounds for depth $4$ circuits}
+
+From Theorem~\ref{thm:av}, it suffices to prove a better lower bound for explicit polynomials computed as
+\begin{equation}\label{eqn:d4-LB}
+f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ir} \quad\text{where}\quad \deg(Q_{ij})\leq \sqrt{d}\;,\; r\leq O(\sqrt{d})
+\end{equation}
+The goal is to show a lower bound of $s = n^{\omega(\sqrt{d})}$. Perhaps a simpler question to ask is to prove a lower bound for expressions of the form
+\begin{equation}\label{eqn:d4pow-LB}
+f\spaced{=} \sum_{i=1}^s Q_{i}^{\sqrt{d}} \quad\text{where }\deg(Q_i)\leq \sqrt{d}
+\end{equation}
+Fortunately, if the goal is to prove lower bounds of $n^{\omega(\sqrt{d})}$, then without loss of generality we can focus on this equation instead! 
+
+\begin{lemma}\label{lem:fischer}
+Over any characteristic zero field, given an expression of the form 
+\[
+f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ir} \quad\text{where}\quad \deg(Q_{ij})\leq \sqrt{d}\;,\; r\leq O(\sqrt{d})
+\]
+there is an equivalent equation
+\[
+f\spaced{=} \sum_{i=1}^{s'} Q_{i}^r\quad\text{where}\quad \deg(Q_{i})\leq \sqrt{d}
+\]
+with $s' \leq s \cdot 2^{O(\sqrt{r})}$. 
+\end{lemma}
+\begin{proof}
+Consider Ryser's formula (\ref{eqn:ryser}) applied for to the $r\times r$ matrix where each row is $[y_1,\dots, y_r]$. 
+\[
+\Perm \insquare{\begin{array}{ccc} y_1 & \dots & y_r\\ \vdots & \ddots & \vdots \\ y_1 & \dots & y_r\end{array}} \quad = \quad r! \cdot y_1\dots y_r \quad = \quad \sum_{S\subseteq [r]} \inparen{\sum_{j\in S} y_j}^n
+\]
+This specific identity is often attributed to Fischer \cite{fischer}. The lemma follows by applying this identity on each term $Q_{i1}\dots Q_{ir}$. 
+\end{proof}
+
+Note that since we need to divide by $r!$, the above lemma fails over low characteristic fields, in particular finite fields. Thus, proving an $n^{\omega(\sqrt{d})}$ lower bound for expressions such as (\ref{eqn:d4pow-LB}) implies an $n^{\omega(\sqrt{d})}$ lower bound for expressions such as (\ref{eqn:d4-LB}). We shall call expressions such as (\ref{eqn:d4pow-LB}) as $\Sigma\!\wedge\!\Sigma\Pi^{[\sqrt{d}]}$ circuits. 
+
+Just as we converted the top $\Pi$ layer into powering layers using Fischer's identity, the same can be done to the lower layer of $\Pi$ gates as well.
+
+\begin{corollary}\label{cor:pow-genckt}
+If a homogeneous $n$-variate degree $d$ polynomial $f$ can be computed by a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ of size $s = n^{O(\sqrt{d})}$, then $f$ can also be computed by an $\Sigma\!\wedge^{[O(\sqrt{d})]}\!\Sigma\!\wedge^{[\sqrt{d}]}\!\Sigma$ circuit of size $s' = s \cdot 2^{O(\sqrt{d})}$. 
+
+Conversely, if $f$ requires $\Sigma\!\wedge^{[O(\sqrt{d})]}\!\Sigma\!\wedge^{[\sqrt{d}]}\!\Sigma$ circuits of size $s' = n^{\omega(\sqrt{d})}$ to compute it, then $f$ cannot be computed by polynomial sized arithmetic circuits. 
+\end{corollary}
+
+We shall take a small detour to see if non-homogeneous depth $3$ circuits can be converted to homogeneous shallow circuits without much blow-up in size.
+
+\subsubsection{Non-homogeneous depth $3$ to homogeneous depth $5$ circuits}
+
+Let $f$ be a homogeneous degree $d$ polynomial computed by a possibly non-homogeneous depth $3$ circuit $C$ of the form
+\[
+f\quad=\quad \sum_{i=1}^s \ell_{i1}\dots \ell_{iD}
+\]
+As a first step, let us extract the degree $d$ homogeneous component of each summand on the RHS. Since $f$ is a homogeneous degree $d$ polynomial, $f$ has to be sum of the degree $d$ homogeneous components of each summand on the RHS. Consider a single term of the form
+\[
+T \spaced{=} (\ell_1 + \alpha_1)\cdots (\ell_D + \alpha_D)
+\]
+where each $\ell_i$ is a homogeneous linear polynomial, and $\alpha$ are elements from the field. Assuming that the first $r$ of the $\alpha_i$'s are zero, we can write $T$ in the form (with some reuse of symbols)
+\begin{eqnarray*}
+T & = &  \alpha \cdot \ell_1\dots \ell_r \cdot (\ell_{r+1} + 1)\dots (\ell_D+1)\\
+\implies \quad \mathrm{Hom}_d(T) & = & \ell_1 \dots \ell_r \cdot \mathrm{Esym}_{d-r}(\ell_{r+1}, \dots, \ell_D)
+\end{eqnarray*}
+where $\mathrm{Esym}_{k}(\vecx)$, the elementary symmetric polynomial of degree $k$ defined as
+\[
+\mathrm{Esym}_k(\vecx) \spaced{=} \sum_{\substack{S\subset \vecx\\|S| = k}} \prod_{x_i\in S}x_i
+\]
+Hence, if we can show that $\mathrm{Esym}_{d-r}(\vecx)$ has a not-too-large homogeneous depth $4$ circuit, then we can \DIFdelbegin \DIFdel{immediatly }\DIFdelend \DIFaddbegin \DIFadd{immediately }\DIFaddend infer that $f$ can be computed by a not-too-large homogeneous depth $5$ circuit. The following identities, attributed to Newton (cf. \cite{lit50}), is exactly what we need. Define the \emph{power symmetric polynomials}, denoted by $\mathrm{Pow}_k(\vecx)$ as
+\[
+\mathrm{Pow}_k(\vecx) \quad = \quad \sum_{x_i \in \vecx} x_i^k
+\]
+
+\begin{lemma}[Newton Identities]\label{lem:newton-identities}
+  Let $\ESym_k(x_1,\ldots,x_m)$ and $\PSym_k(x_1,\ldots,x_m)$ denote
+  the \emph{elementary symmetric} and \emph{power symmetric} polynomials of degree
+  $k$ respectively, as defined above. Then,
+
+  $$
+  \ESym_k\spaced{=}\frac{1}{k!} \cdot \begin{vmatrix}\PSym_1 & 1 & 0 & \cdots\\ \PSym_2
+    & \PSym_1 & 2 & 0 & \cdots \\ \vdots&& \ddots & \ddots \\
+    \PSym_{k-1} & \PSym_{k-2} & \cdots & \PSym_1 & k-1 \\ \PSym_k &
+    \PSym_{k-1} & \cdots & \PSym_2 & \PSym_1 \end{vmatrix}.
+  $$
+\end{lemma}
+
+Expanding the determinant on the RHS, we obtain a homogeneous expression
+\begin{equation}\label{eqn:esym}
+\ESym_k(\vecx) \quad = \quad \sum_{\veca\;:\; \sum_i ia_i = k} \alpha_\veca \cdot (\PSym_1)^{a_1}\dots (\PSym_k)^{a_k}
+\end{equation}
+The number of summands bounded by the number of non-negative solutions to $\sum i a_i = k$ , which is precisely the number of partitions of $k$. By the estimates of \cite{hr18}, we know that the number of partitions of $k$ is bounded by $2^{\Theta(\sqrt{k})}$. Thus, (\ref{eqn:esym}) yields a homogeneous depth $4$ circuit for $\ESym_k(x_1,\dots, x_m)$ of size $2^{\Theta(\sqrt{k})} \cdot m$. In fact, the circuit is a homogeneous $\SPSE$ circuit, i.e. a $\SPSP$ circuit where the bottom layer of multiplication in fact just raises a single variable to a higher power. 
+
+\begin{corollary}\label{cor:d3-d5}
+Let $T$ be a product of $D$ linear polynomials over $n$ variables, not necessarily homogeneous. Then, the degree $d$ homogeneous component of $T$, denoted by $\mathrm{Hom}_d(T)$ can be computed by a homogeneous $\SPSE$ circuit of size $nD\cdot 2^{O(\sqrt{d})}$. 
+
+Hence, if $f$ is a homogeneous degree $d$ polynomial over $n$ variables that is computed by a non-homogeneous depth $3$ circuit $C$ of size $s$, then $f$ can be computed by a homogeneous $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit of size $\poly(ns) \cdot 2^{O(\sqrt{d})}$. 
+\end{corollary}
+
+To convert the $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit to a $\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma$ circuit, we could use Fischer's identity again. At first sight, it appears as though this would yield a blow up of $2^d$ as some of the product gates could have fan-in $d$. However, notice that the sum is over $a_i$'s satisfying $\sum i\cdot a_i = d$. Hence, there can be at most $O(\sqrt{d})$ of the $a_i$'s that are non-zero. By looking at Fischer's identity applied on $y_1^{a_1}\dots y_{d}^{a_d}$ more carefully, we see that it uses at most $(1+a_1)\dots (1+a_d) \leq d^{O(\sqrt{d})}$ distinct linear powers instead of the \naive bound of $2^{d}$. This fact of expressing any degree $d$ monomial over $m$ variables as a $\Sigma\!\wedge\!\Sigma$ circuit of size $d^{O(m)}$ was also observed by Ellison \cite{ellison}. 
+
+Thus, if $f$ admits a poly-sized depth three circuit, then $f$ also admits a homogeneous $\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma$ circuit of size $d^{O(\sqrt{d})} \cdot \poly(n)$. The following lemma summarizes this discussion. 
+
+\begin{lemma}\label{lem:pow-depth3}
+Let $f$ be an $n$-variate degree $d$ polynomial that is computable by depth three circuit of size $s$ over $\Q$. Then, $f$ is equivalently computable by a homogeneous $\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma$ circuit of size $d^{O(\sqrt{d})}\cdot \poly(s)$. 
+
+Conversely, if $f$ requires $\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma$ circuits of size $n^{\omega(\sqrt{d})}$ over $\Q$ to compute it, then $f$ requires depth three circuits of size $n^{\omega(\sqrt{d})}$. 
+\end{lemma}
+
+\subsubsection{Completing the picture}
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\node (SESES) at (0,0) {$\begin{array}{c}n^{\omega(\sqrt{d})} \text{ LB} \\\text{ for } \SESES \text{ circuits}\end{array}$};
+\node (genCkt) at (-2.5,-2) {$\begin{array}{c} n^{\omega(1)} \text{ LB} \\ \text{ for general circuits} \end{array}$}
+edge[stealth-, very thick] (SESES);
+\node (SEPS) at (2.5,-2) {$\begin{array}{c} n^{\omega(\sqrt{d})} \text{ LB} \\ \text{ for $\SPS$ circuits} \end{array}$}
+edge[stealth-, very thick] (SESES)
+edge[->, draw=gray, dashed, thick] (genCkt);
+\node[text=gray] at (0,-1.7) {??};
+\end{tikzpicture}
+\end{center}
+\caption{Power of $\SESES$ ckts.}
+\label{fig:SESES}
+\end{figure}
+
+
+We now have an interesting situation (Figure~\ref{fig:SESES}). On one hand, Corollary~\ref{cor:pow-genckt} states that a lower bound of $n^{\omega(\sqrt{d})}$ for $\SESES$ circuits would yield a super-polynomial lower bound for general arithmetic circuits. On the other, Lemma~\ref{lem:pow-depth3} states that an $n^{\omega(\sqrt{d})}$ lower bound for $\SESES$ circuits would yield a lower bound of $n^{\omega(\sqrt{d})}$ for depth three circuits. 
+
+Could this just be a coincidence? Or, is it the case that any poly-sized arithmetic circuit can be equivalently expressed as a depth three circuit of size $n^{O(\sqrt{d})}$ over $\Q$? As it turns out, there is indeed a depth reduction to convert any arithmetic circuit to a not-too-large depth three circuit over $\Q$. \\
+
+To complete the picture, it suffices to show that a $\wedge\Sigma\wedge$ circuit can be expressed as a $\Sigma\Pi\Sigma$ circuit. This would automatically imply a reduction from $\SESES$ circuits to $\Sigma\Pi\Sigma$ circuits. The last step of the puzzle is the \emph{duality trick} of \cite{sax08}. 
+
+\begin{lemma}[The Duality Trick \cite{sax08}]\label{lem:duality} There exists univariate polynomials $f_{ij}$'s of degree at most $b$ such that
+$$
+\inparen{z_1 + \dots + z_s}^b \quad = \quad \sum_{i=1}^{sb+1} f_{i1}(z_1)\dots f_{is}(z_s).
+$$
+\end{lemma}
+
+It is worth noting that the degree of each term on the RHS is $sb$, whereas the LHS just has degree $b$. This is the place where non-homogeneity is introduced. Applying the above lemma for a $\wedge\Sigma\wedge$ circuit such as $(y_1^a + \dots + y_s^a)^b$ gives
+
+\begin{eqnarray*}
+(y_1^a + \dots + y_s^a)^b & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s f_{ij}(y_j^a)\\
+ & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s \tilde{f}_{ij}(y_j)
+\end{eqnarray*}
+where $\tilde{f}_{ij}(y) = f_{ij}(y^a)$. Since each $\tilde{f}_{ij}(y)$ is a univariate polynomial, it can be factorized completely over the $\C$, the field of complex numbers. Hence, if $f_{ij}(y) = \prod_k (y - \zeta_{ijk})$, then we get
+\begin{eqnarray*}
+(y_1^a + \dots + y_s^a)^b & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s \tilde{f}_{ij}(y_j)\\
+&= & \sum_{i=1}^{sb+1} \prod_{j=1}^s \prod_{k=1}^b (y_j - \zeta_{ijk})\\
+\end{eqnarray*}
+which is a depth three circuit! Thus, $(y_1^a + \dots + y_s^a)$ can be expressed as a depth three circuit of size $\poly(s,a,b)$ over $\C$. With a little more effort, one can construct a depth three circuit over $\Q$ as well. Summarizing this is a lemma, we have the following. 
+
+\begin{lemma}
+Any $n$-variate degree $d$ polynomial $f$ computed by a homogeneous $\SESES$ of size $s$ over a characteristic zero field $\F$ can also be computed by a depth three circuit of size $\poly(s,n,d)$ over $\F$. 
+\end{lemma}
+
+Combining with Corollary~\ref{cor:pow-genckt} and Theorem~\ref{thm:av}, we obtain the main result of \cite{gkks13b}. \\
+
+{\bf Theorem~\ref{thm:chasm-at-3} (restated). }{\em 
+Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$ over any characteristic zero field. Then there is a $\SPS$ circuit of size $s' \leq s^{O(\sqrt{d})}$ that computes $f$. 
+}\\
+
+{\bf Remark. } Note that if we were to start with a degree $d$ polynomial $f$ and apply the above depth reduction, all the linear polynomials that we obtain at bottom are essentially from the application of Fischer's identity on the bottom $\Pi$ layer of fanin $\sqrt{d}$ of the $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit. Hence, the each of the linear polynomials that appear in the final $\SPS$ circuit depend on at most $\sqrt{d}$ variables. In other words, the above Theorem yields a reduction to $\SPS^{[\sqrt{d}]}$ circuits. 
+
+\subsection{Lower bounds for $\SPS$ circuits with small bottom fan-in}
+
+Now let us focus on $\SPS^{[r]}$ circuits, where all linear polynomials in the circuit depend on at most $r$ variables. The following is the key observation of \cite{KayalSaha14} and can be verified easily. 
+
+\begin{observation}[\cite{KayalSaha14}]
+Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit $C'$ obtained from Corollary~\ref{cor:d3-d5} is in fact a 
+$\Sigma\Pi\Sigma\!\wedge\!\Sigma^{[r]}$ circuit of size $s' = \poly(ns) \cdot 2^{O(\sqrt{d})}$. 
+
+Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and  size $s'' = s' \cdot d^r$
+\end{observation}
+
+This observation in combination with Theorem~\ref{thm:KLSS-lowsupp} immediately yields the main theorem of \cite{KayalSaha14}. 
+
+\begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
+Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s = n^{\Omega(d/r)}$. 
+\end{theorem}
+
+\subsection{Extensions to low-bottom-fanin depth $5$ circuits}
+
+\cite{KayalSaha14} also prove lower bounds for depth $5$ circuits where the bottom fan-in is bounded. The result proceeds by analysing the random restriction process carefully to decompose any $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$ circuit into a $\Sigma\Pi\Sigma\Pi^{[\sqrt{d}]}$ circuit and another circuit $C'$ such that $\Gamma_{k,\ell}^{[\mathrm{PSD}]}(C') = 0$. We just state their theorem here without proof. 
+
+\begin{theorem}\label{thm:kaysaha-d5}
+Let $\F$ be a field of characteristic zero, and let $0\leq \mu < 1$. If $\alpha  = \frac{2\mu + 1}{1 - \mu}$ and $\tau = O(N^\mu)$, then there is a family of $n$-variate degree $d$ polynomials $\inbrace{f_n}$ in $\VNP$ with $n\in [d^{2+\alpha}, 2d^{2+\alpha}]$ such that any homogeneous $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$ circuit computing this polynomial requires size $n^{\Omega(\sqrt{d})}$. 
+\end{theorem}
+
+\section{Speculation about lower bounds for homogeneous formulas}\label{sec:hom-formulas}
+
+In this section, we shall look at a possible approach to proving an $n^{\Omega(\log n)}$ lower bound for homogeneous formulas. It is conceivable that variants of the dimension of shifted partial derivatives would be able to give such a lower bound. We will not be presenting any candidate measures, but would instead present a normal form that could perhaps be useful. 
+
+\subsection{A stronger(?) depth reduction for homogeneous formulas}
+
+If we were to prove a lower bound for homogeneous formulas via a depth reduction to $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits, the first step would be to answer the following question:
+\begin{quote}
+Suppose we apply Theorem~\ref{thm:av} to a polynomial sized circuit $C$ to obtain a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit $C'$, and also apply Theorem~\ref{thm:av} to a polynomial sized homogeneous formulas $\tilde{C}$ to obtain a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit $\tilde{C}'$, how is $\tilde{C}'$ structurally different from $C'$?
+\end{quote}
+Unless we are able to find a non-trivial structural difference between $\tilde{C}'$ and $C'$, it does not make sense to attempt proving lower bounds for homogeneous formulas via $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits. The original proof of \cite{Tav13} of Theorem~\ref{thm:av} does not seem to suggest any structural difference between the two. However, the alternate proof described in Section~\ref{sec:depth-red} allows one to understand this difference better. \\
+
+Recall how the alternate proof proceeded. If $g$ is the polynomial computed by any gate in the circuit $C$ of size $s$, then $g$ can be written as
+\[
+g\spaced{=} \sum_{i=1}^{\poly(s)} g_{i1} \cdot g_{i2} \cdot g_{i3} \cdot g_{i4} \cdot g_{i5}
+\]
+where $\sum_j \deg(g_{ij}) = \deg(g)$ for all $i$ and $\deg(g_{ij})\leq \deg(g)/2$. Further $g_{ij}$s are polynomials computed by the children/grandchildren of $g$. With an equation as above, we could recursively keep expanding the larger degree $g_{ij}$'s to eventually get all degrees to be less than $\sqrt{d}$. 
+
+For homogeneous formulas, we can start with a slightly more structured equation instead of the one above. This more structured decomposition was first observed by \cite{HY11a}.  
+
+\begin{lemma}[\cite{HY11a}]\label{lem:HY}
+Let $\Phi$ be a homogeneous formula of size $s$. If $f$ is a polynomial computed at an arbitrary gate of $f$, then $f$ can be written as
+\begin{equation}\label{eqn:vsbr-hom-form}
+f \spaced{=} \sum_{i=1}^s f_{i1} \cdot f_{i2} \cdot \dots \cdot  f_{i\ell}
+\end{equation}
+where 
+\begin{itemize}
+\item Each $f_{ij}$ is computable by a homogeneous formula of size at most $s$
+\item $\sum_j \deg(f_{ij}) = \deg(f)$ for all $i$
+\item $\inparen{\frac{1}{3}}^i \deg(f) \leq \deg(f_{ij}) \leq \inparen{\frac{2}{3}}^i \deg(f)$ for all $i,j$. 
+\item $\deg(f_{i\ell}) = 1$ for all $i$. 
+\end{itemize}
+\end{lemma}
+\begin{proof}
+Assume that the $\Phi$ is a formula of fan-in $2$ at each gate. This would only increase the depth by a polynomial factor. Starting from the root, walk down the tree by always picking the child of largest degree until we hit a node $v$ of degree at most $\frac{2\deg(f)}{3}$ for the first time. Since the path always picked the child of largest degree, we must have that 
+\[
+\frac{\deg(f)}{3}\spaced{\leq}\deg(v)\spaced{\leq} \frac{2\deg(f)}{3}
+\]
+Let $\Phi_v$ denote the sub-formula rooted at $v$, and let $\Phi_{v=0}$ refer to the formula obtained from $\Phi$ by replacing the sub-tree rooted at $v$ by $0$. Let $s_1$ and $s_2$ be the size of $\Phi_v$ and $\Phi_{v=0}$ respectively. (We shall abuse notation and also use $\Phi_v$ and $\Phi_{v=0}$ to refer to the polynomial computed by these formulas.) Then,
+\[
+f \spaced{=} \Phi_v \cdot A \spaced{+} \Phi_{v=0}
+\] 
+for some polynomial $A$. Note that homogeneity implies that $\deg(A) + \deg(\Phi_v) = \deg(f)$ and hence $\frac{\deg(f)}{3} \leq \deg(A) \leq \frac{2\deg(f)}{3}$. ($A$ is going to play the role of $f_{i1}$ for some of the $i$'s.)
+
+Observe that the formulas $\Phi_v$ and $\Phi_{v=0}$ `partition' the formula $\Phi$ and hence $s_1 + s_2 \leq s$. By induction on these smaller formulas, we can write
+\begin{eqnarray*}
+\Phi_v & = & \sum_{i=1}^{s_1} g_{i1} \cdots g_{i\ell}\\
+\Phi_{v=0} & = & \sum_{i=1}^{s_2} h_{i1} \cdots h_{i\ell}
+\end{eqnarray*}
+satisfying the necessary conditions. Since $\frac{\deg(f)}{3} \leq \deg(\Phi_v)\leq \frac{2\deg(f)}{3}$, we have that
+\[
+f \spaced{=} \sum_{i=1}^{s_1} A \cdot g_{i1} \cdots g_{i\ell} \spaced{+} \sum_{i=1}^{s_2} h_{i1} \cdots h_{i\ell}
+\]
+satisfies all the degree conditions with $A$ as claimed. To complete the proof, it suffices to show that $A$ can be computed by a homogeneous formula of size $s$. Indeed, the polynomial $A$ is just the product of all siblings of multiplication gates encountered in the path from $v$ to the root. Since each of the siblings are disjoint sub-formulas of $\Phi$, the polynomial $A$ is computable by a homogeneous formula of size at most $s$. 
+\end{proof}
+
+With equation~\eqref{eqn:vsbr-hom-form} instead, we can repeat the strategy we used to prove Theorem~\ref{thm:av}. 
+\begin{mdframed}
+\begin{quote}
+Start with (\ref{eqn:vsbr-hom-form}) for the root of the homogeneous formula. 
+
+For each summand $f_{i1}\dots f_{ir}$ in the RHS, if the largest degree $f_{ij}$ has degree more than $\sqrt{d}$, expand that $f_{ij}$ with the its corresponding representation using Lemma~\ref{lem:HY}. 
+
+Repeat this process until all $f_{ij}$'s on the RHS have degree at most $\sqrt{d}$. 
+\end{quote}
+\end{mdframed}
+
+Again, in the expansion of $f$ of degree $d$ via Lemma~\ref{lem:HY}, every term on the LHS has at least two factors of degree more than $d/9$. The same proof would then yield a $\Sigma\Pi\Sigma\Pi^{[\sqrt{d}]}$ circuit of top fan-in at most $s^{O(\sqrt{d})}$. Did we gain anything with this? We certainly did -- observe that every expansion via Lemma~\ref{lem:HY} yields $O(\log d)$ more factors in each term. In the case of Theorem~\ref{thm:av}, we gained only constantly many factors at each term. Thus, in the resulting depth $4$ circuit has the form
+\[
+f \spaced{=} \sum_{i=1}^{s^{O(\sqrt{d})}} Q_{i1} \dots Q_{ir}\spaced{,}\text{where $1\leq \deg(Q_{ij})\leq \sqrt{d}$}
+\]
+and, most importantly, $r = O(\sqrt{d}\log d)$ as opposed to $O(\sqrt{d})$ in the case of Theorem~\ref{thm:av}. This seems to be a key structural difference between depth $4$ circuits obtained from homogeneous formulas as opposed to depth $4$ circuits obtained from general arithmetic circuits! We summarize this below. 
+
+\begin{theorem}
+If $f$ is an $n$-variate degree $d$ polynomial computed by a homogeneous formula of size $s$, then there is a homogeneous $\SPSPfanin{O(\sqrt{d}\log d)}{\sqrt{d}}$ circuit computing $f$ with top fanin at most $s^{O(\sqrt{d})}$. 
+\end{theorem}
+
+\subsubsection*{Is this useful?}
+
+It is not clear if the above structural difference can be exploited to give a complexity measure. But it is very much possible that the some small modification of measure of dimension of shifted partials derivatives might be a measure that works. The reason we believe that is because the results of \cite{gkks13,KSS13,KS14a} give explicit $n$-variate degree $d$ polynomials that admit a top fan-in lower bound of $n^{\Omega(d/t)}$ for depth $4$ circuits with \emph{maximum bottom degree} bounded by $t$. \\
+
+{\bf Question. }Could that be changed to give an $n^{\Omega(d/t)}$ lower bound for depth $4$ circuits with \emph{average bottom degree} bounded by $t$? \\
+
+If this were true, then we obtain an $n^{\Omega(\log d)}$ lower bound for the size of homogeneous formulas computing an explicit $n$-variate degree $d$ polynomial. Also, we need to keep in mind that any circuit of polynomial size has an equivalent homogeneous formula of size $n^{O(\log d)}$. Hence, if we are hoping to come up with a method that might prove a lower bound for homogeneous formulas but not for general circuits, then method should not be able to yield a lower bound better than $n^{\Omega(\log d)}$. This indeed seems to be the case in this approach. Maybe this is the right depth reduction to work with to prove lower bounds for homogeneous formulas, maybe not. Either way, we shall probably find out soon enough!
+
+\section{Conclusion}\label{sec:conc}
+
+Quite a lot seems to be happening lately in arithmetic circuits. The last few results were on $n^{\Omega(\sqrt{d})}$ lower bounds for homogeneous depth $4$, non-homogeneous depth $3$ circuits with small bottom fanin, and homogeneous depth $5$ with small bottom fanin. Perhaps in the near future, we would be able to obtain $n^{\Omega(\sqrt{d})}$ lower bounds for non-homogeneous depth $3$ or homogeneous depth $5$ circuits without any bottom fanin restrictions. These are all interesting problems to work on, and should be very much within reach of current techniques. However, it is to be noted that if we wish to separate $\VP$ and $\VNP$, we need to break past $n^{\Omega(\sqrt{d})}$. It appears (at least to us) this task would require very different techniques and seems unlikely that small variants of shifted partial derivatives might just get us past $n^{\Omega(\sqrt{d})}$. Nevertheless, Open Problem~\ref{openprob:main} presents a concrete and extremely simple looking model to work with, for which we need to prove an $n^{\omega(\sqrt{d})}$ lower bound to separate $\VP$ and $\VNP$. We conclude by stating the problem again to emphasize the point. 
+
+\begin{mdframed}
+{\bf Open Problem. } {\em Find an explicit $n$-variate degree $d$ polynomial $f$ such that any expression of the form
+\[
+f \quad=\quad (Q_1)^{\sqrt{d}} + \dots + (Q_{s})^{\sqrt{d}}\quad,\quad \deg(Q_i) \leq \sqrt{d} \text{ for all $i$}
+\]
+must have $s = n^{\omega(\sqrt{d})}$. }
+\end{mdframed}
+
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
