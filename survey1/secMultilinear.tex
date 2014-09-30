@@ -1,0 +1,264 @@
+\section{Lower bounds for multilinear models}
+
+Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. We shall first give some intuition behind the complexity measure before actually seeing the lower bounds. 
+
+\subsection{The partial derivative matrix}
+\subsubsection*{Intuition}
+
+A natural first step is to try the simpler task of proving lower bounds for depth-$3$ multilinear circuits. 
+$$
+f \quad = \ell_{11} \dots \ell_{1d} + \dots + \ell_{s1}\dots \ell_{sd}
+$$
+The task is now to construct a measure $\Gamma$ such that $\Gamma(\ell_1\dots \ell_d)$ is small whenever each $\ell_i$ is a linear polynomial and different $\ell_i$'s are over disjoint sets of variables. Consider the simplest case of $f = (a_1  + b_1x)(a_2  + b_2y)$. An observation is that the coefficients of $f$ are given by the $2\times 2$ matrix obtained as $[a_1\ b_1]^T [a_2\ b_2] = \insquare{\begin{array}{cc} a_1a_2 & a_1b_2\\ a_2 b_1 & b_1 b_2\end{array}}$. In other words, a polynomial $f = a_0 + a_1x + a_2y + a_3xy$ factorizes into two variable disjoint factors if and only if the matrix $\insquare{\begin{array}{cc} a_0 & a_1\\ a_2 & a_3\end{array}}$ has rank $1$. A straight-forward generalization of this to multiple variables yields the \emph{partial derivative matrix} (which was first introduced by Nisan \cite{nis91} in the context of non-commutative ABPs)\\
+
+\begin{definition}
+For any given partition of variables $X = Y \sqcup Z$, define the \emph{partial derivative matrix} $M_{Y,Z}(f)$ to be the matrix described as follows --- the rows are indexed by monomials in $Y$, columns indexed by monomials in $Z$, and the $(i,j)$-th entry of the matrix is the coefficient of the monomial $m_i(Y)\cdot m_j(Z)$ in $f$. We shall use $\Gamma^{\mathrm{[Raz]}}_{Y,Z}(f)$ to denote $\mathrm{rank}(M_{Y,Z}(f))$. Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ is full-rank.
+\end{definition}
+
+Here are some basic properties of the partial derivative matrix which would be extremely useful in later calculations.
+
+\begin{observation}[Sub-additivity]\label{obs:pdm-subadditivity}
+	For any partition $X = Y \sqcup Z$ and any pair of multilinear 
+	polynomials $f$ and $g$ in $\FF[X]$ we have 
+$\CM{Raz}_{Y,Z}(f+g) \spaced{\leq} \CM{Raz}_{Y,Z}(f) \spaced{+} \CM{Raz}_{Y,Z}(g)$.
+\end{observation}
+\begin{proof}
+Follows from the linearity of the matrix. 
+\end{proof}
+
+\begin{observation}[Multiplicativity]\label{obs:pdm-multiplicativity}
+If $f_1 \in \F[Y_1,Z_1]$ and $f_2 \in \F[Y_2, Z_2]$ with $Y = Y_1 \sqcup Y_2$ and $Z = Z_1 \sqcup Z_2$, then
+$$
+\CM{Raz}_{Y,Z}(f_1\cdot f_2) \spaced{=} \CM{Raz}_{Y_1, Z_1}(f_1) \spaced{\cdot} \CM{Raz}_{Y_2, Z_2}(f_2).
+$$
+\end{observation}
+\begin{proof}
+  It is not hard to see that $M_{Y,Z}(f_1\cdot f_2)$ is the tensor product $M_{Y_1, Z_1}(f_1) \otimes M_{Y_2, Z_2}(f_2)$, and the rank of a tensor product of two matrices is the product of the ranks.
+\end{proof}
+
+\begin{observation}\label{obs:pdm-upperbound}
+  $\CM{Raz}_{Y,Z}(f) \spaced{\leq} 2^{\min(\abs{Y}, \abs{Z})}$.
+\end{observation}
+\begin{proof}
+  The number of rows is $2^{\abs{Y}}$ and number of columns is $2^{\abs{Z}}$, and hence the rank is upper-bounded by the minimum.
+\end{proof}
+
+
+Let us get back to lower bounds for multilinear models, and attempt to use $\CM{Raz}_{Y,Z}(f)$ defined above. Unfortunately, there are examples of simple polynomials like $f = (y_1 + z_1)\dots (y_n + z_n)$ with $\CM{Raz}_{Y,Z}(f) = 2^n$. Raz's idea here was to look at $\CM{Raz}_{Y,Z}(f)$ for a \emph{random partition}, and show that with high probability the rank of the partial derivative matrix is far from full. As a toy example, we shall see why this has the potential to give lower bounds for depth-$3$ multilinear circuits. 
+
+\begin{lemma}
+Let $f(X) = \ell_1 \dots \ell_d$ be an $n$-variate multilinear polynomial. If $X = Y\sqcup Z$ is a random partition with $|Y| = |Z| = |X|/2$, then with high probability we have
+$$
+\CM{Raz}_{Y,Z}(f) \quad \leq \quad 2^{|X|/2} \cdot 2^{-|X|/16}.
+$$
+\end{lemma}
+
+It is to be noted that we should expect a random polynomial to be full-rank with respect to any partition, so the measure $\CM{Raz}_{Y,Z}(f)$ is expected to be $2^{|X|/2}$ which should yield a lower bound of $2^{\Omega(|X|)}$. 
+
+\begin{proof-sketch}
+Without loss of generality we can assume that each $\ell_i$ depends on at least two variables as removing the $\ell_i$'s that depend on just one variable does not alter $\CM{Raz}_{Y,Z}(f)$ with respect to any partition. Let $|X| = n$. 
+
+Using Observation~\ref{obs:pdm-multiplicativity}, $\CM{Raz}_{Y,Z}(f) \leq 2^d$ and hence if $d < n/3$ then we are done. Hence assume that $d \geq n/3$. By a simple averaging argument, there must hence be at least $d/4$ of the $\ell_i$'s that depend on at most $3$ variables; we shall refer to these as the \emph{small} $\ell_i$'s. 
+
+Since the partition is chosen at random, on expectation a quarter of the small $\ell_i$'s would have all its variables mapped to either $Y$ or $Z$, hence not contributing to $\CM{Raz}_{Y,Z}(f)$. Therefore, with high probability,
+$$
+\CM{Raz}_{Y,Z}(f) \quad \leq \quad 2^{d} \cdot 2^{-d/16} \spaced{\leq} 2^{n/2} \cdot 2^{-n/16}.
+$$
+\end{proof-sketch}
+
+More generally, if $f = g_1(X_1)\dots g_t(X_t)$ where the $X_i$'s are mutually disjoint, then a random partition is very unlikely to partition all the $X_i$'s into almost equal parts. This shall be formalized in the next section to prove the lower bound for multilinear formulas. 
+
+\subsection{Lower bound for multilinear formulas}
+	We now present the lower bound for multilinear formulas due 
+	to \cite{raz2004}. The first step of our roadmap is to find 
+	a suitable normal form for multilinear formulas. The normal 
+	form that we use is from the survey by Shpilka and 
+	Yehudayoff \cite{sy}. 	
+
+\subsubsection{Formulas to log-product sums}
+
+The following structural lemma shows that any multilinear formula can be converted in to a small sum of \emph{log-product} polynomials. The techniques of the following lemma can also be used in other settings with minor modifications, and we shall encounter a different version of this lemma later as well.
+
+\begin{definition}\label{defn:mult-logproduct}
+  A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
+  \begin{itemize}
+  \item $g_i \in \F[X_i]$ for all $i \in [t]$.
+  \item $\frac{|X|}{3^i} \leq |X_i| \leq \frac{2|X|}{3^i}$ for all
+    $i$, and $|X_t| = 1$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-logproduct}
+  Let $\Phi$ be a multilinear formula of size $s$ computing a polynomial $p$. Then $f$ can be written as a sum of $(s+1)$ log-product multivariate polynomials.
+\end{lemma}
+\begin{proof}
+  Similar to Lemma~\ref{lem:brent-two-thirds}, let $v$ be a node in $\Phi$ such that set of variables $X_v$ that it depends on satisfies $\frac{|X|}{3} \leq \abs{X_v} \leq \frac{2|X|}{3}$. If $\Phi_v$ is the polynomial computed at this node, then $f$ can be written as
+  $$
+  f \spaced{=} \Phi_v \cdot g_1 + \Phi_{v=0} \quad\text{for some $g_1 \in \F[X\setminus X_v]$}.
+  $$
+  where $\Phi_{v=0}$ is the formula obtained by replacing the node $v$ by zero. Note that the subtree at the node $v$ is completely disjoint from $\Phi_{v=0}$. Hence the sum of the sizes of $\Phi_v$ and $\Phi_{v=0}$ is at most $s$. Hence, $g_1 \in \F[X\setminus X_v]$ and $\frac{|X|}{3} \leq \abs{X \setminus X_v} \leq \frac{2|X|}{3}$. Inducting on the formulas $\Phi_v$ and $\Phi_{v=0}$ gives the lemma.
+\end{proof}
+
+\subsubsection{Log-products are far from full-rank on a random
+  partition}
+
+The main technical part of the proof is to show that log-product multivariate polynomials are far from full-rank under a random partition of variables. This would let us show that a sum of log-product multivariate polynomials cannot be full rank unless it is a very large sum.\\
+
+{\bf Main idea: } Suppose $f = g_1 \dots g_t$ where each $g_i \in \F[X_i]$. Let $X = Y \sqcup Z$ be a random partition with $|Y| = |Z| = |X|/2$, and $Y_i = Y \intersection X_i$ and $Z_i = Z \intersection X_i$. Let $d_i = \abs{\frac{|Y_i| - |Z_i|}{2}}$ measure the imbalance between the sizes of $Y_i$ and $Z_i$, and we shall say $X_i$ is $k$-imbalanced if $d_i \geq k$. Let $b_i = \frac{|Y_i| + |Z_i|}{2} = \frac{|X_i|}{2}$.
+
+By Observation~\ref{obs:pdm-multiplicativity}, we know that 
+\begin{eqnarray*}
+\CM{Raz}_{Y,Z}(f) & = & \CM{Raz}_{Y_i,Z_i}(g_1) \dots \CM{Raz}_{Y_i,Z_i}(g_t)\\
+ & \leq & 2^{\min(|Y_1|,|Z_1|)} \cdots  \cdot 2^{\min(|Y_t|,|Z_t|)}\\ 
+ & = & 2^{b_1  - d_1} \cdots 2^{b_t - d_t} = \frac{2^{|X|/2}}{2^{d_1 + \dots + d_t}}.
+\end{eqnarray*}
+
+Hence, even if one of the $X_i$'s is a little imbalanced, then the product is far from full-rank. \\
+
+Lemma~\ref{lem:mult-logproduct} shows that the size of $X_i$ decreases slowly with $i$, and it is not hard to show that $\abs{X_i} \geq \sqrt{\abs{X}}$ for $i \leq t'\eqdef\frac{\log{\abs{X}}}{100}$. We wish to show that the probability that none of $g_i$ (for $i\leq t'$) is $k$-unbalanced for $k = \abs{X}^{1/20}$ is very small. Let $\mathcal{E}_i$ be the event that $X_i$ is not $k$-unbalanced. The goal is to upper bound the probability that all the events $\mathcal{E}_i$ hold. These probability calculations would follow from this lemma about the \emph{hypergeometric distribution}.\\
+
+{\bf Hypergeometric Distribution: } Fix parameters $n, g, r \geq 0$, and let $G \subseteq [n]$ with $|G| = g$. Informally, the hypergeometric distribution is the distribution obtained on the intersection sizes of a random set of size $r$ with a fixed set of size $g$ from a universe of size $n$. 
+Formally, the random variable $\mathcal{H}(n,g,r)$ is defined as:
+$$
+\Pr\insquare{\mathcal{H}(n,g,r) = k} \spaced{=} \Pr_{R\subseteq [n],|R| = r}\insquare{\abs{R \intersection G} = k} = \frac{\binom{g}{k}\binom{n-g}{r-k}}{\binom{n}{r}}.
+$$
+
+
+The following lemma shows that for a fairly large range of parameters, the hypergeometric distribution does not put too much mass on any value.
+
+\begin{lemma}\label{lem:hypergeom_low-weight}
+  Let $n,g,r$ be parameters such that $\frac{n}{4} \leq r \leq \frac{3n}{4}$ and $0\leq g\leq \frac{2n}{3}$. Then for any $t\leq g$,
+  $$
+  \Pr\insquare{\mathcal{H}(n,g,r) = t} \spaced{\leq} O\inparen{\frac{1}{\sqrt{g}}}.
+  $$
+\end{lemma}
+The proof of this lemma follows from standard binomial coefficient estimates on the probability.\\
+
+Let us go back to estimating the probability that all the events $\mathcal{E}_i$ hold.
+\begin{eqnarray*}
+  \Pr\insquare{\mathcal{E}_1 \wedge \dots \wedge \mathcal{E}_{t'}} & = & \Pr[\mathcal{E}_1] \cdot \Pr[\mathcal{E}_2 \mid \mathcal{E}_1] \cdots \Pr[\mathcal{E}_{t'}\mid \mathcal{E}_1 \wedge \dots \wedge \mathcal{E}_{t'-1}].
+\end{eqnarray*}
+The event $\mathcal{E}_1$ is just the probability that a random set $Y$ of size $|X|/2$ intersects $X_1$ in $t$ places where $t \in \insquare{\frac{|X_i|}{2} -k , \frac{|X_i|}{2} -k}$. This is just a particular setting of the hypergeometric distribution and Lemma~\ref{lem:hypergeom_low-weight} asserts that
+$$
+\Pr[\mathcal{E}_1] \spaced{\leq} O\inparen{\frac{2k}{\sqrt{|X|}}}.
+$$
+To apply a similar bound for the other terms, consider the event $\mathcal{E}_i$ given that $\mathcal{E}_1, \dots, \mathcal{E}_{i-1}$ hold. Let $X' = X \setminus (X_1 \union \dots \union X_{i-1})$ and $Y' = Y\intersection X'$. The fact that $\mathcal{E}_1,\dots, \mathcal{E}_{i-1}$ hold means that the partition has been fairly balanced in the first $(i-1)$ parts and hence $|Y'| \leq |X'| + ik$. Hence, we would still be in the range of parameters in Lemma~\ref{lem:hypergeom_low-weight} to also get that
+\begin{eqnarray*}
+  \forall i\leq t'\quad \Pr[\mathcal{E}_i\mid \mathcal{E}_1 \wedge \cdots \wedge \mathcal{E}_{i-1}] &\leq& O\inparen{\frac{2k}{\sqrt{|X|}}}\\
+  \implies \Pr\insquare{\mathcal{E}_1\wedge \dots \wedge \mathcal{E}_{t'}} & \leq & \abs{X}^{-\epsilon \log \abs{X}} \quad\text{for some $\epsilon > 0$}  \\
+  \implies \Pr\insquare{\CM{Raz}_{Y,Z}(g_1\dots g_t) \leq 2^{(|X|/2) - |X|^{1/20}}} & \leq & \abs{X}^{-\epsilon \log \abs{X}}.
+\end{eqnarray*}
+
+\begin{sloppy}
+	Hence, if $g_1\dots g_t$ is a log-product multilinear polynomial, 
+	then with probability at least $\inparen{1 - |X|^{-\epsilon \log |X|}}$ 
+	we have that $\CM{Raz}_{Y,Z}(g_1\dots g_t) \leq 2^{(|X|/2) - |X|^{1/20}}$. 
+	Further, if $f$ is computable by a multilinear formula of size $s$ then, 
+	by Lemma~\ref{lem:mult-logproduct}, $f$ can be written as a sum of 
+	$(s+1)$ log-product multilinear polynomials. Hence, with probability 
+	at least $\inparen{1 - (s+1)|X|^{-\epsilon \log |X|}}$ we have that
+		$$\CM{Raz}_{Y,Z}(f) \spaced{\leq} (s+1) \cdot 2^{(|X|/2) - |X|^{1/20}}. $$
+	Hence, if $(s+1) < |X|^{(\epsilon/2) \log |X|}$, then with high 
+	probability a random partition would ensure 
+	$\CM{Raz}_{Y,Z}(f) \ll 2^{|X|/2}$. Let us record this as a lemma.
+\end{sloppy}
+
+\begin{lemma}\label{lem:multformula-lowrank}
+  Let $f \in \F[X]$ be computed by a multilinear formula of size $s < |X|^{(\epsilon/2) \log |X|}$ for a small enough constant $\epsilon > 0$. Then with probability at least $(1 - |X|^{-(\epsilon/2)\log |X|})$ we have $$\CM{Raz}_{Y,Z}(f) \spaced{\leq} (s+1)\cdot 2^{|X|/2} \cdot 2^{-|X|^{1/20}}$$ for a random partition $X = Y \sqcup Z$ with $|Y| = |Z| = |X|/2$.
+\end{lemma}
+
+\subsubsection{$\Det_n$ and $\Perm_n$ have large rank}
+
+The last step of the proof would be to find an explicit polynomial whose partial derivative matrix under a random partition has large rank. As earlier, our candidate polynomial would be $\Det_n$ or $\Perm_n$. Unfortunately, both these polynomials are over $n^2$ variables and degree $n$. It is not hard to verify that the rank of the partial derivative matrix of $\Det_n$ or $\Perm_n$ can never be greater than $2^{2n}$. Hence directly using Lemma~\ref{lem:multformula-lowrank}, we would have $2^{O(n)}$ competing with $2^{n^2/2 - n^{O(1)}}$ which is simply futile. A simple fix is to first randomly restrict ourselves to fewer variables and then apply Lemma~\ref{lem:multformula-lowrank}. 
+
+Let $m = n^{1/3}$. Let $\sigma$ be a random restriction that assigns random values to all but $2m$ randomly chosen variables. We shall call this set of $2m$ variables as $X$, and randomly partition this into two sets $Y$ and $Z$ of size $m$ each. Hence, $\sigma(\Det_n)$ reduces to a multilinear polynomial over $2m$ variables. It is also worth noting that a multilinear formula remains a multilinear formula under this restriction. The following claim is easy to verify. 
+
+\begin{claim}
+With probability at least $1/2$, the variables in $X$ belong to distinct rows and columns. 
+\end{claim}
+
+We shall restrict ourselves to only these random restrictions, and without loss of generality let the sets be $Y = \inbrace{x_{1,1},x_{3,3},\dots,x_{2m-1,2m-1}}$ and $Z = \inbrace{x_{2,2},x_{4,4},\dots, x_{2m,2m}}$. For ease of notation, we shall refer to $x_{2i-1,2i-1}$ as $y_i$ and $x_{2i,2i}$ as $z_i$ for $i = 1,\dots, m$. 
+
+Consider the following restriction:
+\begin{eqnarray*}
+f & = & \Det \insquare{ \begin{array}{cccccccc}
+y_1 & 1   &        &     &     &  &        &   \\
+1   & z_1 &        &     &     &  &        &   \\
+    &     & \ddots &     &     &  &        &   \\
+    &     &        & y_m &1    &  &        &   \\
+    &     &        & 1   &z_m  &  &        &   \\
+    &     &        &     &     & 1&        &   \\
+    &     &        &     &     &  & \ddots &   \\
+    &     &        &     &     &  &        & 1
+  \end{array}}\\
+ &= & (y_1z_1 - 1)\dots (y_mz_m - 1).
+\end{eqnarray*}
+It is easy to check that $\CM{Raz}_{Y,Z}(f) = 2^m$. Although this is a single restriction with large rank, the Schwartz-Zippel-DeMillo-Lipton lemma immediately gives that random restriction would also have rank $2^m$ with high probability\footnote{provided the underlying field is large, but this isn't really a concern as we can work with a large enough extension if necessary}. We shall record this as a lemma. 
+
+\begin{lemma}\label{lem:det-raz-lowerbound}
+With probability at least $1/100$, we have that $\CM{Raz}_{Y,Z}(\sigma(\Det_n)) = 2^m$ where $\sigma$ is a random restriction to $2m$ variables for $m = n^{1/3}$. 
+\end{lemma}
+
+
+Combining Lemma~\ref{lem:det-raz-lowerbound} with Lemma~\ref{lem:multformula-lowrank}, we have the following theorem. 
+
+\begin{theorem}[\cite{raz2004}] Any multilinear formula computing $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. \qed
+\end{theorem}
+
+
+\subsection{Stronger lower bounds for constant depth multilinear formulas}
+
+Looking back at Lemma~\ref{lem:multformula-lowrank}, we see that whenever $f(X)$ is computable by a size $s$ multilinear formula $\CM{Raz}_{Y,Z}(f)$ is exponentially smaller than $2^{|X|/2}$ with probability $\inparen{1 - s\cdot |X|^{-\epsilon \log |X|}}$. Hence we had to settle for a $n^{\Omega(\log n)}$ lower bound not because of the rank deficit but rather because of the bounds in the probability estimate. Unfortunately, this lower bound technique cannot yield a better lower bound for multilinear formulas as there are explicit examples of polynomials computable by poly-sized multilinear circuits with $\CM{Raz}_{Y,Z}(f) = 2^{|X|/2}$ under \emph{every} partition \cite{Raz06}. However, the probability bound can be improved in the case of constant depth multilinear circuits to give stronger lower bounds. 
+
+
+Note that Lemma~\ref{lem:multformula-lowrank} was proved by considering \emph{multilinear log-products} (Definition~\ref{defn:mult-logproduct}) as the building blocks. To show that a multilinear log product $g_1(X_1)\dots g_{\ell}(X_\ell)$ has small rank under a random partition, we argued that the probability that all the $X_i$'s are partitioned in a roughly balanced fashion is quite small. This was essentially done by thinking of this as $\ell = O(\log n)$ close-to-independent events, each with probability $1/\mathrm{poly}(n)$. 
+
+If $\ell$ was much larger than $\log n$ (with other parameters being roughly the same), it should be intuitively natural to expect a much lower probability of all the $X_i$'s being partitioned in a roughly balanced manner. This indeed is the case for constant depth multilinear circuits, and we briefly sketch the key points where they differ from the earlier proof. The first is an analogue of Definition~\ref{defn:mult-logproduct} in this setting. 
+
+\begin{definition}\label{defn:mult-t-prod}
+A multilinear polynomial $f$ is said to be a \emph{multilinear $t$-product} if $f$ can be written as $f = g_1\dots g_t$ with the following properties:
+\begin{itemize}
+\item The variable sets of the $g_i$ are mutually disjoint
+\item Each $g_i$ non-trivially depends on at least $t$ variables
+\end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-t-prod-rep}
+Let $f$ be a multilinear polynomial of degree $d$ over $n$ variables that is computed by a depth-$\Delta$ multilinear formula $\Phi$ of size $s$. Then, $f$ can be written as a sum of at most $s$ multilinear $t$-products for $t = \inparen{n/100}^{1/2\Delta}$, and a multilinear polynomial of degree at most $n/100$.  
+\end{lemma}
+\begin{proof}
+If $d < n/100$, then the lemma is vacuously true. Since $\Phi$ is a formula of depth $\Delta$ and computes a polynomial of degree $d > n/100$, there must be at least one product gate $v$ of fan-in at least $\inparen{\frac{n}{100}}^{1/\Delta} = t^2$. Then similar to Lemma~\ref{lem:mult-logproduct}, 
+$$
+f \quad=\quad \Phi_v \cdot f'  + \Phi_{v=0}
+$$
+As $\Phi_v$ is a product of $t^2$ polynomials, by grouping the factors together we have that $\Phi_v \cdot f'$ is a multilinear $t$-product. Further, $\Phi_{v=0}$ is a multilinear polynomial that is computable by a depth-$\Delta$ formula of smaller size and we can induct on $\Phi_{v=0}$. 
+\end{proof}
+
+\begin{lemma}\label{lem:mult-const-depth-upper-bound}
+Let $f(X)$ be an $n$-variate polynomial computed by a depth-$\Delta$ multilinear formula of size $s$. If $X = Y \sqcup Z$ is a randomly chosen partition with $|Y| = |Z| = n/2$, then with probability at least $(1 - s \cdot \exp({-n^{\Omega(1/\Delta)}}))$ we have
+$$
+\CM{Raz}_{Y,Z}(f) \quad\leq\quad (s+1) \cdot 2^{n/2} \cdot \exp(-n^{\Omega(1/\Delta)}).
+$$
+\end{lemma}
+\begin{proof-sketch}
+By Lemma~\ref{lem:mult-t-prod-rep}, we have that $f$ can be written as $g_0 + g_1 + \dots + g_s$ where $\deg(g_0) \leq n/100$ and $g_1,\dots, g_s$ are multilinear $t$-products. Note that since $g_0$ is a multilinear polynomial of degree at most $(n/100)$, the number of monomials in $g_0$ is at most $\binom{n}{n/100} \leq 2^{n/10}$. Hence, $\CM{Raz}_{Y,Z}(g_0) \leq 2^{n/10}$. 
+
+For the other $g_i$'s, we can bound the probability that $\CM{Raz}_{Y,Z}(g_i)$ is large in a very similar fashion as in Lemma~\ref{lem:multformula-lowrank}, as the probability that all the factors of $g_i$ are partitioned in a balanced manner is roughly the intersection of $t$ independent events. By very similar estimates, this probability can be bounded by $(1/\mathrm{poly}(n))^t$. Hence, with high probability 
+$$
+\CM{Raz}_{Y,Z}(f) \spaced{\leq} \CM{Raz}_{Y,Z}(g_0) + \dots + \CM{Raz}_{Y,Z}(g_s) \spaced{\leq} (s+1)\cdot 2^{n/2} \cdot \exp(-n^{\Omega(1/\Delta)}).
+$$
+\end{proof-sketch}
+
+Combining Lemma~\ref{lem:mult-const-depth-upper-bound} with Lemma~\ref{lem:det-raz-lowerbound}, we have the following theorem of Raz and Yehudayoff. 
+
+\begin{theorem}[\cite{raz-yehudayoff}]
+Any multilinear formula of depth $\Delta$ computing $\Det_n$ or $\Perm_n$ must be of size $\exp(n^{\Omega(1/\Delta)})$.  \qed
+\end{theorem}
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds_birk"
+%%% End: 

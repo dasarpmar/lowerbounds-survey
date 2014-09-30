@@ -1,0 +1,204 @@
+\section{Lower bounds for monotone circuits}
+
+This section would present a slight generalization 
+	of a lower bound by Jerrum and Snir~\cite{js82}. 
+	To motivate our presentation here, let us first 
+	assume that the underlying field is $\RR$, the 
+	field of real numbers. A monotone circuit over 
+	$\RR$ is a circuit having $+, \times$ gates in 
+	which all the field constants are {\em non-negative} 
+	real numbers. Such a circuit can compute any 
+	polynomial $f$ over $\RR$ all of whose 
+	coefficients are nonnegative real numbers, such as 
+	for example the permanent. It is then natural to ask 
+	whether there are small monotone circuits over $\RR$ 
+	computing the permanent. Jerrum and Snir \cite{js82}
+	obtained an exponential lower bound on the size 
+	of monotone circuits over $\RR$ computing the 
+	permanent. Note that this	definition of monotone 
+	circuits is valid only over $\RR$ (actually more 
+	generally over ordered fields but not over say finite 
+	fields) and such circuits can only compute polynomials 
+	with non-negative coefficients. Here we will present 
+	Jerrum and Snir's argument in a slightly more 
+	generalized form such that the circuit model makes 
+	sense over any field $\FF$ and is complete, i.e. 
+	can compute any polynomial over $\FF$. Let us first 
+	explain the motivation behind the generalized circuit
+	model that we present here. Observe that in any monotone 
+	circuit over $\RR$, there is no cancellation as there 
+	are no negative coefficients. Formally, for a node $v$ 
+	in our circuits let us denote by $f_{v}$ the polynomial 
+	computed at that node. For a polynomial $f$ let us denote 
+	by $\Mon(f)$ the set of monomials having a nonzero 
+	coefficient in the polynomial $f$. 
+		\begin{enumerate}
+		
+			\item If $w = u + v$ then 
+				$$ \Mon(f_{w}) = \Mon(f_{u}) \cup \Mon(f_{v}). $$
+			
+			\item If $w = u \times v$ then
+				$$ \Mon(f_{w}) = \Mon(f_{u}) \cdot \Mon(f_{v}) \eqdef \setdef{m_1\cdot m_2}{m_1 \in \Mon(f_{u}), m_2\in \Mon(f_{v})}. $$
+			
+		\end{enumerate}
+	This means that for any node $v$ in a monote circuit over 
+	$\RR$ one can determine $\Mon(f_{v})$ in a very syntactic 
+	manner starting from the leaf nodes. Let us make precise 
+	this syntactic computation that we have in mind.
+	
+	\begin{definition}[Formal Monomials.]
+  Let $\Phi$ be an arithmetic circuit. The \emph{formal monomials} at
+  any node $v\in \Phi$, which shall be denoted by $\FM(v)$, shall 
+  be inductively defined as follows:
+	  \begin{quote}
+	    If $v$ is a leaf labelled by a variable $x_i$, then $\FM(v) =
+	    \inbrace{x_i}$. If it is labelled by a constant, then $\FM(v) =
+	    \inbrace{1}$.
+	    
+	    If $v = v_1 + v_2$, then $\FM(v) = \FM(v_1) \union \FM(v_2)$. 
+	
+	    If $v = v_1 \times v_2$, then 
+            \begin{eqnarray*}
+              \FM(v) &=& \FM(v_1)\cdot \FM(v_2)\\
+              &\eqdef& \setdef{m_1\cdot m_2}{m_1 \in \FM(v_1), m_2\in \FM(v_2)}.
+            \end{eqnarray*}
+          \end{quote}
+	\end{definition}
+	
+\noindent Note that for any node $v$ in any circuit 
+	we have $\Mon(f_{v}) \subseteq \FM(v)$ but in a 
+	monotone circuit over $\RR$ this containment is in 
+	fact an equality at every node. This motivates our 
+	definition of a slightly more general notion of a 
+	monotone circuit as follows. 
+
+	
+\begin{definition}[Monotone circuits]
+  A circuit $C$ is said to be
+  \emph{syntactically monotone}
+   (simply monotone for short) if $\Mon(f_{v}) = \FM(v)$ 
+   for every node $v$ in $C$.
+\end{definition}
+	
+	
+	
+The main theorem of this section is the following: 
+
+\begin{theorem}[\cite{js82}]\label{thm:monotone-circuit-lbs}
+	Over any field $\FF$, any syntactically monotone circuit 
+	$C$ computing $\Det_n$ or $\Perm_n$ must have
+  size at least $2^{\Omega(n)}$.
+\end{theorem}
+
+The proof of this theorem is relatively short assuming the
+	following structural result (which is present in standard
+	depth-reduction proofs \cite{vsbr83,ajmv98}).
+
+\begin{lemma}\label{lem:vsbr-two-thirds}
+  Let $f$ be a degree $d$ polynomial computed by a monotone circuit of
+  size $s$. Then, $f$ can be written of the form $f = \sum_{i=1}^s f_i
+  \cdot g_i$ where the $f_i$'s and $g_i$'s satisfy the following
+  properties.
+\begin{enumerate}
+\item For each $i\in [s]$, we have $\frac{d}{3} < \deg{g_i} \leq
+  \frac{2d}{3}$.
+\item For each $i$, we have $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(f)$.
+\end{enumerate}
+\end{lemma}
+
+We shall defer this lemma to the end of the section and first see how
+this would imply Theorem~\ref{thm:monotone-circuit-lbs}. The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that is crucial in the lower bound. 
+
+\begin{proofof}{Theorem~\ref{thm:monotone-circuit-lbs}}
+Suppose $\Phi$ is a circuit of size $s$ that computes $\Det_n$. Then by Lemma~\ref{lem:vsbr-two-thirds}, 
+$$
+\Det_n \quad=\quad \sum_{i=1}^s f_i \cdot g_i
+$$
+with $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(\Det_n)$. The building blocks are terms of the form $T = f\cdot g$, where $\FM(f)  \cdot \FM(g) \subseteq \FM(\Det_n)$. \\
+
+Since all the monomials in $\Det_n$ are products of variables from
+distinct columns and rows, the rows (and columns) containing the
+variables $f$ depends on is disjoint from the rows (and columns)
+containing variables that $g$ depends on. Hence, there exists sets of indices $A,B
+\subseteq [n]$ such that $f$ depends only on $\setdef{x_{jk}}{j\in
+  A, k\in B}$ and $g$ depends only on
+$\setdef{x_{jk}}{j\in\overline{A}, k\in
+  \overline{B}}$.
+
+Further, since $\Det_n$ is a homogeneous polynomial of degree $n$, we also have that both $f$ and $g$ must be homogeneous as well. Also as all monomials of $g$ using distinct row and column indices from $\overline{A}$ and $\overline{B}$ respectively, we see that $\deg g = |\overline{A}| = |\overline{B}|$ and $\deg f = |A| = |B|$. Using Lemma~\ref{lem:vsbr-two-thirds}, let $|A| = \alpha n$ for some $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$. This implies that $\Gamma(f)\leq (\alpha n)!$, and $\Gamma(g)\leq ((1-\alpha)n)!$ and hence
+$$\Gamma(f\cdot g) \quad \leq\quad (\alpha n)! ((1-\alpha)n)! \spaced{\leq} \frac{n!}{\binom{n}{n/3}} $$
+as $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$.
+Also, $\Gamma$ is clearly sub-additive and we have $$\Gamma(f_1g_1 + \dots + f_s g_s) \spaced{\leq} s \cdot \frac{n!}{\binom{n}{n/3}}.$$
+Since $\Gamma(\Det_n) = n!$, this forces $s \geq
+\binom{n}{n/3} = 2^{\Omega(n)}$.
+\end{proofof}
+
+We only need to prove Lemma~\ref{lem:vsbr-two-thirds} now.
+
+\subsection{Proof of Lemma~\ref{lem:vsbr-two-thirds}}
+
+Without loss of generality, assume that the circuit $\Phi$ is
+homogeneous\footnote{It is a forklore result that any circuit can be \emph{homogenized} with just a polynomial blow-up in size. Further, this process also preserves monotonicity of the circuit. A proof of this may be seen in \cite{sy}.}, and consists of alternating layers of $+$ and $\times$
+gates. Also, assume that all $\times$ gates have fan-in two, and
+orient the two children such that the formal degree of the left child
+is at least as large as the formal degree of the right child. Such
+circuits are also called \emph{left-heavy} circuits.
+
+\begin{definition}[Proof tree]\label{defn:prooftree}
+A \emph{proof tree} of an arithmetic circuit $\Phi$ is a sub-circuit $\Phi'$ such that
+\begin{itemize}
+\item The root of $\Phi$ is in $\Phi'$
+\item If a multiplication gate with $v = v_1\times v_2 \in \Phi'$, then $v_1$ and $v_2$ are in $\Phi'$ as well.
+\item If an addition gate $v = v_1 + \dots + v_s \in \Phi'$, then
+  exactly one $v_i$ is in $\Phi'$.
+\end{itemize}
+Such a sub-circuit $\Phi'$, represented as a tree (duplicating nodes if
+required), shall be called a \emph{proof tree} of $\Phi$.
+\end{definition}
+
+\newcommand{\PF}{\textsc{ProofTrees}}
+
+Let $\PF(\Phi)$ denote the set of all proof trees of $\Phi$. It is
+easy to see that any proof tree of $\Phi$ computes a monomial over the
+variables. Further, if $\Phi$ was a monotone circuit computing a polynomial
+$f$, then every proof tree computes a monomial in $f$. Therefore,
+$$
+f\quad=\quad \sum_{\Phi' \in \PF(\Phi)} [\Phi']
+$$
+where $[\Phi']$ denotes the monomial computed by $\Phi'$. Of course, the number of proof trees is exponential and the above
+expression is huge. However, we could use a divide-and-conquer
+approach to the above equation using the following lemma. 
+
+\begin{lemma}\label{lem:brent-two-thirds}
+  Let $\Phi'$ be a left-heavy formula of formal degree $d$. Then there
+  is a node $v$ on the left-most path of $\Phi'$ such that
+  $\frac{d}{3}\leq \deg(v)< \frac{2d}{3}$.
+\end{lemma}
+\begin{proof}
+  Pick the lowest node on the left-most path that has degree at least
+  $\frac{2d}{3}$. Then, its left child must be a node of degree less
+  than $\frac{2d}{3}$, and also at least $\frac{d}{3}$ (because the
+  formula is left-heavy). 
+\end{proof}
+
+For any proof tree $\Phi'$ and a node $v$ on its left-most path,
+define $[\Phi':v]$ to be the output polynomial of the proof tree 
+obtained by replacing the node $v$ on the left-most path by $1$. 
+If $v$ does not occur on the
+left-most path of $\Phi'$, define $[\Phi':v]$ to be $0$. We will 
+denote the polynomial computed at a node $v$ by $f_{v}$. Then, the
+above equation can now be re-written as:
+\begin{eqnarray*}
+f & = & \sum_{\Phi' \in \PF(\Phi)} [\Phi']\\
+  & = & \sum_{\substack{v\in \Phi\\ \frac{d}{3}\leq \deg{v} < \frac{2d}{3}}} f_{v} \cdot \inparen{ \sum_{\Phi'\in \PF(\Phi)} [\Phi':v]}\\
+  & = & \sum_{\substack{v\in \Phi\\ \frac{d}{3}\leq \deg{v} < \frac{2d}{3}}} f_{v} \cdot g_v\quad\quad\text{where $g_v = \sum_{\Phi'\in \PF(\Phi)} [\Phi':v]$} .\\
+\end{eqnarray*}
+Since $\frac{d}{3} \leq \deg{v} < \frac{2d}{3}$, we also have that
+$\frac{d}{3} < \deg{g_v} \leq \frac{2d}{3}$ and the last equation is
+what was required by Lemma~\ref{lem:vsbr-two-thirds}.\qed
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds_birk"
+%%% End: 

@@ -1,0 +1,140 @@
+\documentclass{birkjour}
+
+%\usepackage{fullpage}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[colorlinks]{hyperref}
+%\usepackage{complexity}
+%\usepackage{graphicx}
+%\usepackage{enumerate}
+
+\hypersetup{
+  citecolor={blue}
+}
+
+
+%\usepackage{palatino}
+\usepackage{todonotes}
+%\usepackage{euler}
+
+% %% BEGIN font stuff
+% \usepackage[T1]{fontenc}
+% \usepackage[urw-garamond]{mathdesign}
+% \usepackage{textcomp}
+% %% END font stuff 
+\reversemarginpar
+
+
+\newcommand{\FM}{\mathrm{FM}}
+\newcommand{\Mon}{\mathrm{Mon}}
+
+
+\newcommand{\rank}{\mathrm{rank}}
+\newcommand{\CM}[1]{\Gamma^{\mathrm{[#1]}}}
+\newcommand{\spaced}[1]{\quad#1\quad}
+\newcommand{\bezout}{b\'{e}zout}
+\newcommand{\Bezout}{B\'{e}zout}
+\newcommand{\SPD}[3]{\inangle{\partial^{=#1}\inparen{#3}}_{\leq #2}}
+
+
+
+
+
+%%% Circuit classes
+\newcommand{\SPS}{\Sigma\Pi\Sigma}
+\newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
+\newcommand{\mySPSP}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
+
+
+\input{macros}
+
+%%RP: Personal preferences 
+\parindent 0pt
+\renewcommand{\epsilon}{\varepsilon}
+
+% for inline commenting by authors
+\newcommand{\authnote}[2]{{\color{red}\{$<<<${\bf \footnotesize #1 notes: #2}$>>>$\}}}
+\newcommand{\Rnote}[1]{\todo[color=green!40,fancyline,size=\tiny]{RP: #1}}
+\newcommand{\Nnote}[1]{\todo[color=blue!30,fancyline,size=\tiny]{N: #1}}
+\newcommand{\Rnoteinline}[1]{\todo[color=green!40,inline,size=\tiny]{RP: #1}}
+\newcommand{\Nnoteinline}[1]{\todo[color=blue!30,inline,size=\tiny]{N: #1}}
+
+\title[A selection of lower bounds for arithmetic circuits]{A selection of lower bounds for\\ arithmetic circuits}
+
+\author[Kayal]{Neeraj Kayal}
+\address{Microsoft Research\\
+Bangalore, India}
+\email{neeraka@microsoft.com}
+
+\author[Saptharishi]{Ramprasad Saptharishi}
+\address{Microsoft Research\\
+Bangalore, India}
+\email{ramprasad@cmi.ac.in}
+
+%----------classification, keywords, date
+%%% ALL THIS NEEDS TO BE DONE
+\subjclass{Primary 68Q25, 68W30; Secondary 12E05}
+
+\keywords{arithmetic circuits, lower bounds, determinant, permanent}
+
+\date{January 1, 2004}
+%----------additions
+\dedicatory{To Somenath Biswas, on his 60th Birthday}
+%%% ----------------------------------------------------------------------
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{minipage}[t]{0.2\textwidth}
+  \hfill
+  \hfill
+\end{minipage}
+\begin{minipage}[t]{0.8\textwidth}
+  \begin{flushright}
+    \begin{quote}
+      {\em It is convenient to have a measure of the 
+        amount of work involved in a computing process, 
+        even though it be a very crude one ... We might, 
+        for instance, count the number of additions, 
+        subtractions, multiplications, divisions, 
+        recordings of numbers,...}
+    \end{quote}
+  \end{flushright}
+  \begin{flushright}
+    from \em{Rounding-off errors in matrix processes},
+  \end{flushright}
+  
+  \begin{flushright}
+    Alan M. Turing, 1948.
+  \end{flushright}
+\end{minipage}
+
+
+\input{secIntro}
+
+\input{secRandom}
+
+\input{secBaurStrassen}
+
+\input{secGenRoadMap}
+
+\input{secSimpleLBs}
+
+\input{secMonotone}
+
+\input{secGK}
+
+\input{secMultilinear}
+
+\input{secShiftedPartials}
+
+\input{secConclusion}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

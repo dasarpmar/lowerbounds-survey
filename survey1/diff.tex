@@ -1,0 +1,1714 @@
+\documentclass{birkjour}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL Backup_20140113_1007_SubmittedToArvind\lowerbounds_birk.tex   Sun Jan 12 17:11:21 2014
+%DIF ADD lowerbounds_birk.tex                                          Fri Jan 31 10:54:53 2014
+
+%\usepackage{fullpage}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[colorlinks]{hyperref}
+%\usepackage{complexity}
+%\usepackage{graphicx}
+%\usepackage{enumerate}
+
+\hypersetup{
+  citecolor={blue}
+}
+
+
+%\usepackage{palatino}
+\usepackage{todonotes}
+%\usepackage{euler}
+
+% %% BEGIN font stuff
+% \usepackage[T1]{fontenc}
+% \usepackage[urw-garamond]{mathdesign}
+% \usepackage{textcomp}
+% %% END font stuff 
+\reversemarginpar
+
+
+\newcommand{\FM}{\mathrm{FM}}
+\newcommand{\Mon}{\mathrm{Mon}}
+
+
+\newcommand{\rank}{\mathrm{rank}}
+\newcommand{\CM}[1]{\Gamma^{\mathrm{[#1]}}}
+\newcommand{\spaced}[1]{\quad#1\quad}
+\newcommand{\bezout}{b\'{e}zout}
+\newcommand{\Bezout}{B\'{e}zout}
+\newcommand{\SPD}[3]{\inangle{\partial^{=#1}\inparen{#3}}_{\leq #2}}
+
+
+
+
+
+%%% Circuit classes
+\newcommand{\SPS}{\Sigma\Pi\Sigma}
+\newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
+\newcommand{\mySPSP}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
+
+
+\input{macros}
+
+%%RP: Personal preferences 
+\parindent 0pt
+\renewcommand{\epsilon}{\varepsilon}
+
+% for inline commenting by authors
+\newcommand{\authnote}[2]{{\color{red}\{$<<<${\bf \footnotesize #1 notes: #2}$>>>$\}}}
+\newcommand{\Rnote}[1]{\todo[color=green!40,fancyline,size=\tiny]{RP: #1}}
+\newcommand{\Nnote}[1]{\todo[color=blue!30,fancyline,size=\tiny]{N: #1}}
+\newcommand{\Rnoteinline}[1]{\todo[color=green!40,inline,size=\tiny]{RP: #1}}
+\newcommand{\Nnoteinline}[1]{\todo[color=blue!30,inline,size=\tiny]{N: #1}}
+
+\title[A selection of lower bounds for arithmetic circuits]{A selection of lower bounds for\\ arithmetic circuits}
+
+\author[Kayal]{Neeraj Kayal}
+\address{Microsoft Research\\
+Bangalore, India}
+\email{neeraka@microsoft.com}
+
+\author[Saptharishi]{Ramprasad Saptharishi}
+\address{Microsoft Research\\
+Bangalore, India}
+\email{ramprasad@cmi.ac.in}
+
+%----------classification, keywords, date
+%%% ALL THIS NEEDS TO BE DONE
+\subjclass{Primary 68Q25, 68W30; Secondary 12E05}
+
+\keywords{arithmetic circuits, lower bounds, determinant, permanent}
+
+\date{January 1, 2004}
+%----------additions
+\dedicatory{To Somenath Biswas, on his 60th Birthday}
+%%% ----------------------------------------------------------------------
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+\maketitle
+
+\begin{minipage}[t]{0.2\textwidth}
+  \hfill
+  \hfill
+\end{minipage}
+\begin{minipage}[t]{0.8\textwidth}
+  \begin{flushright}
+    \begin{quote}
+      {\em It is convenient to have a measure of the 
+        amount of work involved in a computing process, 
+        even though it be a very crude one ... We might, 
+        for instance, count the number of additions, 
+        subtractions, multiplications, divisions, 
+        recordings of numbers,...}
+    \end{quote}
+  \end{flushright}
+  \begin{flushright}
+    from \em{Rounding-off errors in matrix processes},
+  \DIFaddbegin \end{flushright}
+
+  \begin{flushright}
+    \DIFaddend Alan M. Turing, 1948.
+  \end{flushright}
+\end{minipage}
+
+
+\section{Introduction}\label{sec:introduction}
+Polynomials originated in classical mathematical studies concerning
+geometry and solutions to systems of equations. They feature in many
+classical results in algebra, number theory and geometry - e.g. in
+Galois and Abel's resolution of the solvability via radicals of a
+quintic, Lagrange's theorem on expressing every natural number as a
+sum of four squares and the impossibility of trisecting an angle
+(using ruler and compass). In modern times, computer scientists began
+to investigate as to what functions can be (efficiently)
+computed. Polynomials being a natural class of functions, one is
+naturally lead to the following question:
+	\begin{center}
+		\begin{minipage}{0.8\textwidth}
+			{\em What is the optimum way to compute a given (family of) polynomial(s)?}
+		\end{minipage}
+	\end{center}
+	Now the most natural way to compute a polynomial $f(x_1, x_2, \ldots, x_n) $ 
+	over a field $\FF$ is to start with the input variables 
+	$x_1, x_2, \ldots, x_n$ and then apply a sequence of basic 
+	operations such as additions, subtractions and 
+	multiplications\footnote{
+		One can also allow more arithmetic operations such as division 
+		and square roots. It turns out however that one can efficiently 
+		simulate any circuit with divisions and \DIFdelbegin \DIFdel{squareroots }\DIFdelend \DIFaddbegin \DIFadd{square roots }\DIFaddend by another 
+		circuit without these operations while incurring only an 
+		\DIFdelbegin \DIFdel{$O(d)$-factor loss }\DIFdelend \DIFaddbegin \DIFadd{polynomial factor increase }\DIFaddend in size.
+	}
+	in order to obtain the desired polynomial $f$. Such a computation 
+	is called a straight line program. We often represent such a 
+	straight-line program graphically as an arithmetic circuit - 
+	wherein the overall computation corresponds to a directed acylic 
+	graph whose source nodes are labelled with the input variables 
+	$\{ x_1, x_2, \ldots, x_n \}$ and the internal nodes are labelled 
+	with either $+$ or $\times$ (each internal node corresponds to one 
+	computational step in the straight-line program). We typically allow 
+	arbitrary constants from the underlying field on the incoming edges 
+	of a $+$ gate so that a $+$ gate can in fact compute an arbitrary 
+	$\FF$-linear combination of its inputs. The complexity of the 
+	computation corresponds to the number of operations, also called 
+	the size of the corresponding arithmetic circuit.
+	With arithmetic circuits being the relevant model, the informal 
+	question posed above can be formalized by defining the optimal 
+	way to compute a given polyomial as the smallest arithmetic 
+	circuit in terms of \DIFaddbegin \DIFadd{the }\DIFaddend size that computes it. While different aspects 
+	of polynomials have been studied extensively in various areas of 
+	mathematics, what is unique to computer science is the endeavour to 
+	prove upper and lower bounds on the size of arithmetic circuits 
+	computing a given (family of) polynomials. Here we give a biased 
+	survey of this area, focusing mostly on lower bounds. Note that
+	there are already two excellent surveys of this area - one by Avi 
+	Wigderson \cite{aviSurvey} and the other by Amir Shpilka and Amir 
+	Yehudayoff \cite{sy}\footnote{
+		A more specialized survey by Chen, Kayal and Wigderson \cite{ckw11}
+		focuses on the applications of partial derivatives in understanding 
+		the structure and complexity of polynomials. 
+	}. Our intention in writing the survey is the underlying hope 
+	that revisiting and assimilating the known results pertaining to 
+	circuit lower bounds will in turn help us make progress on this 
+	beautiful problem. Consequently we mostly present here those 
+	results which we for some reason felt we did not understand 
+	comprehensively enough. We conclude with \DIFdelbegin \DIFdel{a }\DIFdelend some recent lower 
+	bound results for homogeneous bounded depth formulas. Some 
+	notable lower bound results that we are unable to present 
+	here due to space and time constraints are as follows. A 
+	quadratic lower bound for depth three circuits by Shpilka and Wigderson \cite{sw2001}, for bounded occur 
+	bounded depth formulas by Agrawal, Saha, Saptharishi and 
+	Saxena \cite{ASSS12} and the $n^{1 + \Omega(1/r)}$ lower bound for 
+	circuits of depth $r$ by Raz \cite{raz10}.\\
+
+\noindent {\bf Overview.}
+The state of affairs in arithmetic complexity is such that despite a
+lot of attention we still have only modest lower bounds for general
+circuits and formulas. In order to make progress, recent work has
+focused on restricted subclasses.  We first present the best known
+lower bound for general circuits due to Baur and Strassen \cite{BS83},
+and a lower bound for formulas due to Kalorkoti
+\cite{k85}. The subsequent lower bounds that we present
+follow a common roadmap and we articulate this in Section
+\ref{sec:roadmap}, and present some simple lower bounds to help the
+reader gain familiarity. We then present (a slight generalization of)
+an exponential lower bound for monotone circuits due to Jerrum and
+Snir \cite{js82}.  Moving on to more restricted (but still nontrivial
+and interesting) models, we first present an exponential lower bound
+for depth three circuits over finite fields due to Grigoriev and
+Karpinski \cite{grigoriev98} and multilinear formulas. We conclude
+with some recent progress on lower bounds for homogeneous depth four
+circuits.
+
+\begin{remark*} Throughout the article, we shall use $\Det_n$ and $\Perm_n$ to refer to the determinant and permanent respectively of a symbolic $n\times n$ matrix $\inparen{\!\inparen{x_{ij}}\!}_{1\leq i,j\leq n}$. 
+
+\end{remark*}
+
+	
+	
+	
+	
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 
+
+
+\section{Existential lower bounds}\label{sec:random}
+Before we embark on our quest to prove lower bounds for interesting
+families of polynomials, it is natural to ask as to what \DIFdelbegin \DIFdel{are }\DIFdelend bounds
+one can hope to achieve.  For a multivariate polynomial 
+$f(\vecx) \in \FF[\vecx]$, denote by $S(f)$ the size of 
+the smallest arithmetic circuit computing
+$f$.  
+\begin{theorem}
+	{\bf [Folklore.]}
+  For ``most'' polynomials $f(\vecx) \in \FF[\vecx]$ of degree $d$ 
+  on $n$ variables we have 
+  $$ S(f) \spaced{\geq} \Omega \inparen{\sqrt{\binom{n + d}{d}}}. $$
+\end{theorem}
+\begin{proof-sketch}
+  We prove this here only in the situation where the underlying field
+  $\FF$ is a finite field and refer the reader to another survey
+  (\cite{ckw11}, Chapter 4) for a proof in the general case. So let
+  $\FF = \FF_{q}$ be a finite field. Any line of a straight line
+  program computing $f$ can be expressed as taking the product of two
+  $\F_q$-linear combinations of previously computed values. Hence the
+  total number of straight-line programs of length $s$ is at most
+  $q^{O(s^2)}$. On the other hand there are $q^{\binom{n+d}{d}}$
+  polynomials of degree $d$ on $n$ variables.  Hence most $n$-variate
+  polynomials of degree $d$ require straight-line programs of length
+  at least (equivalently arithmetic circuits of size at least) $s =
+  \Omega \inparen{\sqrt{\binom{n+d}{d}}}$.
+	\end{proof-sketch}
+
+\noindent	Hrubes and Yehudayoff \cite {hy11} showed that in fact 
+	most $n$-variate polynomials of degree $d$ {\em with zero-one 
+	coefficients} have complexity at least $\Omega\inparen{\sqrt{\binom{n+d}{d}}}$. 
+	Now it turns out that this is in fact a lower bound on the 
+	number of multiplications in any circuit computing a random 
+	polynomial. Lovett \cite{lovett11} complements this 
+	nicely by giving a matching upper bound. Specifically, 
+	it was shown in \cite{lovett11} that for any polynomial $f$ 
+	of degree $d$ on $n$ variables there exists a circuit computing 
+	$f$ having at most $\inparen{\sqrt{\binom{n + d}{d}}} \cdot (nd)^{O(1)} $ 
+	multiplications.
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 
+
+
+\section{Weak lower bounds for general circuits and formulas}\label{sec:gen-ckt-formulas}
+
+Despite several attempts by various researchers to prove lower bounds for arithmetic circuits or formulas, we only have very mild lower bounds for general circuits or formulas \DIFdelbegin \DIFdel{insofar}\DIFdelend \DIFaddbegin \DIFadd{thus far}\DIFaddend . In this section, we shall look at the two  modest lower bounds for general circuits and formulas. 
+
+\subsection{Lower bounds for general circuits}\label{sec:baur-strassen}
+
+The only super-linear lower bound we currently know for general arithmetic circuits is the following  result of Baur and Strassen \cite{BS83}.
+
+\begin{theorem}[\cite{BS83}]\label{thm:baur-strassen}
+  Any fan-in $2$ circuit that computes the polynomial $f = x_1^{d+1} + \dots + x_n^{d+1}$ has size $\Omega(n\log d)$. 
+\end{theorem}
+
+\subsubsection{An exploitable weakness}
+
+Each gate of the circuit $\Phi$ computes a local operation on the two children. To formalize this, define a new variable $y_g$ for every gate $g \in \Phi$. Further, for every gate $g$ define a quadratic equation $Q_g$ as
+$$
+Q_g = \begin{cases} y_g - (y_{g_1} + y_{g_2}) & \text{if $g = g_1 + g_2$}\\
+  y_g - (y_{g_1}\cdot y_{g_2}) & \text{if $g = g_1 \cdot g_2$}
+\end{cases}
+$$
+Further if $y_o$  corresponds to the output gate, then the system of equations
+$$\setdef{Q_g = 0}{g\in \Phi} \spaced{\union} \inbrace{y_{o} = 1}$$
+completely characterize the computations of $\Phi$ that results in an output of $1$. 
+
+The same can also be extended for \emph{multi-output} circuits that compute several polynomials simultaneously. In such cases, the set of equations
+$$\setdef{Q_g = 0}{g\in \Phi} \spaced{\union} \setdef{y_{o_i} = 1}{i=1, \ldots, n}$$
+completely characterize computations that result in an output of all ones. The following classical theorem allows us to bound the number of  common roots to a system of polynomial equations. 
+
+\begin{theorem}[\Bezout's theorem]
+  Let $g_1,\dots, g_r \in \F[X]$ such that $\deg(g_i) = d_i$ such that the number of common roots of $g_1=\dots=g_r = 0$ is finite. Then, the number of common roots (counted with multiplicities) is bounded by $\prod d_i$.
+\end{theorem}
+
+Thus in particular, if we have a circuit $\Phi$ of size $s$ that \emph{simultaneously} computes $\inbrace{x_1^d, \dots,x_n^d}$, then we have $d^n$ inputs that evaluate to all ones (where each $x_i$ must be  a $d$-th root of unity). Hence, \Bezout's theorem implies that
+$$
+2^s\spaced{\geq} d^n \spaced{\quad\implies\quad} s \spaced{=} \Omega(d\log n)\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+
+Observe that $\inbrace{x_1^d,\dots, x_n^d}$ are all first-order derivatives of $f = x_1^{d+1}+\dots+x_n^{d+1}$ (with suitable scaling). A natural question here is the following --- if $f$ can be computed an arithmetic circuit of size $s$, what is the size required to compute all first-order partial derivatives of $f$ simultaneously? The \naive approach of computing each derivative separately results in a circuit of size $O(s\cdot n)$. Baur and Strassen \cite{BS83} show that we can save a factor of $n$\DIFaddbegin \DIFadd{.
+}\DIFaddend 
+
+\begin{lemma}[\cite{BS83}]\label{lem:baur-strassen}
+  Let $\Phi$ be an arithmetic circuit of size $s$ and fan-in $2$ that computes a polynomial $f\in \F[X]$. Then, there is a multi-output circuit  of size $O(s)$ computing all first order derivatives of $f$.
+\end{lemma}
+
+Note that this immediately implies that any circuit computing $f = x_1^{d+1} + \dots + x_n^{d+1}$ requires size $\Omega(d\log n)$ as claimed by Theorem~\ref{thm:baur-strassen}. 
+
+
+\subsubsection{Computing all first order derivatives simultaneously}
+
+Since we are working with fan-in $2$ circuits, the number of edges is at most twice the size. Hence let $s$ denote the number of edges in the circuit $\Phi$, and we shall prove by induction that all first order derivatives of $\Phi$ can be computed by a circuit of size at most $5s$. Pick a non-leaf node $v$ in the circuit $\Phi$ closest to the leaves with both its children being variables, and say $x_1$ and $x_2$ are the variables feeding into $v$. In other words, $v = x_1 \odot x_2$ where $\odot$ is either $+$ or $\times$.
+
+Let $\Phi'$ be the circuit obtained by deleting the two edges feeding into $v$, and replacing $v$ by a new variable. Hence, $\Phi'$ computes a polynomial $f' \in \F[X\union \inbrace{v}]$ and has at most $(s-1)$ edges. By induction on the size, we can assume that there is a circuit $\mathbb{D}(\Phi')$ consisting of at most $5(s-1)$ edges that computes all the first order derivatives of $f'$.
+
+Observe that since $f'\mid_{(v = x_1 \odot x_2)} = f(\vecx)$,  we have that 
+$$
+\parderiv{f}{x_i} \spaced{=}\inparen{\parderiv{f'}{x_i}}_{v = x_1 \odot x_2} \quad+\quad  \inparen{\parderiv{f'}{v}}_{v = x_1 \odot x_2}\inparen{\parderiv{(x_1 \odot x_2)}{x_i}}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+
+Hence, if $v = x_1 + x_2$ then
+\begin{eqnarray*}
+  \parderiv{f}{x_1} & = & \inparen{\parderiv{f'}{x_1}}_{v=x_1 + x_2} +\quad \inparen{\parderiv{f'}{v}}_{v = x_1 + x_2}\\
+  \parderiv{f}{x_2} & = & \inparen{\parderiv{f'}{x_2}}_{v=x_1 + x_2} +\quad \inparen{\parderiv{f'}{v}}_{v = x_1 + x_2}\\
+  \parderiv{f}{x_i} & = & \DIFdelbegin %DIFDELCMD < \inparen{\parderiv{f'}{x_2}}%%%
+\DIFdelend \DIFaddbegin \inparen{\parderiv{f'}{x_i}}\DIFaddend _{v=x_1 + x_2} \qquad\text{for $i>2$}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+If $v = x_1 \cdot x_2$, then
+\begin{eqnarray*}
+  \parderiv{f}{x_1} & = & \inparen{\parderiv{f'}{x_1}}_{v=x_1 \cdot x_2} + \inparen{\parderiv{f'}{v}}_{v = x_1 \cdot x_2} \cdot x_2\\
+  \parderiv{f}{x_2} & = & \inparen{\parderiv{f'}{x_2}}_{v=x_1 \cdot x_2} + \inparen{\parderiv{f'}{v}}_{v = x_1\cdot x_2}\cdot x_1\\
+  \parderiv{f}{x_i} & = & \DIFdelbegin %DIFDELCMD < \inparen{\parderiv{f'}{x_2}}%%%
+\DIFdelend \DIFaddbegin \inparen{\parderiv{f'}{x_i}}\DIFaddend _{v=x_1 \cdot x_2} \qquad\text{for $i>2$}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+
+Hence, by adding at most $5$ additional edges to $\mathbb{D}(\Phi')$, we can construct $\mathbb{D}(\Phi)$ and hence size of $\mathbb{D}(\Phi)$ is at most $5s$. \qed (Lemma~\ref{lem:baur-strassen})
+
+\subsection{Lower bounds for formulas}\label{sec:Kalorkoti}
+
+This section would be devoted to the proof of Kalorkoti's lower bound
+\cite{k85} for formulas computing $\Det_n$, $\Perm_n$.
+
+\begin{theorem}[\cite{k85}]\label{thm:kalorkoti}
+  Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires
+  $\Omega(n^3)$ size.
+\end{theorem}
+
+The exploitable weakness in this setting is again to use the fact that the polynomials computed at intermediate gates share many polynomial dependencies. 
+
+\begin{definition}[Algebraic independence]
+  A set of polynomials $\inbrace{f_1,\dots, f_m}$ is said to be
+  \emph{algebraically independent} if there is no non-trivial polynomial 
+  $H(z_1,\dots, z_m)$ such that $H(f_1,\dots, f_m)=0$. 
+
+  The size of the largest algebraically independent subset of
+  $\vecf=\inbrace{f_1,\dots, f_m}$ is called the \emph{transcendence
+    degree} (denoted by $\mathrm{trdeg}(f)$).
+\end{definition}
+
+The proof of Kalorkoti's theorem proceeds by defining a \emph{complexity measure} using the above notion of algebraic independence. \\
+
+
+{\bf The Measure:} 
+For any subset of variables $Y\subseteq X$, we can write a polynomial
+$f \in \F[X]$ of the form $f = \sum_{i=1}^s f_i \cdot m_i$ where $m_i$'s are
+distinct monomials in the variables in $Y$, and \DIFdelbegin \DIFdel{$f_i \in
+F[\overline{Y}]$}\DIFdelend \DIFaddbegin \DIFadd{$f_i \in
+F[X \setminus Y]$}\DIFaddend . We shall denote by $\mathrm{td}_Y(f)$ the transcendence degree of $\inbrace{f_1,\dots, f_s}$
+
+
+Fix a partition of variables $X = X_1 \sqcup \dots
+\sqcup X_r$. For any polynomial $f\in \F[X]$, define the map $\CM{Kal}:\F[X]\rightarrow \Z_{\geq 0}$  as
+$$
+\CM{Kal}(f) \quad=\quad \sum_{i=1}^r \mathrm{td}_{X_i}(f)
+$$
+
+The lower bound proceeds in two natural steps:
+\begin{enumerate}
+\item Show that $\CM{Kal}(f)$ is \emph{small} whenever $f$ is computable by a \emph{small} formula. 
+\item Show that $\CM{Kal}(\Det_n)$ is \emph{large}. 
+\end{enumerate}
+
+\subsubsection{Upper bounding $\CM{Kal}$ for a formula}
+
+\begin{lemma}\label{lem:kal-upperbound}
+  Let $f$ be computed by a fan-in two formula $\Phi$ of size $s$. Then
+  for any partition of variables $X = X_1\sqcup \dots \sqcup X_r$, we
+  have $\CM{Kal}(f) = O(s)$.
+\end{lemma}
+\begin{proof}
+  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves
+  of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote
+  the leaves of the subtree rooted at $v$ that are in the part
+  $X_i$. Since the underlying graph of $\Phi$ is a tree, it follows
+  that the size of $\Phi$ is bounded by a twice the number of
+  leaves. For each part $X_i$, we shall show that
+  $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which
+  would prove the required bound. \\
+
+  Fix an arbitrary part $Y = X_i$. Define the following three 
+  sets of nodes
+  \begin{eqnarray*}
+    V_0 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 0 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
+    V_1 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 1 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
+    V_2 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} \geq 2}
+  \end{eqnarray*}
+
+  Each node $v\in V_0$ computes a polynomial in \DIFdelbegin \DIFdel{$f_v \in
+  \F[\overline{Y}]$}\DIFdelend \DIFaddbegin \DIFadd{$f_v \in
+  \F[X\setminus Y]$}\DIFaddend , and we shall replace the subtree at $v$ by a node
+  computing the polynomial $f_v$. Similarly, any node $v\in V_1$
+  computes a polynomial of the form $f^{(0)}_v + f^{(1)}_v y_v$ for some $y_v\in Y$
+  and \DIFdelbegin \DIFdel{$f^{(0)}_v, f^{(1)}_v \in \F[\overline{Y}]$}\DIFdelend \DIFaddbegin \DIFadd{$f^{(0)}_v, f^{(1)}_v \in \F[X\setminus Y]$}\DIFaddend . We shall again replace the
+  subtree rooted at $v$ by a node computing $f^{(0)}_v + f^{(1)}_v y_v$. 
+
+  Hence, the formula $\Phi$ now reduces to a smaller formula $\Phi_Y$ with
+  leaves  being the nodes in $V_0$ and $V_1$ (and nodes in $V_2$ are
+  unaffected). We would like to show that the size of the reduced
+  formula, which is at most twice the number of its leaves, is
+  $O(\abs{\textsc{Leaf}_Y(\Phi)})$.
+
+  \begin{observation}\label{obs:v1-bound}$\abs{V_1} \leq \abs{\textsc{Leaf}_Y(\Phi)}$.    
+  \end{observation}
+  \begin{myproof}{Obs}
+    Each node in $V_1$ has a distinct leaf labelled with a variable in
+    $Y$. Hence, $\abs{V_1}$ is bounded by the number of leaves
+    labelled with a variable in $Y$.
+  \end{myproof}
+
+  This shows that the $V_1$ leaves are not too many. Unfortunately, we
+  cannot immediately bound the number of $V_0$ leaves, since we could
+  have a long chain of $V_2$ nodes each with one sibling being a $V_0$
+  leaf. The following observation would show how we can eliminate such
+  long chains.
+
+  \begin{observation}\label{obs:same-leaf-collapse}
+    Let $u$ be an arbitrary node, and $v$ be another node in the
+    subtree rooted at $u$ with $\textsc{Leaf}_Y(u) =
+    \textsc{Leaf}_Y(v)$. Then the polynomial $g_u$ computed at $u$ and
+    the polynomial $g_v$ computed at $v$ are related as $g_u = f_1 g_v
+    + f_2$ for some \DIFdelbegin \DIFdel{$f_1,f_2 \in \F[\overline{Y}]$}\DIFdelend \DIFaddbegin \DIFadd{$f_1,f_2 \in \F[X\setminus Y]$}\DIFaddend .
+  \end{observation}
+  \begin{myproof}{Obs}
+    If $\textsc{Leaf}_Y(u) =\textsc{Leaf}_Y(v)$, then every node on
+    the path from $u$ to $v$ must have a $V_0$ leaf as the other child. The
+    observation follows as all these nodes are $+$ or $\times$ gates.
+  \end{myproof}
+
+  Using the above observation, we shall remove the need for $V_0$
+  nodes completely by augmenting each node $u$ (computing a polynomial
+  $g_u$) in $\Phi_Y$ with polynomials \DIFdelbegin \DIFdel{$f_u^{(0)}, f_u^{(1)} \in \F[\overline{Y}]$
+  }\DIFdelend \DIFaddbegin \DIFadd{$f_u^{(0)}, f_u^{(1)} \in \F[X\setminus Y]$
+  }\DIFaddend to enable them to compute $f_u^{(1)}g_u + f_u^{(0)}$. Let this augmented formula be called $\hat{\Phi}_Y$. Using
+  Observation~\ref{obs:same-leaf-collapse}, we can now contract any
+  two nodes $u$ and $v$ with $\textsc{Leaf}_Y(u) =
+  \textsc{Leaf}_Y(v)$, and eliminate all $V_0$ nodes
+  completely. Since all $V_2$ nodes are internal nodes, the only leaves of the augmented formula $\hat{\Phi}_Y$ are in $V_1$. Hence, the size of the augmented formula $\hat{\Phi}_Y$ is  bounded by $2\abs{V_1}$, which is bounded by
+  $2\abs{\textsc{Leaf}_Y(\Phi)}$ by Observation~\ref{obs:v1-bound}.\\
+
+  Suppose $\Phi$ computes a polynomial $f$, which can be written as  $f
+  = \sum_{i=1}^t f_i\cdot m_i$ with \DIFdelbegin \DIFdel{$f_i \in \F[\overline{Y}]$ }\DIFdelend \DIFaddbegin \DIFadd{$f_i \in \F[X\setminus Y]$ }\DIFaddend and $m_i$'s being
+  distinct monomials in $Y$. Since $\hat{\Phi}_Y$ also computes $f$, each $f_i$ is a polynomial
+  combination of the polynomials $S_Y = \setdef{f_{u}^{(0)},
+    f_{u}^{(1)}}{u\in \hat{\Phi}_Y}$. Since $\hat{\Phi}_Y$ consists of at
+  most $2\abs{\textsc{Leaf}_Y(\Phi)}$ augmented nodes, we have that
+  $\mathrm{td}_Y(f) \leq |S_Y| \leq 4\abs{\textsc{Leaf}_Y(\Phi)}$. Therefore, 
+  $$
+  \mathrm{td}_Y(f) \quad=\quad \mathrm{trdeg}\setdef{f_i}{i\in [t]} \quad\leq\quad 4\abs{\textsc{Leaf}_Y(\Phi)}
+  $$
+  Hence, 
+  $$\CM{Kal}(\Phi) = \sum_{i=1}^r \mathrm{td}_{X_i}(f_i) \leq 4\inparen{\sum_{i=1}^r \abs{\textsc{Leaf}_{X_i}}} = O(s)
+  $$
+\end{proof}
+
+\subsubsection{Lower bounding $\CM{Kal}(\Det_n)$}
+
+
+\begin{lemma}\label{lem:kal-lowerbound}
+  Let $X = X_1 \sqcup \dots \sqcup X_n$ be the partition as defined by
+  $X_t = \setdef{x_{ij}}{i-j\equiv t\bmod{n}}$. Then,
+  $\CM{Kal}(\Det_n) = \Omega(n^3)$.
+\end{lemma}
+\begin{proof}
+  By symmetry, it is easy to see that $\text{td}_{X_i}(\Det_n)$ is
+  the same for all $i$. Hence, it suffices to show that
+  $\text{td}_{Y}(\Det_n) = \Omega(n^2)$ for $Y = X_n = \inbrace{x_{11},\dots, x_{nn}}$. 
+
+  To see this, observe that the determinant consists of the monomials
+  $\inparen{\frac{x_{11}\dots x_{nn}}{x_{ii}x_{jj}}}\cdot
+  x_{ij}x_{ji}$ for every $i\neq j$. Hence, $\text{td}_{Y}(\Det_n)
+  \geq \mathrm{trdeg}\setdef{x_{ij}x_{ji}}{i\neq j} =
+  \Omega(n^2)$. Therefore, $\CM{Kal}(\Det_n) =
+  \Omega(n^3)$.
+\end{proof}
+
+The proof of Theorem~\ref{thm:kalorkoti} follows from
+Lemma~\ref{lem:kal-upperbound} and Lemma~\ref{lem:kal-lowerbound}.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%DIF < %% TeX-master: "lowerbounds"
+%DIF > %% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+
+%%% LOCAL Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 
+
+
+\section{``Natural'' proof strategies}\label{sec:roadmap}
+
+The lower bounds presented in Section~\ref{sec:gen-ckt-formulas} proceeded by first identifying a \emph{weakness} of the model, and exploiting it in an explicit manner. More concretely, Section~\ref{sec:Kalorkoti} presents a promising strategy that could be adopted to prove lower bounds for various models of arithmetic circuits. The crux of the lower bound was the construction of a good map $\Gamma$ that assigned a number to every polynomial. The map $\CM{Kal}$ was useful to show a lower bound in the sense that any $f$ computable by a \emph{small} formula had \emph{small} $\CM{Kal}(f)$. In fact, all subsequent lower bounds in arithmetic circuit complexity have more or less followed a similar template of a ``natural proof''. More concretely, all the subsequent lower bounds we shall see would essentially follow the outlined plan.  
+
+\begin{quote}
+{\bf Step 1 (normal forms)} For every circuit in the circuit class $\mathcal{C}$ of interest, express the polynomial computed as a \emph{small sum of simple building blocks}. 
+\end{quote}
+
+For example, every $\Sigma\Pi\Sigma$ circuit is a \emph{small} sum of \emph{products of linear polynomials} which are the building blocks here. In this case, the circuit model naturally admits such a representation but we shall see other examples with very different representations as sum of building blocks. 
+
+\begin{quote}
+{\bf Step 2 (complexity measure)} Construct a map $\Gamma: \F[x_1,\dots, x_n] \rightarrow \Z_{\geq 0}$ \DIFdelbegin \DIFdel{with }\DIFdelend that is \emph{sub-additive} i.e. $\Gamma(f_1 + f_2)\leq \Gamma(f_1) + \Gamma(f_2)$
+\end{quote}
+
+In most cases, $\Gamma(f)$ is the rank of a large matrix whose entries are linear functions in the coefficients of $f$. In such cases, we immediately get that $\Gamma$ is sub-additive. 
+
+The strength of the choice of $\Gamma$ is determined by the next step. 
+
+\begin{quote}
+{\bf Step 3 (potential usefulness)} Show that if $B$ is a \emph{simple building block}, then $\Gamma(B)$ is \emph{small}.
+Further, check if $\Gamma(f)$ for a \emph{random polynomial} $f$ is large (potentially). 
+\end{quote}
+
+This would suggest that if any $f$ with large $\Gamma(f)$ is to be written as a sum of $B_1 + \dots + B_s$, then sub-additivity and the fact that $\Gamma(B_i)$ is small for each $i$ and $\Gamma(f)$ is large immediately imply that $s$ must be large. This implies that the complexity measure $\Gamma$ does indeed have a potential to prove a lower bound for the class. The next step is just to replace the \emph{random polynomial} by an explicit polynomial. 
+
+\begin{quote}
+{\bf Step 4 (explicit lower bound)} Find an explicit polynomial $f$ for which $\Gamma(f)$ is large. 
+\end{quote} 
+
+
+
+These are usually the steps taken in almost all the known arithmetic circuit lower bound proofs. The main ingenuity lies in constructing a useful complexity measure, which is really to design $\Gamma$ so that it is small on the \emph{building blocks}. \\
+
+Of course, there could potentially be lower bound proofs that do not follow the road-map outlined. For instance, it could be possible that $\Gamma$ is not small for a random polynomial, but specifically tailored in a way to make $\Gamma$ large for the $\Perm_n$. Or perhaps $\Gamma$ need not even be sub-additive and maybe there is a very different way to argue that all polynomial in the circuit class have small $\Gamma$. However, this has been the road-map for almost all lower bounds so far (barring very few exceptions). As a warmup, we first present some very simple applications of the above plan to prove lower bounds for some very simple subclasses of arithmetic circuits in the next section. We then move on to more sophisticated proofs of lower bounds for less restricted subclasses of circuits. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 
+
+
+\section{Some simple lower bounds}
+
+Let us start with the simplest complete\footnote{in the sense that any polynomial can be computed in this model albeit of large size}  class of arithmetic circuits -- depth-$2$ circuits or $\Sigma\Pi$ circuits. 
+
+\subsection{Lower bounds for $\Sigma\Pi$ circuits}
+
+Any $\Sigma\Pi$ circuit of size $s$ computes a polynomial $f = m_1 + \dots + m_s$ where each $m_i$ is a monomial \DIFaddbegin \DIFadd{multiplied by a field constant}\DIFaddend . Therefore, any polynomial computed by a \emph{small} $\Sigma\Pi$ circuit must have a \emph{small} number of monomials. Hence, it is obvious that any polynomial that has many monomials require large $\Sigma\Pi$ circuits. 
+
+This can be readily rephrased in the language of the outline described last section by defining $\Gamma(f)$ to simply be the number of monomials present in $f$. Hence, $\Gamma(f)\leq s$ for any $f$ computed by a $\Sigma\Pi$ circuit of size $s$. Of course, even a polynomial like $f = (x_1 + x_2+\dots + x_n)^n$  have \DIFdelbegin \DIFdel{$\Gamma(f) = n^n$ }\DIFdelend \DIFaddbegin \DIFadd{$\Gamma(f) = n^{\Omega(n)}$ }\DIFaddend giving the lower bound. 
+
+\subsection{Lower bounds for $\Sigma\!\wedge\!\Sigma$ circuits}
+
+A $\Sigma\!\wedge\!\Sigma$ circuit of size $s$ computes a polynomial of the form $f = \ell_1^{d_1} + \dots + \ell_s^{d_s}$ where each $\ell_i$ is a linear polynomial over the $n$ variables.\footnote{such circuits are also called \emph{diagonal depth-$3$ circuits} in the literature}
+
+Clearly as even a single $\ell^d$ could have exponentially many monomials, the $\Gamma$ defined above cannot work in this setting. Nevertheless, we shall try to design a similar map to ensure that $\Gamma(f)$ is \emph{small} whenever $f$ is computable by a \emph{small} $\Sigma\!\wedge\!\Sigma$ circuit. \\
+
+In this setting, the \emph{building blocks} are terms of the form $\ell^d$. The goal would be to construct a \emph{sub-additive} measure $\Gamma$ such that $\Gamma(\ell^d)$ is \emph{small}. Here is the key observation to guide us towards a good choice of $\Gamma$. 
+
+\begin{observation}
+Any $k$-th order partial derivative of $\ell^d$ is a constant multiple of $\ell^{d-k}$. 
+\end{observation}
+
+Hence, if $\partial^{=k}(f)$ denotes the set of $k$-th order partial derivatives of $f$, then the space spanned by $\partial^{=k}(\ell^d)$ has dimension $1$. This naturally leads us to define $\Gamma$ exploiting this weakness. 
+
+$$
+\Gamma_k(f)\quad \eqdef \quad \dim \inparen{\partial^{=k}(f)}
+$$
+
+It is straightforward to check that $\Gamma_k$ is indeed sub-additive and hence $\Gamma_k(f) \leq s$ whenever $f$ is computable by a $\Sigma\!\wedge\!\Sigma$ circuit of size $s$. For a random polynomial $f$, we should be expecting $\Gamma_k(f)$ to be $\binom{n+k}{k}$ as there is unlikely to be any linear dependencies among the partial derivatives. Hence, all that needs to be done is to find an explicit polynomial with large $\Gamma_k$. 
+
+
+If we consider $\Det_n$ or $\Perm_n$, then any partial derivative of order $k$ is just an $(n-k)\times(n-k)$ minor. Also, these minors consist of disjoint sets of monomials and hence are linearly independent. Hence, $\Gamma_k(\Det_n) = \binom{n}{k}^2$. Choosing $k = n/2$, we immediately get that any $\Sigma\!\wedge\!\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ must be of size $2^{\Omega(n)}$. \\
+
+\subsection{Low-rank $\Sigma\Pi\Sigma$}\label{sec:low-rank-sps}
+
+A slight generalization of $\Sigma\!\wedge\!\Sigma$ circuits is a \emph{rank-$r$ $\Sigma\Pi\Sigma$ circuit} that computes a polynomial of the form 
+$$
+f \spaced{=}  T_1 \;+\; \dots \;+\; T_s
+$$
+where each $T_i = \ell_{i1}\dots \ell_{id}$ is a product of linear polynomials such that $\dim\inbrace{\ell_{i1},\dots, \ell_{id}}\leq r$. \\
+
+Thus, $\Sigma\!\wedge\!\Sigma$  is a rank-$1$ $\Sigma\Pi\Sigma$ circuit, and a similar partial-derivative technique for lower bounds works here as well. 
+
+In the setting where $r$ is much smaller than the number of variables $n$, each $T_i$ is essentially an $r$-variate polynomial masquerading as an $n$-variate \DIFdelbegin \DIFdel{polynomials }\DIFdelend \DIFaddbegin \DIFadd{polynomial }\DIFaddend using an affine transformation. In particular, the set of $n$ first order derivatives of $T$ have rank at most $r$. This yields the following observation.
+
+\begin{observation}
+Let $T = \ell_1\dots \ell_d$ with $\dim\inbrace{\ell_1,\dots, \ell_d}\leq r$. Then for any $k$, we have
+$$
+\Gamma_k(T) \spaced{\eqdef}\dim\inparen{\partial^{=k}(T)} \spaced{\leq} \binom{r+k}{k}
+$$
+\end{observation}
+
+Thus once again by sub-additivity, for any polynomial $f$ computable by a rank-$r$ $\Sigma\Pi\Sigma$ circuit of size $s$, we have $\Gamma_k(f) \leq s\cdot \binom{r+k}{r}$. Note that a random polynomial is expected to have $\Gamma_k(f)$ close to $\binom{n+k}{k}$, which could be much larger for $r\ll n$. We already saw that $\Gamma_k(\Det_n) = \binom{n}{k}^2$. This immediately gives the following lower bound, the proof of which we leave as an exercise to the interested reader. 
+
+\begin{theorem}\label{thm:low-rank-sps-lb}
+Let $r \leq n^{2-\delta}$ for some constant $\delta > 0$. For $k = \epsilon n^{\delta}$, where $\epsilon > 0$ is sufficiently small, we have
+$$
+\frac{\binom{n}{k}^2}{\binom{r+k}{k}} \quad=\quad \exp\inparen{\Omega(n^{\delta})}
+$$
+Hence, any rank-$r$ $\Sigma\Pi\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ must have size $\exp\inparen{\Omega(n^\delta)}$. \qed
+\end{theorem}
+
+
+This technique of using the rank of partial derivatives was introduced by Nisan and Wigderson \cite{nw1997} to prove lower bounds for \emph{homogeneous depth-$3$ circuits} (which also follows as a corollary of Theorem~\ref{thm:low-rank-sps-lb}). The survey of Chen, Kayal and Wigderson \cite{ckw11} give a comprehensive exposition of the power of the \emph{partial derivative method}. \\
+
+
+
+With these simple examples, we can move on to other lower bounds for various other more interesting models. 
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+\section{Lower bounds for monotone circuits}
+
+This section would present a slight generalization 
+	of a lower bound by Jerrum and Snir~\cite{js82}. 
+	To motivate our presentation here, let us first 
+	assume that the underlying field is $\RR$, the 
+	field of real numbers. A monotone circuit over 
+	$\RR$ is a circuit having $+, \times$ gates in 
+	which all the field constants are {\em non-negative} 
+	real numbers. Such a circuit can compute any 
+	polynomial $f$ over $\RR$ all of whose 
+	coefficients are nonnegative real numbers, such as 
+	for example the permanent. It is then natural to ask 
+	whether there are small monotone circuits over $\RR$ 
+	computing the permanent. Jerrum and Snir \cite{js82}
+	obtained an exponential lower bound on the size 
+	of monotone circuits over $\RR$ computing the 
+	permanent. Note that this	definition of monotone 
+	circuits is valid only over $\RR$ (actually more 
+	generally over ordered fields but not over say finite 
+	fields) and such circuits can only compute polynomials 
+	with non-negative coefficients. Here we will present 
+	Jerrum and Snir's argument in a slightly more 
+	generalized form such that the circuit model makes 
+	sense over any field $\FF$ and is complete, i.e. 
+	can compute any polynomial over $\FF$. Let us first 
+	explain the motivation behind the generalized circuit
+	model that we present here. Observe that in any monotone 
+	circuit over $\RR$, there is no cancellation as there 
+	are no negative coefficients. Formally, for a node $v$ 
+	in our circuits let us denote by $f_{v}$ the polynomial 
+	computed at that node\DIFdelbegin \DIFdel{for }\DIFdelend \DIFaddbegin \DIFadd{. For }\DIFaddend a polynomial $f$ let us denote 
+	by $\Mon(f)$ the set of monomials having a nonzero 
+	coefficient in the polynomial $f$. 
+		\begin{enumerate}
+
+			\item If $w = u + v$ then 
+				$$ \Mon(f_{w}) = \Mon(f_{u}) \cup \Mon(f_{v}). $$
+
+			\item If $w = u \times v$ then
+				$$ \Mon(f_{w}) = \Mon(f_{u}) \cdot \Mon(f_{v}) \eqdef \setdef{m_1\cdot m_2}{m_1 \in \Mon(f_{u}), m_2\in \Mon(f_{v})}\DIFaddbegin \DIFadd{. }\DIFaddend $$
+
+		\end{enumerate}
+	This means that for any node $v$ in a monote circuit over 
+	$\RR$ one can determine $\Mon(f_{v})$ in a very syntactic 
+	manner starting from the leaf nodes. Let us make precise 
+	this syntactic \DIFdelbegin \DIFdel{coomputation }\DIFdelend \DIFaddbegin \DIFadd{computation }\DIFaddend that we have in mind.
+
+	\begin{definition}[Formal Monomials.]
+  Let $\Phi$ be an arithmetic circuit. The \emph{formal monomials} at
+  any node $v\in \Phi$, which shall be denoted by $\FM(v)$, shall 
+  be inductively defined as follows:
+	  \begin{quote}
+	    If $v$ is a leaf labelled by a variable $x_i$, then $\FM(v) =
+	    \inbrace{x_i}$. If it is labelled by a constant, then $\FM(v) =
+	    \inbrace{1}$.
+
+	    If $v = v_1 + v_2$, then $\FM(v) = \FM(v_1) \union \FM(v_2)$. 
+
+	    If $v = v_1 \times v_2$, then 
+            \begin{eqnarray*}
+              \FM(v) &=& \FM(v_1)\cdot \FM(v_2)\\
+              &\eqdef& \setdef{m_1\cdot m_2}{m_1 \in \FM(v_1), m_2\in \FM(v_2)}
+            \end{eqnarray*}
+          \end{quote}
+	\end{definition}
+
+\noindent Note that for any node $v$ in any circuit 
+	we have $\Mon(f_{v}) \subseteq \FM(v)$ but in a 
+	monotone circuit over $\RR$ this containment is in 
+	fact an equality at every node. This motivates our 
+	definition of a slightly more general notion of a 
+	monotone circuit as follows. 
+
+	
+\begin{definition}[Monotone circuits]
+  A circuit $C$ is said to be
+  \emph{syntactically monotone}
+   (simply monotone for short) if $\Mon(f_{v}) = \FM(v)$ 
+   for every node $v$ in $C$.
+\end{definition}
+
+	
+	
+The main theorem of this section is the following: 
+
+\begin{theorem}[\cite{js82}]\label{thm:monotone-circuit-lbs}
+	Over any field $\FF$, any syntactically monotone circuit 
+	$C$ computing $\Det_n$ or $\Perm_n$ must have
+  size at least $2^{\Omega(n)}$.
+\end{theorem}
+
+The proof of this theorem is relatively short assuming the
+	following structural result (which is present in standard
+	depth-reduction proofs \cite{vsbr83,ajmv98}).
+
+\begin{lemma}\label{lem:vsbr-two-thirds}
+  Let $f$ be a degree $d$ polynomial computed by a monotone circuit of
+  size $s$. Then, $f$ can be written of the form $f = \sum_{i=1}^s f_i
+  \cdot g_i$ where the $f_i$'s and $g_i$'s satisfy the following
+  properties.
+\begin{enumerate}
+\item For each $i\in [s]$, we have $\frac{d}{3} < \deg{g_i} \leq
+  \frac{2d}{3}$.
+\item For each $i$, we have $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(f)$
+\end{enumerate}
+\end{lemma}
+
+We shall defer this lemma to the end of the section and first see how
+this would imply Theorem~\ref{thm:monotone-circuit-lbs}. The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that \DIFaddbegin \DIFadd{is }\DIFaddend crucial in the lower bound. 
+
+\begin{proofof}{Theorem~\ref{thm:monotone-circuit-lbs}}
+Suppose $\Phi$ is a circuit of size $s$ that computes $\Det_n$. Then by Lemma~\ref{lem:vsbr-two-thirds}, 
+$$
+\Det_n \quad=\quad \sum_{i=1}^s f_i \cdot g_i
+$$
+with $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(\Det_n)$. The building blocks are terms of the form $T = f\cdot g$, where $\FM(f)  \cdot \FM(g) \subseteq \FM(\Det_n)$. \\
+
+Since all the monomials in $\Det_n$ are products of variables from
+distinct columns and rows, the rows (and columns) containing the
+variables $f$ depends on is disjoint from the rows (and columns)
+containing variables that $g$ depends on. Hence, there exists sets of indices $A,B
+\subseteq [n]$ such that $f$ depends only on $\setdef{x_{jk}}{j\in
+  A, k\in B}$ and $g$ depends only on
+$\setdef{x_{jk}}{j\in\overline{A}, k\in
+  \overline{B}}$.
+
+Further, since $\Det_n$ is a homogeneous polynomial of degree $n$, we also have that both $f$ and $g$ must be homogeneous as well. Also as all monomials of $g$ using distinct row and column indices from $\overline{A}$ and $\overline{B}$ respectively, we see that $\deg g = |\overline{A}| = |\overline{B}|$ and $\deg f = |A| = |B|$. Using Lemma~\ref{lem:vsbr-two-thirds}, let $|A| = \alpha n$ for some $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$. This implies that $\Gamma(f)\leq (\alpha n)!$, and $\Gamma(g)\leq ((1-\alpha)n)!$ and hence
+$$\Gamma(f\cdot g) \quad \leq\quad (\alpha n)! ((1-\alpha)n)! \DIFaddbegin \spaced{\leq} \DIFadd{\frac{n!}{\binom{n}{n/3}} }\DIFaddend $$
+\DIFaddbegin \DIFadd{as $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$.
+}\DIFaddend Also, $\Gamma$ is clearly sub-additive and we have $$\Gamma(f_1g_1 + \dots + f_s g_s) \spaced{\leq} s \cdot \DIFdelbegin \DIFdel{(\alpha n)!\cdot ((1-\alpha)n)!}\DIFdelend \DIFaddbegin \DIFadd{\frac{n!}{\binom{n}{n/3}}}\DIFaddend $$ 
+Since $\Gamma(\Det_n) = n!$, this forces \DIFdelbegin \DIFdel{$s \geq
+\binom{n}{\alpha n} = 2^{\Omega(n)}$ as $\frac{1}{3}\leq \alpha \leq
+\frac{2}{3}$}\DIFdelend \DIFaddbegin \DIFadd{$s \geq
+\binom{n}{n/3} = 2^{\Omega(n)}$}\DIFaddend .
+\end{proofof}
+
+We only need to prove Lemma~\ref{lem:vsbr-two-thirds} now.
+
+\subsection{Proof of Lemma~\ref{lem:vsbr-two-thirds}}
+
+Without loss of generality, assume that the circuit $\Phi$ is
+homogeneous\footnote{It is a forklore result that any circuit can be \emph{homogenized} with just a polynomial blow-up in size. Further, this process also preserves monotonicity of the circuit. A proof of this may be seen in \cite{sy}.}, and consists of alternating layers of $+$ and $\times$
+gates. Also, assume that all $\times$ gates have fan-in two, and
+orient the two children such that the formal degree of the left child
+is at least as large as the formal degree of the right child. Such
+circuits are also called \emph{left-heavy} circuits.
+
+\begin{definition}[Proof tree]\label{defn:prooftree}
+A \emph{proof tree} of an arithmetic circuit $\Phi$ is a sub-circuit $\Phi'$ such that
+\begin{itemize}
+\item The root of $\Phi$ is in $\Phi'$
+\item If a multiplication gate with $v = v_1\times v_2 \in \Phi'$, then $v_1$ and $v_2$ are in $\Phi'$ as well.
+\item If an addition gate $v = v_1 + \dots + v_s \in \Phi'$, then
+  exactly one $v_i$ is in $\Phi'$.
+\end{itemize}
+Such \DIFaddbegin \DIFadd{a }\DIFaddend sub-circuit $\Phi'$, represented as a tree (duplicating nodes if
+required), shall be called a \emph{proof tree} of $\Phi$.
+\end{definition}
+
+\newcommand{\PF}{\textsc{ProofTrees}}
+
+Let $\PF(\Phi)$ denote the set of all proof trees of $\Phi$. It is
+easy to see that any proof tree of $\Phi$ computes a monomial over the
+variables. Further, if $\Phi$ was \DIFaddbegin \DIFadd{a }\DIFaddend monotone circuit computing a polynomial
+$f$, then every proof tree computes a monomial in $f$. Therefore,
+$$
+f\quad=\quad \sum_{\Phi' \in \PF(\Phi)} [\Phi']
+$$
+where $[\Phi']$ denotes the monomial computed by $\Phi'$. Of course, the number of proof trees is exponential and the above
+expression is huge. However, we could use a divide-and-conquer
+approach to the above equation using the following lemma. 
+
+\begin{lemma}\label{lem:brent-two-thirds}
+  Let $\Phi'$ be a left-heavy formula of formal degree $d$. Then there
+  is a node $v$ on the left-most path of $\Phi'$ such that
+  $\frac{d}{3}\leq \deg(v)< \frac{2d}{3}$.
+\end{lemma}
+\begin{proof}
+  Pick the lowest node on the left-most path that has degree at least
+  $\frac{2d}{3}$. Then, its left child must be a node of degree less
+  than $\frac{2d}{3}$, and also at least $\frac{d}{3}$ (because the
+  formula is left-heavy). 
+\end{proof}
+
+For any proof tree $\Phi'$ and a node $v$ on its left-most path,
+define $[\Phi':v]$ to be the output polynomial of the proof tree 
+obtained by replacing the node $v$ on the left-most path by $1$. 
+If $v$ does not occur on the
+left-most path of $\Phi'$, define $[\Phi':v]$ to be $0$. We will 
+denote the polynomial computed at a node $v$ by $f_{v}$. Then, the
+above equation can now be re-written as:
+\begin{eqnarray*}
+f & = & \sum_{\Phi' \in \PF(\Phi)} [\Phi']\\
+  & = & \sum_{\substack{v\in \Phi\\ \frac{d}{3}\leq \deg{v} < \frac{2d}{3}}} f_{v} \cdot \inparen{ \sum_{\Phi'\in \PF(\Phi)} [\Phi':v]}\\
+  & = & \sum_{\substack{v\in \Phi\\ \frac{d}{3}\leq \deg{v} < \frac{2d}{3}}} f_{v} \cdot g_v\quad\quad\text{where $g_v = \sum_{\Phi'\in \PF(\Phi)} [\Phi':v]$} \\
+\end{eqnarray*}
+Since $\frac{d}{3} \leq \deg{v} < \frac{2d}{3}$, we also have that
+$\frac{d}{3} < \deg{g_v} \leq \frac{2d}{3}$ and the last equation is
+what was required by Lemma~\ref{lem:vsbr-two-thirds}.\qed
+
+
+%%% Local Variables: 
+%%% mode: latex
+%DIF < %% TeX-master: "lowerbounds"
+%DIF > %% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+\section{Lower bounds for depth-3 circuits over finite fields}
+
+This section shall present the lower bound of Grigoriev and Karpinski
+\cite{grigoriev98} for $\Det_n$. A follow-up paper of Grigoriev and
+Razborov \cite{gr00} extended the result over function fields, also
+including a weaker lower bound for the permanent, but we shall present a slightly different proof that works for the permanent as well. 
+
+\begin{theorem}\cite{grigoriev98}\label{thm:gk-main-thm}
+  Any depth-3 circuit computing $\Det_n$ (or $\Perm_n$) over a finite field $\F_q$ ($q\neq 2$)
+  requires size $2^{\Omega(n)}$.
+\end{theorem}
+
+{\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$,
+where each $T_i$ is a product of linear polynomials. Define
+$\mathrm{rank}(T_i)$ as in Section~\ref{sec:low-rank-sps} to be the
+dimension of the set of linear polynomials that $T_i$ is a product
+of. 
+
+In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial
+derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. Since $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be
+``approximated'' by just the low-rank components. 
+
+% Further, if $T = \ell_1^{e_1} \dots \ell_d^{e_d}$ with $\ell_1,\dots, \ell_r$ being a
+% maximal set of linearly independent linear polynomials, then $T$
+% interpreted as a function from $\F$ to $\F$ can be written as a
+% linear combination of $\setdef{\ell_1^{d_1}\dots\ell_r^{d_r}}{d_i < q
+%   \quad \forall i\in [d]}$. Any linear combination of the above set is
+% equivalent to a polynomial with at most $q^r$ monomials upto a linear
+% transformation; we shall refer to them as \emph{generalized
+%   $q^r$-sparse polynomials}. Hence, any depth-3 circuit $C$ over $\F$
+% can be \emph{approximated} by a sum of generalized sparse polynomials. 
+
+Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as
+a measure by combining the partial derivative technique seen in Section~\ref{sec:low-rank-sps} with evaluations  to show that $\Det_n$ cannot be
+approximated by a low-rank $\SPS$ circuit\DIFaddbegin \DIFadd{.
+}\DIFaddend 
+
+\subsection{The complexity measure}
+
+For any polynomial $f \in \F[x_{11},\dots, x_{nn}]$, define the matrix
+$M_k(f)$ as follows --- the columns of $M_k(f)$ are indexed by $k$-th
+order partial derivatives of $f$, and rows by elements of $\F^{n^2}$,
+with the entry being the evaluation of the partial derivative (column
+index) at the point (row index).\\
+
+The rank of $M_k(f)$ could be a possible choice of a complexity
+measure but Grigoriev and Karpinski make a small
+modification to handle the high rank $T_i$s. Instead, they look at the matrix $M_k(f)$ and remove a
+few \emph{\DIFdelbegin \DIFdel{erraneous}\DIFdelend \DIFaddbegin \DIFadd{erroneous}\DIFaddend } evaluation points and use the rank of the
+resulting matrix. For any $\mathcal{A}\subseteq \F^{n^2}$, let us
+define $M_k(f;\mathcal{A})$ to be the matrix obtained from $M_k(f)$ by
+only taking the rows whose indices are in
+$\mathcal{A}$. Also, let $\CM{GK}_{k,\mathcal{A}}(f)$
+denote $\mathrm{rank}(M_k(f;\mathcal{A}))$.
+
+
+
+\subsection{Upper-bounding $\CM{GK}_{k,\mathcal{A}}$ for a depth-3 circuit}\label{sec:gk-upper-bound}
+
+Our task here is to give an upper bound on the complexity measure for
+	a $\SPS$-circuit of size $s$. We first see that the task reduces to 
+	upper bounding the measure for a single term via subadditivity. It 
+	follows from the linearity of the entries of the matrix. 
+
+\begin{observation}[Sub-additivity]\label{obs:GK-subadditivity}
+  $\CM{GK}_{k,\mathcal{A}}(f + g) \quad\leq\quad
+  \CM{GK}_{k,\mathcal{A}}(f) +
+  \CM{GK}_{k,\mathcal{A}}(g)$\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{observation}
+
+Now fix a threshold $r_0 = \beta n$ for some constant $\beta > 0$ (to be
+chosen shortly), and let $k = \gamma n$ for some $\gamma>0$ (to be
+chosen shortly). We shall call a term $T = \ell_1\cdots \ell_d$ to be
+of \emph{low rank} if $\mathrm{rank}(T) \leq r_0$, and \emph{large rank}
+otherwise. By the above observation, we need to upper-bound the measure $\CM{GK}_{k,\mathcal{A}}$ for each term $T$, for a
+suitable choice of $\mathcal{A}$.\\
+
+\noindent 
+{\bf Low rank terms $(\mathrm{rank}(T) \leq r_0)$:}
+
+Suppose $T = \ell_1 \cdots \ell_d$ with $\inbrace{\ell_1, \dots,
+  \ell_r}$ being a maximal independent set of linear polynomials (with
+$r \leq r_0$). Then, $T$ can be expressed as a linear combination of
+terms from the set $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i\leq d
+  \quad \forall i\in [r]}$. And since the matrix $M_k(f)$ depends only
+on evaluations in $\F^{n^2}$, we can use the relation that $x^q = x$
+in $\F$ to express the function $T:\F^{n^2}\rightarrow \F$ as a linear
+combination of $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i<q \quad
+  \forall i\in [r]}$. Therefore, for any set $\mathcal{A}\subseteq
+\F^{n^2}$, we have that
+$$
+\CM{GK}_{k;\mathcal{A}}(T) \quad \leq \quad
+\mathrm{rank}(M_k(f)) \quad \leq \quad q^r \quad\leq \quad q^{\beta{n}}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+
+
+\noindent
+{\bf High rank terms $(\mathrm{rank}(T) > r_0)$:}
+
+Suppose $T = \ell_1\dots \ell_d$ whose rank is greater than $r_0 =
+\beta n$, and let $\inbrace{\ell_1, \dots, \ell_r}$ be a maximal
+independent set. We want to use the fact that since $T$ is a product
+of at least $r$ independent linear polynomials, most evaluations would
+be zero. We shall be choosing our $\mathcal{A}$ to be the set where
+all $k$-th order partial derivatives evaluate to zero. 
+
+On applying the product rule of differentiation, any $k$-th order 
+derivative of $T$ can be written as a sum of terms each of which 
+is a product of at least $r-k$ independent linear polynomials. Let us count the
+\emph{\DIFdelbegin \DIFdel{erraneous }\DIFdelend \DIFaddbegin \DIFadd{erroneous }\DIFaddend points} $\mathcal{E}_T\subseteq \F^{n^2}$ that keep at
+least $r-k$ of $\inbrace{\ell_1,\dots, \ell_r}$ non-zero, or in other
+words makes at most $k$ of $\inbrace{\ell_1,\dots, \ell_r}$ zero.
+$$
+\Pr_{\mathbf{a}\in \F^{n^2}}[\text{at most $k$ of $\ell_1,\dots,
+  \ell_r$ evaluate to zero}] \;\leq \; \sum_{i=0}^k \binom{r}{i} \inparen{\frac{1}{q}}^i\inparen{1 - \frac{1}{q}}^{r-i}
+$$
+Hence, we can upper-bound $\abs{\mathcal{E}_T}$ as
+\begin{eqnarray*}
+\abs{\mathcal{E}_T} &\leq & \sum_{i=0}^k \binom{r}{i} (q-1)^{r-i}q^{n^2 - r}\\
+ & = & O\inparen{k\cdot \binom{r}{k}\inparen{1 - \frac{1}{q}}^{r-k} q^{n^2}} \quad\text{if $r > qk$}\\
+ & = & q^{n^2} \cdot \alpha^n\quad\text{for some $0< \alpha < 1$}\DIFaddbegin \DIFadd{.
+ }\DIFaddend \end{eqnarray*}
+
+ By choosing \DIFdelbegin \DIFdel{$\mathcal{A} = \F_{n^2} \setminus \mathcal{E}$ }\DIFdelend \DIFaddbegin \DIFadd{$\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ }\DIFaddend where
+ $\mathcal{E} = \Union_{\text{$T$ of large rank}} \DIFdelbegin \DIFdel{\mathcal{E}_t}\DIFdelend \DIFaddbegin \DIFadd{\mathcal{E}_T}\DIFaddend$  , we
+ have that $M_k(T;\mathcal{A})$ is just the zero matrix and hence
+ $\CM{GK}_{k,\mathcal{A}}(T) = 0$.\\
+
+
+Putting it together, if $C = T_1 + \dots + T_s$, then 
+\begin{equation}\label{eqn:gk-upper-bound-circuit}
+\CM{GK}_{k,\mathcal{A}}(C) \quad \leq \quad s \cdot
+q^{\beta n}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{equation} 
+where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set
+$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2}$ for
+some $0< \alpha < 1$.
+
+\subsection{Lower-bounding $\CM{GK}_{k,\mathcal{A}}$ for $\Det_n$ and $\Perm_n$}
+
+We now wish to show that $M_k(\Det_n;\mathcal{A})$ has large rank. The original proof of Grigoriev and Karpinski is tailored specifically for the determinant, and does not extend directly to the permanent. The following argument is a proof communicated by Srikanth Srinivasan \cite{Srikanth13} that involves an elegant trick that he attributes to \DIFdelbegin \DIFdel{Koutis}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{Koutis08}
+}%DIFAUXCMD
+}\DIFaddend . The following proof is presented for the determinant, but immediately extends to the permanent as well. \\
+
+
+Note that if we were to just consider $M_k(\Det_n)$, it would have been easy to show that the rank is full by looking at just those evaluation points that keep exactly \DIFaddbegin \DIFadd{one }\DIFaddend $(n-k)\times (n-k)$ minor non-zero (set the main diagonal of the minor to ones, and every other entry to zero). Hence, $M_k(\Det_n)$ has the identity matrix \emph{embedded inside} and hence must be full rank. However, we are missing a few of the evaluations (since a small set $\mathcal{E}$ of evaluations is removed) and we would still like to show that the matrix continues to have full column-rank. 
+
+\begin{lemma}\label{lem:random-lc-det-nonzero}
+  Let $p(X)$ be a non-zero linear combination of $r\times r$
+  minors of the matrix $X = (\!(x_{ij})\!)$. Then, 
+  $$
+  \Pr_{A\in \F_q^{n^2}}[p(A) \neq 0] \quad \geq \quad \Omega(1)
+  $$
+\end{lemma}
+
+This immediately implies that for every linear combinations of the columns of $M_k(\Det_n)$, a constant fraction of the coordinates have non-zero values. Since we are removing merely a set $\mathcal{E}$ of size $(1-o(1))q^{n^2}$, there must continue to exist coordinates that are non-zero. In other words, no linear combination of columns of $M_k(\Det_n;\mathcal{A})$ results in the zero vector. 
+
+
+The proof of the above lemma would be an induction on the number of minors contributing to the linear combination. As a base case, we shall use a well-known fact about $\Det_n$ and $\Perm_n$ of random matrices. 
+
+\begin{proposition}\label{prop:random-det-nonzero}
+  If $A$ is a random $n\times n$ matrix with entries from a fixed
+  finite field $\F_q$, then for $q\neq 2$ we have
+$$
+\Pr[\det(A) \neq 0] \quad\geq\quad \frac{q-2}{q-1} \quad=\quad\Omega(1)
+$$
+\end{proposition}
+
+We shall defer the proof of this proposition for later, and proceed with the proof of Lemma~\ref{lem:random-lc-det-nonzero}. 
+
+\begin{proofof}{Lemma~\ref{lem:random-lc-det-nonzero}}
+  If $p(X)$ is a scalar multiple of a single non-zero minor, then we
+  already have the lemma from
+  Proposition~\ref{prop:random-det-nonzero}. Hence, let us assume that
+  there are at least two distinct minors participating in the linear
+  combination $p(X)$. Without loss of generality, assume that the
+  first row occurs in some of the minors, and does not in others. That is, 
+  \begin{eqnarray*}
+    p(X) &=& \inparen{\sum_{i:\text{Row}_1\in M_i} c_i M_i} \quad+ \quad \inparen{\sum_{j:\text{Row}_1\notin M_j} c_j M_j}\\
+     & = & \inparen{x_{11} M_1' + \dots + x_{1n} M_{n}'} \quad+\quad M'' \quad\text{(expanding along the first row)}
+  \end{eqnarray*}
+
+  To understand a random evaluation of $p(X)$, let us first set rows $2, \dots, n$ to random values, and
+  then setting row $1$ to random values. 
+  \begin{eqnarray*}
+    \Pr_{A}[p(A)\neq 0] & \geq & \Pr[x_{11} M_1' + \dots + x_{1n} M_n' + M'' \neq 0 \;|\; \text{some }M_{i}'\neq 0]\\
+    & & \quad \times \Pr[\text{some }M_i' \neq 0]
+  \end{eqnarray*}
+  Note that once we have set rows $2,\dots, n$ to random values, $p(X)$ reduces to a linear polynomial in $\inbrace{x_{11},\dots, x_{1n}}$. Further, a random evaluation of any non-constant linear polynomial is zero with probability exactly $\inparen{1 -\frac{1}{q}}$. Hence, 
+  \begin{eqnarray*}
+\Pr_{A}[p(A)\neq 0] & \geq & \Pr[x_{11} M_1' + \dots + x_{1n} M_n' + M'' \neq 0 \;|\; \text{some }M_{i}'\neq 0]\\
+ & & \quad \times \Pr[\text{some }M_i' \neq 0]\\
+    & = & \inparen{1 - \frac{1}{q}}\cdot \Pr[\text{some }M_i' \neq 0]
+  \end{eqnarray*}
+  Now comes  Koutis' Trick: the term $\inparen{1 -
+    \frac{1}{q}} \cdot \Pr[\text{ some }M_i' \neq 0]$ is exactly the
+  probability that $x_{11}M_1' + \dots + x_{1n}M_n'$ is non-zero! Hence,
+\begin{eqnarray*}
+\Pr_{A}[p(A) \neq 0] & = & \Pr[ x_{11}M_1' + \dots + x_{1n} M_n' + M''\neq 0]\\
+ & \geq & \Pr[ x_{11}M_1' + \dots + x_{1n} M_n'\neq 0]\\
+ & = & \Pr\insquare{\inparen{\sum_{i:\text{Row}_1\in M_i} c_i M_i} \neq 0}
+\end{eqnarray*}
+which is just the linear combination obtained by only considering
+those minors that contain the first row. Repeating this process for other
+rows/columns until only  one minor remains, we have
+$$
+\Pr_{A}[p(A) \neq 0] \quad \geq \quad \Pr_{A}[\det(A) \neq 0] \quad = \quad
+\frac{q-2}{q-1}\quad(\text{by Proposition~\ref{prop:random-det-nonzero}})
+$$
+\end{proofof}
+
+
+We now give a proof of Proposition~\ref{prop:random-det-nonzero}. 
+
+\begin{proofof}{Proposition~\ref{prop:random-det-nonzero}}
+We shall fix random values to the first row of $A$. Then,
+\begin{eqnarray*}
+\Pr_{A}[\Det_n(A) = 0] & \leq & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
+& &\quad + \quad \Pr[a_{11}=\dots = a_{1n} = 0]\\
+ & = & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
+ & & \quad + \quad \frac{1}{q^n}
+\end{eqnarray*}
+Whenever there is some $a_{1i}$ that is non-zero, then $a_{11}M_1 +
+\dots + a_{1n}M_n$ is a non-zero linear combination of minors. By a similar argument as in the proof of Lemma~\ref{lem:random-lc-det-nonzero}, we have that
+$$
+\Pr[a_{11} M_1 + \dots + a_{1n}M_n = 0\;|\;\text{not all $a_{1i}$ are zero}] \quad \leq \quad \Pr[\Det_{n-1}(A) = 0]
+$$
+Unfolding this recursion, we have
+\begin{eqnarray*}
+\Pr[\Det_n(A) = 0] & \leq & \frac{1}{q} + \frac{1}{q^2} + \dots + \frac{1}{q^n} \quad=\quad \frac{1}{q-1}\\
+\implies \Pr[\Det_n(A) \neq 0] & \geq & \inparen{1 - \frac{1}{q-1}} \;=\; \frac{q-2}{q-1} 
+\end{eqnarray*}
+\end{proofof}
+
+
+
+\subsection{Putting it all together}
+
+Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then 
+\begin{eqnarray*}
+s \cdot q^{\beta n} & = &  \Omega\inparen{\binom{n}{k}^2}\\
+ & = & \Omega\inparen{2^{2H(\gamma)\cdot n}}\\
+\implies \log s & = & \Omega((2H(\gamma) - \beta \log q)n)
+\end{eqnarray*}
+where $H(\gamma)$ is the binary entropy function\footnote{The binary entropy function is defined as $H(\gamma) \eqdef -\gamma \log_2(\gamma) - (1-\gamma)\log_2(1-\gamma)$. It is well known that $\binom{n}{k} \approx 2^{nH(k/n)}$. }. 
+By choosing $\gamma < q^{-q/2}$, we can find a $\beta$ such that
+$q\gamma < \beta$ (which was required in
+Section~\ref{sec:gk-upper-bound}) and $2H(\gamma) > \beta \log q$,
+yielding the lower bound  
+\begin{eqnarray*}
+  s &=& \exp\inparen{\Omega(q^{-q/2}\cdot q\log q \cdot n)} \\
+  & =& 2^{\Omega(n)}
+\end{eqnarray*}
+\qed (Theorem~\ref{thm:gk-main-thm})
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 
+
+
+\section{Lower bounds for multilinear models}
+
+Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. We shall first give some intuition behind the complexity measure before actually seeing the lower bounds. 
+
+\subsection{The partial derivative matrix}
+\subsubsection*{Intuition}
+
+A natural first step is to try the simpler task of proving lower bounds for depth-$3$ multilinear circuits. 
+$$
+f \quad = \ell_{11} \dots \ell_{1d} + \dots + \ell_{s1}\dots \ell_{sd}
+$$
+The task is now to construct a measure $\Gamma$ such that $\Gamma(\ell_1\dots \ell_d)$ is small whenever each $\ell_i$ \DIFdelbegin \DIFdel{are linear polynomials }\DIFdelend \DIFaddbegin \DIFadd{is a linear polynomial and different $\ell_i$'s are }\DIFaddend over disjoint sets of variables. Consider the simplest case of $f = (a_1  + b_1x)(a_2  + b_2y)$. An observation is that the coefficients of $f$ are given by the $2\times 2$ matrix obtained as $[a_1\ b_1]^T [a_2\ b_2] = \insquare{\begin{array}{cc} a_1a_2 & a_1b_2\\ a_2 b_1 & b_1 b_2\end{array}}$. In other words, a polynomial $f = a_0 + a_1x + a_2y + a_3xy$ factorizes into two variable disjoint factors if and only if the matrix $\insquare{\begin{array}{cc} a_0 & a_1\\ a_2 & a_3\end{array}}$ has rank $1$. A straight-forward generalization of this to multiple variables yields the \emph{partial derivative matrix} (which was first introduced by Nisan \cite{nis91} in the context of non-commutative ABPs)\\
+
+\begin{definition}
+For any given partition of variables $X = Y \sqcup Z$, define the \emph{partial derivative matrix} $M_{Y,Z}(f)$ to be the matrix described as follows --- the rows are indexed by monomials in $Y$, columns indexed by monomials in $Z$, and the $(i,j)$-th entry of the matrix is the coefficient of the monomial $m_i(Y)\cdot m_j(Z)$ in $f$. We shall use $\Gamma^{\mathrm{[Raz]}}_{Y,Z}(f)$ to denote $\mathrm{rank}(M_{Y,Z}(f))$. Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ is full-rank.
+\end{definition}
+
+Here are some basic properties of the partial derivative matrix which would be extremely useful in later calculations.
+
+\begin{observation}[Sub-additivity]\label{obs:pdm-subadditivity}
+	For any partition $X = Y \sqcup Z$ and any pair of multilinear 
+	polynomials $f$ and $g$ in $\FF[X]$ we have 
+$\CM{Raz}_{Y,Z}(f+g) \spaced{\leq} \CM{Raz}_{Y,Z}(f) \spaced{+} \CM{Raz}_{Y,Z}(g)$
+\end{observation}
+\begin{proof}
+Follows from the linearity of the matrix. 
+\end{proof}
+
+\begin{observation}[Multiplicativity]\label{obs:pdm-multiplicativity}
+If $f_1 \in \F[Y_1,Z_1]$ and $f_2 \in \F[Y_2, Z_2]$ with $Y = Y_1 \sqcup Y_2$ and $Z = Z_1 \sqcup Z_2$, then
+$$
+\CM{Raz}_{Y,Z}(f_1\cdot f_2) \spaced{=} \CM{Raz}_{Y_1, Z_1}(f_1) \spaced{\cdot} \CM{Raz}_{Y_2, Z_2}(f_2)
+$$
+\end{observation}
+\begin{proof}
+  It is not hard to see that $M_{Y,Z}(f_1\cdot f_2)$ is the tensor product $M_{Y_1, Z_1}(f_1) \otimes M_{Y_2, Z_2}(f_2)$, and the rank of a tensor product of two matrices is the product of the ranks.
+\end{proof}
+
+\begin{observation}\label{obs:pdm-upperbound}
+  $\CM{Raz}_{Y,Z}(f) \spaced{\leq} 2^{\min(\abs{Y}, \abs{Z})}$
+\end{observation}
+\begin{proof}
+  The number of rows is $2^{\abs{Y}}$ and number of columns is $2^{\abs{Z}}$, and hence the rank is upper-bounded by the minimum.
+\end{proof}
+
+
+Let us get back to lower bounds for multilinear models, and attempt to use $\CM{Raz}_{Y,Z}(f)$ defined above. Unfortunately, there are examples of simple polynomials like $f = (y_1 + z_1)\dots (y_n + z_n)$ with $\CM{Raz}_{Y,Z}(f) = 2^n$. Raz's idea here was to look at $\CM{Raz}_{Y,Z}(f)$ for a \emph{random partition}, and show that with high probability the rank of the partial derivative matrix is far from full. As a toy example, we shall see why this has the potential to give lower bounds for depth-$3$ multilinear circuits. 
+
+\begin{lemma}
+Let $f(X) = \ell_1 \dots \ell_d$ be an $n$-variate multilinear polynomial. If $X = Y\sqcup Z$ is a random partition with $|Y| = |Z| = |X|/2$, then with high probability we have
+$$
+\CM{Raz}_{Y,Z}(f) \quad \leq \quad 2^{|X|/2} \cdot 2^{-|X|/16}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{lemma}
+
+It is to be noted that we should expect a random polynomial to be full-rank with respect to any partition, so the measure $\CM{Raz}_{Y,Z}(f)$ is expected to be $2^{|X|/2}$ which should yield a lower bound of $2^{\Omega(|X|)}$. 
+
+\begin{proof-sketch}
+Without loss of generality we can assume that each $\ell_i$ depends on at least two variables as removing the $\ell_i$'s that depend on just one variable does not alter $\CM{Raz}_{Y,Z}(f)$ with respect to any partition. Let $|X| = n$. 
+
+Using Observation~\ref{obs:pdm-multiplicativity}, $\CM{Raz}_{Y,Z}(f) \leq 2^d$ and hence if $d < n/3$ then we are done. Hence assume that $d \geq n/3$. By a simple averaging argument, there must hence be at least $d/4$ of the $\ell_i$'s that depend on at most $3$ variables; we shall refer to these as the \emph{small} $\ell_i$'s. 
+
+Since the partition is chosen at random, on expectation a quarter of the small $\ell_i$'s would have all its variables mapped to either $Y$ or $Z$, hence not contributing to $\CM{Raz}_{Y,Z}(f)$. Therefore, with high probability,
+$$
+\CM{Raz}_{Y,Z}(f) \quad \leq \quad 2^{d} \cdot 2^{-d/16} \spaced{\leq} 2^{n/2} \cdot 2^{-n/16}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{proof-sketch}
+
+More generally, if $f = g_1(X_1)\dots g_t(X_t)$ where the $X_i$'s are mutually disjoint, then a random partition is very unlikely to partition all the $X_i$'s into almost equal parts. This shall be formalized in the next section to prove the lower bound for multilinear formulas. 
+
+\subsection{Lower bound for multilinear formulas}
+	We now present the lower bound for multilinear formulas due 
+	to \cite{raz2004}. The first step of our roadmap is to find 
+	a suitable normal form for multilinear formulas. The normal 
+	form that we use is from the survey by Shpilka and 
+	Yehudayoff \cite{sy}. 	
+
+\subsubsection{Formulas to log-product sums}
+
+The following structural lemma shows that any multilinear formula can be converted in to a small sum of \emph{log-product} polynomials. The techniques of the following lemma can also be used in other settings with minor modifications, and we shall encounter a different version of this lemma later as well.
+
+\begin{definition}\label{defn:mult-logproduct}
+  A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
+  \begin{itemize}
+  \item $g_i \in \F[X_i]$ for all $i \in [t]$.
+  \item $\frac{|X|}{3^i} \leq |X_i| \leq \frac{2|X|}{3^i}$ for all
+    $i$, and $|X_t| = 1$
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-logproduct}
+  Let $\Phi$ be a multilinear formula of size $s$ computing a polynomial $p$. Then $f$ can be written as a sum of $(s+1)$ log-product multivariate polynomials.
+\end{lemma}
+\begin{proof}
+  Similar to Lemma~\ref{lem:brent-two-thirds}, let $v$ be a node in $\Phi$ such that set of variables $X_v$ that it depends on satisfies $\frac{|X|}{3} \leq \abs{X_v} \leq \frac{2|X|}{3}$. If $\Phi_v$ is the polynomial computed at this node, then $f$ can be written as
+  $$
+  f \spaced{=} \Phi_v \cdot g_1 + \Phi_{v=0} \quad\text{for some $g_1 \in \F[X\setminus X_v]$}\DIFaddbegin \DIFadd{.
+  }\DIFaddend $$
+  where $\Phi_{v=0}$ is the formula obtained by replacing the node $v$ by zero. Note that the subtree at the node $v$ is completely disjoint from $\Phi_{v=0}$. Hence the sum of the sizes of $\Phi_v$ and $\Phi_{v=0}$ is at most $s$. Hence, $g_1 \in \F[X\setminus X_v]$ and $\frac{|X|}{3} \leq \abs{X \setminus X_v} \leq \frac{2|X|}{3}$. Inducting on the formulas $\Phi_v$ and $\Phi_{v=0}$ gives the lemma.
+\end{proof}
+
+\subsubsection{Log-products are far from full-rank on a random
+  partition}
+
+The main technical part of the proof is to show that log-product multivariate polynomials are far from full-rank under a random partition of variables. This would let us show that a sum of log-product multivariate polynomials cannot be full rank unless it is a very large sum.\\
+
+{\bf Main idea: } Suppose $f = g_1 \dots g_t$ where each $g_i \in \F[X_i]$. Let $X = Y \sqcup Z$ be a random partition with $|Y| = |Z| = |X|/2$, and $Y_i = Y \intersection X_i$ and $Z_i = Z \intersection X_i$. Let $d_i = \abs{\frac{|Y_i| - |Z_i|}{2}}$ measure the imbalance between the sizes of $Y_i$ and $Z_i$, and we shall say $X_i$ is $k$-imbalanced if $d_i \geq k$. Let $b_i = \frac{|Y_i| + |Z_i|}{2} = \frac{|X_i|}{2}$.
+
+By Observation~\ref{obs:pdm-multiplicativity}, we know that 
+\begin{eqnarray*}
+\CM{Raz}_{Y,Z}(f) & = & \CM{Raz}_{Y_i,Z_i}(g_1) \dots \CM{Raz}_{Y_i,Z_i}(g_t)\\
+ & \leq & 2^{\min(|Y_1|,|Z_1|)} \cdots  \cdot 2^{\min(|Y_t|,|Z_t|)}\\ 
+ & = & 2^{b_1  - d_1} \cdots 2^{b_t - d_t} = \frac{2^{|X|/2}}{2^{d_1 + \dots + d_t}}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+
+Hence, even if one of the $X_i$'s is a little imbalanced, then the product is far from full-rank. \\
+
+Lemma~\ref{lem:mult-logproduct} shows that the size of $X_i$ decreases slowly with $i$, and it is not hard to show that $\abs{X_i} \geq \sqrt{\abs{X}}$ for $i \leq t'\eqdef\frac{\log{\abs{X}}}{100}$. We wish to show that the probability that none of $g_i$ (for $i\leq t'$) is $k$-unbalanced for $k = \abs{X}^{1/20}$ is very small. Let $\mathcal{E}_i$ be the event that $X_i$ is not $k$-unbalanced. The goal is to upper bound the probability that all the events $\mathcal{E}_i$ hold. These probability calculations would follow from this lemma about the \emph{hypergeometric distribution}.\\
+
+{\bf Hypergeometric Distribution: } Fix parameters $n, g, r \geq 0$, and let $G \subseteq [n]$ with $|G| = g$. Informally, the hypergeometric distribution is the distribution obtained on the intersection sizes of a random set of size $r$ with a fixed set of size $g$ from a universe of size $n$. 
+Formally, the random variable $\mathcal{H}(n,g,r)$ is defined as:
+$$
+\Pr\insquare{\mathcal{H}(n,g,r) = k} \spaced{=} \Pr_{R\subseteq [n],|R| = r}\insquare{\abs{R \intersection G} = k} = \frac{\binom{g}{k}\binom{n-g}{r-k}}{\binom{n}{r}}
+$$
+
+
+The following lemma shows that for a fairly large range of parameters, the hypergeometric distribution does not put too much mass on any value.
+
+\begin{lemma}\label{lem:hypergeom_low-weight}
+  Let $n,g,r$ be parameters such that $\frac{n}{4} \leq r \leq \frac{3n}{4}$ and $0\leq g\leq \frac{2n}{3}$. Then for any $t\leq g$,
+  $$
+  \Pr\insquare{\mathcal{H}(n,g,r) = t} \spaced{\leq} O\inparen{\frac{1}{\sqrt{g}}}\DIFaddbegin \DIFadd{.
+  }\DIFaddend $$
+\end{lemma}
+The proof of this lemma follows from standard binomial coefficient estimates on the probability.\\
+
+Let us go back to estimating the probability that all the events $\mathcal{E}_i$ hold.
+\begin{eqnarray*}
+  \Pr\insquare{\mathcal{E}_1 \wedge \dots \wedge \mathcal{E}_{t'}} & = & \Pr[\mathcal{E}_1] \cdot \Pr[\mathcal{E}_2 \mid \mathcal{E}_1] \cdots \Pr[\mathcal{E}_{t'}\mid \mathcal{E}_1 \wedge \dots \wedge \mathcal{E}_{t'-1}]\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+The event $\mathcal{E}_1$ is just the probability that a random set $Y$ of size $|X|/2$ intersects $X_1$ in $t$ places where $t \in \insquare{\frac{|X_i|}{2} -k , \frac{|X_i|}{2} -k}$. This is just a particular setting of the hypergeometric distribution and Lemma~\ref{lem:hypergeom_low-weight} asserts that
+$$
+\Pr[\mathcal{E}_1] \spaced{\leq} O\inparen{\frac{2k}{\sqrt{|X|}}}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+To apply a similar bound for the other terms, consider the event $\mathcal{E}_i$ given that $\mathcal{E}_1, \dots, \mathcal{E}_{i-1}$ hold. Let $X' = X \setminus (X_1 \union \dots \union X_{i-1})$ and $Y' = Y\intersection X'$. The fact that $\mathcal{E}_1,\dots, \mathcal{E}_{i-1}$ hold means that the partition has been fairly balanced in the first $(i-1)$ parts and hence $|Y'| \leq |X'| + ik$. Hence, we would still be in the range of parameters in Lemma~\ref{lem:hypergeom_low-weight} to also get that
+\begin{eqnarray*}
+  \forall i\leq t'\quad \Pr[\mathcal{E}_i\mid \mathcal{E}_1 \wedge \cdots \wedge \mathcal{E}_{i-1}] &\leq& O\inparen{\frac{2k}{\sqrt{|X|}}}\\
+  \implies \Pr\insquare{\mathcal{E}_1\wedge \dots \wedge \mathcal{E}_{t'}} & \leq & \abs{X}^{-\epsilon \log \abs{X}} \quad\text{for some $\epsilon > 0$}  \\
+  \implies \Pr\insquare{\CM{Raz}_{Y,Z}(g_1\dots g_t) \leq 2^{(|X|/2) - |X|^{1/20}}} & \leq & \abs{X}^{-\epsilon \log \abs{X}}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+
+\begin{sloppy}
+	Hence, if $g_1\dots g_t$ is a log-product multilinear polynomial, 
+	then with probability at least $\inparen{1 - |X|^{-\epsilon \log |X|}}$ 
+	we have that $\CM{Raz}_{Y,Z}(g_1\dots g_t) \leq 2^{(|X|/2) - |X|^{1/20}}$. 
+	Further, if $f$ is computable by a multilinear formula of size $s$ then, 
+	by Lemma~\ref{lem:mult-logproduct}, $f$ can be written as a sum of 
+	$(s+1)$ log-product multilinear polynomials. Hence, with probability 
+	at least $\inparen{1 - (s+1)|X|^{-\epsilon \log |X|}}$ we have that
+		$$\CM{Raz}_{Y,Z}(f) \spaced{\leq} (s+1) \cdot 2^{(|X|/2) - |X|^{1/20}}. $$
+	Hence, if $(s+1) < |X|^{(\epsilon/2) \log |X|}$, then with high 
+	probability a random partition would ensure 
+	$\CM{Raz}_{Y,Z}(f) \ll 2^{|X|/2}$. Let us record this as a lemma.
+\end{sloppy}
+
+\begin{lemma}\label{lem:multformula-lowrank}
+  Let $f \in \F[X]$ be computed by a multilinear formula of size $s < |X|^{(\epsilon/2) \log |X|}$ for a small enough constant $\epsilon > 0$. Then with probability at least $(1 - |X|^{-(\epsilon/2)\log |X|})$ we have $$\CM{Raz}_{Y,Z}(f) \spaced{\leq} (s+1)\cdot 2^{|X|/2} \cdot 2^{-|X|^{1/20}}$$ for a random partition $X = Y \sqcup Z$ with $|Y| = |Z| = |X|/2$.
+\end{lemma}
+
+\subsubsection{$\Det_n$ and $\Perm_n$ have large rank}
+
+The last step of the proof would be to find an explicit polynomial whose partial derivative matrix under a random partition has large rank. As earlier, our candidate polynomial would be $\Det_n$ or $\Perm_n$. Unfortunately, both these polynomials are over $n^2$ variables and degree $n$. It is not hard to verify that the rank of the partial derivative matrix of $\Det_n$ or $\Perm_n$ can never be greater than $2^{2n}$. Hence directly using Lemma~\ref{lem:multformula-lowrank}, we would have $2^{O(n)}$ competing with $2^{n^2/2 - n^{O(1)}}$ which is simply futile. A simple fix is to first randomly restrict ourselves to fewer variables and then apply Lemma~\ref{lem:multformula-lowrank}. 
+
+Let $m = n^{1/3}$. Let $\sigma$ be a random restriction that assigns random values to all but $2m$ randomly chosen variables. We shall call this set of $2m$ variables as $X$, and randomly partition this into two sets $Y$ and $Z$ of size $m$ each. Hence, $\sigma(\Det_n)$ reduces to a multilinear polynomial over $2m$ variables. It is also worth noting that a multilinear formula remains a multilinear formula under this restriction. The following claim is easy to verify. 
+
+\begin{claim}
+With probability at least $1/2$, the variables in $X$ belong to distinct rows and columns. 
+\end{claim}
+
+We shall restrict ourselves to only these random restrictions, and without loss of generality let the sets be $Y = \inbrace{x_{1,1},x_{3,3},\dots,x_{2m-1,2m-1}}$ and $Z = \inbrace{x_{2,2},x_{4,4},\dots, x_{2m,2m}}$. For ease of notation, we shall refer to $x_{2i-1,2i-1}$ as $y_i$ and $x_{2i,2i}$ as $z_i$ for $i = 1,\dots, m$. 
+
+Consider the following restriction:
+\begin{eqnarray*}
+f & = & \Det \insquare{ \begin{array}{cccccccc}
+y_1 & 1   &        &     &     &  &        &   \\
+1   & z_1 &        &     &     &  &        &   \\
+    &     & \ddots &     &     &  &        &   \\
+    &     &        & y_m &1    &  &        &   \\
+    &     &        & 1   &z_m  &  &        &   \\
+    &     &        &     &     & 1&        &   \\
+    &     &        &     &     &  & \ddots &   \\
+    &     &        &     &     &  &        & 1
+  \end{array}}\\
+ &= & (y_1z_1 - 1)\dots (y_mz_m - 1)
+\end{eqnarray*}
+It is easy to check that $\CM{Raz}_{Y,Z}(f) = 2^m$. Although this is a single restriction with large rank, the \DIFdelbegin \DIFdel{Schwarz-Zippel }\DIFdelend \DIFaddbegin \DIFadd{Schwartz-Zippel-DeMillo-Lipton }\DIFaddend lemma immediately gives that random restriction would also have rank $2^m$ with high probability\footnote{provided the underlying field is large, but this isn't really a concern as we can work with a large enough extension if necessary}. We shall record this as a lemma. 
+
+\begin{lemma}\label{lem:det-raz-lowerbound}
+With probability at least $1/100$, we have that $\CM{Raz}_{Y,Z}(\sigma(\Det_n)) = 2^m$ where $\sigma$ is a random restriction to $2m$ variables for $m = n^{1/3}$. 
+\end{lemma}
+
+
+Combining Lemma~\ref{lem:det-raz-lowerbound} with Lemma~\ref{lem:multformula-lowrank}, we have the following theorem. 
+
+\begin{theorem}[\cite{raz2004}] Any multilinear formula computing $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. \qed
+\end{theorem}
+
+
+\subsection{Stronger lower bounds for constant depth multilinear formulas}
+
+Looking back at Lemma~\ref{lem:multformula-lowrank}, we see that whenever $f(X)$ is computable by a size $s$ multilinear formula $\CM{Raz}_{Y,Z}(f)$ is exponentially smaller than $2^{|X|/2}$ with probability $\inparen{1 - s\cdot |X|^{-\epsilon \log |X|}}$. Hence we had to settle for a $n^{\Omega(\log n)}$ lower bound not because of the rank deficit but rather because of the bounds in the probability estimate. Unfortunately, this lower bound technique cannot yield a better lower bound for multilinear formulas as there are explicit examples of polynomials computable by poly-sized multilinear circuits with $\CM{Raz}_{Y,Z}(f) = 2^{|X|/2}$ under \emph{every} partition \cite{Raz06}. However, the probability bound can be improved in the case of constant depth multilinear circuits to give stronger lower bounds. 
+
+
+Note that Lemma~\ref{lem:multformula-lowrank} was proved by considering \emph{multilinear log-products} (Definition~\ref{defn:mult-logproduct}) as the building blocks. To show that a multilinear log product $g_1(X_1)\dots g_{\ell}(X_\ell)$ has small rank under a random partition, we argued that the probability that all the $X_i$'s are partitioned in a roughly balanced fashion is quite small. This was essentially done by thinking of this as $\ell = O(\log n)$ close-to-independent events, each with probability $1/\mathrm{poly}(n)$. 
+
+If $\ell$ was much larger than $\log n$ (with other parameters being roughly the same), it should be intuitively natural to expect a much lower probability of all the $X_i$'s being partitioned in a roughly balanced manner. This indeed is the case for constant depth multilinear circuits, and we briefly sketch the key points where they differ from the earlier proof. The first is an analogue of Definition~\ref{defn:mult-logproduct} in this setting. 
+
+\begin{definition}\label{defn:mult-t-prod}
+A multilinear polynomial $f$ is said to be a \emph{multilinear $t$-product} if $f$ can be written as $f = g_1\dots g_t$ with the following properties:
+\begin{itemize}
+\item The variable sets of the $g_i$ are mutually disjoint
+\item Each $g_i$ non-trivially depends on at least $t$ variables
+\end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-t-prod-rep}
+Let $f$ be a multilinear polynomial of degree $d$ over $n$ variables that is computed by a depth-$\Delta$ multilinear formula $\Phi$ of size $s$. Then, $f$ can be written as a sum of at most $s$ multilinear $t$-products for $t = \inparen{n/100}^{1/2\Delta}$, and a multilinear polynomial of degree at most $n/100$.  
+\end{lemma}
+\begin{proof}
+If $d < n/100$, then the lemma is vacuously true. Since $\Phi$ is a formula of depth $\Delta$ and computes a polynomial of degree $d > n/100$, there must be at least one product gate $v$ of fan-in at least \DIFdelbegin \DIFdel{$\inparen{\frac{n}{100}}^{1/\Delta}$}\DIFdelend \DIFaddbegin \DIFadd{$\inparen{\frac{n}{100}}^{1/\Delta} = t^2$}\DIFaddend . Then similar to Lemma~\ref{lem:mult-logproduct}, 
+$$
+f \quad=\quad \Phi_v \cdot f'  + \Phi_{v=0}
+$$
+As $\Phi_v$ is a product of $t^2$ polynomials, by grouping the factors together we have that $\Phi_v \cdot f'$ is a multilinear $t$-product. Further, $\Phi_{v=0}$ is a multilinear polynomial that is computable by a depth-$\Delta$ formula of smaller size and we can induct on $\Phi_{v=0}$. 
+\end{proof}
+
+\begin{lemma}\label{lem:mult-const-depth-upper-bound}
+Let $f(X)$ be an $n$-variate polynomial computed by a depth-$\Delta$ multilinear formula of size $s$. If $X = Y \sqcup Z$ is a randomly chosen partition with $|Y| = |Z| = n/2$, then with probability at least $(1 - s \cdot \exp({-n^{\Omega(1/\Delta)}}))$ we have
+$$
+\CM{Raz}_{Y,Z}(f) \quad\leq\quad (s+1) \cdot 2^{n/2} \cdot \exp(-n^{\Omega(1/\Delta)})
+$$
+\end{lemma}
+\begin{proof-sketch}
+By Lemma~\ref{lem:mult-t-prod-rep}, we have that $f$ can be written as $g_0 + g_1 + \dots + g_s$ where $\deg(g_0) \leq n/100$ and $g_1,\dots, g_s$ are multilinear $t$-products. Note that since $g_0$ is a multilinear polynomial of degree at most $(n/100)$, the number of monomials in $g_0$ is at most $\binom{n}{n/100} \leq 2^{n/10}$. Hence, $\CM{Raz}_{Y,Z}(g_0) \leq 2^{n/10}$. 
+
+For the other $g_i$'s, we can bound the probability that $\CM{Raz}_{Y,Z}(g_i)$ is large in a very similar fashion as in Lemma~\ref{lem:multformula-lowrank}, as the probability that all the factors of $g_i$ are partitioned in a balanced manner is roughly the intersection of $t$ independent events. By very similar estimates, this probability can be bounded by $(1/\mathrm{poly}(n))^t$. Hence, with high probability 
+$$
+\CM{Raz}_{Y,Z}(f) \spaced{\leq} \CM{Raz}_{Y,Z}(g_0) + \dots + \CM{Raz}_{Y,Z}(g_s) \spaced{\leq} \DIFaddbegin \DIFadd{(s+1)\cdot }\DIFaddend 2^{n/2} \cdot \exp(-n^{\Omega(1/\Delta)}).
+$$
+\end{proof-sketch}
+
+Combining Lemma~\ref{lem:mult-const-depth-upper-bound} with Lemma~\ref{lem:det-raz-lowerbound}, we have the following theorem of Raz and Yehudayoff. 
+
+\begin{theorem}[\cite{raz-yehudayoff}]
+Any multilinear formula of depth $\Delta$ computing $\Det_n$ or $\Perm_n$ must be of size $\exp(n^{\Omega(1/\Delta)})$.  \qed
+\end{theorem}
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%DIF < %% TeX-master: "lowerbounds"
+%DIF > %% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+\section{Lower bounds for depth-$4$ circuits}
+
+This section shall address a recent technique for proving lower bounds for some depth-$4$ circuits. 
+
+\begin{definition}
+  A \emph{depth-$4$ circuit}, also referred to as a $\SPSP$ circuit, computes a polynomial of the form 
+  $$
+  f \spaced{=} Q_{11}\dots Q_{1d} \spaced{+\;\cdots\;+}  Q_{s1}\dots Q_{sd}
+  $$
+  The number of summands $s$ is called the \emph{top fan-in} of the circuit. 
+
+  Further, a $\mySPSP{a}{b}$ circuit is a depth-$4$ circuit computing a polynomial of the form
+  $$
+  f \spaced{=} Q_{11}\dots Q_{1a} \spaced{+\;\cdots\;+}  Q_{s1}\dots Q_{sa}\quad\text{where $\deg Q_{ij} \leq b$ for all $i,j$}\DIFaddbegin \DIFadd{.
+  }\DIFaddend $$
+\end{definition}
+
+\subsection{Significance of the model}
+
+In a surprising series of results on depth reduction, Agrawal and Vinay \cite{av08} and subsequent strengthenings of Koiran \cite{koiran} and Tavenas \cite{Tav13} showed that depth-$4$ circuits more or less capture the complexity of general circuits. 
+
+\begin{theorem}[\cite{av08, koiran, Tav13}] 
+  If $f$ is an $n$ variate degree-$d$ polynomial computed by a size $s$ arithmetic circuit, then $f$ can also be computed by a $\mySPSP{O(\sqrt{d})}{\sqrt{d}}$ circuit of size $\exp\inparen{O(\sqrt{d}\log s)}$. 
+
+  Conversely, if an $n$-variate degree-$d$ polynomial requires $\mySPSP{O(\sqrt{d})}{\sqrt{d}}$  circuits of size $\exp\inparen{\Omega(\sqrt{d}\log s)}$, then it requires arbitrary depth arithmetic circuits of size $n^{\Omega(\log s / \log n)}$ to compute it. 
+\end{theorem}
+
+Thus proving strong enough lower bounds for this special case of depth-$4$ circuits imply lower bounds for general circuits. The main results of the section is some recent lower bound \cite{gkks13,KSS13,FLMS13} that comes very close to the required threshold. 
+
+\subsection{Building the complexity measure}
+
+As a simpler task, let us first attempt to prove lower bounds for expressions of the form
+$$
+f \quad = \quad Q_1^{d} \spaced{+ \;\cdots\; + } Q_s^{d}
+$$
+where each of the $Q_i$'s are quadratics. This is exactly the problem studied by Kayal~\cite{k2}, which led to the complexity measure for proving depth-$4$ lower bounds. \\
+
+The goal is to construct a measure $\Gamma$ such that $\Gamma(f)$ is small whenever $f$ is a power of a quadratic. As a first attempt, let us look at the space of $k$-th order partial derivatives of $Q^d$ (for a suitable choice of $k$). Unlike the case of $\Sigma\!\wedge\!\Sigma$-circuits where the the space of $k$-th order partial derivatives of $\ell^d$ had dimension $1$, the space of partial derivatives of $Q^{d}$ could be as large as it can be expected. Nevertheless, the following simple observation would provide the key intuition.
+
+\begin{observation} 
+  Any $k$-th order partial derivative of $Q^d$ is of the form $Q^{d-k}p$ where $p$ is a polynomial of degree at most $k$. Hence, if $k \ll d$, then all $k$-th order partial derivatives of $Q^d$ share large common factors.
+\end{observation}
+
+This suggests that instead of looking at linear combinations of the partial derivatives of $Q^d$, we should instead be analysing \emph{low-degree polynomial combinations} of them. 
+\begin{definition}\label{defn:shifted-partials}
+  Let $\partial^{=k}(f)$ refer to the set of all $k$-th order partial derivatives of $f$, and $\vecx^{\leq \ell}$ refer to the set of all monomials of degree at most $\ell$. The \emph{shifted partials of $f$}, denoted by $\SPD{k}{\ell}{f}$, is the vector space spanned by $\inbrace{\vecx^{\leq \ell} \cdot \partial^{=k}(f)}$. The dimension of this space shall be denoted by $\CM{Kay}_{k,\ell}(f)$. 
+\end{definition}
+
+The above observation shows that any element of $\SPD{k}{\ell}{Q^d}$ is divisible by $Q^{d-k}$ and we thereby have the following lemma. 
+
+\begin{lemma}
+  If $f = Q^d$ where $Q$ is a quadratic, then $\CM{Kay}_{k,\ell}(f)\leq \binom{n + k + \ell}{n}$, the number of monomials of degree $(k + \ell)$. 
+\end{lemma}
+
+Note that if $f$ was instead a random polynomial, we would expect the measure  $\dim \inparen{\SPD{k}{\ell}{f}}$ to be about $\binom{n+k}{n} \cdot \binom{n+\ell}{n}$, which is \emph{much} larger than $\binom{n+k+\ell}{n}$ for suitable choice of $k,\ell$. Hence this measure $\CM{Kay}_{k,\ell}$ is certainly potentially useful for this model. Very similar to the above lemma, one can also show the following upper bound for the \emph{building blocks} of $\mySPSP{a}{b}$ circuits. 
+
+\begin{lemma}
+Let $f = Q_1\dots Q_a$ with $\deg Q_i \leq b$ for all $i$. Then, 
+$$
+\CM{Kay}_{k,\ell}(f) \spaced{=} \dim \inparen{\SPD{k}{\ell}{f}} \spaced{\leq} \binom{a}{k}\binom{n + (b-1)k + \ell}{n}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{lemma}
+
+It is easy to check that $\CM{Kay}_{k,\ell}$ is a sub-additive measure, and we immediately have this corollary. 
+
+\begin{corollary}\label{cor:dimSPD-upper-bound}
+Let $f$ be an $n$-variate polynomial computed by a $\mySPSP{a}{b}$ circuit of top fan-in $s$. Then,
+$$
+\CM{Kay}_{k,\ell}(f) \spaced{\leq} s\cdot \binom{a}{k}\binom{n + (b-1)k + \ell}{n}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+Or in other words for any choice of $k,\ell$, we have that any $\mySPSP{a}{b}$ circuit computing a polynomial $f$ must have top fan-in $s$ at least
+$$\frac{\CM{Kay}_{k,\ell}(f)}{\binom{a}{k}\binom{n+(b-1)k + \ell}{n}}\DIFaddbegin\DIFadd{.}\DIFaddend$$
+\end{corollary}
+
+
+
+\subsubsection*{Intuition from algebraic geometry}
+
+Another perspective for the shifted partial derivatives comes from algebraic geometry. Any zero $a\in \F^n$ of $Q$ is a zero of \emph{multiplicity} $d$ of $Q^d$. This implies that the set of common zeroes of all $k$-th order partial derivatives of $Q^d$ (for $k \approx  \sqrt{d}$) is \emph{large}. On the other hand if $f$ is a random polynomial, then with high probability there are no roots of large multiplicity. 
+
+In algebraic geometry terminology, the common zeroes of a set of polynomials is called the \emph{variety} of the ideal generated by them. Further there is also a well-defined notion of a \emph{dimension of a variety} which measures how large a variety is. Let $\F[\vecx]_{\leq r}$ refer to the set of polynomials of degree at most $r$, and let $\gamma_I(r) = \dim \inparen{I \intersection \F[\vecx]_{\leq r}}$. Intuitively, if $\gamma_I(r)$ is large, then there are \emph{many constraints} and hence the variety is \emph{small}. In other words the growth of $\gamma_I(r)$ is inversely related to the dimension of the variety of $I$, and this is precisely captured by what is known as the \emph{\DIFaddbegin \DIFadd{Affine }\DIFaddend Hilbert function of $I$}. More about the precise definitions of the \DIFaddbegin \DIFadd{Affine }\DIFaddend Hilbert function etc. can be found in any standard text in algebraic geometry such as \cite{clo}. \\
+
+In our setting, the ideal we are interested in is $I = \inangle{\partial^{=k}f}$. If $f$ is a homogeneous polynomial, then $I \intersection \F[\vecx]_{\leq r} = \SPD{k}{\ell}{f}$ where $\ell = r - (\deg(f) - k)$. Hence studying the dimension of shifted partial derivatives is exactly studying $\gamma_I(r)$ which holds all information about the dimension of the variety. 
+
+\subsection{Lower bounding shifted partials of explicit polynomials}
+
+For a random polynomial $R(\vecx)$, we would expect that
+$$
+\CM{Kay}_{k,\ell}(R) \spaced{\approx} \min\inbrace{\binom{n + \ell + d -k}{n}, \binom{n+k}{n} \binom{n+\ell}{n}}
+$$
+The terms on the RHS correspond to trivial upper bounds, where first term is the total number of monomials of degree $(\ell + d-k)$ and the second term is the total number shifted partials.  
+
+\begin{claim}\label{clm:spd-ratio}
+For $k = \epsilon \sqrt{d}$ for a small enough $\epsilon > 0$, and $\ell = \frac{c n\sqrt{d}}{\log n}$ for a large enough constant $c$, we have
+$$
+\frac{\min\inbrace{\binom{n + \ell + d -k}{n}, \binom{n+k}{n} \binom{n+\ell}{n}}}{\binom{O(\sqrt{d})}{k}\binom{n + (\sqrt{d}-1)k + \ell}{n}} \spaced{=} 2^{\Omega(\sqrt{d}\log n)}
+$$
+\end{claim}
+
+The proof of this claim is easily obtained by using standard asymptotic estimates of binomial coefficients. Note that using Corollary~\ref{cor:dimSPD-upper-bound}, the above claim shows that if we can find an explicit polynomial whose dimension \DIFaddbegin \DIFadd{of }\DIFaddend shifted partials are as large as above, then we would have an $\exp(\Omega(\sqrt{d}\log n))$ lower bound for the top fan-in of $\mySPSP{\sqrt{d}}{\sqrt{d}}$ circuits computing this polynomial.\\
+
+
+If we have a set of polynomials with distinct leading monomials, then they are clearly linearly independent. Hence one way of lower bounding the dimension of a space of polynomials is to find a sufficiently large set of polynomials with distinct monomials in the space. The vector space of polynomials we are interested is $\SPD{k}{\ell}{f}$, and if we choose a structured polynomial $f$ we can hope to \DIFaddbegin \DIFadd{be }\DIFaddend able to estimate the number of distinct leading monomials in this vector space. 
+
+\subsubsection{Shifted partials of the determinant and permanent}
+
+The first lower bound for $\mySPSP{\sqrt{d}}{\sqrt{d}}$ circuits was by Gupta, Kamath, Kayal and Saptharishi \cite{gkks13} for the determinant and the permanent polynomial. We shall describe the lower bound for $\Det_n$, although it would carry over immediately to $\Perm_n$ as well. As mentioned earlier, we wish to estimate the number of distinct leading monomials in $\SPD{k}{\ell}{\Det_n} = \mathrm{span}\inbrace{\vecx^{\leq \ell}\partial^{=k}\Det_n}$. \cite{gkks13} made a relaxation to merely count the number of distinct leading monomials among the generators $\inbrace{\vecx^{\leq \ell}\partial^{=k}\Det_n}$ instead of their span. \\
+
+The first observation is that any $k$-th order partial derivative of $\Det_n$ is just an $(n-k)\times (n-k)$ minor. Let us fix a monomial ordering induced by the lexicographic ordering on the variables:
+$$
+x_{11} \succ x_{12} \dots \succ x_{1n} \succ x_{21} \succ \dots \succ x_{nn}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+Under this ordering, the leading monomial of any minor is just the product of variables on the main diagonal of the sub-matrix corresponding to the minor, and hence is a term of the form $x_{i_1j_1}\dots x_{i_{(n-k)},j_{(n-k)}}$ where $i_1 < \dots < i_{n-k}$ and $j_1 < \dots < j_{n-k}$; let us call such \DIFaddbegin \DIFadd{a }\DIFaddend sequence of indices as an $(n-k)$-increasing sequences in $[n]\times [n]$. Further, for any $(n-k)$-increasing sequence, there is a unique minor $M$ whose leading monomial is precisely the product of the variables indexed by the increasing sequence. Therefore, the task of lower bounding distinct leading monomials in $\inbrace{\vecx^{\leq \ell}\partial^{=k}\Det_n}$ reduces to the following combinatorial problem.
+\begin{claim} For any $k,\ell > 0$,  we have
+$$
+\CM{Kay}_{k,\ell}(\Det_n) \spaced{\geq} \#\inbrace{\begin{array}{cc}\text{monomials of degree $(\ell + n -k)$ that}\\\text{contain an $(n-k)$-increasing sequence}\end{array}}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{claim}
+
+We could start with an $(n-k)$-increasing sequence, and multiply by a monomial of degree $\ell$ to obtain a monomial containing an increasing sequence. Of course, the issue is that this process is not invertible and hence we might overcount. To fix this issue, \cite{gkks13} assign a \emph{canonical increasing sequence} to every monomial that contains an increasing sequence and multiply by monomials of degree $\ell$ that \DIFdelbegin \DIFdel{does }\DIFdelend \DIFaddbegin \DIFadd{do }\DIFaddend not change the canonical increasing sequence. 
+
+\begin{definition}
+Let $D_2 = \inbrace{x_{1,1},\dots, x_{n,n}, x_{1,2},x_{2,3}, \dots, x_{n-1,n}}$, the main diagonal and the diagonal just above it. For any monomial $m$ define the \emph{canonical increasing sequence of $m$}, denoted by $\chi(m)$, as $(n-k)$-increasing sequence of $m$ that is entirely contained in $D_2$ and is ordered highest according to the ordering '$\succ$'. If $m$ contains no $(n-k)$-increasing sequence entirely in $D_2$, then we shall say the canonical increasing sequence is empty. 
+\end{definition}
+
+The reason we restrict ourselves to $D_2$ is because it is easier to understand which monomials change the canonical increasing sequence and which monomials do not. 
+
+\begin{lemma}\label{lem:forbidden-variables}
+Let $S$ be an $(n-k)$-increasing sequence completely contained in $D_2$, and let $m_S$ be the monomial obtained by multiplying the variables indexed by $S$. There are at least $(2(n-k)-1)$ variables in $D_2$ such that if $m$ is any monomial over these variables, then $\chi(m_S) = \chi(m\cdot m_S)$. 
+\end{lemma}
+\begin{proof}
+Note that for any $x_{i,j} \in D_2$ other than $x_{n,n}$, exactly one of $x_{i+1,j}$ or $x_{i,j+1}$ is in $D_2$ as well; let us refer to this element in $D_2$ as the \emph{companion} of $x_{i,j}$.  It is straightforward to check that for any $(n-k)$-increasing sequence $S$, the elements of $S$ and their companions do not alter the canonical increasing sequence. 
+\end{proof}
+
+It is a simple exercise to check that the number of $(n-k)$-increasing sequences contained in $D_2$ is $\binom{n+k}{2k}$. Further, as we are free to use the $n^2 - 2n + 1$ variables outside $D_2$, and the $2(n-k) -1$ variables that don't alter the canonical increasing sequence, we have the following lemma. 
+
+\begin{lemma}\label{lem:dimSPD-det-lb}
+For any $k,\ell \geq 0$, 
+$$
+\dim\inparen{\SPD{k}{\ell}{\Det_n}} \spaced{\geq} \binom{n+k}{2k}\binom{(n^2 - 2n + 1) + 2(n-k) -1 + \ell}{\ell}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{lemma}
+
+Although this lower bound is not as large as expected for a random polynomial, this is still sufficient to give strong lower bounds for depth-$4$ circuits. By choosing $k = \epsilon \sqrt{n}$ for a small enough $\epsilon > 0$, and $\ell = n^2 \sqrt{n}$, Lemma~\ref{lem:dimSPD-det-lb} with Corollary~\ref{cor:dimSPD-upper-bound} yields the lower bound of Gupta, Kamath, Kayal and Saptharishi \cite{gkks13}
+
+\begin{theorem}
+Any $\mySPSP{O(\sqrt{n})}{\sqrt{n}}$ circuit computing $\Det_n$ or $\Perm_n$ has top fanin $2^{\Omega(\sqrt{n})}$. \qed
+\end{theorem}
+
+It is worth noting that although Claim~\ref{clm:spd-ratio} suggests that we should be able to obtain a lower bound of $\exp(\Omega(\sqrt{n}\log n))$ for $\Det_n$, \cite{gkks13} also showed that the above estimate for the dimension of shifted partial derivatives for the determinant is fairly tight. Hence the dimension of shifted partials cannot give a stronger lower bound for the determinant polynomial. However, it is possible that the estimate is \emph{not} tight for the permanent and the dimension of shifted partial derivatives of the permanent is provably strictly larger than that of the determinant! It is conceivable that one should be able to prove an $\exp(\Omega(\sqrt{n}\log n))$ lower bound for the permanent using this measure. 
+
+Indeed, subsequently an $\exp(\Omega(\sqrt{d}\log n))$ was proved \cite{KSS13,FLMS13} for other explicit polynomials  which we now outline. 
+
+\subsubsection{Shifted partials of the Nisan-Wigderson polynomial}
+
+Very shortly after \cite{gkks13}'s $2^{\Omega(\sqrt{n})}$ lower bound, Kayal, Saha and Saptharishi \cite{KSS13} gave a stronger lower bound for a different polynomial. Their approach was to engineer an explicit polynomial $F$ for which the dimension of shifted partial derivatives is easier to estimate. The main idea was that, if any $k$-th order partial derivative of the engineered polynomial is a monomial, then once again estimating $\dim\inparen{\SPD{k}{\ell}{F}}$ reduces to a monomial counting problem. If we could ensure that no two monomials of $F$ have a gcd of degree $k$ or more, then we would immediately get that all $k$-th order partial derivatives of $F$ are just monomials (albeit possibly zero). If we were to interpret the set of non-zero monomials of $F$ as just subsets over the variables, then the above constraint can \DIFaddbegin \DIFadd{be }\DIFaddend rephrased as a set system with \emph{small pairwise intersection}. Such systems are well studied and are known as Nisan-Wigderson designs \cite{nw94}.  With this in mind, \cite{KSS13} studied the following polynomial family inspired by an explicit construction of a Nisan-Wigderson design. 
+
+\begin{definition}[Nisan-Wigderson Polynomial]. 
+Let $n$ be a power of $2$ and let $\F_n$ be the finite field with $n$ elements that are identified with the set $\inbrace{1,\dots, n}$. For any $0\leq k \leq n$, the polynomial $\mathrm{NW}_k$ is a $n^2$-variate polynomial of degree $n$ defined as follows\DIFaddbegin \DIFadd{:
+}\DIFaddend $$
+\mathrm{NW}_k(x_{1,1},\dots, x_{n,n}) \spaced{=} \sum_{\substack{p(t) \;\in\; \F_n[t]\\\deg(p) \;<\; k}} x_{1,p(1)}\dots x_{n,p(n)}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+\end{definition}
+
+It is easy to show that the above family of polynomials is in $\mathsf{VNP}$. Further, since any two distinct univariate polynomials of degree less than $k$ intersects in less than $k$ places, we have the following observation. 
+
+\begin{observation}
+Any two monomials of $\mathrm{NW}_k$ intersect in less than $k$ variables. Hence, any $k$-th order partial derivative of $\mathrm{NW}_k(\vecx)$ is a monomial (which could possibly be zero). \qed
+\end{observation}
+
+Hence, the problem of lower bounding the shifted partials of $\mathrm{NW}_k$ reduces to the problem of counting distinct monomials of degree $\ell + d-k$ that are divisible by one of these $k$-th order derivatives. \cite{KSS13} additionally used the observation that two random $k$-th order partial derivatives of $\mathrm{NW}_k$ are monomials that are \emph{far} from each other. Using this, they estimate the number of distinct shifts of these monomials and showed that the dimension of shifted partial derivatives of $\mathrm{NW}_k$ is very close to the trivial upper bound as in Claim~\ref{clm:spd-ratio}. We sketch the argument by Chillara and Mukhopadhyay \cite{cm14}. Formally, for any two multilinear monomials $m_1$ and $m_2$, let the $\Delta(m_1,m_2)$ denote $\min\inbrace{|m_1| - |m_1\intersection m_2|, m_2 - |m_1 \intersection m_2|}$ (abusing notation by identifying the multilinear monomials with the set of variables that divide it). 
+
+\begin{lemma}[\cite{cm14}]\label{lem:cm-inc-exc}
+Let $m_1,\dots, m_s$ be monomials over $N$ variables such that $\Delta(m_i, m_j) \geq d$ for all $i\neq j$. Then the number of distinct monomials that may be obtained by multiplying some $m_i$ by arbitrary monomials of degree $\ell$ is at least $s \binom{N+\ell}{N} - \binom{s}{2} \binom{N+\ell - d}{N}$. 
+\end{lemma}
+\begin{proof}
+For $i = 1,\dots, s$, let $A_i$ be the set of monomials that can be obtained by multiplying $m_i$ with a degree $\ell$ monomial. By inclusion-exclusion, 
+$$
+\abs{\Union_{i=1}^s A_i} \spaced{\geq} \sum_{i=1}^s \abs{A_i} \spaced{-} \sum_{i<j} \abs{A_i \intersection A_j}\DIFaddbegin \DIFadd{.
+}\DIFaddend $$
+Note that each $A_i$ is of size exactly $\binom{N+\ell}{N}$. Further, since $\Delta(m_i, m_j) \geq d$, any monomial that is divisible by $m_i$ and $m_j$ must necessarily be divisible by \DIFdelbegin \DIFdel{$m_1$ }\DIFdelend \DIFaddbegin \DIFadd{$m_i$ }\DIFaddend and the variables in \DIFdelbegin \DIFdel{$m_2$ not in $m_1$}\DIFdelend \DIFaddbegin \DIFadd{$m_j$ not in $m_i$}\DIFaddend . Hence, $\abs{A_i\intersection A_j} \leq \binom{N + \ell - d}{N}$. The lemma follows by substituting these above. 
+\end{proof}
+
+Note that any two distinct monomials of $\mathrm{NW}_k$ intersect in at most $k$ places. For each monomial $m_i$ of $\mathrm{NW}_k$, let $m_i'$ be any non-zero $k$-th order partial derivative of $m_i$. Therefore, $\Delta(m_i', m_j') \geq n -2k \geq \frac{n}{2}$ for $k = \epsilon \sqrt{n}$. Since we have $n^k$ monomials of pairwise distance at least $n/2$, the above lemma immediately yields a lower bound for the shifted partials of $\mathrm{NW}_k$. 
+
+\begin{theorem}[\cite{KSS13}]
+Let $k = \epsilon \sqrt{d}$ for some constant $\epsilon > 0$. Then for any  $\ell = \Theta\inparen{\frac{n^2 \sqrt{n}}{\log n}}$,
+$$
+\dim\inparen{\SPD{k}{\ell}{\mathrm{NW}_k}} \spaced{\geq} \frac{n^k}{2} \cdot \binom{n^2 + \ell}{n^2}
+$$
+\end{theorem}
+\begin{proof-sketch}
+As mentioned earlier, we have $n^k$ monomials $\inbrace{m_i'}$ with pairwise distance at least $\frac{n}{2}$. Using Lemma~\ref{lem:cm-inc-exc}, it suffices to show that
+$$
+n^k \cdot \binom{n^2 + \ell}{n^2} \spaced{\geq} 2 \cdot \binom{n^k}{2} \cdot \binom{n^2 + \ell - \frac{n}{2}}{n^2}
+$$
+and this follows easily from standard binomial coefficient estimates. 
+\end{proof-sketch}
+
+Combining with Corollary~\ref{cor:dimSPD-upper-bound}, we have the lower bound of \cite{KSS13} using standard estimates. 
+
+\begin{theorem}[\cite{KSS13}]
+Any $\mySPSP{O(\sqrt{n})}{\sqrt{n}}$ computing the $\mathrm{NW}_k$ polynomial, where $k = \epsilon \sqrt{n}$ for a sufficiently small $\epsilon > 0$, must have top fan-in $\exp(\Omega(\sqrt{n}\log n))$. \qed
+\end{theorem}
+
+\cite{KSS13} used the above lower bound to give an $n^{\Omega(\log n)}$ \DIFaddbegin \DIFadd{lower bound }\DIFaddend for a subclass of formulas called \emph{regular formulas}. The interested reader can refer to \cite{KSS13} for more details. 
+
+\subsubsection{Shifted partials of the Iterated-matrix-multiplication polynomial}
+
+Fourier, Limaye, Malod and Srinivasan \cite{FLMS13} showed the same lower bound as \cite{KSS13} but for the \emph{iterated matrix multiplication} polynomial which is known to have polynomial sized circuits computing it. 
+
+\begin{definition}[Iterated matrix multiplication polynomial]
+Let $M_1,\dots, M_d$ be $n\times n$ matrices with distinct variables as entries, i.e. $M_k = \inparen{\!\!\inparen{x_{ij}^{(k)}}\!\!}_{i,j\leq n}$ for $k = 1,\dots, d$. The polynomial $\mathrm{IMM}_{n,d}$ is a $(n^2d)$-variate degree-$d$ polynomial defined as the $(1,1)$-th entry of the matrix product $M_1\dots M_d$:
+$$
+\mathrm{IMM}_{n,d}(\vecx) \spaced{=} \inparen{M_1 \dots M_d}_{1,1}
+$$
+\end{definition}
+
+A more useful perspective is to interpret this as a \emph{canonical algebraic branching program}. 
+
+\begin{definition}[Algebraic branching program]
+An algebraic branching program (ABP) comprises of a layered directed graph $G$ with $(d+1)$ layers of vertices, where the first and last layer consists of a single node (called source and sink respectively), all other layers consist of $n$ vertices, and edges are only between successive layers and have linear polynomials as edge-weights. The ABP is set to compute the polynomial $f$ defined as
+$$
+f(\vecx) \spaced{=} \sum_{\text{source-sink path $\rho$}} \mathrm{weight}(\rho)
+$$
+where the $\mathrm{weight}$ of any path is just the product of the edge weights on the path. 
+\end{definition}
+
+The canonical ABP comprises of the graph where the $i$-th vertex of layer $(\ell-1)$ is connected to the $j$-th vertex of layer $\ell$ with edge-weight $x_{ij}^{(\ell)}$ for every choice of $i,j$ and $\ell$. It is easy to see that the polynomial computed by the canonical ABP is in fact $\mathrm{IMM}_{n,d}$. \\
+
+To lower bound the dimension of shifted partial derivatives of $\mathrm{IMM}_{n,d}$, firstly note that a derivative with respect to any variable (or edge) simply results in the sum of all source-sink paths that \emph{pass} through this edge. \cite{FLMS13} use the following simple but crucial observation to assist in bounding the dimension of shifted partials. 
+
+\begin{observation}\label{obs:odd-layer-unique-path}
+Assume that $d$ is \DIFdelbegin \DIFdel{odd}\DIFdelend \DIFaddbegin \DIFadd{even}\DIFaddend . Let $e_1,e_3,\dots, e_{d-1}$ be an arbitrary set of edges such that $e_i$ is between layer $i$ and $i+1$. Then, there is a unique path from source to sink that passes through all these edges. 
+\end{observation}
+\begin{proof}
+Since these are edges in alternate layers, their starting and ending points uniquely determine the edges that are picked up from the even-numbered layers to complete the source-sink path.
+\end{proof}
+
+Since we are interested in $k$-th order derivatives for $k \approx \epsilon \sqrt{d}$, \cite{FLMS13} consider the following restriction by removing some edges from the underlying graph:
+\begin{itemize}
+\item Select $(2k-1)$ layers $\ell_1,\dots, \ell_{2k-1}$ that are roughly equally spaced between \DIFdelbegin \DIFdel{first and }\DIFdelend \DIFaddbegin \DIFadd{the first and the }\DIFaddend last layer. These layers, and the first and \DIFaddbegin \DIFadd{the }\DIFaddend last layers, shall be untouched and shall be called \emph{pristine layers}.
+\item In all \DIFaddbegin \DIFadd{the }\DIFaddend other layers, retain only those edges connecting vertex $i$ of this layer to vertex $i$  of the next. 
+\end{itemize}
+This restriction effectively makes the graph similar to an ABP with $2k+1$ layers. Let the polynomial computed by the restricted ABP be $\mathrm{IMM}'_{n,d}(\vecx)$. Since $\mathrm{IMM}'_{n,d}$ was obtained by just setting some variables of $\mathrm{IMM}_{n,d}$ to zero, the dimension of shifted partial derivatives of $\mathrm{IMM}'_{n,d}$ can only be smaller than that of $\mathrm{IMM}_{n,d}$. Similar to Observation~\ref{obs:odd-layer-unique-path}, we have the following observation. 
+
+\begin{observation}
+For every choice of $k$ edges from odd-numbered pristine layers, there is a unique source-sink path that passes through them. 
+
+In other words, for any choice of $k$ variables chosen by picking one from each odd-numbered pristine layer, then the $k$-th order partial derivative of $\mathrm{IMM}'_{n,d}$ with respect to these $k$ variables is a non-zero monomial. 
+\end{observation}
+
+Once again, we can lower bound the dimension of shifted partial derivatives of $\mathrm{IMM}'_{n,d}$ by a monomial counting problem. Similar to \DIFaddbegin \DIFadd{the }\DIFaddend earlier case, \cite{FLMS13} show that the monomials thus obtained are \emph{far} from one another. We state their main lemma below without proof. 
+
+\begin{lemma}[\cite{FLMS13}]
+There are at least $n^{k/2}$ monomials of $\mathrm{IMM}'_{n,d}$ of pairwise distance at least $\frac{n}{4}$. 
+\end{lemma}
+
+Again, using Lemma~\ref{lem:cm-inc-exc} and standard binomial coefficient estimates, this implies that the shifted partial derivatives of $\mathrm{IMM}'_{n,d}$ is almost as large as the trivial upper bound. 
+
+\begin{theorem}[\cite{FLMS13}]Let $k = \epsilon\sqrt{d}$ for a sufficiently small $\epsilon > 0$ and $\ell$ be an integer such that $n^{1/16} \leq \frac{N + \ell}{\ell} \leq n^{1/4}$ where $N$ is the number of variables $\mathrm{IMM}_{n,d}'$ depends on. Then, 
+\begin{eqnarray*}
+\dim\inparen{\SPD{k}{\ell}{\mathrm{IMM}_{n,d}}} &\geq& \dim\inparen{\SPD{k}{\ell}{\mathrm{IMM}'_{n,d}}} \\
+& =& \Omega\inparen{n^{k/2} \cdot \binom{N + \ell}{\ell}}\DIFaddbegin \DIFadd{.
+}\DIFaddend \end{eqnarray*}
+\qed
+\end{theorem}
+
+Combining with Corollary~\ref{cor:dimSPD-upper-bound}, we get the lower bound of \cite{FLMS13}. 
+
+\begin{theorem}[\cite{FLMS13}]
+Any $\mySPSP{O(\sqrt{d})}{\sqrt{d}}$ circuit computing $\mathrm{IMM}_{n,d}$, with $d \leq n^{\delta}$ for a sufficiently small $\delta > 0$, has top fan-in $\exp(\Omega(\sqrt{d}\log n))$. \qed
+\end{theorem}
+
+Similar to \cite{KSS13}, the above result also implies $n^{\Omega(\log n)}$ lower bounds for regular formulas computing $\mathrm{IMM}_{n,d}$. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%DIF < %% TeX-master: "lowerbounds"
+%DIF > %% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+\section{Conclusion}\label{sec:conclusion}
+	The field of arithmetic complexity, like Boolean complexity, 
+	abounds with open problems and proving lower bounds for 
+	almost any natural subclass of arithmetic circuits is 
+	interesting especially if the currently known techniques/
+	complexity measures do not apply to that subclass\footnote{
+		Some of the complexity measures that we describe here 
+		yield lower bounds for slightly more general subclasses 
+		of circuits.
+	}. 
+	The surveys \cite{aviSurvey, sy, ckw11} mark out the 
+	frontiers of this area in the form of many open problems 
+	and we invite the reader to try some of them\DIFdelbegin \DIFdel{! 
+	}\DIFdelend \DIFaddbegin \DIFadd{.
+	}\DIFaddend 
+
+	
+
+%%% Local Variables: 
+%%% mode: latex
+%DIF < %% TeX-master: "lowerbounds"
+%DIF > %% TeX-master: "lowerbounds_birk"
+%%% End: 
+
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

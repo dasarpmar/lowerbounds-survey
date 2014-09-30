@@ -1,0 +1,234 @@
+\section{Lower bounds for depth-3 circuits}
+
+\subsection{Depth-3 circuits over finite fields}
+
+This section shall present the lower bound of Grigoriev and Karpinski
+\cite{grigoriev98} for $\Det_n$. A follow-up paper of Grigoriev and
+Razborov \cite{gr00} extended the result over function fields, also
+including a weaker lower bound for the permanent, but we shall just
+present the lower bound for the determinant.
+
+\begin{theorem}\cite{grigoriev98}\label{thm:gk-main-thm}
+  Any depth-3 circuit computing $\Det_n$ over a finite field $\F_q$
+  requires size $2^{\Omega(n)}$.
+\end{theorem}
+
+{\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$,
+where each $T_i$ is a product of linear polynomials. Define
+$\mathrm{rank}(T_i)$ to be the dimension of the set of linear
+polynomials that $T_i$ is a product of. If $T$ is a product of linear
+forms of rank at least $r$, then with high probability a random
+evaluation of $T$ would be zero. Hence, in a sense, $C$ can be
+``approximated'' by just the low-rank components. Further, if $T =
+\ell_1^{e_1} \dots \ell_d^{e_d}$ with $\ell_1,\dots, \ell_r$ being a
+maximal set of linearly independent linear polynomials, then $T$
+interpretted as a function from $\F$ to $\F$ can be written as a
+linear combination of $\setdef{\ell_1^{d_1}\dots\ell_r^{d_r}}{d_i < q
+  \quad \forall i\in [d]}$. Any linear combination of the above set is
+equivalent to a polynomial with at most $q^r$ monomials upto a linear
+transformation; we shall refer to them as \emph{generalized
+  $q^r$-sparse polynomials}. Hence, any depth-3 circuit $C$ over $\F$
+can be \emph{approximated} by a sum of generalized sparse polynomials. 
+
+Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as
+a measure, and then proceed to show that $\Det_n$ cannot be
+approximated by such sum of generalized sparse polynomials.
+
+\subsubsection{The complexity measure}
+
+For any polynomial $f \in \F[x_{11},\dots, x_{nn}]$, define the matrix
+$M_k(f)$ as follows --- the columns of $M_k(f)$ are indexed by $k$-th
+order partial derivatives of $f$, and rows by elements of $\F^{n^2}$,
+with the entry being the evaluation of the partial derivative (column
+index) at the point (row index).\\
+
+The rank of $M_k(f)$ could be a possible choice of a complexity
+measure but Grigoriev and Karpinski make a small
+modification. Instead, the look at the matrix $M_k(f)$ and remove a
+few \emph{erraneous} evaluation points and use the rank of the
+resulting matrix. For any $\mathcal{A}\subseteq \F^{n^2}$, let us
+define $M_k(f;\mathcal{A})$ to be the matrix obtained from $M_k(f)$ by
+only taking the rows whose indices are in
+$\mathcal{A}$. Also, let $\CM{GK}_{k,\mathcal{A}}(f)$
+denote $\mathrm{rank}(M_k(f;\mathcal{A}))$.
+
+
+
+\subsubsection{Upper-bounding $\CM{GK}_{k,\mathcal{A}}$ for a depth-3 circuit}\label{sec:gk-upper-bound}
+
+The following observation is trivial to observe from the linearity of the entries of the matrix. 
+
+\begin{observation}[Sub-additivity]\label{obs:GK-subadditivity}
+  $\CM{GK}_{k,\mathcal{A}}(f + g) \quad\leq\quad
+  \CM{GK}_{k,\mathcal{A}}(f) +
+  \CM{GK}_{k,\mathcal{A}}(g)$
+\end{observation}
+
+Fix a threshold $r_0 = \beta n$ for some constant $\beta > 0$ (to be
+chosen shortly), and let $k = \gamma n$ for some $\gamma>0$ (to be
+chosen shortly). We shall call a term $T = \ell_1\cdots \ell_d$ to be
+of \emph{low rank} if $\mathrm{rank}(T) \leq r$, and \emph{large rank}
+otherwise. By the above lemma, we shall upper-bound the
+$\CM{GK}_{k,\mathcal{A}}$ for each term $T$, for a
+suitable choice of $\mathcal{A}$.\\
+
+\noindent 
+{\bf Low rank terms:}
+
+Suppose $T = \ell_1 \cdots \ell_d$ with $\inbrace{\ell_1, \dots,
+  \ell_r}$ being a maximal independent set of linear polynomials (with
+$r \leq r_0$). Then, $T$ can be expressed as a linear combination of
+terms from the set $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i\leq d
+  \quad \forall i\in [r]}$. And since the matrix $M_k(f)$ depends only
+on evaluations in $\F^{n^2}$, we can use the relation that $x^q = x$
+in $\F$ to express the function $T:\F^{n^2}\rightarrow \F$ as a linear
+combination of $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i<q \quad
+  \forall i\in [r]}$. Therefore, for any set $\mathcal{A}\subseteq
+\F^{n^2}$, we have that
+$$
+\CM{GK}_{k;\mathcal{A}}(T) \quad \leq \quad
+\mathrm{rank}(M_k(f)) \quad \leq \quad q^r \quad\leq \quad q^{\beta{n}}
+$$
+
+
+\noindent
+{\bf High rank terms:}
+
+Suppose $T = \ell_1\dots \ell_d$ whose rank is greater than $r_0 =
+\beta n$, and let $\inbrace{\ell_1, \dots, \ell_r}$ be a maximal
+independent set. We want to use the fact that since $T$ is a product
+of at least $r$ independent linear polynomials, most evaluations would
+be zero. We shall be choosing our $\mathcal{A}$ to be the set where
+all $k$-th order partial derivatives evaluate to zero. 
+
+On applying the product rule of differentiation, any $k$-th order of
+$T$ can be written as a sum of terms each of which is a product of at
+least $r-k$ independent linear polynomials. Let us count the
+\emph{erraneous points} $\mathcal{E}_T\subseteq \F^{n^2}$ that keep at
+least $r-k$ of $\inbrace{\ell_1,\dots, \ell_r}$ non-zero, or in other
+words makes at most $k$ of $\inbrace{\ell_1,\dots, \ell_r}$ zero.
+$$
+\Pr_{\mathbf{a}\in \F^{n^2}}[\text{at most $k$ of $\ell_1,\dots,
+  \ell_r$ evaluate to zero}] \quad\leq \quad \sum_{i=0}^k \binom{r}{i} \inparen{\frac{1}{q}}^i\inparen{1 - \frac{1}{q}}^{r-i}
+$$
+Hence, we can upper-bound $\abs{\mathcal{E}_T}$ as
+\begin{eqnarray*}
+\abs{\mathcal{E}_T} &\leq & \sum_{i=0}^k \binom{r}{i} (q-1)^{r-i}q^{n^2 - r}\\
+ & = & O\inparen{k\cdot \binom{r}{k}\inparen{1 - \frac{1}{q}}^{r-k} q^{n^2}} \quad\text{if $r > qk$}\\
+ & = & q^{n^2} \cdot \alpha^n\quad\text{for some $0< \alpha < 1$}
+ \end{eqnarray*}
+
+ By choosing $\mathcal{A} = \F_{n^2} \setminus \mathcal{E}$ where
+ $\mathcal{E} = \Union_{\text{$T$ of large rank}} \mathcal{E}_t$, we
+ have that $M_k(T;\mathcal{A})$ is just the zero matrix and hence
+ $\CM{GK}_{k,\mathcal{A}}(T) = 0$.\\
+
+
+Putting it together, if $C = T_1 + \dots + T_s$, then 
+\begin{equation}\label{eqn:gk-upper-bound-circuit}
+\CM{GK}_{k,\mathcal{A}}(C) \quad \leq \quad s \cdot
+q^{\beta n}
+\end{equation} 
+where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set
+$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2}$ for
+some $1< \alpha < 1$.
+
+\subsubsection{Lower-bounding $\CM{GK}_{k,\mathcal{A}}(\Det_n)$}
+
+We now wish to show that $M_k(\Det_n;\mathcal{A})$ has large
+rank. Note that if we were to just consider $M_k(\Det_n)$, it would
+have been easy to show that the rank is full by looking at just those
+evaluation points that keep exactly $(n-k)\times (n-k)$ minor non-zero
+(set the main diagonal of the minor to ones, and every other entry to
+zero). Hence, $M_k(\Det_n)$ has the identity matrix \emph{embedded
+  inside} and hence must be full rank. In fact, we can also show that
+$M_k(\Det_n; GL_n)$ is full rank (where $GL_n$ is the set of
+invertible matrices) by the following lemma.
+
+\begin{lemma}
+  If a multivariate polynomial vanishes on all invertible matrices,
+  then the polynomial must be zero.
+\end{lemma}
+
+The proof is left as a nice exercise to the reader\footnote{Hint:
+  induct on $n$}. Hence, if the matrix restricted to just invertible
+evaluations is not full rank, then there is some linear combination of
+the columns that is zero. Since any linear combination of columns is a
+multilinear polynomial, this linear combination must vanish on every
+invertible matrix, and hence must be zero by the above lemma. But we
+know that the minors of a symbolic matrix are linearly independent
+yielding the contradiction. Hence, $\mathrm{rank}(M_k(f;GL_n)) =
+\binom{n}{k}^2$. But we don't have much control over the choice of
+$\mathcal{E}$. Grigoriev and Karpinski circumvent this difficulty
+using the following two clever tricks.
+
+\begin{lemma}\label{lem:gk-invertible-same-rank}
+  For any invertible matrix $g\in GL_n$ and any set $\mathcal{A}\subseteq \F^{n^2}$, 
+  $$
+  \mathrm{rank}(M_k(\Det_n;\mathcal{A})) = \mathrm{rank}(M_k(\Det_n;g\mathcal{A}))
+  $$
+  where $g\mathcal{A} \quad=\quad \setdef{g \cdot a}{a\in \mathcal{A}}$.
+\end{lemma}
+\begin{proof}
+  For any matrix $g$, the minors of $gX$ are linear combinations of
+  the minors of $X$ where $X = \inparen{\!\inparen{x_{ij}}\!}$ is
+  symbolic matrix of indeterminates. Hence, any column of
+  $M_k(\Det_n;g\mathcal{A})$ is a linear combination of columns of
+  $M_k(\Det_n;\mathcal{A})$, and hence
+  $\mathrm{rank}(M_k(\Det_n;\mathcal{A})) \geq
+  \mathrm{rank}(M_k(\Det_n;g\mathcal{A}))$. If $g$ is an invertible
+  matrix, the inequality holds the other way as well, and we have the
+  lemma.
+\end{proof}
+
+Suppose we can find a small set of invertible matrices $S \subseteq
+\F^{n^2}$ such that $GL_n \subseteq \Union_{g\in S} g\mathcal{A}$,
+then the matrix $M_k(\Det_n; GL_n)$ is a sub-matrix of $M_k(\Det_n;
+\Union_{g\in S} g\mathcal{A})$. Hence, 
+\begin{eqnarray*}
+  \binom{n}{k}^2 = \mathrm{rank}(M_k(\Det_n;GL_n)) & \leq & \mathrm{rank}\inparen{M_k\inparen{\Det_n;\Union_{g\in S}g\mathcal{A}}}\\
+  & \leq & |S| \cdot \mathrm{rank}(M_k(\Det_n;\mathcal{A}))\quad\text{by Lemma~\ref{lem:gk-invertible-same-rank}}
+\end{eqnarray*}
+
+Hence, we now need to find a small set $S$ of invertible matrices such
+that $\mathcal{A}$ can be \emph{shifted} by $S$ to cover all of
+$GL_n$. Note that $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for
+some set $\mathcal{E}$ of size $s\alpha^nq^{n^2}$ (for $\alpha <
+1$). Since it is a well-known fact that $\abs{GL_n} \geq
+q^{n^2}\frac{(q-2)}{(q-1)}$, we have that $\mathcal{E}' = GL_n
+\intersection \mathcal{E}$ has size at most $\frac{1}{2} \abs{GL_n}$
+and hence $\mathcal{A}' = \mathcal{A}\intersection GL_n$ has size at
+least $\frac{1}{2}\abs{GL_n}$. We shall show that a random set $S$ of
+$O(n^2)$ invertible matrices would cover all of $GL_n$. Observe that
+for any matrix $E$,
+\begin{eqnarray*}
+  \Pr_g[E \notin g\mathcal{A}'] &\leq& \frac{1}{2}\\
+  \implies \Pr_{g_1,\dots, g_m}[E \notin g_i\mathcal{A}'\text{ for every } i\in [m]] & \leq & \frac{1}{2^m}\\
+  \implies \Pr_{g_1,\dots, g_m}[\exists E\in \mathcal{E}'\text{ such that }E \notin g_i\mathcal{A}'\text{ for every } i\in [m]] & \leq & \frac{\abs{\mathcal{E}'}}{2^m}
+\end{eqnarray*}
+By choosing $m > \log_2 \abs{\mathcal{E}'} = O(n^2)$, there exists a
+set $S$ of $m$ invertible matrices that $S\mathcal{A}$ covers $GL_n$. Hence, 
+$$
+\mathrm{rank}(M_k(\Det_n;\mathcal{A})) \quad = \quad \Omega\inparen{\frac{\binom{n}{k}^2}{n^2}}
+$$
+
+\subsubsection{Putting it all together}
+
+Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then 
+\begin{eqnarray*}
+s \cdot q^{\beta n} & = &  \Omega\inparen{\frac{\binom{n}{k}^2}{n^2}}\\
+ & = & \Omega\inparen{2^{2H(\gamma)\cdot n - O(\log n)}}\\
+\implies \log s & = & \Omega((2H(\gamma) - \beta \log q)n)
+\end{eqnarray*}
+
+By choosing $\gamma < q^{-q/2}$, we can find a $\beta$ such that
+$q\gamma < \beta$ (which was required in
+section~\ref{sec:gk-upper-bound}) and $2H(\gamma) > \beta \log q$,
+yielding the required lower bound that $s = 2^{\Omega(n)}$.\qed
+(Theorem~\ref{thm:gk-main-thm})
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds"
+%%% End: 

@@ -1,0 +1,163 @@
+\subsection{Lower bounds for formulas}\label{sec:Kalorkoti}
+
+This section would be devoted to the proof of Kalorkoti's lower bound
+\cite{k85} for formulas computing $\Det_n$, $\Perm_n$.
+
+\begin{theorem}[\cite{k85}]\label{thm:kalorkoti}
+  Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires
+  $\Omega(n^3)$ size.
+\end{theorem}
+
+The exploitable weakness in this setting is again to use the fact that the polynomials computed at intermediate gates share many polynomial dependencies. 
+
+\begin{definition}[Algebraic independence]
+  A set of polynomials $\inbrace{f_1,\dots, f_m}$ is said to be
+  \emph{algebraically independent} if there is no non-trivial polynomial 
+  $H(z_1,\dots, z_m)$ such that $H(f_1,\dots, f_m)=0$. 
+
+  The size of the largest algebraically independent subset of
+  $\vecf=\inbrace{f_1,\dots, f_m}$ is called the \emph{transcendence
+    degree} (denoted by $\mathrm{trdeg}(f)$).
+\end{definition}
+
+The proof of Kalorkoti's theorem proceeds by defining a \emph{complexity measure} using the above notion of algebraic independence. \\
+
+
+{\bf The Measure:} 
+For any subset of variables $Y\subseteq X$, we can write a polynomial
+$f \in \F[X]$ of the form $f = \sum_{i=1}^s f_i \cdot m_i$ where $m_i$'s are
+distinct monomials in the variables in $Y$, and $f_i \in
+F[X \setminus Y]$. We shall denote by $\mathrm{td}_Y(f)$ the transcendence degree of $\inbrace{f_1,\dots, f_s}$
+
+
+Fix a partition of variables $X = X_1 \sqcup \dots
+\sqcup X_r$. For any polynomial $f\in \F[X]$, define the map $\CM{Kal}:\F[X]\rightarrow \Z_{\geq 0}$  as
+$$
+\CM{Kal}(f) \quad=\quad \sum_{i=1}^r \mathrm{td}_{X_i}(f).
+$$
+
+The lower bound proceeds in two natural steps:
+\begin{enumerate}
+\item Show that $\CM{Kal}(f)$ is \emph{small} whenever $f$ is computable by a \emph{small} formula. 
+\item Show that $\CM{Kal}(\Det_n)$ is \emph{large}. 
+\end{enumerate}
+
+\subsubsection{Upper bounding $\CM{Kal}$ for a formula}
+
+\begin{lemma}\label{lem:kal-upperbound}
+  Let $f$ be computed by a fan-in two formula $\Phi$ of size $s$. Then
+  for any partition of variables $X = X_1\sqcup \dots \sqcup X_r$, we
+  have $\CM{Kal}(f) = O(s)$.
+\end{lemma}
+\begin{proof}
+  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves
+  of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote
+  the leaves of the subtree rooted at $v$ that are in the part
+  $X_i$. Since the underlying graph of $\Phi$ is a tree, it follows
+  that the size of $\Phi$ is bounded by a twice the number of
+  leaves. For each part $X_i$, we shall show that
+  $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which
+  would prove the required bound. \\
+
+  Fix an arbitrary part $Y = X_i$. Define the following three 
+  sets of nodes
+  \begin{eqnarray*}
+    V_0 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 0 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
+    V_1 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 1 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
+    V_2 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} \geq 2}.
+  \end{eqnarray*}
+
+  Each node $v\in V_0$ computes a polynomial in $f_v \in
+  \F[X\setminus Y]$, and we shall replace the subtree at $v$ by a node
+  computing the polynomial $f_v$. Similarly, any node $v\in V_1$
+  computes a polynomial of the form $f^{(0)}_v + f^{(1)}_v y_v$ for some $y_v\in Y$
+  and $f^{(0)}_v, f^{(1)}_v \in \F[X\setminus Y]$. We shall again replace the
+  subtree rooted at $v$ by a node computing $f^{(0)}_v + f^{(1)}_v y_v$. 
+
+  Hence, the formula $\Phi$ now reduces to a smaller formula $\Phi_Y$ with
+  leaves  being the nodes in $V_0$ and $V_1$ (and nodes in $V_2$ are
+  unaffected). We would like to show that the size of the reduced
+  formula, which is at most twice the number of its leaves, is
+  $O(\abs{\textsc{Leaf}_Y(\Phi)})$.
+
+  \begin{observation}\label{obs:v1-bound}$\abs{V_1} \leq \abs{\textsc{Leaf}_Y(\Phi)}$.    
+  \end{observation}
+  \begin{myproof}{Obs}
+    Each node in $V_1$ has a distinct leaf labelled with a variable in
+    $Y$. Hence, $\abs{V_1}$ is bounded by the number of leaves
+    labelled with a variable in $Y$.
+  \end{myproof}
+  
+  This shows that the $V_1$ leaves are not too many. Unfortunately, we
+  cannot immediately bound the number of $V_0$ leaves, since we could
+  have a long chain of $V_2$ nodes each with one sibling being a $V_0$
+  leaf. The following observation would show how we can eliminate such
+  long chains.
+
+  \begin{observation}\label{obs:same-leaf-collapse}
+    Let $u$ be an arbitrary node, and $v$ be another node in the
+    subtree rooted at $u$ with $\textsc{Leaf}_Y(u) =
+    \textsc{Leaf}_Y(v)$. Then the polynomial $g_u$ computed at $u$ and
+    the polynomial $g_v$ computed at $v$ are related as $g_u = f_1 g_v
+    + f_2$ for some $f_1,f_2 \in \F[X\setminus Y]$.
+  \end{observation}
+  \begin{myproof}{Obs}
+    If $\textsc{Leaf}_Y(u) =\textsc{Leaf}_Y(v)$, then every node on
+    the path from $u$ to $v$ must have a $V_0$ leaf as the other child. The
+    observation follows as all these nodes are $+$ or $\times$ gates.
+  \end{myproof}
+
+  Using the above observation, we shall remove the need for $V_0$
+  nodes completely by augmenting each node $u$ (computing a polynomial
+  $g_u$) in $\Phi_Y$ with polynomials $f_u^{(0)}, f_u^{(1)} \in \F[X\setminus Y]$
+  to enable them to compute $f_u^{(1)}g_u + f_u^{(0)}$. Let this augmented formula be called $\hat{\Phi}_Y$. Using
+  Observation~\ref{obs:same-leaf-collapse}, we can now contract any
+  two nodes $u$ and $v$ with $\textsc{Leaf}_Y(u) =
+  \textsc{Leaf}_Y(v)$, and eliminate all $V_0$ nodes
+  completely. Since all $V_2$ nodes are internal nodes, the only leaves of the augmented formula $\hat{\Phi}_Y$ are in $V_1$. Hence, the size of the augmented formula $\hat{\Phi}_Y$ is  bounded by $2\abs{V_1}$, which is bounded by
+  $2\abs{\textsc{Leaf}_Y(\Phi)}$ by Observation~\ref{obs:v1-bound}.\\
+
+  Suppose $\Phi$ computes a polynomial $f$, which can be written as  $f
+  = \sum_{i=1}^t f_i\cdot m_i$ with $f_i \in \F[X\setminus Y]$ and $m_i$'s being
+  distinct monomials in $Y$. Since $\hat{\Phi}_Y$ also computes $f$, each $f_i$ is a polynomial
+  combination of the polynomials $S_Y = \setdef{f_{u}^{(0)},
+    f_{u}^{(1)}}{u\in \hat{\Phi}_Y}$. Since $\hat{\Phi}_Y$ consists of at
+  most $2\abs{\textsc{Leaf}_Y(\Phi)}$ augmented nodes, we have that
+  $\mathrm{td}_Y(f) \leq |S_Y| \leq 4\abs{\textsc{Leaf}_Y(\Phi)}$. Therefore, 
+  $$
+  \mathrm{td}_Y(f) \quad=\quad \mathrm{trdeg}\setdef{f_i}{i\in [t]} \quad\leq\quad 4\abs{\textsc{Leaf}_Y(\Phi)}
+  $$
+  Hence, 
+  $$\CM{Kal}(\Phi) = \sum_{i=1}^r \mathrm{td}_{X_i}(f_i) \leq 4\inparen{\sum_{i=1}^r \abs{\textsc{Leaf}_{X_i}}} = O(s).
+  $$
+\end{proof}
+
+\subsubsection{Lower bounding $\CM{Kal}(\Det_n)$}
+
+
+\begin{lemma}\label{lem:kal-lowerbound}
+  Let $X = X_1 \sqcup \dots \sqcup X_n$ be the partition as defined by
+  $X_t = \setdef{x_{ij}}{i-j\equiv t\bmod{n}}$. Then,
+  $\CM{Kal}(\Det_n) = \Omega(n^3)$.
+\end{lemma}
+\begin{proof}
+  By symmetry, it is easy to see that $\text{td}_{X_i}(\Det_n)$ is
+  the same for all $i$. Hence, it suffices to show that
+  $\text{td}_{Y}(\Det_n) = \Omega(n^2)$ for $Y = X_n = \inbrace{x_{11},\dots, x_{nn}}$. 
+
+  To see this, observe that the determinant consists of the monomials
+  $\inparen{\frac{x_{11}\dots x_{nn}}{x_{ii}x_{jj}}}\cdot
+  x_{ij}x_{ji}$ for every $i\neq j$. Hence, $\text{td}_{Y}(\Det_n)
+  \geq \mathrm{trdeg}\setdef{x_{ij}x_{ji}}{i\neq j} =
+  \Omega(n^2)$. Therefore, $\CM{Kal}(\Det_n) =
+  \Omega(n^3)$.
+\end{proof}
+
+The proof of Theorem~\ref{thm:kalorkoti} follows from
+Lemma~\ref{lem:kal-upperbound} and Lemma~\ref{lem:kal-lowerbound}.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lowerbounds_birk"
+%%% End: 
