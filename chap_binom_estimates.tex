@@ -1,0 +1,67 @@
+\chapter{Some estimates for binomial coefficients}
+
+Throughout this article, we would be seeing several binomial coefficients. The following estimates would allow us to get a better handle on the growth of such terms. 
+
+We shall use $\log$ to refer to $\log_2$ and $\ln$ to refer to the natural logarithm. 
+
+
+\begin{definition}[Entropy function]\label{def:entropy}
+The binary entropy function $H_2:[0,1]\rightarrow [0,1]$ is defined as
+\[
+H_2(p) \quad = \quad - p \log_2(p) - (1-p) \log_2(1-p)
+\]
+The entropy function with respect to the natural logarithm is refer to as $H$ and
+\[
+H(p) \quad = \quad - p \ln(p) - (1-p) \ln(1-p)
+\]
+\end{definition}
+
+\begin{proposition}\label{prop:entropy-estimate}
+For any $0< p  < 1$, we have $p\ln\frac{1}{p} \leq H(p) \leq p\ln\frac{1}{p} + p$. 
+\end{proposition}
+
+\begin{proposition}[Sterling's Approximation]\label{prop:sterling}
+\[
+\log n! \quad=\quad n\log n - n + O(\log n)
+\]
+\end{proposition}
+
+\begin{proposition}
+For any constants $\alpha, \beta$, 
+\[
+\ln\binom{\alpha n}{\beta n} \quad = \quad H\inparen{\frac{\beta}{\alpha}} \cdot \alpha n - O(\ln n)
+\]
+In particular, if $\beta = \alpha/2$, then $\binom{\alpha n}{\beta{n}} = 2^{\alpha n} / \poly(n)$. 
+\end{proposition}
+
+For the more recent lower bounds, we would encounter several delicate ratios of binomial coefficients. The following lemma would help us simplify several such expressions and get a better handle on the growth. 
+
+\begin{lemma}{\cite[Lemma 6]{gkks13}}\label{lem:factorial-ratio} For any $a,b = O(\sqrt{n})$, then
+\[
+\frac{(n+a)!}{(n-b)!}\quad=\quad n^{a + b} \cdot \poly(n)
+\]
+\end{lemma}
+
+We shall be using the above lemma very often in the lower bounds. One particular instantiation that shall also appear frequently shall be the following lemma.  
+
+\begin{lemma}\label{lem:binom-approx}
+Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. For any $a, b$ such that $a,b = O(\sqrt{n})$, 
+\[
+\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \poly(n)
+\]
+\end{lemma}
+\begin{proof}
+The proof of the above lemma would repeated use Lemma~\ref{lem:factorial-ratio}. 
+\begin{eqnarray*}
+\frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
+& \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
+& = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
+& \stackrel{\poly}{\approx} & 2^{-a} \cdot (1+\epsilon)^{a - 2b}
+\end{eqnarray*}
+\end{proof}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

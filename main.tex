@@ -3,12 +3,17 @@
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{hyperref}
+\usepackage[colorlinks]{hyperref}
 \usepackage[Bjornstrup]{fncychap}
 \usepackage{lipsum}
 \usepackage{palatino}
 \usepackage{todonotes}
 \usepackage{mdframed}
+
+\hypersetup{
+  citecolor={blue}
+}
+
 
 \input{macros}
 
@@ -67,7 +72,9 @@
 
 \include{chap_intro}
 
-\chapter{Preliminaries}
+\include{chap_prelims}
+
+\include{chap_binom_estimates}
 
 \chapter{Structural Results}
 
