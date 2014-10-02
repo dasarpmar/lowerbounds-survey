@@ -8,11 +8,11 @@ We shall use $\log$ to refer to $\log_2$ and $\ln$ to refer to the natural logar
 \begin{definition}[Entropy function]\label{def:entropy}
 The binary entropy function $H_2:[0,1]\rightarrow [0,1]$ is defined as
 \[
-H_2(p) \quad = \quad - p \log_2(p) - (1-p) \log_2(1-p)
+H_2(p) \quad = \quad - p \log_2(p) \spaced{-} (1-p) \log_2(1-p)
 \]
 The entropy function with respect to the natural logarithm is refer to as $H$ and
 \[
-H(p) \quad = \quad - p \ln(p) - (1-p) \ln(1-p)
+H(p) \quad = \quad - p \ln(p) \spaced{-} (1-p) \ln(1-p)
 \]
 \end{definition}
 
@@ -29,7 +29,7 @@ For any $0< p  < 1$, we have $p\ln\frac{1}{p} \leq H(p) \leq p\ln\frac{1}{p} + p
 \begin{proposition}
 For any constants $\alpha, \beta$, 
 \[
-\ln\binom{\alpha n}{\beta n} \quad = \quad H\inparen{\frac{\beta}{\alpha}} \cdot \alpha n - O(\ln n)
+\log\binom{\alpha n}{\beta n} \quad = \quad H_2\inparen{\frac{\beta}{\alpha}} \cdot \alpha n - O(\log n)
 \]
 In particular, if $\beta = \alpha/2$, then $\binom{\alpha n}{\beta{n}} = 2^{\alpha n} / \poly(n)$. 
 \end{proposition}
