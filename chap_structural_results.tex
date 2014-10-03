@@ -11,7 +11,7 @@ Suppose we have an $n$-variate degree $d$ polynomial computed by an arithmetic c
 A circuit $C$ is said to be \emph{homogeneous} if every gate in the circuit computes a homogeneous polynomial. 
 \end{definition}
 
-\begin{lemma}[Homogenization]
+\begin{lemma}[Homogenization]\label{lem:homogenization}
 Let $f$ be an $n$-variate degree $d$ polynomial computed by a circuit $C$ of size $s$. Then, for every $0\leq i \leq d$, there is a \emph{homogeneous arithmetic circuit} $C_i'$, of size at most $O(sd^2)$, that computes the degree $i$ homogeneous polynomial in $i$. 
 \end{lemma}
 \begin{proof}
@@ -44,7 +44,7 @@ The phenomenon of simulating an arbitrary arithmetic circuit by a \emph{shallow}
 
 The depth reduction for formulas is quite easy to describe. This would also serve as step towards understanding the depth reduction for arithmetic circuits. The following depth reduction is due to Brent~\cite{brent74}. 
 
-\begin{lemma}[\cite{brent74}]
+\begin{lemma}[\cite{brent74}]\label{lem:formula-depth-reduction}
 Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic formula $\Phi$ of size $s$. Then, $f$ can also be computed by a formula $\Phi'$ of size $s' = \poly(s,n,d)$ and depth $O(\log s)$. 
 \end{lemma}
 \begin{proof}
@@ -118,6 +118,27 @@ All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, b
 \end{figure}
 
 \subsection{Depth reduction for arithmetic circuits}
+
+The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be okay. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem. 
+
+\begin{theorem}[\cite{vsbr83}]
+Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $\Phi$ of size $s$. Then, there is an arithmetic circuit $\Phi'$ computing $f$ and has size $s' = \poly(s,n,d)$ and depth $O(\log d)$. 
+\end{theorem}
+
+By Lemma~\ref{lem:homogenization}, we may assume without loss of generality that $\Phi$ is a homogeneous circuit. We will also assume that in $\Phi$, all multiplication gates have fan-in at most $2$ (this might increase the depth of $\Phi$ by a factor of $\log s$, but this would not hurt us). Now, we can find a similar ``1/3-2/3 separator'' as in the proof of Lemma~\ref{lem:formula-depth-reduction}, but based on degree instead of size. 
+
+\begin{claim}
+Let $\Phi$ be a homogeneous arithmetic circuit computing a homogeneous degree $d$ polynomial, where each multiplication gate has fan-in at most $2$. Then, there exists a node $v$ that computes a polynomial of degree $d'$ satisfying $d/3 \leq d' \leq 2d/3$. 
+\end{claim}
+
+The proof is exactly the same, except now you take a path from root to leaf by always going through the child of larger degree. What can we say about replacing the entire sub-circuit at $v$ by a new variable $y$? This runs in to some immediate problems. What if there was a node $w$ in the subcircuit at $v$, which is maybe connected to other nodes in $\Phi$? Also, the polynomial $\hat{\Phi}_v(y)$ could continue to have degree as large as $d$. Thus it is not clear if this approach would help us make progress. 
+
+The cause of all these problems stems because the node $v$ could reached from the root through multiple paths, and hence needs to be treated with care. However, with a little more care, we can still mimic the earlier depth reduction for formulas. \\
+
+Let us go over every gate in $\Phi$, and reorder the children so that the children are sorted in decreasing order of degrees (with the left child being the one with largest degree). We shall call such circuits as \emph{left-heavy} circuits. Note that the proof of the claim above yields such a node $v$ on the left-most path of $\Phi$. 
+
+
+
 
 
 
