@@ -119,7 +119,7 @@ All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, b
 
 \subsection{Depth reduction for arithmetic circuits}
 
-The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be okay. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem. 
+The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be okay. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem.\footnote{The proof described here follows the structure of a subsequent result \cite{ajmv98}, and not the original proof.}
 
 \begin{theorem}[\cite{vsbr83}]
 Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $\Phi$ of size $s$. Then, there is an arithmetic circuit $\Phi'$ computing $f$ and has size $s' = \poly(s,n,d)$ and depth $O(\log d)$. 
@@ -137,11 +137,20 @@ The cause of all these problems stems because the node $v$ could reached from th
 
 Let us go over every gate in $\Phi$, and reorder the children so that the children are sorted in decreasing order of degrees (with the left child being the one with largest degree). We shall call such circuits as \emph{left-heavy} circuits. Note that the proof of the claim above yields such a node $v$ on the left-most path of $\Phi$. 
 
+Since any polynomial is a sum of monomials, it would be useful to break the computation by an arbitrary circuits by a sum of smaller computations each corresponding to a monomial. The following definition does just that. 
 
+\begin{definition}[Proof trees]\label{defn:proof-tree}
+A \emph{proof tree} of an arithmetic circuit $C$ is a sub-graph $T$ obtained as follows:
+\begin{itemize}
+\item The root of $C$ is in $T$.
+\item For every addition gate $g\in T$, the subgraph $T$ also contains \emph{exactly one} of its children.
+\item For every multiplication gate $g\in T$, the subgraph $T$ also contains \emph{both} its children. 
+\end{itemize}
+\end{definition}
 
+A proof tree naturally computes a single monomial, and is a minimal witness that a certain monomial is computed in by the circuit. (It is however possible that the same monomial can be computed by multiple proof trees and there could be several cancellations.)
 
-
-
+A very natural question at this point is why is a \emph{proof tree} a tree! It isn't clear from the above definition but note that all proof trees of a homogeneous circuit $C$ (computing a degree $d$ polynomial) computes a monomial of degree $d$. Thus, the number of multiplication gates in any proof tree is at most $d$. Thus, we may unravel any proof tree $T$ to an actual tree $T$ while not increasing the size by much. Thus, without loss of generality, we may assume that all proof trees of $C$ are unravelled to indeed be trees. 
 
 
 %%% Local Variables: 
