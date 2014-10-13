@@ -1,14 +1,6 @@
-
-%% \newenvironment{problem}[1]{\stepcounter{problem}
-%% \paragraph{Problem \theproblem. #1}
-
-%% }
-
-
+%% Theorems and related environments. 
 \newtheorem{theorem}{Theorem}
 \numberwithin{theorem}{chapter}
-
-
 \newtheorem{theorem*}{Theorem}
 \newtheorem{axiom}{Axiom}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -27,6 +19,7 @@
 \newtheorem{problem}[]{Problem}
 \newtheorem{openproblem}[]{Open Problem}
 \newtheorem{exercise}{Exercise}
+
 
 
 \newenvironment{myproof}[1]%
@@ -49,9 +42,9 @@
 \newreptheorem{conjecture}{Conjecture}
 \newreptheorem{problem}{Problem}
 
+
 \newenvironment{proof-sketch}{\medskip\noindent{\em Sketch of Proof.}\hspace*{1em}}{\qed\bigskip}
 \newenvironment{proof-attempt}{\medskip\noindent{\em Proof attempt.}\hspace*{1em}}{\bigskip}
-
 \newenvironment{proofof}[1]{\medskip\noindent\emph{Proof of #1.}\hspace*{1em}}{\qed\bigskip}
 
 
@@ -98,6 +91,8 @@
 
 
 \newcommand{\zigzag}{\textcircled{z}}  % for the zig-zag product
+\newcommand{\poly}{\mathsf{poly}}
+\newcommand{\rank}{\mathrm{rank}}
 
 
 % \newcommand{\char}{\textrm{char}}
@@ -123,6 +118,9 @@
 \newcommand{\Perm}{\mathsf{Perm}}
 \newcommand{\ESym}{\mathrm{Esym}}
 \newcommand{\PSym}{\mathrm{Pow}}
+\newcommand{\NW}{\mathrm{NW}}
+\newcommand{\IMM}{\mathrm{IMM}}
+
 
 %% Bold letters
 \newcommand{\veca}{\mathbf{a}}
@@ -153,3 +151,19 @@
 \newcommand{\vecz}{\mathbf{z}}
 
 \newcommand{\spaced}[1]{\quad #1 \quad}
+
+
+%%% Circuit classes
+\newcommand{\SPS}{\Sigma\Pi\Sigma}
+\newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
+\newcommand{\SPSE}{\Sigma\Pi\Sigma\wedge}
+\newcommand{\SPSPfanin}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
+\newcommand{\SPSPsupp}[1]{\Sigma\Pi\Sigma\Pi^{\{#1\}}}
+\newcommand{\SESES}{\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma}
+
+%%% Some complexity classes. (Don't want to include complexity.sty jsut for this. Messes up with \R etc.
+\newcommand{\VP}{\mathsf{VP}}
+\newcommand{\VNP}{\mathsf{VNP}}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\BPP}{\mathsf{BPP}}
+\renewcommand{\P}{\mathsf{P}}
