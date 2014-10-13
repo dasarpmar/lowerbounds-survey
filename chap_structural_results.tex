@@ -119,13 +119,13 @@ All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, b
 
 \subsection{Depth reduction for arithmetic circuits}
 
-The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be okay. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem.\footnote{The proof described here follows the structure of a subsequent result \cite{ajmv98}, and not the original proof.}
+The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be okay. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem.\footnote{The proof described here follows the structure of a subsequent result \cite{ajmv98}, and not the original proof, although both proofs are quite similar.}
 
-\begin{theorem}[\cite{vsbr83}]
+\begin{theorem}[\cite{vsbr83}]\label{thm:vsbr}
 Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $\Phi$ of size $s$. Then, there is an arithmetic circuit $\Phi'$ computing $f$ and has size $s' = \poly(s,n,d)$ and depth $O(\log d)$. 
 \end{theorem}
 
-By Lemma~\ref{lem:homogenization}, we may assume without loss of generality that $\Phi$ is a homogeneous circuit. We will also assume that in $\Phi$, all multiplication gates have fan-in at most $2$ (this might increase the depth of $\Phi$ by a factor of $\log s$, but this would not hurt us). Now, we can find a similar ``1/3-2/3 separator'' as in the proof of Lemma~\ref{lem:formula-depth-reduction}, but based on degree instead of size. 
+By Lemma~\ref{lem:homogenization}, we may assume without loss of generality that $\Phi$ is a homogeneous circuit. We will also assume that in $\Phi$, all multiplication gates have fan-in at most $2$ (this might increase the depth of $\Phi$ by a factor of $\log s$, but this would not hurt us). Now, we can find a similar ``$\inparen{\frac{1}{3},\frac{2}{3}}$ separator'' as in the proof of Lemma~\ref{lem:formula-depth-reduction}, but based on degree instead of size. 
 
 \begin{claim}
 Let $\Phi$ be a homogeneous arithmetic circuit computing a homogeneous degree $d$ polynomial, where each multiplication gate has fan-in at most $2$. Then, there exists a node $v$ that computes a polynomial of degree $d'$ satisfying $d/3 \leq d' \leq 2d/3$. 
@@ -151,6 +151,86 @@ A \emph{proof tree} of an arithmetic circuit $C$ is a sub-graph $T$ obtained as 
 A proof tree naturally computes a single monomial, and is a minimal witness that a certain monomial is computed in by the circuit. (It is however possible that the same monomial can be computed by multiple proof trees and there could be several cancellations.)
 
 A very natural question at this point is why is a \emph{proof tree} a tree! It isn't clear from the above definition but note that all proof trees of a homogeneous circuit $C$ (computing a degree $d$ polynomial) computes a monomial of degree $d$. Thus, the number of multiplication gates in any proof tree is at most $d$. Thus, we may unravel any proof tree $T$ to an actual tree $T$ while not increasing the size by much. Thus, without loss of generality, we may assume that all proof trees of $C$ are unravelled to indeed be trees. 
+
+We shall denote the set of all proof trees of a circuit $C$ by $\mathrm{ProofTrees}(C)$. Also, for any node $u\in C$, we shall use $\mathrm{ProofTree}(u)$ to refer to the set of all proof trees rooted at $u$. Further, for any proof tree $T$, we shall use $\mathrm{eval}(T)$ to denote  the  \emph{monomial computed by $T$}. Thus, if $f$ is the polynomial computed by a circuit $C$, then
+\[
+f\spaced{=} \sum_{T\in \mathrm{ProofTrees}(C)} \mathrm{eval}(T)
+\]
+
+With this definition, we can now apply a Brent-like argument on \emph{proof trees} rather than the actual circuit itself. Recall that in the proof of Lemma~\ref{lem:formula-depth-reduction}, we expressed $\Phi$ as a linear function of $A \Phi_v + B$. The following notation captures the quotient $A$, but now in the case of general circuits via the notation of proof trees. 
+
+\begin{definition}[Proof tree quotients]
+For any proof tree $T$, and a node $v$, define the operation $\mathrm{snip}_v(T)$ as
+\begin{itemize}
+  \item If $v$ does not appear in the left-most path of $T$, then $\mathrm{snip}_v(T) = 0$
+  \item If $v$ does appear in the left-most path of $T$, then $\mathrm{snip}_v(T)$ refers to the tree obtained by replacing the node $v$ on the left-most path by a leaf labelled $1$. 
+\end{itemize}
+For any two nodes $u$ and $v$ in the circuit $C$, the polynomial $[u:v]$ is defined as
+\[
+[u:v] \spaced{=} \sum_{T \in \mathrm{ProofTrees}(u)} \mathrm{eval}(\mathrm{snip}_v(T))
+\]
+\end{definition}
+
+Intuitively, $[u:v]$ refers to the \emph{suffix} of $v$ in the computation at $u$. By only snipping off $v$ from the left-most path, this allows us to get a better control with the issue of $v$ occurring multiple times in the proof tree. For a formula $\Phi$, the polynomial $[\Phi:v]$ would refer to $\hat{\Phi}_v(1)$. Note that $[u:v]$ is a polynomial of degree $\deg(u) - \deg(v)$. \\
+
+The next thing we would like to do using the above notation is to rewrite the polynomial computed at $u$ by a sum involving several $[u:v_i]$s for suitable choice of $v_i$. To do this, we need to identify a set of nodes $\inbrace{v_i}$ such that the left-most path of every proof tree $T$ passes through exactly one $v_i$ from this set. One example of such a set is just the set of leaves. Thus, we can express the polynomial computed at any node $u$ as
+\[
+[u] \spaced{=} \sum_{i} [u:x_i] \cdot x_i
+\]
+In fact, a more general construction could be defined for any parameter $t$ as
+\[
+\mathcal{F}_t  \spaced{=} \setdef{w\in C}{\deg(w) \geq t \spaced{\&} \deg(w_L) < t}
+\]
+where $w_L$ refers to the left child of $w$. When we have nodes $u,v \in C$, we shall use $\mathrm{Frontier}(u)$ to refer to $\mathcal{F}_t$ where $t = \deg(u)/2$ and $\mathrm{Frontier}(u:v)$ to refer to $\mathcal{F}_t$ for $t = \deg(u:v)/2$. It is worth noting that all nodes in $\mathcal{F}_t$ must be multiplication gates (since the children have strictly smaller degree). 
+
+
+\begin{observation}
+The left-most path of any proof tree $T$ of $u$ passes through exactly one node in $\mathrm{Frontier}(u)$. The same applies to $\mathrm{Frontier}(u:v)$ as well. 
+\end{observation}
+
+With this observation, we have the sums we were looking for. 
+
+\begin{eqnarray}\label{eqn:VSBR-split-frontier}
+\text{For any $u\in C$,}\quad\quad [u] &=& \sum_{v\in \mathrm{Frontier}(u)} [u:v]\cdot [v] \label{eqn:VSBR-split-frontier-u}\\
+\text{For any $u,v\in C$,}\quad\quad [u:v] &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot [w:v] \label{eqn:VSBR-split-frontier-u:v}
+\end{eqnarray}
+
+With these in hand, we can now describe the depth-reduced circuit of \cite{vsbr83}. 
+
+For each $u \in C$, the circuit $C'$ has a node computing $[u]$, and for every pair of nodes $u,v\in C$, there is a node in $C'$ computing $[u:v]$. To describe how $[u]$ is computed in $C'$, start with equation \eqref{eqn:VSBR-split-frontier-u}
+\begin{eqnarray*}
+[u] &=& \sum_{v\in \mathrm{Frontier}(u)} [u:v]\cdot [v]\\
+ & = & \sum_{v\in \mathrm{Frontier}(u)} [u:v] \cdot [v_L] \cdot [v_R]
+\end{eqnarray*}
+Note that since $v\in \mathrm{Frontier}(u)$, we have that $\deg(v) \geq \deg(u)/2$ and $\deg(v_R),\deg(v_L) < \deg(u)/2$. Thus each of the three terms in every summand of the above equation has degree at most half the degree $u$. The computation of $[u:v]$'s are a little more involved. By equation \eqref{eqn:VSBR-split-frontier-u:v}, we have
+\begin{eqnarray*}
+[u:v] &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot [w:v]\\
+      &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot [w_R]\cdot  [w_L:v]
+\end{eqnarray*}
+Since every $w \in \mathrm{Frontier}(u:v)$, we have that $\deg(u:w),\deg(w_L:v) \leq \deg(u:v)/2$. The issue is that $[w_R]$ could have pretty large degree. To see this, note that $w$ is a node of degree between $\deg(u)$ and $\deg(v)$. Thus, it is possible that $(u:w)$ and $(w_L:v)$ have very small degree and $\deg(w_R)$ could be as large as $\deg(u:v)$. However, we can expand $[w_R]$ using \eqref{eqn:VSBR-split-frontier-u} and we would then have what we want. 
+\begin{eqnarray*}
+[u:v] &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot [w_R]\cdot  [w_L:v]\\
+      &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot \inparen{\sum_{p \in \mathrm{Frontier}(w_L)} [w_R:p] \cdot [p_L] \cdot [p_R]} \cdot  [w_L:v]
+\end{eqnarray*}
+Observe that we have $\deg (u:w), \deg(w_L:v) \leq \deg(u:v)/2$ from earlier, and we also have
+\begin{eqnarray*}
+\deg(u:w),\deg(w_L:v) & \leq &\frac{\deg(u:v)}{2}\\
+\deg(w_R:p),\deg(p_L),\deg(p_R) & \leq & \frac{\deg(w_R)}{2}\\
+ & \leq & \frac{\deg(u:v)}{2}
+\end{eqnarray*}
+Thus, once again, we are in the situation where all the factors in the RHS have at most half the degree of the RHS. Thus, this shows that every $(u:v)$ can be computed by an arithmetic circuit $C'$ of size $\poly(s)$ and depth $O(\log d)$. In particular, $f = [\mathrm{root}]$ can be computed be computed by $C'$, as claimed. \qed {(\footnotesize Theorem~\ref{thm:vsbr})}
+
+\begin{remark}\label{remark:vsbr}
+From the proof above, we can see that the resulting circuit $C'$ has useful structural properties. 
+\begin{itemize}
+  \item The circuit is homogeneous. 
+  \item Addition gates have fan-in bounded by $\poly(s)$. 
+  \item Multiplication gates have fan-in bounded by $5$. 
+  \item If $u$ is any multiplication gate, then all its children $v$ satisfy $\deg([v])\leq \deg([u])/2$. 
+\end{itemize}
+\end{remark}
+
+These additional properties would be useful in the next section, where we shall squash $C'$ down to a depth four circuit!
 
 
 %%% Local Variables: 
