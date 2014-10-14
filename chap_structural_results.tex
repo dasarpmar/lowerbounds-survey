@@ -218,7 +218,7 @@ Observe that we have $\deg (u:w), \deg(w_L:v) \leq \deg(u:v)/2$ from earlier, an
 \deg(w_R:p),\deg(p_L),\deg(p_R) & \leq & \frac{\deg(w_R)}{2}\\
  & \leq & \frac{\deg(u:v)}{2}
 \end{eqnarray*}
-Thus, once again, we are in the situation where all the factors in the RHS have at most half the degree of the RHS. Thus, this shows that every $(u:v)$ can be computed by an arithmetic circuit $C'$ of size $\poly(s)$ and depth $O(\log d)$. In particular, $f = [\mathrm{root}]$ can be computed be computed by $C'$, as claimed. \qed {(\footnotesize Theorem~\ref{thm:vsbr})}
+Thus, once again, we are in the situation where all the factors in the RHS have at most half the degree of the RHS. Thus, this shows that every $(u:v)$ can be computed by an arithmetic circuit $C'$ of size $\poly(s)$ and depth $O(\log d)$. In particular, $f = [\mathrm{root}]$ can be computed be computed by $C'$, as claimed. \qed {(\footnotesize Theorem~\ref{thm:vsbr})}\\
 
 \begin{remark}\label{remark:vsbr}
 From the proof above, we can see that the resulting circuit $C'$ has useful structural properties. 
@@ -231,6 +231,56 @@ From the proof above, we can see that the resulting circuit $C'$ has useful stru
 \end{remark}
 
 These additional properties would be useful in the next section, where we shall squash $C'$ down to a depth four circuit!
+
+\subsection{Reduction to depth four circuits}
+
+One of the consequence of a depth reduction such as Theorem~\ref{thm:vsbr} is that proving lower bounds for general circuits is reduced to the task of proving lower bounds for $O(\log d)$ depth circuits. 
+
+\begin{corollary}\label{cor:vsbr-contra}
+If $f$ is an $n$-variate degree $d$ polynomial that requires super-polynomial (in $n$ and $d$) size circuits of $O(\log d)$ depth to compute it, then any general arithmetic circuit computing $f$ must also be of super-polynomial size. 
+\end{corollary}
+
+But, optimistically, we would expect that the \emph{right} lower bound must be truly exponential, and not merely super-polynomial. Keeping that in mind, a depth reduction even with a slightly super-polynomial blow-up might be useful in this regard. This line was first pursued by Agrawal and Vinay \cite{av08}, and the result was subsequently strengthened by Koiran \cite{koiran} and Tavenas~\cite{Tav13}. 
+
+\begin{theorem}[\cite{av08,koiran,Tav13}] \label{thm:av}
+Let $f$ be an $n$-variate degree $d$ polynomial computed by a size $s$ arithmetic circuit. Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\SPSP^{[t]}$ circuit of top fan-in $s^{O(d/t)}$ and size $s^{O(t + d/t)}$. 
+\end{theorem}
+
+If we were to optimize the size of the final depth four circuit, then we should choose $t = \sqrt{d}$ to get a $\SPSP^{[t]}$ circuit of size $s^{O(\sqrt{d})}$. Note that this implies that if we could prove a lower bound of $n^{\omega(\sqrt{d})}$ for such $\SPSP^{[\sqrt{d}]}$ circuits, then we would have proved a lower bound for general circuits! In fact, in the recent past, we have come pretty close to the required threshold and we shall see them in the later chapters. \\
+
+In this section, we shall see a proof of Theorem~\ref{thm:av} but this is not the original proof of Tavenas~\cite{Tav13}. We shall see an alternate proof by \cite{saptharishivinay14}, which I find more insightful. 
+
+\begin{proofof}{Theorem~\ref{thm:av}}
+Let $C$ be the $O(\log d)$ depth  circuit computing $f$ obtained from Theorem~\ref{thm:vsbr} applied on the size $s$ circuit computing $f$. Let $s'$ be the size of $C$. If $g$ is a polynomial computed at any intermediate node of $C$, then from the structure of $C$ (Remark~\ref{remark:vsbr}) we have a homogeneous expression
+\begin{equation}\label{eqn:vsbr-expansion}
+g \spaced{=} \sum_{i=1}^{s'} g_{i1} \cdot g_{i2} \cdot g_{i3} \cdot g_{i4} \cdot g_{i5} 
+\end{equation}
+where each $g_{ij}$ is computed by a node in $C$ as well, and $\deg(g_{ij}) \leq \deg(g)/2$. If we look at \eqref{eqn:vsbr-expansion} for $f$, then the RHS is a $\SPSP^{[d/2]}$ circuit of top fan-in $s'$ computing $f$. To obtain a $\SPSP^{[t]}$ circuit eventually, we shall do the following natural process. 
+\begin{quote}
+  For each summand $g_{i1}\dots g_{ir}$ in the RHS, if the largest degree $g_{ij}$ has degree more than $t$, expand that $g_{ij}$ in-place using \eqref{eqn:vsbr-expansion}. 
+  
+  Repeat this process until all $g_{ij}$'s on the RHS have degree at most $t$. 
+\end{quote}
+
+Note that in each iteration of the above procedure, we increase the top fan-in by a multiplicative factor of $s'$, and what we gain is that some the terms in the RHS would now have smaller degrees. If we could show that the in $O(d/t)$  iterations  all terms on the RHS have degree at most $t$, then we would have obtained an $\SPSP^{[t]}$ circuit of top fanin $s'^{O(d/t)}$ computing $f$. \\
+
+To bound the number of iterations, let us count the number of terms of degree more than $t/8$ in each term. Note that since we would always maintain homogeneity, the number of terms of degree  $t/8$ or more in any summand  is at most $8d/t$. Thus, it suffices to show that each iteration increases the number of terms of degree $t/8$ by at least one. 
+
+Note that in \eqref{eqn:vsbr-expansion}, if $\deg(g) = d'$ then the largest degree term of any summand on the RHS is at least $d'/5$ (since the sum of the degrees of the five terms must add up to $d'$). Also, the largest degree term can have degree at most $d'/2$. Hence there must be at least $d'/2$ degree contributed by the other four factors in each term. This implies that the second largest factor in each summand has degree at least $d'/8$. Therefore, as long as we are expanding factors using \eqref{eqn:vsbr-expansion} of degree more than $t/8$, we are guaranteed that each new term has at least one more factor of degree more than $t/8$. As argued earlier, we can never have more than $8d/t$ such terms in any summand and this bounds the number of iterations by $8d/t$. 
+
+Thus, when the above procedure stops, we have an $\SPSP^{[t]}$ circuit of top fan-in $s'^{O(8d/t)} = s^{O(d/t)}$. Observing that any polynomial of degree $t$ can have at most $n^t$ monomials, we get that the size of the circuit overall is at most $s^{O(t + d/t)}$. 
+\end{proofof}
+
+Thus, proving a ``good enough'' top fanin (or size) lower bound for the class of $\SPSP^{[t]}$ circuit would suffice for proving lower bounds for general circuits. We would be using this fact quite a lot so we state this explicitly as a corollary. 
+
+\begin{corollary}\label{cor:av}
+If $f$ is an $n$-variate degree $d$ polynomial that requires homogeneous $\SPSP^{[t]}$ circuits of top fan-in $n^{\omega(d/t)}$ to compute it, then $f$ requires general arithmetic circuits of size $n^{\omega(1)}$ to compute it. 
+\end{corollary}
+
+\subsection*{Further depth reductions}
+
+There have been some further depth reductions results, but we shall defer that to later in the interest of presenting more insight and intuition. They would be better placed after we have seen a few of the recent lower bounds for restricted depth four circuits. We now proceed to see some lower bounds. 
+
 
 
 %%% Local Variables: 
