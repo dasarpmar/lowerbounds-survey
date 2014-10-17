@@ -1,6 +1,6 @@
 \chapter{Lower bounds for depth-3 circuits over finite fields}\label{chap:GK}
 
-This chapter shall present the lower bound of Grigoriev and Karpinski \cite{grigoriev98} for $\Det_n$. A follow-up paper of Grigoriev and Razborov \cite{gr00} extended the result over function fields, also including a weaker lower bound for the permanent, but we shall present a slightly different proof that works for the permanent as well.
+This chapter shall present the lower bound of Grigoriev and Karpinski \cite{grigoriev98} for $\SPS$ circuit computing $\Det_n$ over finite fields. A follow-up paper of Grigoriev and Razborov \cite{gr00} extended the result over function fields, also including a weaker lower bound for the permanent, but we shall present a slightly different proof that works for the permanent as well.
 
 \begin{theorem}\cite{grigoriev98}\label{thm:gk-main-thm}
   Any depth-3 circuit computing $\Det_n$ (or $\Perm_n$) over a finite field $\F_q$ ($q\neq 2$) requires size $2^{\Omega(n)}$.
@@ -8,7 +8,7 @@ This chapter shall present the lower bound of Grigoriev and Karpinski \cite{grig
 
 {\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$, where each $T_i$ is a product of linear polynomials. Define $\mathrm{rank}(T_i)$ as in Section~\ref{sec:low-rank-sps} to be the dimension of the set of linear polynomials that $T_i$ is a product of.
 
-In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. Since $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be ``approximated'' by just the low-rank components.
+In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, the fact that we are working over a finite field would become very useful. Since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. As $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be ``approximated'' by just the low-rank components.
 
 % Further, if $T = \ell_1^{e_1} \dots \ell_d^{e_d}$ with $\ell_1,\dots, \ell_r$ being a
 % maximal set of linearly independent linear polynomials, then $T$
@@ -27,7 +27,7 @@ Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as a measure
 For any polynomial $f \in \F[x_{11},\dots, x_{nn}]$, define the matrix $M_k(f)$ as follows --- the columns of $M_k(f)$ are indexed by $k$-th order partial derivatives of $f$, and rows by elements of $\F^{n^2}$, with the entry being the evaluation of the partial derivative (column
 index) at the point (row index).\\
 
-The rank of $M_k(f)$ could be a possible choice of a complexity measure but Grigoriev and Karpinski make a small modification to handle the high rank $T_i$s. Instead, they look at the matrix $M_k(f)$ and remove a few \emph{erroneous} evaluation points and use the rank of the resulting matrix. For any $\mathcal{A}\subseteq \F^{n^2}$, let us define $M_k(f;\mathcal{A})$ to be the matrix obtained from $M_k(f)$ by only taking the rows whose indices are in $\mathcal{A}$. Also, let $\CM{GK}_{k,\mathcal{A}}(f)$ denote $\mathrm{rank}(M_k(f;\mathcal{A}))$.
+The rank of $M_k(f)$ could be a possible choice of a complexity measure but it is not sure if $\mathrm{rank}(M_k(f))$ is small when $f$ is even a single high rank term. However,  Grigoriev and Karpinski handle this by make a small modification to handle the high rank $T_i$s. Instead, they look at the matrix $M_k(f)$ and remove a few \emph{erroneous} evaluation points and use the rank of the resulting matrix. For any $\mathcal{A}\subseteq \F^{n^2}$, let us define $M_k(f;\mathcal{A})$ to be the matrix obtained from $M_k(f)$ by only taking the rows whose indices are in $\mathcal{A}$. Also, let $\CM{GK}_{k,\mathcal{A}}(f)$ denote $\mathrm{rank}(M_k(f;\mathcal{A}))$.
 
 
 
@@ -65,8 +65,8 @@ $$
 Hence, we can upper-bound $\abs{\mathcal{E}_T}$ as
 \begin{eqnarray*}
 \abs{\mathcal{E}_T} &\leq & \sum_{i=0}^k \binom{r}{i} (q-1)^{r-i}q^{n^2 - r}\\
- & = & O\inparen{k\cdot \binom{r}{k}\inparen{1 - \frac{1}{q}}^{r-k} q^{n^2}} \quad\text{if $r > qk$}\\
- & = & q^{n^2} \cdot \alpha^n\quad\text{for some $0< \alpha < 1$}.
+ & = & O\inparen{k\cdot \binom{r}{k}\inparen{1 - \frac{1}{q}}^{r-k}} \cdot  q^{n^2} \qquad\text{if $r > q^2 k$}\\
+ & = & q^{n^2} \cdot \alpha^n \qquad\text{for some constant $0 < \alpha < 1$}\\
  \end{eqnarray*}
 
  By choosing $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ where $\mathcal{E} = \Union_{\text{$T$ of large rank}} \mathcal{E}_T$, we have that $M_k(T;\mathcal{A})$ is just the zero matrix and hence
@@ -78,9 +78,7 @@ Putting it together, if $C = T_1 + \dots + T_s$, then
 \CM{GK}_{k,\mathcal{A}}(C) \quad \leq \quad s \cdot
 q^{\beta n}.
 \end{equation} 
-where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set
-$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2}$ for
-some $0< \alpha < 1$.
+where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set $\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot  q^{n^2} = (1 - o(1)) \cdot q^{n^2}$ for any $s = 2^{o(n)}$.
 
 \section{Lower-bounding $\CM{GK}_{k,\mathcal{A}}$ for $\Det_n$ and $\Perm_n$}
 
@@ -180,19 +178,16 @@ Unfolding this recursion, we have
 
 \section{Putting it all together}
 
-Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then 
+Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then
 \begin{eqnarray*}
 s \cdot q^{\beta n} & = &  \Omega\inparen{\binom{n}{k}^2}\\
  & = & \Omega\inparen{2^{2H_2(\gamma)\cdot n}}\\
 \implies \log s & = & \Omega((2H_2(\gamma) - \beta \log q)n)
 \end{eqnarray*}
-where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). 
-By choosing $\gamma < q^{-q/2}$, we can find a $\beta$ such that
-$q\gamma < \beta$ (which was required in
-Section~\ref{sec:gk-upper-bound}) and $2H_2(\gamma) > \beta \log q$,
-yielding the lower bound  
+where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). The only thing left to check is if we can make $(2H_2(\gamma) - \beta \log q) > 0$ for some $\beta,\gamma$ satisfying $q^2 \gamma < \beta$ (which was required in Section~\ref{sec:gk-upper-bound}). It is not hard to check that $\beta = q^{-q^2/2}$ suffices. 
 \begin{eqnarray*}
-  s &=& \exp\inparen{\Omega(q^{-q/2}\cdot q\log q \cdot n)} \\
+  s &=&  \exp\inparen{\Omega(H_2(\beta)\cdot n)} \\
+    &=&  \exp\inparen{\Omega(q^{-q^2/2} \cdot q^2 \log q \cdot n)}\\
   & =& 2^{\Omega(n)}.
 \end{eqnarray*}
 \qed (Theorem~\ref{thm:gk-main-thm})
