@@ -181,7 +181,17 @@ In fact, a more general construction could be defined for any parameter $t$ as
 \[
 \mathcal{F}_t  \spaced{=} \setdef{w\in C}{\deg(w) \geq t \spaced{\&} \deg(w_L) < t}
 \]
-where $w_L$ refers to the left child of $w$. When we have nodes $u,v \in C$, we shall use $\mathrm{Frontier}(u)$ to refer to $\mathcal{F}_t$ where $t = \deg(u)/2$ and $\mathrm{Frontier}(u:v)$ to refer to $\mathcal{F}_t$ for $t = \deg(u:v)/2$. It is worth noting that all nodes in $\mathcal{F}_t$ must be multiplication gates (since the children have strictly smaller degree). 
+where $w_L$ refers to the left child of $w$. 
+
+\begin{observation}\label{obs:vsbr-split-threshold}
+For any node $u$, and a parameter $t$ such that $t \leq \deg(u)$, the left-most path of any proof tree $T$ of $u$ passes through exactly one node in $\mathcal{F}_t$. 
+\end{observation}
+
+Hence, $[u]$ can be expressed as follows:
+\begin{equation}\label{eqn:vsbr-split-threshold}
+[u] \spaced{=} \sum_{v\in \mathcal{F}_t} [u:v] \cdot [v]
+\end{equation}
+as long as $t \leq \deg(u)$. When we have nodes $u,v \in C$, we shall use $\mathrm{Frontier}(u)$ to refer to $\mathcal{F}_t$ where $t = \deg(u)/2$ and $\mathrm{Frontier}(u:v)$ to refer to $\mathcal{F}_t$ for $t = \deg(u:v)/2$. These are the frontiers that cut the appropriate tree into `half'. It is worth noting that all nodes in $\mathcal{F}_t$ must be multiplication gates (since the children have strictly smaller degree). 
 
 
 \begin{observation}
@@ -195,7 +205,7 @@ With this observation, we have the sums we were looking for.
 \text{For any $u,v\in C$,}\quad\quad [u:v] &=& \sum_{w\in \mathrm{Frontier}(u:v)} [u:w]\cdot [w:v] \label{eqn:VSBR-split-frontier-u:v}
 \end{eqnarray}
 
-With these in hand, we can now describe the depth-reduced circuit of \cite{vsbr83}. 
+With these in hand, we can now describe the depth-reduced circuit of \cite{vsbr83}. \\
 
 For each $u \in C$, the circuit $C'$ has a node computing $[u]$, and for every pair of nodes $u,v\in C$, there is a node in $C'$ computing $[u:v]$. To describe how $[u]$ is computed in $C'$, start with equation \eqref{eqn:VSBR-split-frontier-u}
 \begin{eqnarray*}
