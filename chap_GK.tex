@@ -1,0 +1,205 @@
+\chapter{Lower bounds for depth-3 circuits over finite fields}\label{chap:GK}
+
+This chapter shall present the lower bound of Grigoriev and Karpinski \cite{grigoriev98} for $\Det_n$. A follow-up paper of Grigoriev and Razborov \cite{gr00} extended the result over function fields, also including a weaker lower bound for the permanent, but we shall present a slightly different proof that works for the permanent as well.
+
+\begin{theorem}\cite{grigoriev98}\label{thm:gk-main-thm}
+  Any depth-3 circuit computing $\Det_n$ (or $\Perm_n$) over a finite field $\F_q$ ($q\neq 2$) requires size $2^{\Omega(n)}$.
+\end{theorem}
+
+{\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$, where each $T_i$ is a product of linear polynomials. Define $\mathrm{rank}(T_i)$ as in Section~\ref{sec:low-rank-sps} to be the dimension of the set of linear polynomials that $T_i$ is a product of.
+
+In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. Since $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be ``approximated'' by just the low-rank components.
+
+% Further, if $T = \ell_1^{e_1} \dots \ell_d^{e_d}$ with $\ell_1,\dots, \ell_r$ being a
+% maximal set of linearly independent linear polynomials, then $T$
+% interpreted as a function from $\F$ to $\F$ can be written as a
+% linear combination of $\setdef{\ell_1^{d_1}\dots\ell_r^{d_r}}{d_i < q
+%   \quad \forall i\in [d]}$. Any linear combination of the above set is
+% equivalent to a polynomial with at most $q^r$ monomials upto a linear
+% transformation; we shall refer to them as \emph{generalized
+%   $q^r$-sparse polynomials}. Hence, any depth-3 circuit $C$ over $\F$
+% can be \emph{approximated} by a sum of generalized sparse polynomials. 
+
+Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as a measure by combining the partial derivative technique seen in Section~\ref{sec:low-rank-sps} with evaluations to show that $\Det_n$ cannot be approximated by a low-rank $\SPS$ circuit.
+
+\section{The complexity measure}
+
+For any polynomial $f \in \F[x_{11},\dots, x_{nn}]$, define the matrix $M_k(f)$ as follows --- the columns of $M_k(f)$ are indexed by $k$-th order partial derivatives of $f$, and rows by elements of $\F^{n^2}$, with the entry being the evaluation of the partial derivative (column
+index) at the point (row index).\\
+
+The rank of $M_k(f)$ could be a possible choice of a complexity measure but Grigoriev and Karpinski make a small modification to handle the high rank $T_i$s. Instead, they look at the matrix $M_k(f)$ and remove a few \emph{erroneous} evaluation points and use the rank of the resulting matrix. For any $\mathcal{A}\subseteq \F^{n^2}$, let us define $M_k(f;\mathcal{A})$ to be the matrix obtained from $M_k(f)$ by only taking the rows whose indices are in $\mathcal{A}$. Also, let $\CM{GK}_{k,\mathcal{A}}(f)$ denote $\mathrm{rank}(M_k(f;\mathcal{A}))$.
+
+
+
+\section{Upper-bounding $\CM{GK}_{k,\mathcal{A}}$ for a depth-3 circuit}\label{sec:gk-upper-bound}
+
+Our task here is to give an upper bound on the complexity measure for a $\SPS$-circuit of size $s$. We first see that the task reduces to upper bounding the measure for a single term via subadditivity. It follows from the linearity of the entries of the matrix.
+
+\begin{observation}[Sub-additivity]\label{obs:GK-subadditivity}
+  $\CM{GK}_{k,\mathcal{A}}(f + g) \quad\leq\quad \CM{GK}_{k,\mathcal{A}}(f) + \CM{GK}_{k,\mathcal{A}}(g)$.
+\end{observation}
+
+Now fix a threshold $r_0 = \beta n$ for some constant $\beta > 0$ (to be chosen shortly), and let $k = \gamma n$ for some $\gamma>0$ (to be chosen shortly). We shall call a term $T = \ell_1\cdots \ell_d$ to be of \emph{low rank} if $\mathrm{rank}(T) \leq r_0$, and \emph{large rank} otherwise. By the above observation, we need to upper-bound the measure $\CM{GK}_{k,\mathcal{A}}$ for each term $T$, for a
+suitable choice of $\mathcal{A}$.\\
+
+\noindent 
+{\bf Low rank terms $(\mathrm{rank}(T) \leq r_0)$:}
+
+Suppose $T = \ell_1 \cdots \ell_d$ with $\inbrace{\ell_1, \dots, \ell_r}$ being a maximal independent set of linear polynomials (with $r \leq r_0$). Then, $T$ can be expressed as a linear combination of terms from the set $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i\leq d \quad \forall i\in [r]}$. And since the matrix $M_k(f)$ depends only on evaluations in $\F^{n^2}$, we can use the relation that $x^q = x$ in $\F$ to express the function $T:\F^{n^2}\rightarrow \F$ as a linear combination of $\setdef{\ell_1^{e_1}\dots \ell_r^{e_r}}{e_i<q \quad \forall i\in [r]}$. Therefore, for any set $\mathcal{A}\subseteq \F^{n^2}$, we have that
+$$
+\CM{GK}_{k;\mathcal{A}}(T) \quad \leq \quad
+\mathrm{rank}(M_k(f)) \quad \leq \quad q^r \quad\leq \quad q^{\beta{n}}.
+$$
+
+
+\noindent
+{\bf High rank terms $(\mathrm{rank}(T) > r_0)$:}
+
+Suppose $T = \ell_1\dots \ell_d$ whose rank is greater than $r_0 = \beta n$, and let $\inbrace{\ell_1, \dots, \ell_r}$ be a maximal independent set. We want to use the fact that since $T$ is a product of at least $r$ independent linear polynomials, most evaluations would be zero. We shall be choosing our $\mathcal{A}$ to be the set where all $k$-th order partial derivatives evaluate to zero.
+
+On applying the product rule of differentiation, any $k$-th order derivative of $T$ can be written as a sum of terms each of which is a product of at least $r-k$ independent linear polynomials. Let us count the \emph{erroneous points} $\mathcal{E}_T\subseteq \F^{n^2}$ that keep at least $r-k$ of $\inbrace{\ell_1,\dots, \ell_r}$ non-zero, or in other words makes at most $k$ of $\inbrace{\ell_1,\dots, \ell_r}$ zero.
+$$
+\Pr_{\mathbf{a}\in \F^{n^2}}[\text{at most $k$ of $\ell_1,\dots,
+  \ell_r$ evaluate to zero}] \;\leq \; \sum_{i=0}^k \binom{r}{i} \inparen{\frac{1}{q}}^i\inparen{1 - \frac{1}{q}}^{r-i}
+$$
+Hence, we can upper-bound $\abs{\mathcal{E}_T}$ as
+\begin{eqnarray*}
+\abs{\mathcal{E}_T} &\leq & \sum_{i=0}^k \binom{r}{i} (q-1)^{r-i}q^{n^2 - r}\\
+ & = & O\inparen{k\cdot \binom{r}{k}\inparen{1 - \frac{1}{q}}^{r-k} q^{n^2}} \quad\text{if $r > qk$}\\
+ & = & q^{n^2} \cdot \alpha^n\quad\text{for some $0< \alpha < 1$}.
+ \end{eqnarray*}
+
+ By choosing $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ where $\mathcal{E} = \Union_{\text{$T$ of large rank}} \mathcal{E}_T$, we have that $M_k(T;\mathcal{A})$ is just the zero matrix and hence
+ $\CM{GK}_{k,\mathcal{A}}(T) = 0$.\\
+
+
+Putting it together, if $C = T_1 + \dots + T_s$, then 
+\begin{equation}\label{eqn:gk-upper-bound-circuit}
+\CM{GK}_{k,\mathcal{A}}(C) \quad \leq \quad s \cdot
+q^{\beta n}.
+\end{equation} 
+where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set
+$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2}$ for
+some $0< \alpha < 1$.
+
+\section{Lower-bounding $\CM{GK}_{k,\mathcal{A}}$ for $\Det_n$ and $\Perm_n$}
+
+We now wish to show that $M_k(\Det_n;\mathcal{A})$ has large rank. The original proof of Grigoriev and Karpinski is tailored specifically for the determinant, and does not extend directly to the permanent. The following argument is a proof communicated by Srikanth Srinivasan \cite{Srikanth13} that involves an elegant trick that he attributes to \cite{Koutis08}. The following proof is presented for the determinant, but immediately extends to the permanent as well. \\
+
+
+Note that if we were to just consider $M_k(\Det_n)$, it would have been easy to show that the rank is full by looking at just those evaluation points that keep exactly one $(n-k)\times (n-k)$ minor non-zero (set the main diagonal of the minor to ones, and every other entry to zero). Hence, $M_k(\Det_n)$ has the identity matrix \emph{embedded inside} and hence must be full rank. However, we are missing a few of the evaluations (since a small set $\mathcal{E}$ of evaluations is removed) and we would still like to show that the matrix continues to have full column-rank. 
+
+\begin{lemma}\label{lem:random-lc-det-nonzero}
+  Let $p(X)$ be a non-zero linear combination of $r\times r$
+  minors of the matrix $X = (\!(x_{ij})\!)$. Then, 
+  $$
+  \Pr_{A\in \F_q^{n^2}}[p(A) \neq 0] \quad \geq \quad \Omega(1).
+  $$
+\end{lemma}
+
+This immediately implies that for every linear combinations of the columns of $M_k(\Det_n)$, a constant fraction of the coordinates have non-zero values. Since we are removing merely a set $\mathcal{E}$ of size $(1-o(1))q^{n^2}$, there must continue to exist coordinates that are non-zero. In other words, no linear combination of columns of $M_k(\Det_n;\mathcal{A})$ results in the zero vector. 
+
+
+The proof of the above lemma would be an induction on the number of minors contributing to the linear combination. As a base case, we shall use a well-known fact about $\Det_n$ and $\Perm_n$ of random matrices. 
+
+\begin{proposition}\label{prop:random-det-nonzero}
+  If $A$ is a random $n\times n$ matrix with entries from a fixed
+  finite field $\F_q$, then for $q\neq 2$ we have
+$$
+\Pr[\det(A) \neq 0] \quad\geq\quad \frac{q-2}{q-1} \quad=\quad\Omega(1).
+$$
+\end{proposition}
+
+We shall defer the proof of this proposition for later, and proceed with the proof of Lemma~\ref{lem:random-lc-det-nonzero}. 
+
+\begin{proofof}{Lemma~\ref{lem:random-lc-det-nonzero}}
+  If $p(X)$ is a scalar multiple of a single non-zero minor, then we
+  already have the lemma from
+  Proposition~\ref{prop:random-det-nonzero}. Hence, let us assume that
+  there are at least two distinct minors participating in the linear
+  combination $p(X)$. Without loss of generality, assume that the
+  first row occurs in some of the minors, and does not in others. That is, 
+  \begin{eqnarray*}
+    p(X) &=& \inparen{\sum_{i:\text{Row}_1\in M_i} c_i M_i} \quad+ \quad \inparen{\sum_{j:\text{Row}_1\notin M_j} c_j M_j}\\
+     & = & \inparen{x_{11} M_1' + \dots + x_{1n} M_{n}'} \quad+\quad M'' \quad\text{(expanding along the first row)}.
+  \end{eqnarray*}
+  
+  To understand a random evaluation of $p(X)$, let us first set rows $2, \dots, n$ to random values, and
+  then setting row $1$ to random values. 
+  \begin{eqnarray*}
+    \Pr_{A}[p(A)\neq 0] & \geq & \Pr[x_{11} M_1' + \dots + x_{1n} M_n' + M'' \neq 0 \;|\; \text{some }M_{i}'\neq 0]\\
+    & & \quad \times \Pr[\text{some }M_i' \neq 0]
+  \end{eqnarray*}
+  Note that once we have set rows $2,\dots, n$ to random values, $p(X)$ reduces to a linear polynomial in $\inbrace{x_{11},\dots, x_{1n}}$. Further, a random evaluation of any non-constant linear polynomial is zero with probability exactly $\inparen{1 -\frac{1}{q}}$. Hence, 
+  \begin{eqnarray*}
+\Pr_{A}[p(A)\neq 0] & \geq & \Pr[x_{11} M_1' + \dots + x_{1n} M_n' + M'' \neq 0 \;|\; \text{some }M_{i}'\neq 0]\\
+ & & \quad \times \Pr[\text{some }M_i' \neq 0]\\
+    & = & \inparen{1 - \frac{1}{q}}\cdot \Pr[\text{some }M_i' \neq 0].
+  \end{eqnarray*}
+  Now comes  Koutis' Trick: the term $\inparen{1 -
+    \frac{1}{q}} \cdot \Pr[\text{ some }M_i' \neq 0]$ is exactly the
+  probability that $x_{11}M_1' + \dots + x_{1n}M_n'$ is non-zero! Hence,
+\begin{eqnarray*}
+\Pr_{A}[p(A) \neq 0] & = & \Pr[ x_{11}M_1' + \dots + x_{1n} M_n' + M''\neq 0]\\
+ & \geq & \Pr[ x_{11}M_1' + \dots + x_{1n} M_n'\neq 0]\\
+ & = & \Pr\insquare{\inparen{\sum_{i:\text{Row}_1\in M_i} c_i M_i} \neq 0}.
+\end{eqnarray*}
+which is just the linear combination obtained by only considering
+those minors that contain the first row. Repeating this process for other
+rows/columns until only  one minor remains, we have
+$$
+\Pr_{A}[p(A) \neq 0] \quad \geq \quad \Pr_{A}[\det(A) \neq 0] \quad = \quad
+\frac{q-2}{q-1}\quad(\text{by Proposition~\ref{prop:random-det-nonzero}}).
+$$
+\end{proofof}
+
+
+We now give a proof of Proposition~\ref{prop:random-det-nonzero}. 
+
+\begin{proofof}{Proposition~\ref{prop:random-det-nonzero}}
+We shall fix random values to the first row of $A$. Then,
+\begin{eqnarray*}
+\Pr_{A}[\Det_n(A) = 0] & \leq & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
+& &\quad + \quad \Pr[a_{11}=\dots = a_{1n} = 0]\\
+ & = & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
+ & & \quad + \quad \frac{1}{q^n}.
+\end{eqnarray*}
+Whenever there is some $a_{1i}$ that is non-zero, then $a_{11}M_1 +
+\dots + a_{1n}M_n$ is a non-zero linear combination of minors. By a similar argument as in the proof of Lemma~\ref{lem:random-lc-det-nonzero}, we have that
+$$
+\Pr[a_{11} M_1 + \dots + a_{1n}M_n = 0\;|\;\text{not all $a_{1i}$ are zero}] \quad \leq \quad \Pr[\Det_{n-1}(A) = 0].
+$$
+Unfolding this recursion, we have
+\begin{eqnarray*}
+\Pr[\Det_n(A) = 0] & \leq & \frac{1}{q} + \frac{1}{q^2} + \dots + \frac{1}{q^n} \quad=\quad \frac{1}{q-1}\\
+\implies \Pr[\Det_n(A) \neq 0] & \geq & \inparen{1 - \frac{1}{q-1}} \;=\; \frac{q-2}{q-1}.
+\end{eqnarray*}
+\end{proofof}
+
+
+
+\section{Putting it all together}
+
+Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then 
+\begin{eqnarray*}
+s \cdot q^{\beta n} & = &  \Omega\inparen{\binom{n}{k}^2}\\
+ & = & \Omega\inparen{2^{2H_2(\gamma)\cdot n}}\\
+\implies \log s & = & \Omega((2H_2(\gamma) - \beta \log q)n)
+\end{eqnarray*}
+where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). 
+By choosing $\gamma < q^{-q/2}$, we can find a $\beta$ such that
+$q\gamma < \beta$ (which was required in
+Section~\ref{sec:gk-upper-bound}) and $2H_2(\gamma) > \beta \log q$,
+yielding the lower bound  
+\begin{eqnarray*}
+  s &=& \exp\inparen{\Omega(q^{-q/2}\cdot q\log q \cdot n)} \\
+  & =& 2^{\Omega(n)}.
+\end{eqnarray*}
+\qed (Theorem~\ref{thm:gk-main-thm})
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 
