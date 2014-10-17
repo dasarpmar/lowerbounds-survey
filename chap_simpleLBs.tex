@@ -179,7 +179,10 @@ Any monotone circuit $\Phi$ computing the polynomial $\NW_{n,n,n/10}$  must have
   \[
   f \spaced{=} \sum_{i=1}^s f_i \cdot g_i
   \]
-  with the appropriate degree bounds. Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. But this contradicts the key property of the $\NW$ family (Lemma~\ref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials. This then immediately forces $s$ to be at least the sparsity of $\NW_{n,n,n/10}$ which is $n^{\Omega(n)}$. 
+  with the appropriate degree bounds. Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. But this contradicts the key property of the $\NW$ family (Lemma~\ref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials and hence $\Gamma(f_i\cdot g_i) \leq 1$ for each $i$. This then immediately forces 
+\[
+\Gamma(\NW_{n,n,n/10}) \spaced{=} n^{\Omega(n)} \spaced{\leq} \sum_{i=1}^s \Gamma(f_i \cdot g_i) \spaced{\leq} s
+\]
 \end{proof}
 
 \begin{exercise}
