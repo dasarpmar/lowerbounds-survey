@@ -73,14 +73,41 @@ Hence, we can upper-bound $\abs{\mathcal{E}_T}$ as
  $\CM{GK}_{k,\mathcal{A}}(T) = 0$.\\
 
 
-Putting it together, if $C = T_1 + \dots + T_s$, then 
+Therefore, if $C = T_1 + \dots + T_s$, then 
 \begin{equation}\label{eqn:gk-upper-bound-circuit}
 \CM{GK}_{k,\mathcal{A}}(C) \quad \leq \quad s \cdot
 q^{\beta n}.
 \end{equation} 
 where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set $\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot  q^{n^2} = (1 - o(1)) \cdot q^{n^2}$ for any $s = 2^{o(n)}$.
 
-\section{Lower-bounding $\CM{GK}_{k,\mathcal{A}}$ for $\Det_n$ and $\Perm_n$}
+The key technical lemma is to show that $\CM{GK}_{k,\mathcal{A}}(\Det_n)$ is large as long as $\abs{\mathcal{A}} = (1 - o(1)) q^{n^2}$. 
+
+\begin{lemma}\label{lem:GK-technical-lemma}
+For any set $\mathcal{A} \in \F_q^{n^2}$ (for $q\neq 2$) such that $\abs{\mathcal{A}} =  (1 - o(1)) \cdot q^{n^2}$, we have that 
+\[
+\CM{GK}_{k,\mathcal{A}}(\Det_n) \spaced{=} \Omega\inparen{\binom{n}{k}^2}
+\]
+\end{lemma}
+
+The same bound shall also hold for $\Perm_n$. We shall defer this theorem for later and see how this would imply the proof of Theorem~\ref{thm:gk-main-thm}. 
+
+\begin{proofof}{Theorem~\ref{thm:gk-main-thm}}
+If $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then by the discussion above and Lemma~\ref{lem:GK-technical-lemma},
+\begin{eqnarray*}
+s \cdot q^{\beta n} \spaced{\geq} \CM{GK}_{k,\mathcal{A}}(\Det_n) & \geq &    \Omega\inparen{\binom{n}{k}^2}\\
+ & = & \Omega\inparen{2^{2H_2(\gamma)\cdot n}}\\
+\implies \log s & = & \Omega((2H_2(\gamma) - \beta \log q)n)
+\end{eqnarray*}
+where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). The only thing left to check is if we can make $(2H_2(\gamma) - \beta \log q) > 0$ for some $\beta,\gamma$ satisfying $\beta > q^2 \gamma$ (as we needed $r > q^2 k$). It is not hard to check that $\beta = q^{-q^2/2}$ suffices. Thus, we obtain the bound
+\begin{eqnarray*}
+  s &=&  \exp\inparen{\Omega(H_2(\beta)\cdot n)} \\
+    &=&  \exp\inparen{\Omega(q^{-q^2/2} \cdot q^2 \log q \cdot n)}\\
+  & =& 2^{\Omega(n)}.
+\end{eqnarray*}
+\end{proofof}
+
+
+\section{Proof of Lemma~\ref{lem:GK-technical-lemma}}
 
 We now wish to show that $M_k(\Det_n;\mathcal{A})$ has large rank. The original proof of Grigoriev and Karpinski is tailored specifically for the determinant, and does not extend directly to the permanent. The following argument is a proof communicated by Srikanth Srinivasan \cite{Srikanth13} that involves an elegant trick that he attributes to \cite{Koutis08}. The following proof is presented for the determinant, but immediately extends to the permanent as well. \\
 
@@ -173,24 +200,6 @@ Unfolding this recursion, we have
 \implies \Pr[\Det_n(A) \neq 0] & \geq & \inparen{1 - \frac{1}{q-1}} \;=\; \frac{q-2}{q-1}.
 \end{eqnarray*}
 \end{proofof}
-
-
-
-\section{Putting it all together}
-
-Hence, if $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then
-\begin{eqnarray*}
-s \cdot q^{\beta n} & = &  \Omega\inparen{\binom{n}{k}^2}\\
- & = & \Omega\inparen{2^{2H_2(\gamma)\cdot n}}\\
-\implies \log s & = & \Omega((2H_2(\gamma) - \beta \log q)n)
-\end{eqnarray*}
-where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). The only thing left to check is if we can make $(2H_2(\gamma) - \beta \log q) > 0$ for some $\beta,\gamma$ satisfying $q^2 \gamma < \beta$ (which was required in Section~\ref{sec:gk-upper-bound}). It is not hard to check that $\beta = q^{-q^2/2}$ suffices. 
-\begin{eqnarray*}
-  s &=&  \exp\inparen{\Omega(H_2(\beta)\cdot n)} \\
-    &=&  \exp\inparen{\Omega(q^{-q^2/2} \cdot q^2 \log q \cdot n)}\\
-  & =& 2^{\Omega(n)}.
-\end{eqnarray*}
-\qed (Theorem~\ref{thm:gk-main-thm})
 
 
 
