@@ -7,7 +7,8 @@ The goal is to keep populating this survery with lower bounds in arithmetic circ
 
 Perhaps other people can contribute to this too (if I can convince them to!)
 
-Here is a link to the wiki: https://github.com/dasarpmar/lowerbounds-survey/wiki/Getting-started-with-github
+For people who are not familiar with using git or github, the wiki (https://github.com/dasarpmar/lowerbounds-survey/wiki/Getting-started-with-github) should be of some help. I shall also keep updating this to assist potential contributors. 
+
 
 Ramprasad Saptharishi
 30th September 2014
