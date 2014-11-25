@@ -11,7 +11,8 @@
 \usepackage{todonotes}
 \usepackage{mdframed}
 \usepackage{tikz}
-
+\usepackage{epigraph}
+\usepackage{verbatim}
 
 \hypersetup{
   citecolor={blue}
@@ -31,15 +32,54 @@
 \parindent 0pt
 \renewcommand{\epsilon}{\varepsilon}
 
-\begin{document}
-\title{A survey of lower bounds on arithmetic circuit}
-\author{Ramprasad Saptharishi\\Tel Aviv University\\
-{\tt ramprasad@cmi.ac.in}}
-\maketitle 
 
-\begin{abstract}
-\lipsum[1-2]
-\end{abstract}
+%% Some title page jazz. Hat-tip: http://tex.stackexchange.com/questions/85904/showcase-of-beautiful-title-page-done-in-tex
+\renewcommand\epigraphflush{flushright}
+\renewcommand\epigraphsize{\normalsize}
+\setlength\epigraphwidth{0.7\textwidth}
+
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+
+\DeclareFixedFont{\titlefont}{T1}{ppl}{b}{it}{0.5in}
+
+\makeatletter                       
+\def\printauthor{%                  
+    {\large \@author}}              
+\makeatother
+\author{%
+    Ramprasad Saptharishi \\
+    Tel Aviv University \\
+    \texttt{ramprasad@cmi.ac.in}
+    }
+
+
+\begin{document}
+\begin{titlepage}
+
+\noindent
+\vspace*{1cm}
+
+\titlefont A survey of known lower\par bounds for arithmetic \par circuits\par
+\epigraph{\tt https://github.com/dasarpmar/lowerbounds-survey}{Version 0.0}
+\null\vfill
+\vspace*{1cm}
+\noindent
+\hfill
+\begin{minipage}{0.50\linewidth}
+    \begin{flushright}
+      {\Large {\bf Contributing authors:}}
+
+      \vspace*{1cm}
+
+        \printauthor
+    \end{flushright}
+\end{minipage}
+%
+\begin{minipage}{0.02\linewidth}
+    \rule{1pt}{125pt}
+\end{minipage}
+\end{titlepage}
+
 
 \hypersetup{
   linkcolor={DarkSlateGray}
