@@ -121,8 +121,68 @@ $$
 
 It is often useful to think of this as the polynomial computed by a \emph{generic algebraic branching program} of width $n$ and depth $n$ (where the edge connecting vertex $i$ of layer $\ell$ to vertex $j$ of layer $\ell+1$ has weight $x_{ij}^{(\ell)}$). 
 
-This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
+This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. \\
 
+
+\subsubsection*{A polynomial sized ABP for $\Det_n$}
+
+A result that is often stated but not proved explicitly is a polynomial sized circuit for $\Det_n$. This is often attributed by Berkowitz \cite{Berk84}. In fact, $\Det_n$ in fact has a polynomial sized ABP and this construction is due to Mahajan and Vinay~\cite{mv97} based on \emph{clow sequences}. The construction is really neat and we shall describe the ABP explicitly here. Although we will not give the full proof of the correctness Mahajan-Vinay construction, we shall give some intuition to understand the construction better. 
+
+\[
+\Det_n \spaced{=} \abs{\begin{array}{ccc}
+x_{11} & \dots & x_{n1}\\
+\vdots & \ddots & \vdots \\
+x_{n1} & \dots & x_{nn}
+\end{array}
+}\]
+
+If we were to think of the symbolic matrix on the RHS as an adjacency matrix of a graph on $n$ vertices, then the determinant is just the sum of \emph{weighted signed cycle-covers} of the graph. A cycle cover of a graph is just a set of disjoint cycles that partition the vertices of the graph. A natural approach compute this via an ABP is to somehow compute each cycle cover on one path of the ABP. Unfortunately, if one were to try the \naive approach of building a cycle cover over many layers, to decide what our next vertex should be we are forced to remember the entire partial construction thus far. This ends up yielding an ABP with super-polynomial width (the width intuitively corresponds to the memory required). 
+
+The key insight of Mahajan and Vinay was to relax the notion of cycle covers to something weaker that can be built with less memory, to what they called \emph{clow sequences}. 
+
+\begin{definition}[Clow Sequences]
+Fix a total order on the vertices of the graph. A clow  of length $\ell$ is a closed walk on the graph $G$ of length $\ell$ such as $v_1,\dots, v_\ell,v_1$ such that $v_1 < v_i$ for all $i=2,\dots, \ell$. We shall also refer to $v_1$ as the \emph{head of the clow}. 
+
+In other words, the head of a clow is the vertex of lowest index, and the head does not repeat in a clow (although other vertices can). 
+
+A clow sequence is a sequence of clows $(C_1,\dots, C_r)$ that additionally satisfy $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. 
+
+The length of a clow sequence is the sum of the lengths of the clows that it comprises of. The weight of a clow sequence is just the product of weights of the edges it comprises of. Also, the sign of a clow sequence of length $\ell$ that comprises of $r$ clows is $(-1)^{\ell + r}$. 
+\end{definition}
+
+Any cycle cover is of course a clow sequence. Further, the sign of the cycle cover matches the above definition of the sign of a clow sequence. But there are many clow sequences that visit some vertices multiple times, and hence not cycle covers. However, Mahajan and Vinay show that the sum of signed-weights of all clow sequences also yields the determinant. 
+
+\begin{theorem}[\cite{mv97}] If $A_G$ is the adjacency matrix of a graph $G$, then
+\begin{eqnarray*}
+\det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C) \spaced{=} \det(A_G)\\
+& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C)
+\end{eqnarray*}
+\end{theorem}
+
+They prove this by showing that the set of clow sequences that are not cycle covers can partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. \\
+
+We are now ready to describe the ABP. The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Omega(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. 
+
+The first layer consists of a single vertex that we shall call $s = v_{1,1}^{(1)}$ (to maintain the same notation)  and the last layer consists of a single vertex that we shall call $t$. The edges between layers, and the weights are defined as follows:
+
+\begin{enumerate}
+\item For each node $v_{i,j}^{(\ell)}$ in layer $\ell \in [n]$, there is an edge to vertex $v_{i,k}^{(\ell+1)}$ for every $k > i$. The weight of this edge is $x_{jk}$. 
+
+(This is like adding vertex $k > i$ to our current clow by taking edge $x_{jk}$. The head continues to be $i$, and the current vertex is now $k$. )
+\item For each node $v_{i,j}^{(\ell)}$ in layer $\ell \in [n]$, there is an edge to vertex $v_{k,k}^{(\ell+1)}$ for every $k > i$. The weight of this edge is $(-x_{ji})$. 
+
+(This is like ending the current clow by taking edge $x_{ji}$ back to the head, and starting a new clow with head as $k$. Thus, the head of the current clow is $k$, and the current vertex is also $k$. In this process, we increased the number of clows in the sequence by 1 and hence the weight being $(-x_{ji})$ accounts for the sign change as well.)
+
+\item For the last layer, each node $v_{i,j}^{(n)}$ has an edge to $t$ with weight $(-x_{ji})$. 
+
+(This just corresponds to ending the last clow in our sequence.)
+\end{enumerate}
+
+Summarizing this as a theorem, we have:
+
+\begin{theorem}[\cite{mv97}]\label{thm:det-abp}
+The polynomial $\Det_n$ can be computed by an ABP of size $\Omega(n^3)$ over any field $\F$. Thus, in particular, $\Det_n$ can be computed by a arithmetic circuit of size $\poly(n)$. 
+\end{theorem}
 
 
 %%% Local Variables: 
