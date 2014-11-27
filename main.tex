@@ -5,14 +5,18 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[colorlinks]{hyperref}
-\usepackage[Bjornstrup]{fncychap}
+%\usepackage[Bjornstrup]{fncychap}
 \usepackage{lipsum}
-\usepackage{palatino}
+%\usepackage{palatino}
 \usepackage{todonotes}
 \usepackage{mdframed}
 \usepackage{tikz}
-\usepackage{epigraph}
-\usepackage{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Git version info %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\currentversion}{0.0}
+
 
 \hypersetup{
   citecolor={blue}
@@ -21,109 +25,30 @@
 
 \input{macros}
 
-%% Some document specific macros
-\newcommand{\FM}{\mathrm{FM}}
-\newcommand{\Mon}{\mathrm{Mon}}
-\newcommand{\CM}[1]{\Gamma^{\mathrm{[#1]}}}
-\newcommand{\SPD}[3]{\inangle{\partial^{=#1}\inparen{#3}}_{\leq #2}}
-\newcommand{\mySPSP}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
-
-%%RP: Personal preferences 
-\parindent 0pt
-\renewcommand{\epsilon}{\varepsilon}
-
-
-%% Some title page jazz. Hat-tip: http://tex.stackexchange.com/questions/85904/showcase-of-beautiful-title-page-done-in-tex
-\renewcommand\epigraphflush{flushright}
-\renewcommand\epigraphsize{\normalsize}
-\setlength\epigraphwidth{0.7\textwidth}
-
-\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
-
-\DeclareFixedFont{\titlefont}{T1}{ppl}{b}{it}{0.5in}
-
-\makeatletter                       
-\def\printauthor{%                  
-    {\large \@author}}              
-\makeatother
-\author{%
-    Ramprasad Saptharishi \\
-    Tel Aviv University \\
-    \texttt{ramprasad@cmi.ac.in}
-    }
-
 
 \begin{document}
 \begin{titlepage}
+  \vspace*{4cm}
+  \begin{center}
+    {\Huge {\bf A survey of lower bounds in arithmetic circuits}}
+  
+    \vspace*{2cm}
 
-\noindent
-\vspace*{1cm}
+    {\large \url{https://github.com/dasarpmar/lowerbounds-survey/}}
+    
+    {\large Version \currentversion}
 
-\titlefont A survey of known lower\par bounds for arithmetic \par circuits\par
-\epigraph{\tt https://github.com/dasarpmar/lowerbounds-survey}{Version 0.0}
-\null\vfill
-\vspace*{1cm}
-\noindent
-\hfill
-\begin{minipage}{0.50\linewidth}
-    \begin{flushright}
-      {\Large {\bf Contributing authors:}}
+    \vfill
+    
+    {\Large Ramprasad Saptharishi}
 
-      \vspace*{1cm}
+    {\large Tel Aviv University}
 
-        \printauthor
-    \end{flushright}
-\end{minipage}
-%
-\begin{minipage}{0.02\linewidth}
-    \rule{1pt}{125pt}
-\end{minipage}
+    {\large \texttt{ramprasad@cmi.ac.in}}
+\end{center}
 \end{titlepage}
 
-
-\hypersetup{
-  linkcolor={DarkSlateGray}
-}
-
-\tableofcontents
-\hypersetup{
-  linkcolor={red}
-}
-
-\part{Preliminaries}
-
-\include{chap_intro}
-
-\include{chap_prelims}
-
-\include{chap_binom_estimates}
-
-\include{chap_structural_results}
-
-\part{Classical lower bounds}
-
-\include{chap_classicalLBs}
-
-\include{chap_simpleLBs}
-
-\part{More involved lower bounds}
-
-\include{chap_GK}
-
-\include{chap_multilinear}
-
-\part{Lower bounds for depth four circuits}
-
-\include{chap_d4botfanin}
-
-\include{chap_d4hom}
-
-\chapter{Conclusion}
-
-
-\bibliographystyle{alpha}
-\bibliography{references}
-
+\input{content}
 
 \end{document}
 
