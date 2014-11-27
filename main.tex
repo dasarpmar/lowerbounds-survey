@@ -14,6 +14,11 @@
 \usepackage{epigraph}
 \usepackage{verbatim}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% GIT revision info %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\currentrevision}{Version 0.0}
+
 \hypersetup{
   citecolor={blue}
 }
@@ -29,14 +34,14 @@
 \newcommand{\mySPSP}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
 
 %%RP: Personal preferences 
-\parindent 0pt
+%\parindent 0pt
 \renewcommand{\epsilon}{\varepsilon}
 
 
 %% Some title page jazz. Hat-tip: http://tex.stackexchange.com/questions/85904/showcase-of-beautiful-title-page-done-in-tex
 \renewcommand\epigraphflush{flushright}
 \renewcommand\epigraphsize{\normalsize}
-\setlength\epigraphwidth{0.7\textwidth}
+\setlength\epigraphwidth{0.75\textwidth}
 
 \definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
 
@@ -60,16 +65,16 @@
 \vspace*{1cm}
 
 \titlefont A survey of known lower\par bounds for arithmetic \par circuits\par
-\epigraph{\tt https://github.com/dasarpmar/lowerbounds-survey}{Version 0.0}
+\epigraph{ \hfill \url{https://github.com/dasarpmar/lowerbounds-survey}}{\currentrevision}
 \null\vfill
 \vspace*{1cm}
 \noindent
 \hfill
 \begin{minipage}{0.50\linewidth}
     \begin{flushright}
-      {\Large {\bf Contributing authors:}}
+      % {\Large {\bf Contributing authors:}}
 
-      \vspace*{1cm}
+      % \vspace*{1cm}
 
         \printauthor
     \end{flushright}
@@ -79,6 +84,10 @@
     \rule{1pt}{125pt}
 \end{minipage}
 \end{titlepage}
+
+\include{preface}
+
+\include{contributors}
 
 
 \hypersetup{
@@ -90,9 +99,11 @@
   linkcolor={red}
 }
 
-\part{Preliminaries}
 
 \include{chap_intro}
+
+
+\part{Preliminaries}
 
 \include{chap_prelims}
 
