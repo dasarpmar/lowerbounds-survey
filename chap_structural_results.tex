@@ -66,7 +66,13 @@ Thus,
 \[
 f \quad = \quad (\hat{\Phi}_v(1) - \hat{\Phi}_v(0))\cdot \Phi_v \spaced{+} \hat{\Phi}_v(0)
 \]
-All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, by recursively applying this process on each of these sub-formulas, we obtain an $O(\log s)$ depth formula of size $\poly(s)$ as claimed. 
+All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, by recursively applying this process on each of these sub-formulas, we obtain
+\begin{eqnarray*}
+\mathrm{Depth}(s) & = & \mathrm{Depth}(2s/3) \spaced{+} 3\\
+\implies \mathrm{Depth}(s) &=& O(\log s)\\
+\mathrm{Size}(s) & \leq & 3\cdot \mathrm{Size}(2s/3) \spaced{+} 3\\
+\implies \mathrm{Size}(s) &=& \poly(s).
+\end{eqnarray*}
 \end{proof}
 
 \begin{figure}
@@ -119,7 +125,48 @@ All the formulas in the above equation have size at most $\frac{2s}{3}$. Thus, b
 
 \subsection{Depth reduction for arithmetic circuits}
 
-The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be fine. One parameter that we could work with instead is the \emph{degree}. Valiant, Skyum, Berkowitz and Rackoff \cite{vsbr83} showed that one could achieve a similar depth reduction for general circuits. This section shall be devoted to the proof of their remarkable theorem.\footnote{The proof described here follows the structure of a subsequent result \cite{ajmv98}, and not the original proof, although both proofs are quite similar.}
+The key point in the above depth reduction was that for any node $v$, the formulas $\Phi_v$ and $\hat{\Phi}_v(y)$ were disjoint. This however is not the case for general arithmetic circuits. Thus, it is not clear if we can find a node in the circuit such that the subcircuit under it has size between $s/3$ and $2s/3$. However, we do not really need to make the subcircuits have size drop by a constant factor, but any parameter dropping by a constant factor would be fine. One parameter that we could work with instead is the \emph{degree}. 
+
+
+\subsubsection{Applying Brent's reduction with degree}
+
+By Lemma~\ref{lem:homogenization}, we may assume that we have a homogeneous circuit $\Phi$ if size $s$ computing a homogeneous $n$-variate polynomial $f$ of degree $d$. Using a similar argument as in the proof of Lemma~\ref{lem:formula-depth-reduction}, we can find a node $v \in \Phi$ such that $\frac{d}{3} < \deg(v) \leq \frac{2d}{3}$. However, we cannot quite write $f$ as $A \cdot \Phi_v + B$ as we are now dealing with a circuit and there could be multiple paths from the root leading to $v$.
+
+Consider the set of all nodes of such intermediate degree as $\mathcal{F}$:
+\[
+\mathcal{F} = \setdef{v\in \Phi}{\frac{d}{3} < \deg(v)\leq \frac{2d}{3}}
+\]
+Instead of expressing $f$ using a single $v\in \mathcal{F}$ as in Lemma~\ref{lem:formula-depth-reduction}, we shall express $f$ as a function of \emph{all} nodes in $\mathcal{F}$. 
+
+\begin{claim}
+If $\mathcal{F} = \inbrace{v_1,\dots, v_s}$, then $f$ may be written as
+\begin{equation}\label{eqn:hyafil}
+f \spaced{=} \sum_{i,j} A_{ij} \cdot \Phi_{v_i} \Phi_{v_j} \spaced{+} \sum_i B_i \cdot \Phi_{v_i}
+\end{equation}
+where $\deg(A_{ij}), \deg(B_i) \leq \frac{2d}{3}$ for all $i,j$. Moreover, each $A_{ij}$ and $B_i$'s may be computed by an arithmetic circuit of size at most $O(s)$. 
+\end{claim}
+\begin{proof}
+From the circuit $\Phi$, construct the circuit $\Phi'$ that is obtained by removing the incoming edges of every $v_i \in \mathcal{F}$ thereby making these nodes as leaves as well. Then, $\Phi'$ computes a polynomial $f'(x_1,\dots x_n, v_1,\dots, v_s)$ satisfying 
+\[
+f \spaced{=} f'(x_1,\dots, x_n, \Phi_{v_1},\dots, \Phi_{v_s}).
+\]
+Because of the degree of each $v_i$, we easily obtain that the degree of $f'$ in the $v_i$ variables must be at most $2$, and each coefficient $A_{ij}$ or $B_i$ cannot have degree more than $2d/3$. Further, obtaining the $A_{ij}$'s and $B_i$'s from $\Phi'$ is a simple exercise. 
+\end{proof}
+
+Since every polynomial appearing in \eqref{eqn:hyafil} is computable by size at most $\poly(s)$ and has degree at most $2d/3$, we may apply induction as earlier. Thus,
+\begin{eqnarray*}
+\mathrm{Depth}(d) & = & \mathrm{Depth}(2d/3) \quad + 2\\
+\implies \mathrm{Depth}(d) & = & O(\log d)
+\end{eqnarray*}
+Unfortunately, the size of the resulting circuit could be as large as $s^{O(\log d)}$.  This reduction is along the lines of Hyafil~\cite{Hyafil1978}. 
+
+Notice that in this reduction, the final circuit we obtain is in fact an arithmetic formula of size $s^{O(\log d)}$ and depth $O(\log d)$ (assuming that addition gates can have unbounded fan-in; with bounded fan-in addition gates, the depth would be $O(\log d \cdot \log s)$). Valiant, Skyum Berkowitz and Rackoff \cite{vsbr83} showed that we can attain a similar depth reduction to $O(\log d)$ depth while keeping the size polynomial. 
+
+
+\subsubsection{Depth reduction of \cite{vsbr83}}
+
+
+This section shall be devoted to the proof of the remarkable theorem of Valiant, Skyum, Berkowitz and Rackoff.\footnote{The proof described here follows the structure of a subsequent result \cite{ajmv98}, and not the original proof, although both proofs are quite similar.}
 
 
 \begin{theorem}[\cite{vsbr83,ajmv98}]\label{thm:vsbr}
