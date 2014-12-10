@@ -4,7 +4,7 @@ Valiant \cite{v79}, in his seminal paper, defined two algebraic complexity class
 
 \section{Definition of classes}
 
-Recall that $\P$ is\footnote{if one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. But in this article, we shall be interested only in the non-uniform versions since we shall mainly deal with circuit sizes.} the class of boolean functions that can be computed by circuits of polynomial size. An analogue of this in the arithmetic world could be polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. However, such a definition would allow us to compute polynomials of very large degree. Consider a long chain of $s$ $(\times)$-gates. The output of this circuit of size $s$ is a polynomial of degree $2^s$. Valiant's definition of the algebraic analogue of $\P$ removed such ``pathological instances'' by only dealing with circuits that compute \emph{low degree polynomials}. 
+Recall that $\P$ is\footnote{if one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. But in this article, we shall be interested only in the non-uniform versions since we shall mainly deal with circuit sizes.} the class of boolean functions that can be computed by circuits of polynomial size. Note that any boolean function can be expressed as a multilinear\footnote{a polynomial where the degree in any variable is bounded by $1$} polynomial. An analogue of this in the arithmetic world could be multilinear polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. However, unlike in the boolean world, the polynomial $x^2$ is not equal to the polynomial $x$ as we are dealing with formal polynomials. Valiant's definition of $\VP$ was the class of the class of ``low degree'' polynomials that can be computed by circuits of small size. 
 
 \begin{definition}[Valiant's $\P$]\label{defn:vp}
 The class $\VP$ refers to the set of polynomials $f(x_1,\dots, x_n)$ of \emph{degree $\poly(n)$} that can be computed by arithmetic circuits of size $\poly(n)$. 
@@ -12,13 +12,37 @@ The class $\VP$ refers to the set of polynomials $f(x_1,\dots, x_n)$ of \emph{de
 
 In the literature, one also encounters classes such as $\mathsf{VBP}$ and $\mathsf{VF}$ that correspond to polynomials computed by polynomial-sized ABP and formulas respectively.
 
-\begin{remark}
-The notion of \emph{degree of a circuit} is also present in the boolean domain. It is known that the class of polynomial-sized polynomial-degree boolean circuits corresponds to the class known as $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. Thus, one could call the class $\VP$ as really an analogue of the boolean class $\mathsf{SAC}^1$. The class of exponential-degree polynomial-sized boolean circuits corresponds to $\P$. 
-\end{remark}
 
-The choice of adding a degree restriction seems natural. Most polynomial classes that we shall study will indeed by polynomials of low degree. Besides this, this restriction of degree allows some remarkable structural results for such circuits although these were \emph{a postiori}. For more on this, see this discussion on \texttt{cstheory.SE} \cite{gro:SE}. \\
+\subsection*{More on the low-degree restriction}
 
-Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ such that 
+Note that if one has an arithmetic circuit consisting of a chain of $s$ multiplication gates, it can compute a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring). But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits (that include such polynomials of very large degree)? Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cite{gro:SE}. 
+
+\begin{enumerate}
+
+\item Every boolean function can be expressed as a multilinear polynomial. Multilinear polynomials are of course polynomials of ``low degree''. 
+
+\item Much of the earlier work were based on understanding formula size. In the case of arithmetic formulas, the degree cannot be more than the size of the formula. Hence, if a polynomial is computed by a $\poly(n)$ sized formula, then its degree must be bounded by $\poly(n)$ too. 
+
+\item Most interesting polynomials such as $\Det_n$ or $\Perm_n$ are in fact of low degree. Once we choose to deal with only polynomials of low degree, the above definition does not have any restriction on the circuit used to compute it (besides its size). It is certainly possible that intermediate computations of the circuit could involve very large degree polynomials. 
+
+However, as we shall soon see, Strassen's result shows that such high degree computations may be eliminated with just an $O(\deg^2)$ increase in size. Dealing with low-degree circuits also makes the class robust under this transformation. The same blow-up also holds while eliminating division gates in the circuit. 
+
+\item Without this restriction, cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or the numerous structural results such as depth reduction that we have. 
+
+\end{enumerate}
+
+Having said that, there is also a notion of ``degree'' in a boolean circuit that is defined syntactically as follows:
+ \begin{quote}
+   Degree of all leaves is $1$. 
+
+   For any OR gate, the degree is the maximum of the degree of its children. 
+
+   For any AND gate, the degree is the sum of the degrees of its children. 
+ \end{quote}
+The class boolean functions that can be computed by poly-sized poly-degree circuits coincide with a class called $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. With this notion, one might say that $\VP$ is really an analogue of $\mathsf{SAC}^1$\\
+
+
+We now move on to the arithmetic analogue of the class $\NP$. Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ such that 
 \[
 f(x_1,\dots, x_n)\spaced{=} \bigvee_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m)
 \]
@@ -49,7 +73,7 @@ Thus in particular, if we compute the coefficient for a given monomial in polyno
 The polynomials $\Perm_n$ and $\NW_{n,m,d}$ are in $\VNP$. 
 \end{corollary}
 
-Notice that in Definition~\ref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book. 
+Notice that in Definition~\ref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
 
 \begin{theorem}\label{thm:vnp-formula}
 For any $f(x_1,\dots, x_n)\in \VNP$, there is a $g(x_1,\dots, x_n, y_1,\dots, y_m)$ that can be computed by a $\poly(n)$ sized \emph{formula} such that 
@@ -98,7 +122,7 @@ A result that is often stated but not proved explicitly is a polynomial sized ci
 
 \[
 \Det_n \spaced{=} \abs{\begin{array}{ccc}
-x_{11} & \dots & x_{n1}\\
+x_{11} & \dots & x_{1n}\\
 \vdots & \ddots & \vdots \\
 x_{n1} & \dots & x_{nn}
 \end{array}
@@ -284,6 +308,19 @@ Now with these two gadgets, we are done. For every variable $y_i \in \vecy$, let
 It should be easy to see that $\mathrm{perm}(G) = \sum_{\veca} g(\vecx, \veca)$. This completes the proof of the $\VNP$-completeness of $\Perm_n$. \qed {\footnotesize (Theorem~\ref{thm:vnp})} \\
 
 Note that we needed to divide by $2$ in the glue gadget. This is why we require the characteristic of the field to be different from two for the above proof to work. 
+
+\begin{exercise}
+  For any matrix $A$, we shall use the notation that $A[1|2]$ refers to the submatrix obtained by removing row column $1$ and row $2$.
+
+  Show that, for a three-vertex \emph{glue gadget}, you need a $3\times 3$ matrix $A$ that satisfies the following three properties:
+  \begin{itemize}
+    \item $\mathrm{perm}(A) = \mathrm{perm}(A[1,3|2,3]) = 1$. 
+    \item $\mathrm{perm}(A[3|3]) = \mathrm{perm}(A[1|2]) = \mathrm{perm}(A[3|1]) = \mathrm{perm}(A[3|2]) = 0$.
+    \item $\mathrm{perm}(A[1,3|2,3]) = 1$. 
+  \end{itemize}
+  
+  Come up with an alternate construction of a matrix $A$ as a \emph{glue gadget}. Also prove that any such construction must involve entries of $A$ with its denominator divisible by $2$, and show that replacing $\mathrm{perm}$ by $\det$ above would yield no solution. 
+\end{exercise}
 
 
 %%% Local Variables: 
