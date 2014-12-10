@@ -231,7 +231,7 @@ edge [loop below] (l1)
 (v1) edge (l1);
 \end{tikzpicture}
 \end{center}
-The thick edges in the above picture shall be called \emph{connector edges} (this shall play the role of the $y$-edges). Note that the rosette has the following two properties:
+The thick edges in the above picture shall be called \emph{connector edges} (these shall play the role of the $y$-edges). Note that the rosette has the following two properties:
 \begin{enumerate}
 \item For any non-empty subset $S$ of the connector edges, there is exactly one cycle-cover of the rosette that includes exactly the set $S$ fo the connector-edges. 
 \item There are exactly two cycle-covers of the rosette that do not include any connector edge. 
@@ -310,13 +310,12 @@ It should be easy to see that $\mathrm{perm}(G) = \sum_{\veca} g(\vecx, \veca)$.
 Note that we needed to divide by $2$ in the glue gadget. This is why we require the characteristic of the field to be different from two for the above proof to work. 
 
 \begin{exercise}
-  For any matrix $A$, we shall use the notation that $A[1|2]$ refers to the submatrix obtained by removing row column $1$ and row $2$.
+  For any matrix $A$, we shall use the notation that $A[1|2]$ refers to the submatrix obtained by removing row $1$ and column $2$.
 
   Show that, for a three-vertex \emph{glue gadget}, you need a $3\times 3$ matrix $A$ that satisfies the following three properties:
   \begin{itemize}
-    \item $\mathrm{perm}(A) = \mathrm{perm}(A[1,3|2,3]) = 1$. 
-    \item $\mathrm{perm}(A[3|3]) = \mathrm{perm}(A[1|2]) = \mathrm{perm}(A[3|1]) = \mathrm{perm}(A[3|2]) = 0$.
-    \item $\mathrm{perm}(A[1,3|2,3]) = 1$. 
+    \item $\mathrm{perm}(A) = \mathrm{perm}(A[2,3|1,3]) = 1$. 
+    \item $\mathrm{perm}(A[3|3]) = \mathrm{perm}(A[2|1]) = \mathrm{perm}(A[1|3]) = \mathrm{perm}(A[2|3]) = 0$.
   \end{itemize}
   
   Come up with an alternate construction of a matrix $A$ as a \emph{glue gadget}. Also prove that any such construction must involve entries of $A$ with its denominator divisible by $2$, and show that replacing $\mathrm{perm}$ by $\det$ above would yield no solution. 
