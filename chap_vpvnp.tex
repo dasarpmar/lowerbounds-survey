@@ -144,16 +144,16 @@ The length of a clow sequence is the sum of the lengths of the clows that it com
 
 Any cycle cover is of course a clow sequence. Further, the sign of the cycle cover matches the above definition of the sign of a clow sequence. But there are many clow sequences that visit some vertices multiple times, and hence not cycle covers. However, Mahajan and Vinay show that the sum of signed-weights of all clow sequences also yields the determinant. 
 
-\begin{theorem}[\cite{mv97}] If $A_G$ is the adjacency matrix of a graph $G$, then
+\begin{lemma}[\cite{mv97}]\label{lem:mv-clowseq} If $A_G$ is the adjacency matrix of a graph $G$, then
 \begin{eqnarray*}
 \det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C) \spaced{=} \det(A_G)\\
 & = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C)
 \end{eqnarray*}
-\end{theorem}
+\end{lemma}
 
-They prove this by showing that the set of clow sequences that are not cycle covers can partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. \\
+They prove this by showing that the set of clow sequences that are not cycle covers can partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. We shall see an explicit proof of this shortly, but first let us see why this yields an ABP. \\
 
-We are now ready to describe the ABP. The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Omega(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. 
+The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Omega(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. 
 
 The first layer consists of a single vertex that we shall call $s = v_{1,1}^{(1)}$ (to maintain the same notation)  and the last layer consists of a single vertex that we shall call $t$. The edges between layers, and the weights are defined as follows:
 
@@ -177,6 +177,27 @@ Summarizing this as a theorem, we have:
 \begin{theorem}[\cite{mv97}]\label{thm:det-abp}
 The polynomial $\Det_n$ can be computed by an ABP of size $\Omega(n^3)$ over any field $\F$. Thus, in particular, $\Det_n$ can be computed by a arithmetic circuit of size $\poly(n)$. 
 \end{theorem}
+
+
+\begin{proofof}{Lemma~\ref{lem:mv-clowseq}}
+Consider a clow sequence $C = (C_1,\dots, C_r)$ of length $n$, ordered so that $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. If $C$ is \emph{not} a cycle-cover, then some vertex must be repeated in $C$. Starting from the last clow and proceeding backwards, let $i$ be an index such that $(C_{i+1},\dots, C_{r})$ is a union of disjoint cycles but $(C_{i},\dots, C_r)$ is not, and let $C_i = (v_1,\dots, v_k)$. Let $j$ be the first index that makes the vertex $v_{j}$ shows that $(C_i,\dots, C_r)$ not be a union of disjoint cycles. Then, exactly one of the two situations must occur:
+\begin{description}
+ \item[Case 1:] $v_{j} = v_{j'}$ for some $j' < j$
+
+ \item[Case 2:] $v_{j}$ occurs in one of the cycles $C_{i+1},\dots, C_r$. 
+\end{description}
+
+In the first case, the vertices $v_{j'+1},\dots, v_{j}$ are all distinct since $v_j$ was the first occurrence of a repeated node. Define a new clow-sequence  $\tilde{C}$ obtained by decomposing the clow $C_i$ with two clows $\inparen{(v_1,\dots, v_{j'},v_{j+1},\dots, v_k), (v_{j'},v_{j'+1},\dots,v_{j})}$. Note that the second clow $(v_{j'},\dots, v_j)$ is an honest-to-god cycle that does not intersect with any of the cycles $C_{i+1},\dots, C_r$. This transformation converts the clow-sequence $C$ with $r$ clows to a clow-sequence $C'$ of $r+1$ clows and hence $\mathrm{sign}(C) = - \mathrm{sign}(C')$. 
+
+In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. The new clow-sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. Since every vertex in $C_{i'}$ is greater than $\mathrm{head}(C_{i'})$ which is greater than $\mathrm{head}(C_i)$. Thus, this process does indeed result in a valid clow. Once again, $\mathrm{sign}(C) = - \mathrm{sign}(C')$.\\
+
+\todo[inline]{Add a picture here}
+
+It is not hard to see that the two operations in the two different cases are exact inverses of each other. Thus, this establishes a matching among all clow-sequences that are not cycle covers, with every matched pair having opposing signs. Thus, the overall contribution of clow-sequences that are not cycle covers is zero. 
+\end{proofof}
+
+
+
 
 \subsection{Completeness of the permanent}
 
