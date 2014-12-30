@@ -192,6 +192,7 @@ In the first case, the vertices $v_{j'+1},\dots, v_{j}$ are all distinct since $
 In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. Since every vertex in $C_{i'}$ is greater than $\mathrm{head}(C_{i'})$ which is greater than $\mathrm{head}(C_i)$. Thus, this process does indeed result in a valid clow. Once again, $\mathrm{sign}(C) = - \mathrm{sign}(C')$.\\
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,thick,main node/.style={circle,fill=blue!20,draw,font=\tiny}]
+\node at (0,0.5) {\tiny head};
 \node[main node] (v1) at (0,0) {1};
 \node[main node] (v2) at (-1,-0.7) {2};
 \node[main node] (v3) at (-1,-2.3) {7};
@@ -218,12 +219,12 @@ In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' 
 (v63) edge (v5);
 \node at (1,-4) {$(1,2,7,5,4,3,9,6,4,8,1)$};
 
-
+\node at (8,0.5) {\tiny head};
 \node[main node] (u1) at (8,0) {1};
 \node[main node] (u2) at (7,-0.7) {2};
 \node[main node] (u3) at (7,-2.3) {7};
 \node[main node] (u4) at (8.5,-2.8) {5};
-\node[main node] (u5) at (9.5,-2) {4};
+\node[main node,draw=red] (u5) at (9.5,-2) {4};
 \node[main node] (u6) at (9.2,-0.5) {8};
 \path[bend right] (u1) edge (u2)
 (u2) edge (u3)
@@ -232,14 +233,16 @@ In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' 
 (u5) edge (u6)
 (u6) edge (u1);
 
-\node[main node] (u60) at (11.5,-1.5) {4};
-\node[main node] (u61) at (12.5,-1) {3};
-\node[main node] (u62) at (13,-2) {9};
-\node[main node] (u63) at (12,-2.3) {6};
-\path[bend left] (u60) edge (u61)
-(u61) edge (u62)
-(u62) edge (u63)
-(u63) edge (u60);
+
+\node[main node,draw=red] (u50) at (11.5,-1.5) {4};
+\node at (12.5,-0.5) {\tiny head};
+\node[main node] (u51) at (12.5,-1) {3};
+\node[main node] (u52) at (13,-2) {9};
+\node[main node] (u53) at (12,-2.3) {6};
+\path[bend left] (u50) edge (u51)
+(u51) edge (u52)
+(u52) edge (u53)
+(u53) edge (u50);
 \node at (10,-4) {$(1,2,7,5,4,8,1),(4,3,9,6,4)$};
 
 \node at (5,-2) {\Huge $\Longleftrightarrow$};
