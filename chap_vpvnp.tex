@@ -180,16 +180,16 @@ The polynomial $\Det_n$ can be computed by an ABP of size $\Omega(n^3)$ over any
 
 
 \begin{proofof}{Lemma~\ref{lem:mv-clowseq}}
-Consider a clow sequence $C = (C_1,\dots, C_r)$ of length $n$, ordered so that $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. If $C$ is \emph{not} a cycle-cover, then some vertex must be repeated in $C$. Starting from the last clow and proceeding backwards, let $i$ be an index such that $(C_{i+1},\dots, C_{r})$ is a union of disjoint cycles but $(C_{i},\dots, C_r)$ is not, and let $C_i = (v_1,\dots, v_k)$. Let $j$ be the first index that makes the vertex $v_{j}$ shows that $(C_i,\dots, C_r)$ not be a union of disjoint cycles. Then, exactly one of the two situations must occur:
+Consider a clow sequence $C = (C_1,\dots, C_r)$ of length $n$, ordered so that $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. If $C$ is \emph{not} a cycle-cover, then some vertex must be repeated in $C$. Starting from the last clow and proceeding backwards, let $i$ be an index such that $(C_{i+1},\dots, C_{r})$ is a union of disjoint cycles but $(C_{i},\dots, C_r)$ is not, and let $C_i = (v_1,\dots, v_k)$. Let $j$ be the first index that makes the vertex $v_{j}$ show that $(C_i,\dots, C_r)$ not be a union of disjoint cycles. Then, exactly one of the two situations must occur:
 \begin{description}
- \item[Case 1:] $v_{j} = v_{j'}$ for some $j' < j$
+ \item[Case 1:] $v_{j} = v_{j'}$ for some $j' < j$,
 
  \item[Case 2:] $v_{j}$ occurs in one of the cycles $C_{i+1},\dots, C_r$. 
 \end{description}
 
 In the first case, the vertices $v_{j'+1},\dots, v_{j}$ are all distinct since $v_j$ was the first occurrence of a repeated node. Define a new clow sequence  $\tilde{C}$ obtained by decomposing the clow $C_i$ with two clows $\inparen{(v_1,\dots, v_{j'},v_{j+1},\dots, v_k), (v_{j'},v_{j'+1},\dots,v_{j})}$. Note that the second clow $(v_{j'},\dots, v_j)$ is an honest-to-god cycle that does not intersect with any of the cycles $C_{i+1},\dots, C_r$. This transformation converts the clow sequence $C$ with $r$ clows to a clow sequence $C'$ of $r+1$ clows and hence $\mathrm{sign}(C) = - \mathrm{sign}(C')$. 
 
-In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. Since every vertex in $C_{i'}$ is greater than $\mathrm{head}(C_{i'})$ which is greater than $\mathrm{head}(C_i)$. Thus, this process does indeed result in a valid clow. Once again, $\mathrm{sign}(C) = - \mathrm{sign}(C')$.\\
+In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. Since every vertex in $C_{i'}$ is greater than $\mathrm{head}(C_{i'})$ which is greater than $\mathrm{head}(C_i)$, this process does indeed result in a valid clow. Once again, $\mathrm{sign}(C) = - \mathrm{sign}(C')$ as the number of clows in the sequence has reduced by exactly one.\\
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,thick,main node/.style={circle,fill=blue!20,draw,font=\tiny}]
 \node at (0,0.5) {\tiny head};
