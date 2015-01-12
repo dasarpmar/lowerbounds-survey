@@ -4,7 +4,7 @@ We first explain some notation that shall be used throughout this article.
 
 \begin{itemize}
 \item In most cases, the degree of the polynomial shall be denoted by $d$ and the number of variables shall be denoted by $n$. In some cases, $n$ would refer to a parameter that would determine the number of variables (though perhaps not exactly). 
-\item Almost all the polynomials that we shall be studying would be multilinear. Thus, we shall identify a monomial with the \emph{set of variables} that it is a product of. This would allow us to abuse notation and say $x_i \in m$ to mean that $x_i$ divides the monomial $m$, or to say $m_1 \intersection m_2$ to refer to the $\gcd(m_1,m_2)$. 
+\item Almost all the polynomials that we shall be studying would be multilinear. In multilinear polynomials, we shall identify a monomial with the \emph{set of variables} that it is a product of. This would allow us to abuse notation and say $x_i \in m$ to mean that $x_i$ divides the monomial $m$, or to say $m_1 \intersection m_2$ to refer to the $\gcd(m_1,m_2)$. We shall also use the notation $m \in f$ to mean that the polynomial $m$ has a non-zero coefficient for the monomial $m$. 
 \item We shall use $[n]$ to denote $\inbrace{1,\dots, n}$ and we shall use boldface letters such as $\mathbf{x}$ to denote sets of variables. Further, $\mathbf{x}_{[n]}$ shall refer to a set of variables $\inbrace{x_1,\dots, x_n}$. However, if the number of variables is understood, we shall drop the subscript. 
 \end{itemize}
 
@@ -13,15 +13,17 @@ We first explain some notation that shall be used throughout this article.
 
 As mentioned earlier, the most robust model of computation that are studied are arithmetic circuits, which are formally defined as follows. 
 
-\begin{definition}[Arithmetic circuits]\label{defn:arithmetic-circuit}
+\begin{definition}[Arithmetic circuits and formulas]\label{defn:arithmetic-circuit}
 An arithmetic circuit is a directed acyclic graph with a unique sink vertex called the \emph{root}. The source vertices are labelled by either formal variables or field constants, and each internal node of the graph is labelled by either $+$ or $\times$. Nodes compute formal polynomials in the input variables  in the natural way. Further, edges entering a $+$ nodes also might have field constants on them to allow the $+$ to compute an $\F$-linear combination of the children (rather than just a sum). 
 
-The polynomial computed by the circuit is defined as the polynomial computed by the root. 
+The polynomial computed by the circuit is defined as the polynomial computed by the root. \\
+
+\noindent
+If the underlying graph is a \emph{tree} instead of a general acyclic graph, the circuit is called a \emph{formula}.
 \end{definition}
 
-If the underlying graph is a \emph{tree} instead of a general acyclic graph, the circuit is called a \emph{formula}. \\
 
-Another model of computation that is studied often is an \emph{arithmetic branching program}, defined as follows. 
+Another model of computation that is studied often is the model \emph{arithmetic branching programs}, defined as follows. 
 
 \begin{definition}[Arithmetic Branching Program]\label{defn:ABP}
 An arithmetic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. The polynomial computed by the ABP is defined as 
