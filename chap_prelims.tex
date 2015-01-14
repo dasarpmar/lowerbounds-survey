@@ -47,7 +47,7 @@ Show a super-polynomial separation between any of the models -- formulas, ABPs a
 
 \subsection{Constant depth circuits}
 
-We shall be dealing a lot with constant depth circuits. Normally, the root is assumed to be a $+$ gate\footnote{the reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would not make much sense to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates. A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. Thus, a depth two circuit consist of the form 
+We shall be dealing a lot with constant depth circuits. Normally, the root is assumed to be a $+$ gate\footnote{the reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates. A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. Thus, a depth two circuit consist of the form 
 \[
 f\quad = \quad \sum_{i=1}^s \prod_{j=1}^d x_{ij}
 \]
@@ -57,7 +57,8 @@ is a $\Sigma\Pi$ circuit.
 Any arithmetic circuit of depth $\Delta$ and size $s$, can be simulated by an arithmetic formula of depth $\Delta$ and size $s' \leq s^{\Delta}$. 
 \end{fact}
 
-Thus for constant depth circuits (where $\Delta = O(1)$), we may assume that we are dealing with formulas without much loss of generality. \\
+Thus for constant depth circuits (where $\Delta = O(1)$), we may assume that we are dealing with formulas without much loss of generality.
+
 
 It would also be useful to keep track of the \emph{fan-in} of the gates in a certain layer (especially of multiplication gates). We shall use superscripts to denote this. For example, an $\Sigma\Pi^{[a]}\Sigma\Pi^{[b]}$ circuits computes a polynomial of the form
 \[
@@ -69,7 +70,12 @@ It would also be useful to consider special layers of multiplication gates that 
 \[
 f\spaced{=} \sum_{i=1}^s \ell_{i}^d
 \]
-where each $\ell_i$ is a linear polynomial. 
+where each $\ell_i$ is a linear polynomial. \\
+
+\begin{exercise}
+Show that any constant width ABP can be simulated by a polynomial sized formula. 
+\end{exercise}
+
 
 
 \section{Polynomials of interest}
@@ -89,8 +95,6 @@ The permanent of an $n\times n$ symbolic matrix shall be denoted by $\Perm_n$ an
 
 Both of these polynomials are of degree $n$ and over $n^2$ variables. We know that $\Det_n$ can be computed by a polynomial sized arithmetic circuit and it is widely believed that the permanent requires circuits of size $2^{\Omega(n)}$. 
 
-
-
 \subsection*{The Nisan-Wigderson polynomial families}
 
 Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\leq m$. Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\F_m$ of $m$ elements. Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_{n,m,d}$ is defined as
@@ -99,7 +103,7 @@ Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\
 \]
 That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. This is a polynomial of degree $n$ over $mn$ variables.
 
-This monomials of this polynomial satisfy a very useful low-pairwise-intersection property. 
+This monomials of this polynomial satisfy a very useful ``low pairwise-intersection'' property. 
 
 \begin{lemma}\label{lem:NW-low-intersection}
 Let $m_1$ and $m_2$ be any two distinct monomials in $\NW_{n,m,d}(\vecx)$. Then, there are at most $d$ variables that divide both $m_1$ and $m_2$. 
@@ -123,7 +127,7 @@ $$
 
 It is often useful to think of this as the polynomial computed by a \emph{generic algebraic branching program} of width $n$ and depth $n$ (where the edge connecting vertex $i$ of layer $\ell$ to vertex $j$ of layer $\ell+1$ has weight $x_{ij}^{(\ell)}$). 
 
-This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
+This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
 
 
 %%% Local Variables: 
