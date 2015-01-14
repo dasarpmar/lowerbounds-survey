@@ -1,29 +1,29 @@
 \chapter{Algebraic complexity classes} \label{chap-vpvnp}
 
-Valiant \cite{v79}, in his seminal paper, defined two algebraic complexity classes that can be thought of as analogues of the boolean classes $\P$ and $\NP$. This chapter shall focus on their definitions, and some important properties related to the polynomial families $\Det_n$ and $\Perm_n$. 
+Valiant \cite{v79} defined two algebraic complexity classes that can be thought of as analogues of the boolean classes $\P$ and $\NP$. This chapter focuses on their definitions, and some important properties related to the polynomial families $\Det_n$ and $\Perm_n$. 
 
 \section{Definition of classes}
 
-Recall that $\P$ is\footnote{if one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. But in this article, we shall be interested only in the non-uniform versions since we shall mainly deal with circuit sizes.} the class of boolean functions that can be computed by circuits of polynomial size. Note that any boolean function can be expressed as a multilinear\footnote{a polynomial where the degree in any variable is bounded by $1$} polynomial. An analogue of this in the arithmetic world could be multilinear polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. However, unlike in the boolean world, the polynomial $x^2$ is not equal to the polynomial $x$ as we are dealing with formal polynomials. Valiant's definition of $\VP$ was the class of the class of ``low degree'' polynomials that can be computed by circuits of small size. 
+Recall that $\P$ is\footnote{if one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. But in this article, we shall be interested only in the non-uniform versions since we mainly deal with circuit sizes.} the class of boolean functions that can be computed by circuits of polynomial size. As any boolean function can be expressed as a multilinear\footnote{a polynomial where the degree in any variable is bounded by $1$} polynomial, an analogue of this in the arithmetic world could be multilinear polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. However, unlike in the boolean world, the polynomial $x^2$ is not equal to the polynomial $x$ as we are dealing with formal polynomials. Valiant's definition of $\VP$ was the class of the class of ``low degree'' polynomials that can be computed by circuits of small size. 
 
 \begin{definition}[Valiant's $\P$]\label{defn:vp}
 The class $\VP$ refers to the set of polynomials $f(x_1,\dots, x_n)$ of \emph{degree $\poly(n)$} that can be computed by arithmetic circuits of size $\poly(n)$. 
 \end{definition}
 
-In the literature, one also encounters classes such as $\mathsf{VBP}$ and $\mathsf{VF}$ that correspond to polynomials computed by polynomial-sized ABP and formulas respectively.
+In the literature, one also encounters classes such as $\mathsf{VBP}$ and $\mathsf{VF}$ that correspond to polynomials computed by polynomial-sized ABP and formulas respectively. These are subclasses of $\VP$ by definition. 
 
 
 \subsection*{More on the low-degree restriction}
 
-Note that if one has an arithmetic circuit consisting of a chain of $s$ multiplication gates, it can compute a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring). But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits (that include such polynomials of very large degree)? Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cite{gro:SE}. 
+But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits (that include such polynomials of very large degree)? We can indeed compute polynomials of very large degree, such as a circuit that is a chain of $s$ multiplication gates thus computing a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring).  Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. There are several intuitive reasons for this, and this ``restricted'' definition also yields beautiful structural results. This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cite{gro:SE} to shed more light on the above definition. 
 
 \begin{enumerate}
 
 \item Every boolean function can be expressed as a multilinear polynomial. Multilinear polynomials are of course polynomials of ``low degree''. 
 
-\item Much of the earlier work were based on understanding formula size. In the case of arithmetic formulas, the degree cannot be more than the size of the formula. Hence, if a polynomial is computed by a $\poly(n)$ sized formula, then its degree must be bounded by $\poly(n)$ too. 
+\item Much of the earlier work were based on understanding formula size. In the case of arithmetic formulas, the degree cannot be more than the size of the formula. If a polynomial is computed by a $\poly(n)$ sized formula, then its degree must be bounded by $\poly(n)$ too. 
 
-\item Most interesting polynomials such as $\Det_n$ or $\Perm_n$ are in fact of low degree. Once we choose to deal with only polynomials of low degree, the above definition does not have any restriction on the circuit used to compute it (besides its size). It is certainly possible that intermediate computations of the circuit could involve very large degree polynomials. 
+\item Most interesting polynomials, such as $\Det_n$ or $\Perm_n$, are in fact of low degree. Once we choose to deal with only polynomials of low degree, the above definition does not have any restriction on the circuit used to compute it (besides its size). It is certainly possible that intermediate computations of the circuit could involve very large degree polynomials. 
 
 However, as we shall soon see, Strassen's result shows that such high degree computations may be eliminated with just an $O(\deg^2)$ increase in size. Dealing with low-degree circuits also makes the class robust under this transformation. The same blow-up also holds while eliminating division gates in the circuit. 
 
@@ -39,7 +39,7 @@ Having said that, there is also a notion of ``degree'' in a boolean circuit that
 
    For any AND gate, the degree is the sum of the degrees of its children. 
  \end{quote}
-The class boolean functions that can be computed by poly-sized poly-degree circuits coincide with a class called $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. With this notion, one might say that $\VP$ is really an analogue of $\mathsf{SAC}^1$\\
+The class boolean functions that can be computed by poly-sized poly-degree circuits coincide with a class called $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. With this notion, one might say that $\VP$ is really an analogue of $\mathsf{SAC}^1$.\\
 
 
 We now move on to the arithmetic analogue of the class $\NP$. Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ such that 
@@ -55,11 +55,11 @@ f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, 
 \]
 \end{definition}
 
-It follows from definitions that $\mathsf{VF} \subseteq \mathsf{VBP} \subseteq \VP \subseteq \VNP$. It is not clear if any of the above inequalities are strict. 
+It follows from definitions that $\mathsf{VF} \subseteq \mathsf{VBP} \subseteq \VP \subseteq \VNP$. We do not know if any of the containments is strict (although it is widely believed that all of them are). 
 
 \section{Some properties of these classes}
 
-We shall state a few properties of these classes here. For a more extensive treatment, B\"{u}rgisser's book \cite{bur00} has a comprehensive study of these classes and a lot of the proofs are based on the description there. \\
+We shall state a few properties of these classes here. For a more extensive treatment, B\"{u}rgisser's book \cite{bur00} has a comprehensive study of these classes and a lot of the proofs presented in this chapter are based on the description in his book. \\
 
 Valiant~\cite{v79} presented a very useful sufficient condition to show that a given polynomial is in $\VNP$. 
 
@@ -73,7 +73,7 @@ Thus in particular, if we compute the coefficient for a given monomial in polyno
 The polynomials $\Perm_n$ and $\NW_{n,m,d}$ are in $\VNP$. 
 \end{corollary}
 
-Notice that in Definition~\ref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
+As stated in Definition~\ref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant~\cite{v82} showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
 
 \begin{theorem}\label{thm:vnp-formula}
 For any $f(x_1,\dots, x_n)\in \VNP$, there is a $g(x_1,\dots, x_n, y_1,\dots, y_m)$ that can be computed by a $\poly(n)$ sized \emph{formula} such that 
