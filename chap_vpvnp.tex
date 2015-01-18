@@ -15,7 +15,7 @@ In the literature, one also encounters classes such as $\mathsf{VBP}$ and $\math
 
 \subsection*{More on the low-degree restriction}
 
-But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits (that include such polynomials of very large degree)? We can indeed compute polynomials of very large degree, such as a circuit that is a chain of $s$ multiplication gates thus computing a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring).  Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. There are several intuitive reasons for this, and this ``restricted'' definition also yields beautiful structural results. This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cite{gro:SE} to shed more light on the above definition. 
+But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits, that include such polynomials of very large degree? We can indeed compute polynomials of very large degree, such as a circuit that is a chain of $s$ multiplication gates thus computing a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring).  Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. There are several intuitive reasons for this, and this ``restricted'' definition also yields beautiful structural results. This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cite{gro:SE} to shed more light on the above definition. 
 
 \begin{enumerate}
 
@@ -25,7 +25,7 @@ But should the analogue of $\VP$ not be the class of polynomials that are comput
 
 \item Most interesting polynomials, such as $\Det_n$ or $\Perm_n$, are in fact of low degree. Once we choose to deal with only polynomials of low degree, the above definition does not have any restriction on the circuit used to compute it (besides its size). It is certainly possible that intermediate computations of the circuit could involve very large degree polynomials. 
 
-However, as we shall soon see, Strassen's result shows that such high degree computations may be eliminated with just an $O(\deg^2)$ increase in size. Dealing with low-degree circuits also makes the class robust under this transformation. The same blow-up also holds while eliminating division gates in the circuit. 
+However, as we shall soon see, Strassen's result shows that such high degree computations may be eliminated with just an $O(\deg^2)$ increase in size. Dealing with low-degree circuits also makes the class robust under this transformation. Eliminating division gates also only incurs an $O(\deg^2)$ increase in size. 
 
 \item Without this restriction, cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or the numerous structural results such as depth reduction that we have. 
 
@@ -153,7 +153,7 @@ Any cycle cover is of course a clow sequence. Further, the sign of the cycle cov
 
 They prove this by showing that the set of clow sequences that are not cycle covers can partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. We shall see an explicit proof of this shortly, but first let us see why this yields an ABP. \\
 
-The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Omega(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. 
+The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Theta(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. The length of the partial clow sequence constructed so far is captured by the layer index $\ell$. 
 
 The first layer consists of a single vertex that we shall call $s = v_{1,1}^{(1)}$ (to maintain the same notation)  and the last layer consists of a single vertex that we shall call $t$. The edges between layers, and the weights are defined as follows:
 
@@ -175,7 +175,7 @@ The first layer consists of a single vertex that we shall call $s = v_{1,1}^{(1)
 Summarizing this as a theorem, we have:
 
 \begin{theorem}[\cite{mv97}]\label{thm:det-abp}
-The polynomial $\Det_n$ can be computed by an ABP of size $\Omega(n^3)$ over any field $\F$. Thus, in particular, $\Det_n$ can be computed by a arithmetic circuit of size $\poly(n)$. 
+The polynomial $\Det_n$ can be computed by an ABP of size $O(n^3)$ over any field $\F$. Thus, in particular, $\Det_n$ can be computed by a arithmetic circuit of size $\poly(n)$. 
 \end{theorem}
 
 
@@ -307,7 +307,7 @@ edge [loop below] (l1)
 \end{center}
 The thick edges in the above picture shall be called \emph{connector edges} (these shall play the role of the $y$-edges). Note that the rosette has the following two properties:
 \begin{enumerate}
-\item For any non-empty subset $S$ of the connector edges, there is exactly one cycle-cover of the rosette that includes exactly the set $S$ fo the connector-edges. 
+\item For any non-empty subset $S$ of the connector edges, there is exactly one cycle-cover of the rosette that includes exactly the set $S$ of the connector-edges. 
 \item There are exactly two cycle-covers of the rosette that do not include any connector edge. 
 \end{enumerate}
 Thus, if we could somehow ``glue'' the connector edges with our $y$-edges, we would be done. This is achieved by yet another gadget that we shall call the \emph{glue gadget}. The following is the description of the glue gadget that glues edges $(u,v)$ and $(u',v')$ by adding three additional vertices. 
@@ -363,13 +363,13 @@ A = \insquare{\begin{array}{rrr}
 Let $(u,v)$ and $(u',v')$ be two edges of a graph $G$, and let $G'$ be the graph with the glue gadget between them as described above. Then $\mathrm{perm}(G')$ equals the sum of all weighted cycle covers of $G$ that either include both $(u,v)$ and $(u',v')$ in it or neither. 
 \end{claim}
 \begin{proof}
-If both edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, this is realised in $G'$ as ${(\cdots u,p_1, p_2, v \cdots) (\cdots u', p_3, v' \cdots)}$, which has the same weight.  
+If both edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, this is realized in $G'$ as ${(\cdots u,p_1, p_2, v \cdots) (\cdots u', p_3, v' \cdots)}$, which has the same weight.  
 
 If neither of the edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, then the total contribution of all cycle covers of $p_1$, $p_2$ and $p_3$ is $\mathrm{perm}(A) = 1$. 
 
-If the edge $(u,v)$ is taken but $(u',v')$ is not, then the edge $(u,v)$ can be realised in $G'$ as either $\inbrace{(\cdots u,p_1,p_2,v \cdots) (p_3)}$ or $\inbrace{(\cdots u,p_1,p_3,p_2,v \cdots )}$. The total contribution is therefore zero. 
+If the edge $(u,v)$ is taken but $(u',v')$ is not, then the edge $(u,v)$ can be realized in $G'$ as either $\inbrace{(\cdots u,p_1,p_2,v \cdots) (p_3)}$ or $\inbrace{(\cdots u,p_1,p_3,p_2,v \cdots )}$. The total contribution is therefore zero. 
 
-Similarly, if the edge $(u',v')$ is taken but not $(u,v)$, then this can be realised in $G'$ as $\inbrace{(\cdots u',p_3,v' \cdots),(p_1,p_2)}$ and $\inbrace{(\cdots u',p_3, v' \cdots) (p_1) (p_2)}$. Again, the net contribution is zero.  
+Similarly, if the edge $(u',v')$ is taken but not $(u,v)$, then this can be realized in $G'$ as $\inbrace{(\cdots u',p_3,v' \cdots),(p_1,p_2)}$ and $\inbrace{(\cdots u',p_3, v' \cdots) (p_1) (p_2)}$. Again, the net contribution is zero.  
 \end{proof}
 
 Now with these two gadgets, we are done. For every variable $y_i \in \vecy$, let $e_{i,1}, \dots, e_{i,r_i}$ be the edges labelled with $y$. Let $R_i$ be a $r_i$-rosette disjoint from the graph $G$ The graph $G'$ is built as follows:
@@ -386,7 +386,7 @@ Note that we needed to divide by $2$ in the glue gadget. This is why we require 
 \begin{exercise}
   For any matrix $A$, we shall use the notation that $A[1|2]$ refers to the submatrix obtained by removing row $1$ and column $2$.
 
-  Show that, for a three-vertex \emph{glue gadget}, you need a $3\times 3$ matrix $A$ that satisfies the following three properties:
+  Show that, for a three-vertex \emph{glue gadget}, it suffices to find a $3\times 3$ matrix $A$ that satisfies the following three properties:
   \begin{itemize}
     \item $\mathrm{perm}(A) = \mathrm{perm}(A[2,3|1,3]) = 1$. 
     \item $\mathrm{perm}(A[3|3]) = \mathrm{perm}(A[2|1]) = \mathrm{perm}(A[1|3]) = \mathrm{perm}(A[2|3]) = 0$.
