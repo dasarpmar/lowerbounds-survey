@@ -279,6 +279,10 @@ In all the multilinear lower bounds we saw, the measure used was the rank of the
 
 As in the earlier lower bounds, we shall take a random partition $X = Y \sqcup Z$ and study $\CM{Raz}_{Y,Z}(f)$ for a small multi-$k$-ic circuit. 
 
+\begin{remark*}\rm 
+We shall take a slight deviation from the way we chose partitions earlier. Here, we shall take every variable $x\in X$ and map it to $Y$ or $Z$ with equal probability. Thereby, it is possible that $|Y|$ is not exactly $|X|/2$ but it would nevertheless be close to it with high probability. This modification gives us the useful feature that the random partition is made of independent events. This would turn out to be useful in the following calculations. 
+\end{remark*}
+
 \subsection*{Proof of Theorem~\ref{thm:multi-k-ic}}
 
 The proof strategy will be the same as earlier. For a random polynomial with degree in every variable bounded by $k$, we expect $\CM{Raz}_{Y,Z}(f)$ to be $\Omega(k^{\min(|Y|,|Z|)})$. We shall show that for a multi-$k$-ic term $T = \ell_1\dots \ell_d$, under a random partition $X = Y \sqcup Z$, the measure $\CM{Raz}(T)$ will be far from $k^{n/2}$ with high probability, if $n = |X|$. 
@@ -309,7 +313,7 @@ The trickier case is with $T_S$ but intuitively the setting is very similar to w
 \begin{theorem}[\cite{GLSS12}]
 Let $X_1,\dots, X_n$ be independent random variables. Let $E_1,\dots, E_r$ be boolean random variables that are functions of $\inbrace{X_i}$ such that each $X_i$ influences at most $k$ of the $E_j$'s. If $\Pr[E_i = 1] \geq p$, then for any $\epsilon > 0$, we have
 \[
-\Pr\insquare{E_1 + \dots + E_r  \spaced{\leq} (p - \epsilon) r } \spaced{\leq} e^{-\epsilon^2 r/k}
+\Pr\insquare{E_1 + \dots + E_r  \spaced{\leq} (p - \epsilon) r } \spaced{\leq} e^{-2\epsilon^2 r/k}
 \]
 \end{theorem}
 
