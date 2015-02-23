@@ -1,9 +1,18 @@
 \chapter{Lower bounds for multilinear models}\label{chap:multilinear}
 
-\todo[inline]{Define multilinear models}
+Most of the polynomials that are studied usually, like those described in Chapter~\ref{chap:notation}, are multilinear. A natural question is whether or not multilinear polynomials can be computed in a ``multilinear fashion''. This is formalized by what the model of multilinear circuits, in a way analogous to homogeneous circuits. 
 
+\begin{definition}[Multilinear circuits]
+A circuit $C$ is said to be \emph{multilinear} if every gate of the circuit computes a multilinear polynomial. A circuit is said to be \emph{syntactically multilinear} if for any $g = g_1 \times g_2$, there is no variable that has a path to both $g_1$ and $g_2$. 
+\end{definition}
 
-Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. We shall first give some intuition behind the complexity measure before actually seeing the lower bounds. 
+Note that syntactic multilinearity of course implies multilinearity as the definition forces all gates to compute multilinear polynomials. However, we could have a setting where there is a gate $g = g_1 \times g_2$ where some variable $x$ has a path to both $g_1$ and $g_2$ but it so turns out that $g_1$ is independent of $x$ due to other cancellations. However, for arithmetic formulas, the two notions are equivalent. 
+
+\begin{exercise}
+Given any arithmetic formula $\Phi$ that is multilinear, show that it can be converted to a formula $\Phi'$ of size $\poly(\Phi)$ that is syntactically multilinear. 
+\end{exercise}
+
+This section shall deal mainly with multilinear formulas so we may assume without loss of generality that they are syntactically multilinear. Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. We shall first give some intuition behind the complexity measure before actually seeing the lower bounds. 
 
 \section{The partial derivative matrix}
 \subsection*{Intuition}
