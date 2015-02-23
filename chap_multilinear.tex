@@ -217,6 +217,62 @@ Combining Lemma~\ref{lem:det-raz-lowerbound} with Lemma~\ref{lem:multformula-low
 \begin{theorem}[\cite{raz2004}] Any multilinear formula computing $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. \qed
 \end{theorem}
 
+\subsection{Constructing a full-rank polynomial}
+
+As alluded to earlier,  if $f$ is a random polynomial, then for any partition $X = Y \sqcup Z$ with $|Y| = |Z| = |X|/2$ we expect $\CM{Raz}_{Y,Z}(f) = 2^{|X|/2}$. Can we construct such a polynomial explicitly? This was first answered by Raz~\cite{Raz06}, and the construction was later simplified by Raz and Yehudayoff~\cite{ry08} and we shall describe the latter here. \\
+
+{\bf Main idea:} Suppose you know the partition as $Y = \inbrace{y_1,\dots, y_n}$ and $Z = \inbrace{z_1,\dots, z_n}$, then building a polynomial such that $M_{Y,Z}(f)$ is full-rank is easy --- just take $f = (y_1z_1 + 1)\dots (y_n z_n + 1)$ which makes $M_{Y,Z}(f)$ the identity matrix. What we would like is to have one such copy for every partition, and we would also like to build it in a way so that $f$ can be computed in $\VP$. \\
+
+The first attempt is to build the polynomial inductively for every partition into two equal parts, but ``remembering'' partial partitions take too much memory (similar to the situation we had in Theorem~\ref{thm:det-abp}). Raz and Yehudayoff instead use a different construct that, rather than being based on partitions, is instead based on Dyck-strings or well-matched parentheses. 
+
+The language $\mathrm{Dyck}(n)$ refers to strings of length $2n$ over symbols `$($' and `$)$' that is well-matched in the natural way. That is ``()()'' and ``(())'' belong to $\mathrm{Dyck}(2)$ but not ``())(''. Raz and Yehudayoff come up with a natural map to convert every such string to a full-rank polynomial, and we shall just state this by example. 
+\begin{eqnarray*}
+\Omega(\text{``(())''}) & = & (x_1x_4 + 1)\cdot (x_2x_3 + 1)\\
+\Omega(\text{``()()''}) & = & (x_1x_2 + 1)\cdot (x_3x_4 + 1)
+\end{eqnarray*}
+That is, if the opening bracket at position $i$ is closed at position $j$, then there is a factor $(x_ix_j + 1)$. Let us define the polynomial as follows:
+\[
+f(x_1,\dots, x_{2n}) \spaced{=} \sum_{s\in \mathrm{Dyck}(n)} \Omega(s) 
+\]
+Let us attempt to compute the polynomial using a small circuit in the following natural inductive manner. 
+\[
+f_{i,j}(\vecx) \spaced{=} \begin{cases}
+(x_ix_j+1) & \text{if $j = i+1$}\\
+0 & \text{if $j-i$ is odd}\\
+(x_ix_j+1) \cdot f_{i+1,j-1} &\\
+ \spaced{+} \sum\limits_{r=i+1}^{j-1} f_{i,r}\cdot f_{r+1,j} & \text{otherwise}
+\end{cases}
+\]
+However, $f_{1,2n}$ is \emph{not equal} to the polynomial $f$ as the term corresponding to ``()()()$\dots$()'' has coefficient $1$ in $f$ but is $C_n$, the $(n-1)$-th Catalan number. Nevertheless, this inductively defined polynomial $f_{1,2n}$ has most of the properties we need. Raz and Yehudayoff take a slight variant of it by adding a few auxiliary variables $\inbrace{\omega_{i,j,k}}$ to build the following polynomial over the field $\F(\inbrace{\omega_{i,j,k}})$. 
+\[
+\tilde{f}_{i,j}(\vecx) \spaced{=} \begin{cases}
+(x_ix_j+1) & \text{if $j = i+1$}\\
+0 & \text{if $j-i$ is odd}\\
+(x_ix_j+1) \cdot \tilde{f}_{i+1,j-1} &\\
+ \spaced{+} \sum\limits_{r=i+1}^{j-1} \tilde{f}_{i,r}\cdot \tilde{f}_{r+1,j} \cdot \omega_{i,r,j} & \text{otherwise}
+\end{cases}
+\]
+
+\begin{lemma}[\cite{ry08}]
+The polynomial $\tilde{f} = \tilde{f}_{1,2n}$ has the property that for every $X = Y \sqcup Z$ with $|Y| = |Z| = |X|/2$ we have $\CM{Raz}_{Y,Z}(\tilde{f}) = 2^{|X|/2}$. 
+\end{lemma}
+\begin{proof}
+The proof shall be over induction on $n$. For the base case, statement is obviously true for $n = 1$ as $\tilde{f} = (x_1 + x_2)$ in this case. 
+
+Suppose $n > 1$, and let $X = Y \sqcup Z$ be any partition with $|Y| = |Z| = |X|/2$. Then, either both $x_1$ and $x_{2n}$ belong to the same side of the partition, or they belong to different sides. Let us handle each case separately. 
+
+\begin{description}
+\item{Case 1:  $x_1$ and $x_{2n}$ are in different parts}. 
+
+Then, polynomial $\tilde{f}$ where we set $\omega_{1,i,2n} = 0$ for all $i$. Under this substitution, $\tilde{f}$ is equal to $(x_1 + x_{2n})\cdot \tilde{f}_{2,2n-1}$. By induction, we know that $\tilde{f}_{2,2n-1}$ is full-rank under equal sized partition and hence so is $(x_1 + x_{2n}) \cdot \tilde{f}_{2,2n-1}$. As setting variables to zero can only reduce the rank, it follows that $M_{Y,Z}(\tilde{f})$ must be full-rank as well. 
+
+\item{Case 2:  $x_1$ and $x_{2n}$ are in the same part}. 
+
+Since $|Y| = |Z| = |X|/2$, there must be some intermediate point $r$ such that the two intervals $[1,r]$ and $[r+1,2n]$ are both split evenly by $Y$ and $Z$. Using induction on each of these smaller intervals again, we get that $M_{Y,Z}(\tilde{f})$ is full-rank again. 
+\end{description}
+\end{proof}
+
+This is one of the very few polynomials that we are aware of that can be computed by polynomial sized arithmetic circuits, but is not known to be computable by polynomial size ABPs. 
 
 \section{Stronger lower bounds for constant depth multilinear formulas}
 
