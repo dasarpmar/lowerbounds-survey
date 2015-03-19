@@ -23,10 +23,10 @@ If the underlying graph is a \emph{tree} instead of a general acyclic graph, the
 \end{definition}
 
 
-Another model of computation that is studied often is the model \emph{arithmetic branching programs}, defined as follows. 
+Another model of computation that is studied often is the model \emph{algebraic branching programs}, defined as follows. 
 
-\begin{definition}[Arithmetic Branching Program]\label{defn:ABP}
-An arithmetic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. The polynomial computed by the ABP is defined as 
+\begin{definition}[Algebraic Branching Program]\label{defn:ABP}
+An algebraic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. The polynomial computed by the ABP is defined as 
 \[
 f\spaced{=} \sum_{\gamma: s \leadsto t} \mathrm{wt}(\gamma)
 \]
@@ -35,7 +35,7 @@ where for every path $\gamma$ from $s\leadsto t$, the weight $\mathrm{wt}(\gamma
 
 The width of the ABP is defined as the maximum number of vertices in any layer, and the depth is defined as the length of the longest path from $s$ to $t$. The polynomial computed by an ABP is captured by the \emph{iterated matrix multiplication} polynomial that we shall soon see. 
 
-It is easy to observe that any arithmetic formula of size $s$ can be simulated by an arithmetic branching program of size $\poly(s)$, and any arithmetic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. It is a major open problem to show a separation between any of these. 
+It is easy to observe that any arithmetic formula of size $s$ can be simulated by an algebraic branching program of size $\poly(s)$, and any algebraic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. It is a major open problem to show a separation between any of these. 
 
 \[
 \mathrm{Formulas} \spaced{\subseteq} \mathrm{ABPs} \spaced{\subseteq} \mathrm{Circuits}
