@@ -29,8 +29,10 @@
 \declaretheorem[unnumbered,name=Conjecture]{conjecture*}
 \declaretheorem[unnumbered,name=Question]{question*}
 
-\declaretheorem[numberlike=equation,name=Open Problem]{openproblem}
-\declaretheorem[numberlike=equation,name=Exercise]{exercise}
+\declaretheorem[name=Open Problem]{openproblem}
+\declaretheorem[name=Exercise]{exercise}
+\numberwithin{openproblem}{chapter}
+\numberwithin{exercise}{chapter}
 
 
 \declaretheorem[name=Theorem,style=noproofstyle]{thmm}
