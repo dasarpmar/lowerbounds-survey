@@ -73,7 +73,7 @@ Thus in particular, if we compute the coefficient for a given monomial in polyno
 The polynomials $\Perm_n$ and $\NW_{n,m,d}$ are in $\VNP$. 
 \end{corollary}
 
-As stated in Definition~\ref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant~\cite{v82} showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
+As stated in \autoref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. However, a subsequent paper of Valiant~\cite{v82} showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
 
 \begin{theorem}\label{thm:vnp-formula}
 For any $f(x_1,\dots, x_n)\in \VNP$, there is a $g(x_1,\dots, x_n, y_1,\dots, y_m)$ that can be computed by a $\poly(n)$ sized \emph{formula} such that 
@@ -113,7 +113,7 @@ Consider the graph $G$ underlying the ABP that corresponds to the polynomial $\I
   Further, for all nodes except $s$ and $t$, add a self-loop of weight $1$. 
 \end{quote}
 
-Let $A$ be the adjacency matrix of this new graph $G'$. The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $\IMM_{n,d}$. To see this observe that all cycle covers of $G'$ must consist of a single $s\leadsto t$ path that loops back to $s$ via the edge $t\rightarrow s$ that we added, and self-loops on all excluded vertices. Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers have the same sign. Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (Theorem~\ref{thm:vp})}\\
+Let $A$ be the adjacency matrix of this new graph $G'$. The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $\IMM_{n,d}$. To see this observe that all cycle covers of $G'$ must consist of a single $s\leadsto t$ path that loops back to $s$ via the edge $t\rightarrow s$ that we added, and self-loops on all excluded vertices. Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers have the same sign. Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (\autoref{thm:vp})}\\
 
 
 \subsection{$\Det_n$ can be computed by ABPs}
@@ -179,7 +179,7 @@ The polynomial $\Det_n$ can be computed by an ABP of size $O(n^3)$ over any fiel
 \end{theorem}
 
 
-\begin{proofof}{Lemma~\ref{lem:mv-clowseq}}
+\begin{proofof}{\autoref{lem:mv-clowseq}}
 Consider a clow sequence $C = (C_1,\dots, C_r)$ of length $n$, ordered so that $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. If $C$ is \emph{not} a cycle-cover, then some vertex must be repeated in $C$. Starting from the last clow and proceeding backwards, let $i$ be an index such that $(C_{i+1},\dots, C_{r})$ is a union of disjoint cycles but $(C_{i},\dots, C_r)$ is not, and let $C_i = (v_1,\dots, v_k)$. Let $j$ be the first index that makes the vertex $v_{j}$ show that $(C_i,\dots, C_r)$ not be a union of disjoint cycles. Then, exactly one of the two situations must occur:
 \begin{description}
  \item[Case 1:] $v_{j} = v_{j'}$ for some $j' < j$,
@@ -256,7 +256,7 @@ It is not hard to see that the two operations in the two different cases are exa
 
 The $\VNP$ completeness for the permanent is trickier, and uses a very clever gadget. The proof described here is a modification of the proof in B\"urgisser's book \cite{bur00}. This is the simplest proof that I am aware of currently. \\
 
-Let $f(x_1,\dots, x_n) = \sum_\veca g(x_1,\dots, x_n, a_1,\dots, a_m)$ be in $\VNP$ with $g(\vecx, \vecy)$ computable by a formula of size $s$ (Theorem~\ref{thm:vnp-formula}). Like in the previous section, we can construct a graph $G$ (with weights being either scalars or variables in $\vecx$ or $\vecy$) such that the sum of weighted cycle covers is equal to $g(\vecx, \vecy)$. The goal is to now compute $\sum_\veca g(\vecx, \veca)$. \\
+Let $f(x_1,\dots, x_n) = \sum_\veca g(x_1,\dots, x_n, a_1,\dots, a_m)$ be in $\VNP$ with $g(\vecx, \vecy)$ computable by a formula of size $s$ (\autoref{thm:vnp-formula}). Like in the previous section, we can construct a graph $G$ (with weights being either scalars or variables in $\vecx$ or $\vecy$) such that the sum of weighted cycle covers is equal to $g(\vecx, \vecy)$. The goal is to now compute $\sum_\veca g(\vecx, \veca)$. \\
 
 Let us consider a simpler case, where there is a variable $y \in \vecy$ such that there is just one edge in $e_y \in G$ with weight $y$. Can we transform the graph $G$ locally to compute $g' = g_{(y=0)} + g_{(y=1)}$? Note that since $y$ occurs only once in $G$, we have that $g = y \cdot g_1 + g_0$ where $g_1$ and $g_0$ are independent of $y$. Thus, the polynomial $g'$ can be written as $g_1 + 2 g_0$. One way to compute this is to transform the graph $G$ so that any cycle-cover of $G$ that includes the edge $e_y$ has the same weight as before, but every cycle-cover that does not include the edge $e_y$ has its weight multiplied by $2$. This can be achieved by splitting the edge $e_y$ in the middle with a new vertex $v$ with a self-loop of weight $2$:
 
@@ -379,7 +379,7 @@ Now with these two gadgets, we are done. For every variable $y_i \in \vecy$, let
   Glue each edge labelled with $y_i$ with the $r_i$ connector edges in the $r_i$-rosette. 
 \end{quote}
 
-It should be easy to see that $\mathrm{perm}(G) = \sum_{\veca} g(\vecx, \veca)$. This completes the proof of the $\VNP$-completeness of $\Perm_n$. \qed {\footnotesize (Theorem~\ref{thm:vnp})} \\
+It should be easy to see that $\mathrm{perm}(G) = \sum_{\veca} g(\vecx, \veca)$. This completes the proof of the $\VNP$-completeness of $\Perm_n$. \qed {\footnotesize (\autoref{thm:vnp})} \\
 
 Note that we needed to divide by $2$ in the glue gadget. This is why we require the characteristic of the field to be different from two for the above proof to work. 
 

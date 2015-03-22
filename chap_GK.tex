@@ -6,9 +6,9 @@ This chapter shall present the lower bound of Grigoriev and Karpinski \cite{grig
   Any depth-3 circuit computing $\Det_n$ (or $\Perm_n$) over a finite field $\F_q$ ($q\neq 2$) requires size $2^{\Omega(n)}$.
 \end{theorem}
 
-{\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$, where each $T_i$ is a product of linear polynomials. Define $\mathrm{rank}(T_i)$ as in Section~\ref{sec:low-rank-sps} to be the dimension of the set of linear polynomials that $T_i$ is a product of.
+{\bf Main idea:} Let $q = |\F|$. Suppose $C = T_1 + \dots + T_s$, where each $T_i$ is a product of linear polynomials. Define $\mathrm{rank}(T_i)$ as in \autoref{sec:low-rank-sps} to be the dimension of the set of linear polynomials that $T_i$ is a product of.
 
-In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, the fact that we are working over a finite field would become very useful. Since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. As $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be ``approximated'' by just the low-rank components.
+In \autoref{sec:low-rank-sps}, we saw that the dimension of partial derivatives would handle \emph{low rank} $T_i$'s. As for the high rank $T_i$'s, the fact that we are working over a finite field would become very useful. Since $T_i$ is a product of at least $r$ linearly independent linear polynomials, a random evaluation keeps $T_i$ non-zero with probability at most $\inparen{1-\frac{1}{q}}^r$. As $q$ is a constant, we have that a random evaluation of a high rank $T_i$ is almost always zero. Hence, in a sense, $C$ can be ``approximated'' by just the low-rank components.
 
 % Further, if $T = \ell_1^{e_1} \dots \ell_d^{e_d}$ with $\ell_1,\dots, \ell_r$ being a
 % maximal set of linearly independent linear polynomials, then $T$
@@ -20,7 +20,7 @@ In Section~\ref{sec:low-rank-sps}, we saw that the dimension of partial derivati
 %   $q^r$-sparse polynomials}. Hence, any depth-3 circuit $C$ over $\F$
 % can be \emph{approximated} by a sum of generalized sparse polynomials. 
 
-Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as a measure by combining the partial derivative technique seen in Section~\ref{sec:low-rank-sps} with evaluations to show that $\Det_n$ cannot be approximated by a low-rank $\SPS$ circuit.
+Grigoriev and Karpinski \cite{grigoriev98} formalize the above idea as a measure by combining the partial derivative technique seen in \autoref{sec:low-rank-sps} with evaluations to show that $\Det_n$ cannot be approximated by a low-rank $\SPS$ circuit.
 
 \section{The complexity measure}
 
@@ -89,16 +89,16 @@ For any set $\mathcal{A} \in \F_q^{n^2}$ (for $q\neq 2$) such that $\abs{\mathca
 \]
 \end{lemma}
 
-The same bound shall also hold for $\Perm_n$. We shall defer this theorem for later and see how this would imply the proof of Theorem~\ref{thm:gk-main-thm}. 
+The same bound shall also hold for $\Perm_n$. We shall defer this theorem for later and see how this would imply the proof of \autoref{thm:gk-main-thm}. 
 
-\begin{proofof}{Theorem~\ref{thm:gk-main-thm}}
-If $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then by the discussion above and Lemma~\ref{lem:GK-technical-lemma},
+\begin{proofof}{\autoref{thm:gk-main-thm}}
+If $\Det_n$ is computed by a depth-3 circuit of top fan-in $s$ over $\F$, then by the discussion above and \autoref{lem:GK-technical-lemma},
 \begin{eqnarray*}
 s \cdot q^{\beta n} \spaced{\geq} \CM{GK}_{k,\mathcal{A}}(\Det_n) & \geq &    \Omega\inparen{\binom{n}{k}^2}\\
  & = & \Omega\inparen{2^{2H_2(\gamma)\cdot n}}\\
 \implies \log s & = & \Omega((2H_2(\gamma) - \beta \log q)n)
 \end{eqnarray*}
-where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}). The only thing left to check is if we can make $(2H_2(\gamma) - \beta \log q) > 0$ for some $\beta,\gamma$ satisfying $\beta > q^2 \gamma$ (as we needed $r > q^2 k$). It is not hard to check that $\beta = q^{-q^2/2}$ suffices. Thus, we obtain the bound
+where $H_2(\gamma)$ is the binary entropy function (\autoref{def:entropy}). The only thing left to check is if we can make $(2H_2(\gamma) - \beta \log q) > 0$ for some $\beta,\gamma$ satisfying $\beta > q^2 \gamma$ (as we needed $r > q^2 k$). It is not hard to check that $\beta = q^{-q^2/2}$ suffices. Thus, we obtain the bound
 \begin{eqnarray*}
   s &=&  \exp\inparen{\Omega(H_2(\beta)\cdot n)} \\
     &=&  \exp\inparen{\Omega(q^{-q^2/2} \cdot q^2 \log q \cdot n)}\\
@@ -107,7 +107,7 @@ where $H_2(\gamma)$ is the binary entropy function (Definition~\ref{def:entropy}
 \end{proofof}
 
 
-\section{Proof of Lemma~\ref{lem:GK-technical-lemma}}
+\section{Proof of Lemma~\ref{lem:GK-technical-lemma} {} }
 
 We now wish to show that $M_k(\Det_n;\mathcal{A})$ has large rank. The original proof of Grigoriev and Karpinski is tailored specifically for the determinant, and does not extend directly to the permanent. The following argument is a proof communicated by Srikanth Srinivasan \cite{Srikanth13} that involves an elegant trick that he attributes to \cite{Koutis08}. The following proof is presented for the determinant, but immediately extends to the permanent as well. \\
 
@@ -135,12 +135,12 @@ $$
 $$
 \end{proposition}
 
-We shall defer the proof of this proposition for later, and proceed with the proof of Lemma~\ref{lem:random-lc-det-nonzero}. 
+We shall defer the proof of this proposition for later, and proceed with the proof of \autoref{lem:random-lc-det-nonzero}. 
 
-\begin{proofof}{Lemma~\ref{lem:random-lc-det-nonzero}}
+\begin{proofof}{\autoref{lem:random-lc-det-nonzero}}
   If $p(X)$ is a scalar multiple of a single non-zero minor, then we
   already have the lemma from
-  Proposition~\ref{prop:random-det-nonzero}. Hence, let us assume that
+  \autoref{prop:random-det-nonzero}. Hence, let us assume that
   there are at least two distinct minors participating in the linear
   combination $p(X)$. Without loss of generality, assume that the
   first row occurs in some of the minors, and does not in others. That is, 
@@ -174,14 +174,14 @@ those minors that contain the first row. Repeating this process for other
 rows/columns until only  one minor remains, we have
 $$
 \Pr_{A}[p(A) \neq 0] \quad \geq \quad \Pr_{A}[\det(A) \neq 0] \quad = \quad
-\frac{q-2}{q-1}\quad(\text{by Proposition~\ref{prop:random-det-nonzero}}).
+\frac{q-2}{q-1}\quad(\text{by \autoref{prop:random-det-nonzero}}).
 $$
 \end{proofof}
 
 
-We now give a proof of Proposition~\ref{prop:random-det-nonzero}. 
+We now give a proof of \autoref{prop:random-det-nonzero}. 
 
-\begin{proofof}{Proposition~\ref{prop:random-det-nonzero}}
+\begin{proofof}{\autoref{prop:random-det-nonzero}}
 We shall fix random values to the first row of $A$. Then,
 \begin{eqnarray*}
 \Pr_{A}[\Det_n(A) = 0] & \leq & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
@@ -190,7 +190,7 @@ We shall fix random values to the first row of $A$. Then,
  & & \quad + \quad \frac{1}{q^n}.
 \end{eqnarray*}
 Whenever there is some $a_{1i}$ that is non-zero, then $a_{11}M_1 +
-\dots + a_{1n}M_n$ is a non-zero linear combination of minors. By a similar argument as in the proof of Lemma~\ref{lem:random-lc-det-nonzero}, we have that
+\dots + a_{1n}M_n$ is a non-zero linear combination of minors. By a similar argument as in the proof of \autoref{lem:random-lc-det-nonzero}, we have that
 $$
 \Pr[a_{11} M_1 + \dots + a_{1n}M_n = 0\;|\;\text{not all $a_{1i}$ are zero}] \quad \leq \quad \Pr[\Det_{n-1}(A) = 0].
 $$

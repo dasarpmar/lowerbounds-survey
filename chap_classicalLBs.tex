@@ -44,7 +44,7 @@ Observe that $\inbrace{x_1^d,\dots, x_n^d}$ are all first-order derivatives of $
   Let $\Phi$ be an arithmetic circuit of size $s$ and fan-in $2$ that computes a polynomial $f\in \F[X]$. Then, there is a multi-output circuit  of size $O(s)$ computing all first order derivatives of $f$.
 \end{lemma}
 
-Note that this immediately implies that any circuit computing $f = x_1^{d+1} + \dots + x_n^{d+1}$ requires size $\Omega(d\log n)$ as claimed by Theorem~\ref{thm:baur-strassen}. 
+Note that this immediately implies that any circuit computing $f = x_1^{d+1} + \dots + x_n^{d+1}$ requires size $\Omega(d\log n)$ as claimed by \autoref{thm:baur-strassen}. 
 
 
 \subsection{Computing all first order derivatives simultaneously}
@@ -71,7 +71,7 @@ If $v = x_1 \cdot x_2$, then
   \parderiv{f}{x_i} & = & \inparen{\parderiv{f'}{x_i}}_{v=x_1 \cdot x_2} \qquad\text{for $i>2$}.
 \end{eqnarray*}
 
-Hence, by adding at most $5$ additional edges to $\mathbb{D}(\Phi')$, we can construct $\mathbb{D}(\Phi)$ and hence size of $\mathbb{D}(\Phi)$ is at most $5s$. \qed (Lemma~\ref{lem:baur-strassen})
+Hence, by adding at most $5$ additional edges to $\mathbb{D}(\Phi')$, we can construct $\mathbb{D}(\Phi)$ and hence size of $\mathbb{D}(\Phi)$ is at most $5s$. \qed (\autoref{lem:baur-strassen})
 
 \section{Lower bounds for formulas}\label{sec:Kalorkoti}
 
@@ -186,11 +186,11 @@ The lower bound proceeds in two natural steps:
   nodes completely by augmenting each node $u$ (computing a polynomial
   $g_u$) in $\Phi_Y$ with polynomials $f_u^{(0)}, f_u^{(1)} \in \F[X\setminus Y]$
   to enable them to compute $f_u^{(1)}g_u + f_u^{(0)}$. Let this augmented formula be called $\hat{\Phi}_Y$. Using
-  Observation~\ref{obs:same-leaf-collapse}, we can now contract any
+  \autoref{obs:same-leaf-collapse}, we can now contract any
   two nodes $u$ and $v$ with $\textsc{Leaf}_Y(u) =
   \textsc{Leaf}_Y(v)$, and eliminate all $V_0$ nodes
   completely. Since all $V_2$ nodes are internal nodes, the only leaves of the augmented formula $\hat{\Phi}_Y$ are in $V_1$. Hence, the size of the augmented formula $\hat{\Phi}_Y$ is  bounded by $2\abs{V_1}$, which is bounded by
-  $2\abs{\textsc{Leaf}_Y(\Phi)}$ by Observation~\ref{obs:v1-bound}.\\
+  $2\abs{\textsc{Leaf}_Y(\Phi)}$ by \autoref{obs:v1-bound}.\\
 
   Suppose $\Phi$ computes a polynomial $f$, which can be written as  $f
   = \sum_{i=1}^t f_i\cdot m_i$ with $f_i \in \F[X\setminus Y]$ and $m_i$'s being
@@ -228,8 +228,8 @@ The lower bound proceeds in two natural steps:
   \Omega(n^3)$.
 \end{proof}
 
-The proof of Theorem~\ref{thm:kalorkoti} follows from
-Lemma~\ref{lem:kal-upperbound} and Lemma~\ref{lem:kal-lowerbound}.
+The proof of \autoref{thm:kalorkoti} follows from
+\autoref{lem:kal-upperbound} and \autoref{lem:kal-lowerbound}.
 
 
 
