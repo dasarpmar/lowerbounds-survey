@@ -3,7 +3,7 @@
 
 \section{``Natural'' proof strategies}\label{sec:roadmap}
 
-The lower bounds presented in Section~\ref{chap:gen-ckt-formulas} proceeded by first identifying a \emph{weakness} of the model, and exploiting it in an explicit manner. More concretely, Section~\ref{sec:Kalorkoti} presents a promising strategy that could be adopted to prove lower bounds for various models of arithmetic circuits. The crux of the lower bound was the construction of a good map $\Gamma$ that assigned a number to every polynomial. The map $\CM{Kal}$ was useful to show a lower bound in the sense that any $f$ computable by a \emph{small} formula had \emph{small} $\CM{Kal}(f)$. In fact, all subsequent lower bounds in arithmetic circuit complexity have more or less followed a similar template of a ``natural proof''. More concretely, all the subsequent lower bounds we shall see would essentially follow the outlined plan.  
+The lower bounds presented in \autoref{chap:gen-ckt-formulas} proceeded by first identifying a \emph{weakness} of the model, and exploiting it in an explicit manner. More concretely, \autoref{sec:Kalorkoti} presents a promising strategy that could be adopted to prove lower bounds for various models of arithmetic circuits. The crux of the lower bound was the construction of a good map $\Gamma$ that assigned a number to every polynomial. The map $\CM{Kal}$ was useful to show a lower bound in the sense that any $f$ computable by a \emph{small} formula had \emph{small} $\CM{Kal}(f)$. In fact, all subsequent lower bounds in arithmetic circuit complexity have more or less followed a similar template of a ``natural proof''. More concretely, all the subsequent lower bounds we shall see would essentially follow the outlined plan.  
 
 \begin{quote}
 {\bf Step 1 (normal forms)} For every circuit in the circuit class $\mathcal{C}$ of interest, express the polynomial computed as a \emph{small sum of simple building blocks}. 
@@ -98,7 +98,7 @@ Hence, any rank-$r$ $\Sigma\Pi\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ mu
 \end{theorem}
 
 
-This technique of using the rank of partial derivatives was introduced by Nisan and Wigderson \cite{nw1997} to prove lower bounds for \emph{homogeneous depth-$3$ circuits} (which also follows as a corollary of Theorem~\ref{thm:low-rank-sps-lb}). The survey of Chen, Kayal and Wigderson \cite{ckw11} give a comprehensive exposition of the power of the \emph{partial derivative method}. \\
+This technique of using the rank of partial derivatives was introduced by Nisan and Wigderson \cite{nw1997} to prove lower bounds for \emph{homogeneous depth-$3$ circuits} (which also follows as a corollary of \autoref{thm:low-rank-sps-lb}). The survey of Chen, Kayal and Wigderson \cite{ckw11} give a comprehensive exposition of the power of the \emph{partial derivative method}. \\
 
 In the examples we saw above, Step $1$ of constructing the normal forms were obtained from just the model of computation. We conclude this chapter with a more non-trivial example of a lower bound where the building blocks are constructed differently. 
 
@@ -164,29 +164,29 @@ It is easy to observe that $[\mathrm{root}:v]$ and $[v]$ are polynomials of degr
 \end{proof-sketch}
 
 \begin{exercise}
-Show that the process of homogenization and depth reduction via Theorem~\ref{thm:vsbr} and Theorem~\ref{thm:av} on a monotone circuit results in a  monotone circuit as well. 
+Show that the process of homogenization and depth reduction via \autoref{thm:vsbr} and \autoref{thm:av} on a monotone circuit results in a  monotone circuit as well. 
 \end{exercise}
 
 
-The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that is crucial in the lower bound. Although Theorem~\ref{thm:monotone-circuit-lbs} gives a lower bound for $\Det_n$ and $\Perm_n$, we shall give a simpler lower bound for a different polynomial and leave proving a lower bound for $\Det_n$ and $\Perm_n$ 
+The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that is crucial in the lower bound. Although \autoref{thm:monotone-circuit-lbs} gives a lower bound for $\Det_n$ and $\Perm_n$, we shall give a simpler lower bound for a different polynomial and leave proving a lower bound for $\Det_n$ and $\Perm_n$ 
 
 
 \begin{theorem}
 Any monotone circuit $\Phi$ computing the polynomial $\NW_{n,n,n/10}$  must have size $n^{\Omega(n)}$. 
 \end{theorem}
 \begin{proof}
-  Let us assume that $\Phi$ is a size $s$ monotone circuit that computes $f = \NW_{n,n,n/10}$. Then by Lemma~\ref{lem:vsbr-two-thirds},
+  Let us assume that $\Phi$ is a size $s$ monotone circuit that computes $f = \NW_{n,n,n/10}$. Then by \autoref{lem:vsbr-two-thirds},
   \[
   f \spaced{=} \sum_{i=1}^s f_i \cdot g_i
   \]
-  with the appropriate degree bounds. Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. But this contradicts the key property of the $\NW$ family (Lemma~\ref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials and hence $\Gamma(f_i\cdot g_i) \leq 1$ for each $i$. This then immediately forces 
+  with the appropriate degree bounds. Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. But this contradicts the key property of the $\NW$ family (\autoref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials and hence $\Gamma(f_i\cdot g_i) \leq 1$ for each $i$. This then immediately forces 
 \[
 \Gamma(\NW_{n,n,n/10}) \spaced{=} n^{\Omega(n)} \spaced{\leq} \sum_{i=1}^s \Gamma(f_i \cdot g_i) \spaced{\leq} s
 \]
 \end{proof}
 
 \begin{exercise}
-Using the normal form provided by Lemma~\ref{lem:vsbr-two-thirds} to prove a $2^{\Omega(n)}$ lower bound for $\Det_n$ and $\Perm_n$. 
+Using the normal form provided by \autoref{lem:vsbr-two-thirds} to prove a $2^{\Omega(n)}$ lower bound for $\Det_n$ and $\Perm_n$. 
 \end{exercise}
 
 % \begin{proofof}{Theorem~\ref{thm:monotone-circuit-lbs}}
