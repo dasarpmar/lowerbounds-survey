@@ -1,26 +1,79 @@
 \usetikzlibrary{arrows}
 
-%% Theorems and related environments. 
-\newtheorem{theorem}{Theorem}
-\numberwithin{theorem}{chapter}
-\newtheorem{theorem*}{Theorem}
-\newtheorem{axiom}{Axiom}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\def\lemmaautorefname{Lemma}
-\newtheorem{observation}[theorem]{Observation}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem*{remark*}{Remark}
-\newtheorem*{nclaim}{Claim}
-\newtheorem{fact}[]{Fact}
-\newtheorem{subclaim}[theorem]{Subclaim}
-\newtheorem{problem}[]{Problem}
-\newtheorem{openproblem}[]{Open Problem}
-\newtheorem{exercise}{Exercise}
+\numberwithin{equation}{chapter}
+\declaretheoremstyle[bodyfont=\it,qed=$\qed$]{noproofstyle} 
+
+\declaretheorem[numberlike=equation]{axiom}
+\declaretheorem[numberlike=equation]{observation}
+\declaretheorem[numberlike=equation]{fact}
+\declaretheorem[numberlike=equation]{subclaim}
+\declaretheorem[numberlike=equation]{problem}
+
+\declaretheorem[numberlike=equation]{theorem}
+\declaretheorem[numberlike=equation,name=Theorem,style=noproofstyle]{theoremwp}
+\declaretheorem[numberlike=equation]{lemma}
+\declaretheorem[numberlike=equation,name=Lemma,style=noproofstyle]{lemmawp}
+\declaretheorem[numberlike=equation]{corollary}
+\declaretheorem[numberlike=equation,name=Corollary,style=noproofstyle]{corollarywp}
+\declaretheorem[numberlike=equation]{proposition}
+\declaretheorem[numberlike=equation]{claim}
+\declaretheorem[numberlike=equation]{conjecture}
+\declaretheorem[numberlike=equation]{question}
+
+\declaretheorem[unnumbered,name=Theorem,style=noproofstyle]{theorem*}
+\declaretheorem[unnumbered,name=Lemma,style=noproofstyle]{lemma*}
+\declaretheorem[unnumbered,name=Corollary,style=noproofstyle]{corollary*}
+\declaretheorem[unnumbered,name=Proposition,style=noproofstyle]{proposition*}
+
+\declaretheorem[unnumbered,name=Claim]{claim*}
+\declaretheorem[unnumbered,name=Conjecture]{conjecture*}
+\declaretheorem[unnumbered,name=Question]{question*}
+
+\declaretheorem[numberlike=equation,name=Open Problem]{openproblem}
+\declaretheorem[numberlike=equation,name=Exercise]{exercise}
+
+
+\declaretheorem[name=Theorem,style=noproofstyle]{thmm}
+
+%\theoremstyle{definition}
+\declaretheoremstyle[bodyfont=\it,qed=$\lozenge$]{defstyle} 
+\declaretheorem[numberlike=equation,style=defstyle]{definition}
+\declaretheorem[unnumbered,name=Definition,style=defstyle]{definition*}
+\declaretheorem[numberlike=equation,style=defstyle]{example}
+\declaretheorem[unnumbered,name=Example,style=defstyle]{example*}
+\declaretheorem[numberlike=equation,style=defstyle]{notation}
+\declaretheorem[unnumbered,name=Notation=defstyle]{notation*}
+\declaretheorem[numberlike=equation,style=defstyle]{construction}
+\declaretheorem[unnumbered,name=Construction,style=defstyle]{construction*}
+
+\declaretheorem[numberlike=equation,style=defstyle]{remark}
+\declaretheorem[unnumbered,name=Remark,style=defstyle]{remark*}
+
+\renewcommand{\subsectionautorefname}{Subsection}
+\renewcommand{\sectionautorefname}{Section}
+
+
+% %% Theorems and related environments. 
+% \newtheorem{theorem}{Theorem}
+% \numberwithin{theorem}{chapter}
+% \newtheorem{theorem*}{Theorem}
+% \newtheorem{axiom}{Axiom}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \def\lemmaautorefname{Lemma}
+% \newtheorem{observation}[theorem]{Observation}
+% \newtheorem{conjecture}[theorem]{Conjecture}
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{definition}[theorem]{Definition}
+% \newtheorem{claim}[theorem]{Claim}
+% \newtheorem{remark}[theorem]{Remark}
+% \newtheorem*{remark*}{Remark}
+% \newtheorem*{nclaim}{Claim}
+% \newtheorem{fact}[]{Fact}
+% \newtheorem{subclaim}[theorem]{Subclaim}
+% \newtheorem{problem}[]{Problem}
+% \newtheorem{openproblem}[]{Open Problem}
+% \newtheorem{exercise}{Exercise}
 
 
 
@@ -29,20 +82,20 @@
 {\hfill{\tiny \qed\ (\myproof@name)}\vspace{1ex}}
 
 
-%Useful for recalling theorems. (hat-tip texexchange)
-\makeatletter
-\newtheorem*{rep@theorem}{\rep@title}
-\newcommand{\newreptheorem}[2]{%
-\newenvironment{rep#1}[1]{%
- \def\rep@title{#2 \ref{##1} (restated)}%
- \begin{rep@theorem}}%
- {\end{rep@theorem}}}
-\makeatother
+% %Useful for recalling theorems. (hat-tip texexchange)
+% \makeatletter
+% \newtheorem*{rep@theorem}{\rep@title}
+% \newcommand{\newreptheorem}[2]{%
+% \newenvironment{rep#1}[1]{%
+%  \def\rep@title{#2 \ref{##1} (restated)}%
+%  \begin{rep@theorem}}%
+%  {\end{rep@theorem}}}
+% \makeatother
 
-\newreptheorem{theorem}{Theorem}
-\newreptheorem{lemma}{Lemma}
-\newreptheorem{conjecture}{Conjecture}
-\newreptheorem{problem}{Problem}
+% \newreptheorem{theorem}{Theorem}
+% \newreptheorem{lemma}{Lemma}
+% \newreptheorem{conjecture}{Conjecture}
+% \newreptheorem{problem}{Problem}
 
 
 \newenvironment{proof-sketch}{\medskip\noindent{\em Sketch of Proof.}\hspace*{1em}}{\qed\bigskip}
