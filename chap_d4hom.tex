@@ -98,7 +98,7 @@ Thus, with probability at least $(1 - 1/s)$, all the large support monomials are
 
 The previous section outlined how in essence, it would suffice to try and find an explicit polynomial for which we can prove a good enough lower bound for bounded bottom-support depth $4$ circuits. Let us say that we have found an explicit polynomial $g$ that requires depth $4$ circuits of size at least $n^{\sqrt{d}/100}$. Are we done? Let us write things down formally to see exactly what we need. 
 
-Say the polynomial we wish to show requires large homogeneous depth $4$ circuits is $f$. Let us assume on the contrary that $f$ can be computed by homogeneous depth $4$ circuits of size $s < n^{\sqrt{d}/10000}$. Then, by Lemma~\ref{lem:red-to-low-supp}, $\rho(f)$ can be computed by a homogeneous depth $4$ circuits of bottom support bounded by $\sqrt{d}/1000$ of size $s$. We want to be able to say that this is a contradiction. We might be able to say that if $\rho(f)$ has $g$ as \emph{a projection}, that is, but setting more variables to zero in $\rho(f)$ we obtain $g$. 
+Say the polynomial we wish to show requires large homogeneous depth $4$ circuits is $f$. Let us assume on the contrary that $f$ can be computed by homogeneous depth $4$ circuits of size $s < n^{\sqrt{d}/10000}$. Then, by \autoref{lem:red-to-low-supp}, $\rho(f)$ can be computed by a homogeneous depth $4$ circuits of bottom support bounded by $\sqrt{d}/1000$ of size $s$. We want to be able to say that this is a contradiction. We might be able to say that if $\rho(f)$ has $g$ as \emph{a projection}, that is, but setting more variables to zero in $\rho(f)$ we obtain $g$. 
 
 Both the results of \cite{KLSS} and \cite{KS14} proceed by showing that the polynomial $g$, for which they show a lower bound for bounded bottom support circuits, is robust enough to yield the lower bound even after random restriction. The calculations become trickier because the calculations of $\Gamma^{[\mathrm{PSD}]}_{k,\ell}(\rho(f))$. However, in this survey we shall use an easier approach to generically lift any $g$ to a different polynomial $f$ such that $\rho(f)$ has $g$ as a projection. This trick came up during discussions with Mrinal Kumar. 
 
@@ -117,7 +117,7 @@ Then, $\rho(f \circ \mathrm{Lin}_p)$ has $f$ as a projection with probability $1
 \end{eqnarray*}
 Hence, with probability at least $1 - 1/2^n$, for each $i$ there is some $j$ such that $\rho(y_{ij}) \neq 0$. Therefore, with probability at least $1 - 1/2^n$, the polynomial $f$ is a projection of $\rho(f \circ \mathrm{Lin}_p)$. \end{proof}
 
-In all the applications, as in Lemma~\ref{lem:red-to-low-supp}, we would have $p = 1/n^{O(1)}$. Thus, we would only incur a polynomial blow-up in the number of variables from $f$ to $f\circ \mathrm{Lin}_p$. Hence, we can focus on proving a lower bound  a homogeneous depth $4$ circuit of bottom support at most $r$ (which would eventually be something like $\sqrt{d}/100$). 
+In all the applications, as in \autoref{lem:red-to-low-supp}, we would have $p = 1/n^{O(1)}$. Thus, we would only incur a polynomial blow-up in the number of variables from $f$ to $f\circ \mathrm{Lin}_p$. Hence, we can focus on proving a lower bound  a homogeneous depth $4$ circuit of bottom support at most $r$ (which would eventually be something like $\sqrt{d}/100$). 
 
 \begin{lemma}[\cite{KLSS}]\label{lem:upper-bound-low-supp}
 Let $P$ be an $n$-variate degree $d$ polynomial computed by a homogeneous depth $4$ circuit of size $s$ and bottom-support at most $r$. Then for any $k,\ell$ such that $\ell + rk \leq n/2$, 
@@ -126,7 +126,7 @@ Let $P$ be an $n$-variate degree $d$ polynomial computed by a homogeneous depth 
 \]
 \end{lemma}
 
-The proof of this lemma is exactly along the description in of Intuition - (2): split the circuit into multiquadratic and non-multiquadratic part, and show that the non-multiquadratic part contributes no multilinear monomials. But to just put things in perspective, we shall be dealing with parameters $r = \sqrt{d}/100$, $k = \sqrt{d}$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$. The above bound, by Lemma~\ref{lem:binom-approx}, can be seen to reduce to
+The proof of this lemma is exactly along the description in of Intuition - (2): split the circuit into multiquadratic and non-multiquadratic part, and show that the non-multiquadratic part contributes no multilinear monomials. But to just put things in perspective, we shall be dealing with parameters $r = \sqrt{d}/100$, $k = \sqrt{d}$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$. The above bound, by \autoref{lem:binom-approx}, can be seen to reduce to
 \[
 \Gamma^{\mathrm{PSD}}_{k,\ell}(P) \quad \leq \quad s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{2rs} \cdot 2^{O(\sqrt{d})}
 \]
@@ -141,7 +141,7 @@ Let us first check if this measure can at least in principle yield a lower bound
 \Gamma^{\mathrm{PSD}}_{k,\ell}(R) \spaced{\approx} \min\inparen{\binom{n}{k}\cdot \binom{n}{\ell}, \binom{n}{\ell + d-k}}
 \]
 
-As a first step, one should first check that if we could indeed find a polynomial $P$ for which the bound is as large as stated above, do we get a useful lower bound from Lemma~\ref{lem:upper-bound-low-supp}? Turns out that if we were to choose our parameters carefully, we do indeed get the lower bound. Just to give a sense of how \emph{careful} we need to be, here is some of the parameters that are chosen in \cite{KLSS,KS14}. 
+As a first step, one should first check that if we could indeed find a polynomial $P$ for which the bound is as large as stated above, do we get a useful lower bound from \autoref{lem:upper-bound-low-supp}? Turns out that if we were to choose our parameters carefully, we do indeed get the lower bound. Just to give a sense of how \emph{careful} we need to be, here is some of the parameters that are chosen in \cite{KLSS,KS14}. 
 
 \begin{itemize}
 \item The number of variables $n$ is at least the cube of the degree $d$. 
@@ -230,7 +230,7 @@ Since $m\neq m'$, we also have that $\beta_1 \neq \beta_2$. What we'd like to sa
 If $P$ is the $\NW_{d,d^3, e}$ polynomial for $e = \frac{d}{3}$ then any $2\times 2$ minor of $B$ (with the order of derivatives $k = o(d)$) that is $\insquare{\begin{array}{cc} 1&1\\1&1\end{array}}$ has label $\beta_1,\beta_2,\beta_3,\beta_4$ where $\beta_1 = \beta_3$ and $\beta_2 = \beta_4$, or $\beta_1 = \beta_2$ and $\beta_3 = \beta_4$. 
 \end{claim}
 \begin{proof}
-Assume that $\beta_1 \neq \beta_3$. Then by Lemma~\ref{lem:NW-low-intersection} we know that they differ in at least $2d/3$ places. But then, $\beta_1/\beta_3 = \beta_2/\beta_4$ forces that $\beta_1$ and $\beta_3$ must agree at least $2d/3$ places forcing $\beta_1 = \beta_2$. 
+Assume that $\beta_1 \neq \beta_3$. Then by \autoref{lem:NW-low-intersection} we know that they differ in at least $2d/3$ places. But then, $\beta_1/\beta_3 = \beta_2/\beta_4$ forces that $\beta_1$ and $\beta_3$ must agree at least $2d/3$ places forcing $\beta_1 = \beta_2$. 
 \end{proof}
 
 Thus, for the $\NW$-polynomial the number of such boxes is quite small. Using this, albeit with a reasonable amount of sweat, one can estimate $T_2$ to show that $T_2 = O(T_1)$. Thus, \cite{KLSS} obtain the following bound. 
@@ -241,7 +241,7 @@ For the polynomial $\NW_{d,d^3,e}$, for $e = \frac{d}{3}$, and $k = \sqrt{d}$ an
 \Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \min\inparen{\binom{n}{\ell + d - k}, \binom{d}{k}^2 \cdot d^k \cdot k! \cdot \binom{n}{\ell}}
 \]
 \end{lemma}
-Note that the first term of the $\min$ in the RHS is the number of columns of $B$, as we had heuristically estimated. Simplifying the RHS using Lemma~\ref{lem:binom-approx}, we get
+Note that the first term of the $\min$ in the RHS is the number of columns of $B$, as we had heuristically estimated. Simplifying the RHS using \autoref{lem:binom-approx}, we get
 \[
 \Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \binom{n}{\ell}\cdot \exp\inparen{c\cdot \epsilon (d - k)}
 \]
@@ -249,14 +249,14 @@ for some constant $c > 0$. Since $\epsilon = \frac{\log d}{\sqrt{d}}$, we get
 \[
 \Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,d^3,e}) \spaced{\geq} \frac{1}{\poly(n,d)} \cdot \binom{n}{\ell}\cdot \exp\inparen{c\cdot \sqrt{d}\cdot \log d}
 \]
-With the above bound and Lemma~\ref{lem:upper-bound-low-supp}, we get the lower bound of \cite{KLSS}. 
+With the above bound and \autoref{lem:upper-bound-low-supp}, we get the lower bound of \cite{KLSS}. 
 \begin{theorem}[\cite{KLSS}]\label{thm:KLSS-lowsupp}
 Any depth $4$ homogeneous circuit of bottom support $r = \sqrt{d}/1000$ computing the polynomial $\NW_{d,d^3,d/3}$ over a characteristic zero field must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
 
 In fact, more generally, any homogeneous depth $4$ circuit of bottom support bounded by $r$ computing $\NW_{d,m,e}$ for suitably chosen parameters must have top fanin $s = d^{\Omega(d/r)}$. 
 \end{theorem}
 
-Coupling with Lemma~\ref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their main theorem. 
+Coupling with \autoref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their main theorem. 
 
 \begin{theorem}[\cite{KLSS}]\label{thm:KLSS-main}
 Any depth $4$ homogeneous computing the polynomial $\NW_{d,d^3,d/3}\circ \mathrm{Lin}$ over a characteristic zero field must have size $s = d^{\Omega(\sqrt{d})}$. 
@@ -329,7 +329,7 @@ More importantly, by the sampling process,
 \[
 \E\insquare{\abs{A_i' \intersection A_j'}} \spaced{=} p^2 \cdot \abs{A_i \intersection A_j}
 \]
-as any common element must be added to both $A_i'$ \emph{and} $A_j'$, and either of these events happen independently with probability $p$ each. Since $\sum_{i,j}\abs{A_i' \intersection A_j'}$ drops by a factor of $p^2$, we are now in a position to apply the Lemma~\ref{lem:inc-exc} to the $A_i'$s. 
+as any common element must be added to both $A_i'$ \emph{and} $A_j'$, and either of these events happen independently with probability $p$ each. Since $\sum_{i,j}\abs{A_i' \intersection A_j'}$ drops by a factor of $p^2$, we are now in a position to apply the \autoref{lem:inc-exc} to the $A_i'$s. 
 \begin{eqnarray*}
 \abs{\Union A_i} & \geq &  \E\insquare{\abs{\Union A_i'}}\\
 & \geq & \E\insquare{\sum_i \abs{A_i'}} \spaced{-} \E\insquare{\abs{A_i' \intersection A_j'}}\\
@@ -414,7 +414,7 @@ Thus,
 T_2 \quad \leq \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}
 \]
 \end{proof}
-Combining this with Lemma~\ref{lem:T_1-value} and using Lemma~\ref{lem:str-inc-exc},
+Combining this with \autoref{lem:T_1-value} and using \autoref{lem:str-inc-exc},
 \[
 \sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}
 \]
@@ -496,7 +496,7 @@ the above equation reduces to
 \[
 T_3 \quad \leq \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
 \]
-Combining with Corollary~\ref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$. 
+Combining with \autoref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$. 
 
 \begin{lemma}
 Consider polynomial $\NW_{d,m,e}$ where $n = md$ and $e$ chosen so that
@@ -507,7 +507,7 @@ If $\epsilon = \frac{\log d}{c\sqrt{d}}$ for a large enough constant $c$, and $k
 \] 
 \end{lemma}
 
-With Lemma~\ref{lem:upper-bound-low-supp}, we obtain the lower bound for low-bottom-support homogeneous depth $4$ circuits. 
+With \autoref{lem:upper-bound-low-supp}, we obtain the lower bound for low-bottom-support homogeneous depth $4$ circuits. 
 
 \begin{theorem}[\cite{KS14}]\label{thm:IMM-lowsup-lb}
 Any homogeneous depth $4$ circuit with bottom support bounded by $r = \sqrt{d}/1000$ computing, over any field $\F$, the polynomial $\NW_{d,m,e}$ with parameters as defined above must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
@@ -515,7 +515,7 @@ Any homogeneous depth $4$ circuit with bottom support bounded by $r = \sqrt{d}/1
 In fact, more generally, any homogeneous depth $4$ circuit of bottom support bounded by $r$ computing $\NW_{d,m,e}$ for suitably chosen parameters must have top fanin $s = d^{\Omega(d/r)}$. 
 \end{theorem}
 
-Again, coupling with Lemma~\ref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their theorem. 
+Again, coupling with \autoref{lem:lin-transform-trick}, we obtain (a slight reformulation of) their theorem. 
 
 \begin{theorem}[\cite{KLSS,KS14}]\label{thm:IMM-lb}
 Any homogeneous depth $4$ circuit computing, over any field $\F$,  the polynomial $\NW_{d,m,e}\circ \mathrm{Lin}$ with parameters as defined above must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
@@ -562,7 +562,7 @@ The proof is quite short and comprises of two steps using known reductions, and 
 
 \subsubsection{Towards proving better lower bounds for depth $4$ circuits}
 
-From Theorem~\ref{thm:av}, it suffices to prove a better lower bound for explicit polynomials computed as
+From \autoref{thm:av}, it suffices to prove a better lower bound for explicit polynomials computed as
 \begin{equation}\label{eqn:d4-LB}
 f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ir} \quad\text{where}\quad \deg(Q_{ij})\leq \sqrt{d}\;,\; r\leq O(\sqrt{d})
 \end{equation}
@@ -681,7 +681,7 @@ edge[->, draw=gray, dashed, thick] (genCkt);
 \end{figure}
 
 
-We now have an interesting situation (Figure~\ref{fig:SESES}). On one hand, Corollary~\ref{cor:pow-genckt} states that a lower bound of $n^{\omega(\sqrt{d})}$ for $\SESES$ circuits would yield a super-polynomial lower bound for general arithmetic circuits. On the other, Lemma~\ref{lem:pow-depth3} states that an $n^{\omega(\sqrt{d})}$ lower bound for $\SESES$ circuits would yield a lower bound of $n^{\omega(\sqrt{d})}$ for depth three circuits. 
+We now have an interesting situation (\autoref{fig:SESES}). On one hand, \autoref{cor:pow-genckt} states that a lower bound of $n^{\omega(\sqrt{d})}$ for $\SESES$ circuits would yield a super-polynomial lower bound for general arithmetic circuits. On the other, \autoref{lem:pow-depth3} states that an $n^{\omega(\sqrt{d})}$ lower bound for $\SESES$ circuits would yield a lower bound of $n^{\omega(\sqrt{d})}$ for depth three circuits. 
 
 Could this just be a coincidence? Or, is it the case that any poly-sized arithmetic circuit can be equivalently expressed as a depth three circuit of size $n^{O(\sqrt{d})}$ over $\Q$? As it turns out, there is indeed a depth reduction to convert any arithmetic circuit to a not-too-large depth three circuit over $\Q$. \\
 
@@ -710,9 +710,9 @@ which is a depth three circuit! Thus, $(y_1^a + \dots + y_s^a)$ can be expressed
 Any $n$-variate degree $d$ polynomial $f$ computed by a homogeneous $\SESES$ of size $s$ over a characteristic zero field $\F$ can also be computed by a depth three circuit of size $\poly(s,n,d)$ over $\F$. 
 \end{lemma}
 
-Combining with Corollary~\ref{cor:pow-genckt} and Theorem~\ref{thm:av}, we obtain the main result of \cite{gkks13b}. \\
+Combining with \autoref{cor:pow-genckt} and \autoref{thm:av}, we obtain the main result of \cite{gkks13b}. \\
 
-{\bf Theorem~\ref{thm:chasm-at-3} (restated). }{\em 
+{\bf \autoref{thm:chasm-at-3} (restated). }{\em 
 Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$ over any characteristic zero field. Then there is a $\SPS$ circuit of size $s' \leq s^{O(\sqrt{d})}$ that computes $f$. 
 }\\
 
@@ -723,13 +723,13 @@ Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circui
 Now let us focus on $\SPS^{[r]}$ circuits, where all linear polynomials in the circuit depend on at most $r$ variables. The following is the key observation of \cite{KayalSaha14} and can be verified easily. 
 
 \begin{observation}[\cite{KayalSaha14}]
-Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit $C'$ obtained from Corollary~\ref{cor:d3-d5} is in fact a 
+Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit $C'$ obtained from \autoref{cor:d3-d5} is in fact a 
 $\Sigma\Pi\Sigma\!\wedge\!\Sigma^{[r]}$ circuit of size $s' = \poly(ns) \cdot 2^{O(\sqrt{d})}$. 
 
 Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\!\wedge\!\Sigma$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and  size $s'' = s' \cdot d^r$
 \end{observation}
 
-This observation in combination with Theorem~\ref{thm:KLSS-lowsupp} immediately yields the main theorem of \cite{KayalSaha14}. 
+This observation in combination with \autoref{thm:KLSS-lowsupp} immediately yields the main theorem of \cite{KayalSaha14}. 
 
 \begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
 Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s = n^{\Omega(d/r)}$. 
