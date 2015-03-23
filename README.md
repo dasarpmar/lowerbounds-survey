@@ -9,7 +9,9 @@ Perhaps other people can contribute to this too (if I can convince them to!)
 
 For people who are not familiar with using git or github, the wiki (https://github.com/dasarpmar/lowerbounds-survey/wiki/Getting-started-with-github) should be of some help. I shall also keep updating this to assist potential contributors. 
 
-For people who prefer to use bitbucket, you can use (https://bitbucket.org/dasarpmar/lowerbounds-survey) instead. 
+Bitbucket repo link: (https://bitbucket.org/dasarpmar/lowerbounds-survey)
+
+Git repo link: (https://github.com/dasarpmar/lowerbounds-survey)
 
 Ramprasad Saptharishi
 30th September 2014
