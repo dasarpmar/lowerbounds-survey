@@ -11,9 +11,9 @@ For people who are not familiar with using git or github, the wiki (https://gith
 
 Bitbucket repo link: (https://bitbucket.org/dasarpmar/lowerbounds-survey)
 
-Git repo link: (https://github.com/dasarpmar/lowerbounds-survey)
+Github repo link: (https://github.com/dasarpmar/lowerbounds-survey)
 
 Ramprasad Saptharishi
-30th September 2014
+31st March 2015
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.cmi.ac.in/~ramprasad/" property="cc:attributionName" rel="cc:attributionURL">Ramprasad Saptharishi</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.cmi.ac.in/~ramprasad" property="cc:attributionName" rel="cc:attributionURL">Ramprasad Saptharishi</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
