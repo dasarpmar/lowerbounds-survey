@@ -1,0 +1,45 @@
+\chapter{Determinantal Complexity lower bounds}
+\section{Introduction}
+\begin{definition}
+  The determinantal complexity of a polynomial $f$, over $n$ variables, is the minimum $m$ such that there are affine linear functions $A_{k,\ell}$, $1\leq k,\ell\leq m$ defined over the same set of variables and $f= \det((A_{k,\ell})_{1 \leq k,\ell \leq m})$. It is denoted by $\dc(f)$.  
+\end{definition}
+To resolve Valiant's hypothesis, proving $\dc(\Perm_n) = n^{\omega(\log n)}$ is sufficient. Von zur Gathen \cite{von1986}  proved $\dc(\Perm_n) \geq \sqrt{\frac{8}{7}}n$. Later Cai\cite{cai1990}, Babai and Seress \cite{von1987}, and Meshulam\cite{mesh1989} independently improved the lower bound to $\sqrt{2}n$. In 2004, Mignon and Ressayre\cite{mt2004} came up with a new idea of using second order derivatives and proved that $\dc(\Perm_n) \geq \frac{n^2}{2}$ over the fields of characteristic zero. Subsequently, Cai et al.\cite{ccl2008} extended the result of Mignon and Ressayre to all fields of characteristic $\neq 2$.
+
+For any polynomial $f$, Valiant\cite{val1979} proved that $\dc(f) \leq 2(F(f)+ 1)$ where $F(f)$ is the arithmetic formula complexity of $f$. It can be seen that $\dc(f) = O(B(f))$ where $B(f)$ is the arithmetic branching program complexity of $f$ \cite{mp2008}.
+
+\begin{remark}
+  Any weakly skew circuit of size $m$ can be written as a projection of $\Det_{m+1}$
+\end{remark}
+
+
+\section{The Hessian approach of Mignon-Ressayre}
+
+ Let $A_{k,\ell}(X)$, $1\leq k,\ell\leq m$ be the affine linear functions over $\mathbb{F}[X]$ such that the following is true.
+\begin{align*}
+  f_{n,d}(X) = \det((A_{k,\ell}(X))_{1\leq k,\ell\leq m})
+\end{align*}
+ Consider a point $X_0\in \F^{n^2d}$ such that $f(X_0)=0$. The affine linear functions $A_{k,\ell}(X)$ can be expressed as $L_{k,\ell}(X-X_0) + y_{k,\ell}$ where $L_{k,\ell}$ is a linear form and $y_{k,\ell}$ is a constant from the field. Thus, $(A_{k,\ell}(X))_{1\leq k,\ell\leq m} = (L_{k,\ell}(X-X_0))_{1\leq k,\ell\leq m} + \mathify{Y}_0$. If $f_{n,d}(X_0)=0$ then $\det(\mathify{Y}_0)=0$. Let $\mathify{C}$ and $\mathify{D}$ be two non-singular matrices such that $\mathify{C}\mathify{Y}_0\mathify{D}$ is a diagonal matrix.
+
+\begin{align*}
+  \mathify{C}\mathify{Y}_0\mathify{D} =
+  \begin{pmatrix}
+    0& 0\\
+    0& \mathify{I}_s\\
+  \end{pmatrix}
+\end{align*}
+
+Since $\det(\mathify{Y}_0)=0$, $s<m$. From the previous works \cite{von1987}, \cite{cai1990}, \cite{mt2004}, and \cite{ccl2008}, it is enough to assume that $s=m-1$. Since the first row and the first column of $\mathify{C}\mathify{Y}_0\mathify{D}$ are zero, we may multiply $\mathify{C}\mathify{Y}_0\mathify{D}$ by $\diag(\det(\mathify{C})^{-1},1,\dots,1)$ and $\diag(\det(\mathify{D})^{-1},1,\dots,1)$ on the left and the right side. Without loss of generality, we may assume that $\det(\mathify{C})=\det(\mathify{D})=1$. By multiplying with $\mathify{C}$ and $\mathify{D}$ on the left and the right and suitably renaming $(L_{k,\ell}(X-X_0))_{1\leq k,\ell\leq m}$ and $\mathify{Y}_0$ we get
+\begin{align*}
+  f(X) = \det((L_{k,\ell}(X-X_0)_{1\leq k,\ell\leq m} + \mathify{Y}_0))
+\end{align*}
+where $\mathify{Y}_0 = \diag(0,1,\dots,1)$. 
+
+We use $\hess_{f}(X)$ to denote the Hessian matrix of the iterated matrix multiplication and is defined as follows.
+\begin{align*}
+  \hess_{f}(X) &= (H_{s;ij,t;k\ell}(X))_{1\leq i,j\leq n, 1\leq s,t \leq d }\\
+  H_{s;ij,t;k\ell}(X) &= \frac{\partial^2f(X)}{\partial x_{ij}^{(s)}\partial x_{k\ell}^{(t)}}
+\end{align*}
+where $x_{ij}^{(s)}$ and $x_{k\ell}^{(t)}$  denote the $(i,j)$th and $(k,\ell)$th entries of the variable sets $X^{(s)}$ and $X^{(t)}$ respectively. 
+
+By taking second order derivatives and evaluating the Hessian matrices of $f(X)$ and $\det((A_{k,\ell}(X))_{1\leq k,\ell\leq m})$ at $X_0$, we obtain $\hess_{f}(X_0) = \mathify{L}\hess_{\det}(\mathify{Y}_0)\mathify{L}^{T}$ where $\mathify{L}$ is a $n^2d\times m^2$ matrix with entries from the field. It follows that $\rank(\hess_{f}(X_0)) \leq \rank(\hess_{\det}(\mathify{Y}_0))$. It was observed in the earlier work  of \cite{mt2004} and \cite{ccl2008} that it is relatively easy to get an upper bound for $\rank(\hess_{\det}(\mathify{Y}_0))$. 
+The main task is to construct a point $X_0$ such that $f(X_0)=0$, yet the rank of $\hess_{f}(X_0)$ is high. 
