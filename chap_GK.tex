@@ -145,8 +145,7 @@ Therefore, if $C = T_1 + \dots + T_s$, then
 q^{\beta n}.
 \end{equation} 
 where $\mathcal{A} = \F^{n^2} \setminus \mathcal{E}$ for some set
-$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2} = (1 -
-o(1)) \cdot q^{n^2}$ for any $s = 2^{o(n)}$.
+$\mathcal{E}$ of size at most $s \cdot \alpha^n \cdot q^{n^2} = o(1) \cdot q^{n^2}$ for any $s = 2^{o(n)}$.
 
 The key technical lemma is to show that
 $\CM{GK}_{k,\mathcal{A}}(\Det_n)$ is large as long as
@@ -195,7 +194,7 @@ the determinant, and does not extend directly to the permanent. The
 following argument is a proof communicated by Srikanth Srinivasan
 \cite{Srikanth13} that involves an elegant trick that he attributes to
 \cite{Koutis08}. The following proof is presented for the determinant,
-but immediately extends to the permanent as well.\\
+but immediately extends to the permanent as well. \\
 
 
 Note that if we were to just consider $M_k(\Det_n)$, it would have
@@ -212,14 +211,14 @@ matrix continues to have full column-rank.
   Let $p(X)$ be a non-zero linear combination of $r\times r$
   minors of the matrix $X = (\!(x_{ij})\!)$. Then, 
   $$
-  \Pr_{A\in \F_q^{n^2}}[p(A) \neq 0] \quad \geq \quad \Omega(1).
+  \Pr_{A\in \F_q^{n^2}}[p(A) \neq 0] \quad \geq \quad \frac{1}{4}.
   $$
 \end{lemma}
 
 This immediately implies that for every linear combinations of the
 columns of $M_k(\Det_n)$, a constant fraction of the coordinates have
 non-zero values. Since we are removing merely a set $\mathcal{E}$ of
-size $(1-o(1))q^{n^2}$, there must continue to exist coordinates that
+size $o(1) \cdot q^{n^2}$, there must continue to exist coordinates that
 are non-zero. In other words, no linear combination of columns of
 $M_k(\Det_n;\mathcal{A})$ results in the zero vector.
 
@@ -231,14 +230,15 @@ matrices.
 
 \begin{proposition}\label{prop:random-det-nonzero}
   If $A$ is a random $n\times n$ matrix with entries from a fixed
-  finite field $\F_q$, then for $q\neq 2$ we have
+  finite field $\F_q$, 
 $$
-\Pr[\det(A) \neq 0] \quad\geq\quad \frac{q-2}{q-1} \quad=\quad\Omega(1).
+\Pr[\det(A) \neq 0] \quad\geq\quad \frac{1}{4}.
 $$
 \end{proposition}
 
-We shall defer the proof of this proposition for later, and proceed
-with the proof of \autoref{lem:random-lc-det-nonzero}.
+The proof of this is in fact a nice exercise, and we give a few hints
+at the end of this chapter. Let us with the proof of
+\autoref{lem:random-lc-det-nonzero}.
 
 \begin{proofof}{\autoref{lem:random-lc-det-nonzero}}
   If $p(X)$ is a scalar multiple of a single non-zero minor, then we
@@ -282,35 +282,26 @@ those minors that contain the first row. Repeating this process for other
 rows/columns until only  one minor remains, we have
 $$
 \Pr_{A}[p(A) \neq 0] \quad \geq \quad \Pr_{A}[\det(A) \neq 0] \quad = \quad
-\frac{q-2}{q-1}\quad(\text{by \autoref{prop:random-det-nonzero}}).
+\frac{1}{4}\quad(\text{by \autoref{prop:random-det-nonzero}}).
 $$
 \end{proofof}
 
 
-We now give a proof of \autoref{prop:random-det-nonzero}. 
+We now give a few hints to prove \autoref{prop:random-det-nonzero}. 
 
-\begin{proofof}{\autoref{prop:random-det-nonzero}}
-We shall fix random values to the first row of $A$. Then,
-\begin{eqnarray*}
-\Pr_{A}[\Det_n(A) = 0] & \leq & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
-& &\quad + \quad \Pr[a_{11}=\dots = a_{1n} = 0]\\
- & = & \Pr[a_{11} M_1 + \dots + a_{1n} M_n = 0 \;|\;\text{some $a_{1i}$ non-zero}]\\
- & & \quad + \quad \frac{1}{q^n}.
-\end{eqnarray*}
-Whenever there is some $a_{1i}$ that is non-zero, then $a_{11}M_1 +
-\dots + a_{1n}M_n$ is a non-zero linear combination of minors. By a
-similar argument as in the proof of
-\autoref{lem:random-lc-det-nonzero}, we have that
-$$
-\Pr[a_{11} M_1 + \dots + a_{1n}M_n = 0\;|\;\text{not all $a_{1i}$ are zero}] \quad \leq \quad \Pr[\Det_{n-1}(A) = 0].
-$$
-Unfolding this recursion, we have
-\begin{eqnarray*}
-\Pr[\Det_n(A) = 0] & \leq & \frac{1}{q} + \frac{1}{q^2} + \dots + \frac{1}{q^n} \quad=\quad \frac{1}{q-1}\\
-\implies \Pr[\Det_n(A) \neq 0] & \geq & \inparen{1 - \frac{1}{q-1}} \;=\; \frac{q-2}{q-1}.
-\end{eqnarray*}
-\end{proofof}
 
+\begin{exercise}[Proving \autoref{prop:random-det-nonzero}]
+  Let $\inbrace{q_n}$ be a sequence of non-negative reals such that $\sum q_n$ converges to some $s < 1$. Show that 
+  \[
+  \prod_{i=1}^{\infty} (1 - q_n) \quad \geq \quad 1 - s. 
+  \]
+  Use this to infer that the probability that a random $n\times n$ matrix $A$ over $\F_q$ is invertible, which is exactly
+  \[
+  \inparen{1 - \frac{1}{q}}\cdots \inparen{1 - \frac{1}{q^{n}}},
+  \]
+  is at least $1/4$. 
+
+\end{exercise}
 
 
 %%% Local Variables: 
