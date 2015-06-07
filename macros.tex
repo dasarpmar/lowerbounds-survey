@@ -1,50 +1,78 @@
 \usetikzlibrary{arrows}
 
 \numberwithin{equation}{chapter}
-\declaretheoremstyle[bodyfont=\it,qed=$\qed$]{noproofstyle} 
+\declaretheoremstyle[bodyfont=\it,qed=\qedsymbol]{noproofstyle} 
 
 \declaretheorem[numberlike=equation]{axiom}
+
 \declaretheorem[numberlike=equation]{observation}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Observation]{observationwp}
+\declaretheorem[name=Observation,numbered=no]{observation*}
+
 \declaretheorem[numberlike=equation]{fact}
 \declaretheorem[numberlike=equation]{subclaim}
 \declaretheorem[numberlike=equation]{problem}
 
 \declaretheorem[numberlike=equation]{theorem}
-\declaretheorem[numberlike=equation,name=Theorem,style=noproofstyle]{theoremwp}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Theorem]{theoremwp}
+\declaretheorem[name=Theorem,numbered=no]{theorem*}
+
 \declaretheorem[numberlike=equation]{lemma}
-\declaretheorem[numberlike=equation,name=Lemma,style=noproofstyle]{lemmawp}
+\declaretheorem[name=Lemma,numbered=no]{lemma*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Lemma]{lemmawp}
+
 \declaretheorem[numberlike=equation]{corollary}
-\declaretheorem[numberlike=equation,name=Corollary,style=noproofstyle]{corollarywp}
+\declaretheorem[name=Corollary,numbered=no]{corollary*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Corollary]{corollarywp}
+
 \declaretheorem[numberlike=equation]{proposition}
+\declaretheorem[name=Proposition,numbered=no]{proposition*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Proposition]{propositionwp}
+
 \declaretheorem[numberlike=equation]{claim}
+\declaretheorem[name=Claim,numbered=no]{claim*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Claim]{claimwp}
+
 \declaretheorem[numberlike=equation]{conjecture}
+\declaretheorem[name=Conjecture,numbered=no]{conjecture*}
+
 \declaretheorem[numberlike=equation]{question}
-
-\declaretheorem[unnumbered,name=Theorem,style=noproofstyle]{theorem*}
-\declaretheorem[unnumbered,name=Lemma,style=noproofstyle]{lemma*}
-\declaretheorem[unnumbered,name=Corollary,style=noproofstyle]{corollary*}
-\declaretheorem[unnumbered,name=Proposition,style=noproofstyle]{proposition*}
-
-\declaretheorem[unnumbered,name=Claim]{claim*}
-\declaretheorem[unnumbered,name=Conjecture]{conjecture*}
-\declaretheorem[unnumbered,name=Question]{question*}
+\declaretheorem[name=Question,numbered=no]{question*}
+\declaretheoremstyle[
+    headfont=\bfseries, 
+    notebraces={[}{]},
+    bodyfont=\normalfont\itshape,
+    headpunct={},
+%    postheadspace=\newline,
+%    postheadhook={\textcolor{red}{\rule[.6ex]{\linewidth}{0.4pt}}\\},
+    spacebelow=\parsep,
+    spaceabove=\parsep,
+    mdframed={
+        backgroundcolor=white, 
+            linecolor=black!80, 
+            innertopmargin=6pt,
+            roundcorner=5pt, 
+            innerbottommargin=6pt, 
+            skipabove=\parsep, 
+            skipbelow=\parsep } 
+]{exercisestyle}
 
 \declaretheorem[name=Open Problem]{openproblem}
-\declaretheorem[name=Exercise]{exercise}
+\declaretheorem[name=Exercise,style=exercisestyle]{exercise}
 \numberwithin{openproblem}{chapter}
 \numberwithin{exercise}{chapter}
 
-
-\declaretheorem[name=Theorem,style=noproofstyle]{thmm}
-
-%\theoremstyle{definition}
 \declaretheoremstyle[bodyfont=\it,qed=$\lozenge$]{defstyle} 
+
 \declaretheorem[numberlike=equation,style=defstyle]{definition}
 \declaretheorem[unnumbered,name=Definition,style=defstyle]{definition*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{example}
 \declaretheorem[unnumbered,name=Example,style=defstyle]{example*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{notation}
 \declaretheorem[unnumbered,name=Notation=defstyle]{notation*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{construction}
 \declaretheorem[unnumbered,name=Construction,style=defstyle]{construction*}
 
@@ -54,56 +82,12 @@
 \renewcommand{\subsectionautorefname}{Subsection}
 \renewcommand{\sectionautorefname}{Section}
 
-
-% %% Theorems and related environments. 
-% \newtheorem{theorem}{Theorem}
-% \numberwithin{theorem}{chapter}
-% \newtheorem{theorem*}{Theorem}
-% \newtheorem{axiom}{Axiom}
-% \newtheorem{corollary}[theorem]{Corollary}
-% \newtheorem{lemma}[theorem]{Lemma}
-% \def\lemmaautorefname{Lemma}
-% \newtheorem{observation}[theorem]{Observation}
-% \newtheorem{conjecture}[theorem]{Conjecture}
-% \newtheorem{proposition}[theorem]{Proposition}
-% \newtheorem{definition}[theorem]{Definition}
-% \newtheorem{claim}[theorem]{Claim}
-% \newtheorem{remark}[theorem]{Remark}
-% \newtheorem*{remark*}{Remark}
-% \newtheorem*{nclaim}{Claim}
-% \newtheorem{fact}[]{Fact}
-% \newtheorem{subclaim}[theorem]{Subclaim}
-% \newtheorem{problem}[]{Problem}
-% \newtheorem{openproblem}[]{Open Problem}
-% \newtheorem{exercise}{Exercise}
-
-
-
 \newenvironment{myproof}[1]%
 {\vspace{1ex}\noindent{\em Proof.}\hspace{0.5em}\def\myproof@name{#1}}%
 {\hfill{\tiny \qed\ (\myproof@name)}\vspace{1ex}}
-
-
-% %Useful for recalling theorems. (hat-tip texexchange)
-% \makeatletter
-% \newtheorem*{rep@theorem}{\rep@title}
-% \newcommand{\newreptheorem}[2]{%
-% \newenvironment{rep#1}[1]{%
-%  \def\rep@title{#2 \ref{##1} (restated)}%
-%  \begin{rep@theorem}}%
-%  {\end{rep@theorem}}}
-% \makeatother
-
-% \newreptheorem{theorem}{Theorem}
-% \newreptheorem{lemma}{Lemma}
-% \newreptheorem{conjecture}{Conjecture}
-% \newreptheorem{problem}{Problem}
-
-
 \newenvironment{proof-sketch}{\medskip\noindent{\em Sketch of Proof.}\hspace*{1em}}{\qed\bigskip}
 \newenvironment{proof-attempt}{\medskip\noindent{\em Proof attempt.}\hspace*{1em}}{\bigskip}
 \newenvironment{proofof}[1]{\medskip\noindent\emph{Proof of #1.}\hspace*{1em}}{\qed\bigskip}
-
 
 
 \newcommand{\inparen }[1]{\left(#1\right)}             %\inparen{x+y}  is (x+y)
