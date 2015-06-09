@@ -57,7 +57,26 @@
             skipbelow=\parsep } 
 ]{exercisestyle}
 
-\declaretheorem[name=Open Problem]{openproblem}
+\declaretheoremstyle[
+    headfont=\bfseries, 
+    notebraces={[}{]},
+    bodyfont=\normalfont\itshape,
+    headpunct={},
+    postheadspace=\newline,
+    postheadhook={\textcolor{black}{\rule[.6ex]{\linewidth}{0.4pt}}\\},
+    spacebelow=\parsep,
+    spaceabove=\parsep,
+    mdframed={
+        backgroundcolor=black!5, 
+            linecolor=black!80, 
+            innertopmargin=6pt,
+            roundcorner=5pt, 
+            innerbottommargin=6pt, 
+            skipbelow=\parsep, 
+            skipbelow=\parsep } 
+]{myopenprobstyle}
+
+\declaretheorem[name=Open Problem,style=myopenprobstyle]{openproblem}
 \declaretheorem[name=Exercise,style=exercisestyle]{exercise}
 \numberwithin{openproblem}{chapter}
 \numberwithin{exercise}{chapter}
