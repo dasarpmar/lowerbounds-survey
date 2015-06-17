@@ -338,7 +338,7 @@ Any depth $4$ homogeneous computing the polynomial $\NW_{d,d^3,d/3}\circ \mathrm
 
 \section{The leading monomial approach of \cite{KS14}}
 
-Shortly after \cite{KLSS}, a purely combinatorial proof of the result was presented by \cite{KS14}. 
+Shortly after \cite{KLSS}, a purely combinatorial proof of the result was presented by Kumar and Saraf~\cite{KS14}. 
 More over, they were able to prove the lower bound of $n^{\Omega(\sqrt{d})}$ for the size of any homogeneous depth $4$ circuit computing $\IMM_{n,d}$ (for some suitable choices of $n$ and $d$). 
 This was a strengthening of \cite{KLSS} in two ways -- (1) it worked over any field, and (2) the lower bound was for a polynomial that we know can be computed small arithmetic circuit. 
 
@@ -368,6 +368,13 @@ We then have
 \begin{equation}\label{eqn:union-of-As}
 \Gamma^{\mathrm{PSD}}_{k,\ell}(P) \spaced{\geq} \abs{\Union_{\alpha, \beta} A(\alpha, \beta)}
 \end{equation}
+
+\begin{remark*}
+Sometimes, it may be useful to not look at all derivatives of order $k$ but instead look at some specific subset of derivatives of order $k$. 
+In such a setting, the above union would only be over $\alpha$'s that belong to this set. 
+We shall abuse notation to use $\Gamma^{\mathrm{PSD}}_{k,\ell}$ even though we are only considering a subset of derivatives. 
+\end{remark*}
+
 The standard technique to obtain a lower bound on the union of sets is via the \emph{Inclusion-Exclusion} principle. 
 
 \begin{lemma}[Inclusion-Exclusion Principle]\label{lem:inc-exc}
@@ -480,7 +487,7 @@ T_1 &=& \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n-d+k}
 Let $T_1(\alpha) =\sum_\beta \abs{S(\alpha, \beta)}$ for any choice of $\alpha$. 
 So far we have not used any property of the polynomial $P$. 
 But this becomes crucial in the calculation of $T_2$ and $T_3$. 
-To get a sense of how these calculations proceed in \cite{KS14}, we outline the calculation of $T_2$ for the case of $P = \NW_{d,m,e}$ for suitable choices of the parameters $m,d,e$. 
+To get a sense of how these calculations proceed in \cite{KS14}, we present the full calculation for the case of $P = \NW_{d,m,e}$ for suitable choices of the parameters $m,d,e$. 
 \begin{lemma}[\cite{KS14}]\label{lem:T_2-for-NW}
 For the polynomial $\NW_{d,m,e}$, if $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$
 \[
@@ -497,16 +504,16 @@ Thus, if we can count the number of pairs $(\beta, \beta')$ that agree on exactl
 Note that for $\NW_{d,m,e}$, any two $\beta, \beta' \in\partial_\alpha(\NW_{d,m,e})$ can agree on at most $e-k$ places. 
 Further, the number of pairs that agree in exactly $0\leq t\leq e-k$ places is at most
 \[
-m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t}
+m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t}
 \]
-as there are $m^{e-k}$ choices for $\beta$, and $\binom{d-k}{t}$ choices for places where they may agree, and $(m-1)^{e-t}$ choices for $\beta'$ that agree with $\beta$ on those $t$ places. 
+as there are $m^{e-k}$ choices for $\beta$, and $\binom{d-k}{t}$ choices for places where they may agree, and $(m-1)^{e-k-t}$ choices for $\beta'$ that agree with $\beta$ on those $t$ places. 
 Thus,
 \begin{eqnarray*}
-T_2(\alpha) &\leq& \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t} \cdot  \binom{n - 2d + 2k +t}{\ell}\\
-& \approx  & \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-t} \cdot  \binom{n}{\ell} \frac{1}{2^{2d-2k -t}}\cdot (1+\epsilon)^{2d - 2k - t}\\
-& \leq & m^{2e}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot\sum_{t=0}^{e-k}\binom{d-k}{t}\inparen{\frac{2}{(1+\epsilon)m}}^t\\
-& \leq & m^{2e}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot \inparen{1+\frac{2}{(1+\epsilon)m}}^{d-k}\\
-& = & m^{2e}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot O(1) \qquad\text{if $m = \Omega(d)$}
+T_2(\alpha) &\leq& \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t} \cdot  \binom{n - 2d + 2k +t}{\ell}\\
+& \approx  & \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t} \cdot  \binom{n}{\ell} \frac{1}{2^{2d-2k -t}}\cdot (1+\epsilon)^{2d - 2k - t}\\
+& \leq & m^{2(e-k)}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot\sum_{t=0}^{e-k}\binom{d-k}{t}\inparen{\frac{2}{(1+\epsilon)m}}^t\\
+& \leq & m^{2(e-k)}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot \inparen{1+\frac{2}{(1+\epsilon)m}}^{d-k}\\
+& = & m^{2(e-k)}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot O(1) \qquad\text{if $m = \Omega(d)$}
 \end{eqnarray*}
 Thus,
 \[
@@ -522,11 +529,11 @@ To maximize this, if we choose the parameters $m,d,e$ such that $T_1(\alpha) = T
 Consider the polynomial $\NW_{d,m,e}$ with $n = md$ and $m = \Omega(d)$. 
 If $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$ and $e$ chosen so that
 \[
-m^{e-k} \quad = \quad \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+m^{e-k} \quad \stackrel{\poly}{=} \quad \inparen{\frac{2}{1+\epsilon}}^{d-k}
 \]
 then
 \[
-\sum_{\alpha, \beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot  \binom{n}{\ell} \cdot 2^{\Theta(\sqrt{d})}
+\sum_{\alpha, \beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot  \binom{n}{\ell} \cdot \poly(1/m).
 \]
 \end{corollary}
 \begin{proof}
@@ -534,11 +541,11 @@ If $T_1(\alpha) = T_2(\alpha) \cdot 2^{-\Theta(\sqrt{d})}$ then
 \begin{eqnarray*}
 \sum_{\alpha,\beta}\abs{A(\alpha, \beta)} &\geq& \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}\\
  & = & \text{(\# derivs)} \cdot \frac{T_1(\alpha)^2}{4 T_2(\alpha)}\\
- & = & \text{(\# derivs)} \cdot \binom{n}{\ell} \cdot 2^{\Theta(\sqrt{n})}
+ & = & \text{(\# derivs)} \cdot \binom{n}{\ell} \cdot \poly(1/m)
 \end{eqnarray*}
-Note that $T_1(\alpha) = T_2(\alpha) \cdot 2^{-\Theta(\sqrt{d})}$ forces 
+Note that $T_1(\alpha) = T_2(\alpha) \cdot \poly(1/m)$ forces 
 \[
-\text{(\# mon per deriv)} \spaced{=}  m^{e-k} \spaced{=}  \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+\text{(\# mon per deriv)} \spaced{=}  m^{e-k} \spaced{\stackrel{\poly}{=}}  \inparen{\frac{2}{1+\epsilon}}^{d-k}.
 \]
 \end{proof}
 
@@ -585,7 +592,6 @@ Since $\abs{\beta \union \beta'} = 2d - 2k - t$, the number of choices of $\gamm
 \end{proof}
 
 One needs a similar argument as in the case of $T_2$ to figure out how many pairs $(\alpha, \beta) \neq (\alpha',\beta')$ are there with $\deg(\gcd(\beta, \beta')) = t$ and sum them up accordingly. 
-We shall just state the bound of \cite{KS14} here without proof. 
 
 \begin{lemma}[\cite{KS14}] \label{lem:T3-bound}
 For the polynomial $\NW_{d,m,e}$, and $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = o(1)$, 
@@ -593,10 +599,25 @@ For the polynomial $\NW_{d,m,e}$, and $n = md$ and $\ell = \frac{n}{2}(1 - \epsi
 T_3 \quad \leq \quad \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}
 \]
 \end{lemma}
-
+\begin{proof}
+Fix a pair of derivatives $\alpha,\alpha'$. As before, we shall first count the number of pairs of monmials $\beta \in \partial_\alpha P$ and $\beta' \in \partial_{\alpha'} P$ such that $\gcd(\beta, \beta') = t$. 
+Once again, this is easily seen to be at most
+\[
+m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t}. 
+\]
+Therefore,
+\begin{eqnarray*}
+T_3(\alpha, \alpha') & \leq & \sum_{t=0}^{e-k} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \binom{n- 2d + 2k +t}{\ell - d + k + t}\\
+& \approx & \sum_{t=0}^{e-k} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \cdot \binom{n}{\ell} \inparen{\frac{1}{2}}^{2d - 2k -t}  (1+\epsilon)^{t}\\
+& \leq & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \cdot \inparen{1 + \frac{2(1+\epsilon)}{m}}^{d-k}\\
+& \approx & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \quad = \quad \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\\
+\implies T_3 & \leq & \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\qedhere
+\end{eqnarray*}
+\end{proof}
+\noindent
 Recalling that we have chosen our parameters so that 
 \[
-\text{(\# mons per deriv)} = \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}
+\text{(\# mons per deriv)} \stackrel{\poly}{=} \inparen{\frac{2}{1+\epsilon}}^{d-k}
 \]
 the above equation reduces to 
 \[
@@ -605,11 +626,14 @@ T_3 \quad \leq \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)}
 Combining with \autoref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$. 
 
 \begin{lemma}
-Consider polynomial $\NW_{d,m,e}$ where $n = md$ and $e$ chosen so that
-\[m^{e-k} \spaced{=}  \inparen{\frac{2}{1+\epsilon}}^{d-k} \cdot 2^{\Theta(\sqrt{d})}\]
-If $\epsilon = \frac{\log d}{c\sqrt{d}}$ for a large enough constant $c$, and $k = O(\sqrt{d})$ and $\ell = \frac{n}{2}(1 - \epsilon)$, then
+Let $m = d^2$ (so that $n = md = d^3$). Let $k = O(\sqrt{d})$ and  $\ell  = \frac{n}{2}\inparen{1 - \epsilon}$ for $\epsilon = \frac{\log d}{c \sqrt{d}}$ where $c$ is a constant. If $c$ and $e$ are tailored so that 
+\begin{eqnarray*}
+ m^k & \geq &  (1+\epsilon)^{2d - 2k}\\
+ m^{e-k} &\stackrel{\poly}{=} & \inparen{\frac{2}{1+\epsilon}}^{d-k}
+\end{eqnarray*}
+Then, for the polynomial $\NW_{d,m,e}$, if we consider a subset of non-zero derivatives order $k$ of size $\floor{(1+\epsilon)^{2d - 2k}}$, then
 \[
-\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,m,e})\spaced{\geq}\abs{\Union_{\alpha, \beta} A(\alpha, \beta)} \spaced{\geq} \binom{n}{\ell} \cdot (1+\epsilon)^{2d-2k} \cdot 2^{\Theta(\sqrt{d})}
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,m,e})\spaced{\geq}\abs{\Union_{\alpha, \beta} A(\alpha, \beta)} \spaced{\geq} \binom{n}{\ell} \cdot (1+\epsilon)^{2d-2k} \cdot \poly(1/m)
 \] 
 \end{lemma}
 
@@ -629,7 +653,7 @@ Any homogeneous depth $4$ circuit computing, over any field $\F$,  the polynomia
 A similar lower bound $d^{\Omega(\sqrt{d})}$ holds also for the polynomial $\mathrm{IMM}_{n,d} \circ \mathrm{Lin}$ for suitable choices of $n$ and $d$. 
 \end{theorem}
 
-\section{Non-homogeneous depth $3$ circuits}\label{sec:kayalsaha}
+\section{Non-homogeneous depth three circuits}\label{sec:kayalsaha}
 
 In a very recent result, \cite{KayalSaha14} show that similar techniques can also be used to prove lower bounds for subclasses of non-homogeneous depth three circuits, namely depth three circuits with \emph{bounded bottom fan-in}. 
 We shall denote the class of depth three circuits of bottom fan-in bounded by $r$ as $\SPS^{[r]}$ circuits. 
