@@ -57,7 +57,26 @@
             skipbelow=\parsep } 
 ]{exercisestyle}
 
-\declaretheorem[name=Open Problem]{openproblem}
+\declaretheoremstyle[
+    headfont=\bfseries, 
+    notebraces={[}{]},
+    bodyfont=\normalfont\itshape,
+    headpunct={},
+    postheadspace=\newline,
+    postheadhook={\textcolor{black}{\rule[.6ex]{\linewidth}{0.4pt}}\\},
+    spacebelow=\parsep,
+    spaceabove=\parsep,
+    mdframed={
+        backgroundcolor=black!5, 
+            linecolor=black!80, 
+            innertopmargin=6pt,
+            roundcorner=5pt, 
+            innerbottommargin=6pt, 
+            skipbelow=\parsep, 
+            skipbelow=\parsep } 
+]{myopenprobstyle}
+
+\declaretheorem[name=Open Problem,style=myopenprobstyle]{openproblem}
 \declaretheorem[name=Exercise,style=exercisestyle]{exercise}
 \numberwithin{openproblem}{chapter}
 \numberwithin{exercise}{chapter}
@@ -81,7 +100,6 @@
 
 \renewcommand{\subsectionautorefname}{Subsection}
 \renewcommand{\sectionautorefname}{Section}
-
 \newenvironment{myproof}[1]%
 {\vspace{1ex}\noindent{\em Proof.}\hspace{0.5em}\def\myproof@name{#1}}%
 {\hfill{\tiny \qed\ (\myproof@name)}\vspace{1ex}}
@@ -117,6 +135,8 @@
 \newcommand{\parderiv}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\pderiv}[2]{\partial_{#2}\inparen{#1}}
 \newcommand{\zof}[2]{\inbrace{0,1}^{#1}\longrightarrow \inbrace{0,1}^{#2}}
+
+\newcommand*{\mywedge}{\mathord{\wedge}}
 
 
 % Commonly used blackboard letters
@@ -157,8 +177,8 @@
 
 \newcommand{\Det}{\mathsf{Det}}
 \newcommand{\Perm}{\mathsf{Perm}}
-\newcommand{\ESym}{\mathrm{Esym}}
-\newcommand{\PSym}{\mathrm{Pow}}
+\newcommand{\ESym}{\mathsf{Sym}}
+\newcommand{\PSym}{\mathsf{Pow}}
 \newcommand{\NW}{\mathrm{NW}}
 \newcommand{\IMM}{\mathrm{IMM}}
 
@@ -197,10 +217,12 @@
 %%% Circuit classes
 \newcommand{\SPS}{\Sigma\Pi\Sigma}
 \newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
-\newcommand{\SPSE}{\Sigma\Pi\Sigma\wedge}
+\newcommand{\SPSE}{\Sigma\Pi\Sigma\mathord{\wedge}}
 \newcommand{\SPSPfanin}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
 \newcommand{\SPSPsupp}[1]{\Sigma\Pi\Sigma\Pi^{\{#1\}}}
-\newcommand{\SESES}{\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma}
+\newcommand{\SESES}{\Sigma\mathord{\wedge}\Sigma\mathord{\wedge}\Sigma}
+\newcommand{\SES}{\Sigma\mathord{\wedge}\Sigma}
+\newcommand{\SESE}{\Sigma\mathord{\wedge}\Sigma\mathord{\wedge}}
 
 %%% Some complexity classes. (Don't want to include complexity.sty jsut for this. Messes up with \R etc.
 \newcommand{\VP}{\mathsf{VP}}
@@ -215,5 +237,7 @@
 \newcommand{\CM}[1]{\Gamma^{\mathrm{[#1]}}}
 \newcommand{\SPD}[3]{\inangle{\partial^{=#1}\inparen{#3}}_{\leq #2}}
 \newcommand{\mySPSP}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
+
+\newcommand{\pfrac}[2]{\inparen{\frac{#1}{#2}}}
 
 \renewcommand{\epsilon}{\varepsilon}
