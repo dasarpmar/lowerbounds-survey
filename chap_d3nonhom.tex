@@ -54,7 +54,8 @@ $2^{\Omega(n)}$ lower bound for $\SPS$ circuits computing $\Det_n$
 over characteristic zero fields as well.
 If it was true over finite fields, and for homogeneous $\SPS$
 circuits, how much power can characteristic zero fields and
-non-homogeneity add? As it turns out, quite a lot!
+non-homogeneity add? 
+As it turns out, quite a lot!
 
 \begin{theorem}[\cite{gkks13b}] \label{thm:chasm-at-3} Let $f$ be an
   $n$-variate degree $d$ polynomial computed by an arithmetic circuit
@@ -123,7 +124,8 @@ $\mathrm{Pow}_k(\vecx)$ as
 \begin{lemma}[Newton Identities]\label{lem:newton-identities}
   Let $\ESym_k(x_1,\ldots,x_m)$ and $\PSym_k(x_1,\ldots,x_m)$ denote
   the \emph{elementary symmetric} and \emph{power symmetric} polynomials of degree
-  $k$ respectively, as defined above.  Then,
+  $k$ respectively, as defined above. 
+Then,
   $$
   \ESym_k\spaced{=}\frac{1}{k!} \cdot 
   \begin{vmatrix}\PSym_1 & 1 & 0 & \cdots & 0 & 0\\ 
@@ -376,9 +378,11 @@ On the other, \autoref{lem:pow-depth3} states that an
 $n^{\omega(\sqrt{d})}$ lower bound for $\SESES$ circuits would yield a
 lower bound of $n^{\omega(\sqrt{d})}$ for depth three circuits. 
 
-Could this just be a coincidence? Or, is it the case that any
+Could this just be a coincidence? 
+Or, is it the case that any
 poly-sized arithmetic circuit can be equivalently expressed as a depth
-three circuit of size $n^{O(\sqrt{d})}$ over $\Q$? As it turns out,
+three circuit of size $n^{O(\sqrt{d})}$ over $\Q$? 
+As it turns out,
 there is indeed a depth reduction to convert any arithmetic circuit to
 a not-too-large depth three circuit over $\Q$. \\
 
@@ -415,7 +419,8 @@ Hence, if $f_{ij}(y) = \prod_k (y - \zeta_{ijk})$, then we get
   (y_1^a + \dots + y_s^a)^b & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s \tilde{f}_{ij}(y_j)\\
   &= & \sum_{i=1}^{sb+1} \prod_{j=1}^s \prod_{k=1}^b (y_j - \zeta_{ijk})\\
 \end{eqnarray*}
-which is a depth three circuit! Thus, $(y_1^a + \dots + y_s^a)$ can be
+which is a depth three circuit! 
+Thus, $(y_1^a + \dots + y_s^a)$ can be
 expressed as a depth three circuit of size $\poly(s,a,b)$ over $\C$.
 With a little more effort, one can construct a depth three circuit
 over $\Q$ as well.

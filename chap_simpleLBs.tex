@@ -3,19 +3,26 @@
 
 \section{``Natural'' proof strategies}\label{sec:roadmap}
 
-The lower bounds presented in \autoref{chap:gen-ckt-formulas} proceeded by first identifying a \emph{weakness} of the model, and exploiting it in an explicit manner. More concretely, \autoref{sec:Kalorkoti} presents a promising strategy that could be adopted to prove lower bounds for various models of arithmetic circuits. The crux of the lower bound was the construction of a good map $\Gamma$ that assigned a number to every polynomial. The map $\CM{Kal}$ was useful to show a lower bound in the sense that any $f$ computable by a \emph{small} formula had \emph{small} $\CM{Kal}(f)$. In fact, all subsequent lower bounds in arithmetic circuit complexity have more or less followed a similar template of a ``natural proof''. More concretely, all the subsequent lower bounds we shall see would essentially follow the outlined plan.  
+The lower bounds presented in \autoref{chap:gen-ckt-formulas} proceeded by first identifying a \emph{weakness} of the model, and exploiting it in an explicit manner. 
+More concretely, \autoref{sec:Kalorkoti} presents a promising strategy that could be adopted to prove lower bounds for various models of arithmetic circuits. 
+The crux of the lower bound was the construction of a good map $\Gamma$ that assigned a number to every polynomial. 
+The map $\CM{Kal}$ was useful to show a lower bound in the sense that any $f$ computable by a \emph{small} formula had \emph{small} $\CM{Kal}(f)$. 
+In fact, all subsequent lower bounds in arithmetic circuit complexity have more or less followed a similar template of a ``natural proof''. 
+More concretely, all the subsequent lower bounds we shall see would essentially follow the outlined plan.  
 
 \begin{quote}
 {\bf Step 1 (normal forms)} For every circuit in the circuit class $\mathcal{C}$ of interest, express the polynomial computed as a \emph{small sum of simple building blocks}. 
 \end{quote}
 
-For example, every $\Sigma\Pi\Sigma$ circuit is a \emph{small} sum of \emph{products of linear polynomials} which are the building blocks here. In this case, the circuit model naturally admits such a representation but we shall see other examples with very different representations as sum of building blocks. 
+For example, every $\Sigma\Pi\Sigma$ circuit is a \emph{small} sum of \emph{products of linear polynomials} which are the building blocks here. 
+In this case, the circuit model naturally admits such a representation but we shall see other examples with very different representations as sum of building blocks. 
 
 \begin{quote}
 {\bf Step 2 (complexity measure)} Construct a map $\Gamma: \F[x_1,\dots, x_n] \rightarrow \Z_{\geq 0}$ that is \emph{sub-additive} i.e. $\Gamma(f_1 + f_2)\leq \Gamma(f_1) + \Gamma(f_2)$.
 \end{quote}
 
-In most cases, $\Gamma(f)$ is the rank of a large matrix whose entries are linear functions in the coefficients of $f$. In such cases, we immediately get that $\Gamma$ is sub-additive. 
+In most cases, $\Gamma(f)$ is the rank of a large matrix whose entries are linear functions in the coefficients of $f$. 
+In such cases, we immediately get that $\Gamma$ is sub-additive. 
 
 The strength of the choice of $\Gamma$ is determined by the next step. 
 
@@ -24,7 +31,9 @@ The strength of the choice of $\Gamma$ is determined by the next step.
 Further, check if $\Gamma(f)$ for a \emph{random polynomial} $f$ is large (potentially). 
 \end{quote}
 
-This would suggest that if any $f$ with large $\Gamma(f)$ is to be written as a sum of $B_1 + \dots + B_s$, then sub-additivity and the fact that $\Gamma(B_i)$ is small for each $i$ and $\Gamma(f)$ is large immediately imply that $s$ must be large. This implies that the complexity measure $\Gamma$ does indeed have a potential to prove a lower bound for the class. The next step is just to replace the \emph{random polynomial} by an explicit polynomial. 
+This would suggest that if any $f$ with large $\Gamma(f)$ is to be written as a sum of $B_1 + \dots + B_s$, then sub-additivity and the fact that $\Gamma(B_i)$ is small for each $i$ and $\Gamma(f)$ is large immediately imply that $s$ must be large. 
+This implies that the complexity measure $\Gamma$ does indeed have a potential to prove a lower bound for the class. 
+The next step is just to replace the \emph{random polynomial} by an explicit polynomial. 
 
 \begin{quote}
 {\bf Step 4 (explicit lower bound)} Find an explicit polynomial $f$ for which $\Gamma(f)$ is large. 
@@ -32,41 +41,60 @@ This would suggest that if any $f$ with large $\Gamma(f)$ is to be written as a 
 
 
 
-These are usually the steps taken in almost all the known arithmetic circuit lower bound proofs. The main ingenuity lies in constructing a useful complexity measure, which is really to design $\Gamma$ so that it is small on the \emph{building blocks}. \\
+These are usually the steps taken in almost all the known arithmetic circuit lower bound proofs. 
+The main ingenuity lies in constructing a useful complexity measure, which is really to design $\Gamma$ so that it is small on the \emph{building blocks}. \\
 
-Of course, there could potentially be lower bound proofs that do not follow the road-map outlined. For instance, it could be possible that $\Gamma$ is not small for a random polynomial, but specifically tailored in a way to make $\Gamma$ large for the $\Perm_n$. Or perhaps $\Gamma$ need not even be sub-additive and maybe there is a very different way to argue that all polynomial in the circuit class have small $\Gamma$. However, this has been the road-map for almost all lower bounds so far (barring very few exceptions). As a warmup, we first present some very simple applications of the above plan to prove lower bounds for some very simple subclasses of arithmetic circuits in the next section. We then move on to more sophisticated proofs of lower bounds for less restricted subclasses of circuits. \\
+Of course, there could potentially be lower bound proofs that do not follow the road-map outlined. 
+For instance, it could be possible that $\Gamma$ is not small for a random polynomial, but specifically tailored in a way to make $\Gamma$ large for the $\Perm_n$. 
+Or perhaps $\Gamma$ need not even be sub-additive and maybe there is a very different way to argue that all polynomial in the circuit class have small $\Gamma$. 
+However, this has been the road-map for almost all lower bounds so far (barring very few exceptions). 
+As a warmup, we first present some very simple applications of the above plan to prove lower bounds for some very simple subclasses of arithmetic circuits in the next section. 
+We then move on to more sophisticated proofs of lower bounds for less restricted subclasses of circuits. \\
 
 
 Let us start with the simplest complete\footnote{in the sense that any polynomial can be computed in this model albeit of large size}  class of arithmetic circuits -- depth-$2$ circuits or $\Sigma\Pi$ circuits. 
 
 \subsection{Lower bounds for $\Sigma\Pi$ circuits}
 
-Any $\Sigma\Pi$ circuit of size $s$ computes a polynomial $f = m_1 + \dots + m_s$ where each $m_i$ is a monomial multiplied by a field constant. Therefore, any polynomial computed by a \emph{small} $\Sigma\Pi$ circuit must have a \emph{small} number of monomials. Hence, it is obvious that any polynomial that has many monomials require large $\Sigma\Pi$ circuits. 
+Any $\Sigma\Pi$ circuit of size $s$ computes a polynomial $f = m_1 + \dots + m_s$ where each $m_i$ is a monomial multiplied by a field constant. 
+Therefore, any polynomial computed by a \emph{small} $\Sigma\Pi$ circuit must have a \emph{small} number of monomials. 
+Hence, it is obvious that any polynomial that has many monomials require large $\Sigma\Pi$ circuits. 
 
-This can be readily rephrased in the language of the outline described last section by defining $\Gamma(f)$ to simply be the number of monomials present in $f$. Hence, $\Gamma(f)\leq s$ for any $f$ computed by a $\Sigma\Pi$ circuit of size $s$. Of course, even a polynomial like $f = (x_1 + x_2+\dots + x_n)^n$  have $\Gamma(f) = n^{\Omega(n)}$ giving the lower bound. 
+This can be readily rephrased in the language of the outline described last section by defining $\Gamma(f)$ to simply be the number of monomials present in $f$. 
+Hence, $\Gamma(f)\leq s$ for any $f$ computed by a $\Sigma\Pi$ circuit of size $s$. 
+Of course, even a polynomial like $f = (x_1 + x_2+\dots + x_n)^n$  have $\Gamma(f) = n^{\Omega(n)}$ giving the lower bound. 
 
 \subsection{Lower bounds for $\Sigma\!\wedge\!\Sigma$ circuits}
 
 A $\Sigma\!\wedge\!\Sigma$ circuit of size $s$ computes a polynomial of the form $f = \ell_1^{d_1} + \dots + \ell_s^{d_s}$ where each $\ell_i$ is a linear polynomial over the $n$ variables.\footnote{such circuits are also called \emph{diagonal depth-$3$ circuits} in the literature}
 
-Clearly as even a single $\ell^d$ could have exponentially many monomials, the $\Gamma$ defined above cannot work in this setting. Nevertheless, we shall try to design a similar map to ensure that $\Gamma(f)$ is \emph{small} whenever $f$ is computable by a \emph{small} $\Sigma\!\wedge\!\Sigma$ circuit. \\
+Clearly as even a single $\ell^d$ could have exponentially many monomials, the $\Gamma$ defined above cannot work in this setting. 
+Nevertheless, we shall try to design a similar map to ensure that $\Gamma(f)$ is \emph{small} whenever $f$ is computable by a \emph{small} $\Sigma\!\wedge\!\Sigma$ circuit. \\
 
-In this setting, the \emph{building blocks} are terms of the form $\ell^d$. The goal would be to construct a \emph{sub-additive} measure $\Gamma$ such that $\Gamma(\ell^d)$ is \emph{small}. Here is the key observation to guide us towards a good choice of $\Gamma$. 
+In this setting, the \emph{building blocks} are terms of the form $\ell^d$. 
+The goal would be to construct a \emph{sub-additive} measure $\Gamma$ such that $\Gamma(\ell^d)$ is \emph{small}. 
+Here is the key observation to guide us towards a good choice of $\Gamma$. 
 
 \begin{observation}
 Any $k$-th order partial derivative of $\ell^d$ is a constant multiple of $\ell^{d-k}$. 
 \end{observation}
 
-Hence, if $\partial^{=k}(f)$ denotes the set of $k$-th order partial derivatives of $f$, then the space spanned by $\partial^{=k}(\ell^d)$ has dimension $1$. This naturally leads us to define $\Gamma$ exploiting this weakness. 
+Hence, if $\partial^{=k}(f)$ denotes the set of $k$-th order partial derivatives of $f$, then the space spanned by $\partial^{=k}(\ell^d)$ has dimension $1$. 
+This naturally leads us to define $\Gamma$ exploiting this weakness. 
 
 $$
 \Gamma_k(f)\quad \eqdef \quad \dim \inparen{\partial^{=k}(f)}
 $$
 
-It is straightforward to check that $\Gamma_k$ is indeed sub-additive and hence $\Gamma_k(f) \leq s$ whenever $f$ is computable by a $\Sigma\!\wedge\!\Sigma$ circuit of size $s$. For a random polynomial $f$, we should be expecting $\Gamma_k(f)$ to be $\binom{n+k}{k}$ as there is unlikely to be any linear dependencies among the partial derivatives. Hence, all that needs to be done is to find an explicit polynomial with large $\Gamma_k$. 
+It is straightforward to check that $\Gamma_k$ is indeed sub-additive and hence $\Gamma_k(f) \leq s$ whenever $f$ is computable by a $\Sigma\!\wedge\!\Sigma$ circuit of size $s$. 
+For a random polynomial $f$, we should be expecting $\Gamma_k(f)$ to be $\binom{n+k}{k}$ as there is unlikely to be any linear dependencies among the partial derivatives. 
+Hence, all that needs to be done is to find an explicit polynomial with large $\Gamma_k$. 
 
 
-If we consider $\Det_n$ or $\Perm_n$, then any partial derivative of order $k$ is just an $(n-k)\times(n-k)$ minor. Also, these minors consist of disjoint sets of monomials and hence are linearly independent. Hence, $\Gamma_k(\Det_n) = \binom{n}{k}^2$. Choosing $k = n/2$, we immediately get that any $\Sigma\!\wedge\!\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ must be of size $2^{\Omega(n)}$. \\
+If we consider $\Det_n$ or $\Perm_n$, then any partial derivative of order $k$ is just an $(n-k)\times(n-k)$ minor. 
+Also, these minors consist of disjoint sets of monomials and hence are linearly independent. 
+Hence, $\Gamma_k(\Det_n) = \binom{n}{k}^2$. 
+Choosing $k = n/2$, we immediately get that any $\Sigma\!\wedge\!\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ must be of size $2^{\Omega(n)}$. \\
 
 \subsection{Low-rank $\Sigma\Pi\Sigma$}\label{sec:low-rank-sps}
 
@@ -78,19 +106,26 @@ where each $T_i = \ell_{i1}\dots \ell_{id}$ is a product of linear polynomials s
 
 Thus, $\Sigma\!\wedge\!\Sigma$  is a rank-$1$ $\Sigma\Pi\Sigma$ circuit, and a similar partial-derivative technique for lower bounds works here as well. 
 
-In the setting where $r$ is much smaller than the number of variables $n$, each $T_i$ is essentially an $r$-variate polynomial masquerading as an $n$-variate polynomial using an affine transformation. In particular, the set of $n$ first order derivatives of $T$ have rank at most $r$. This yields the following observation.
+In the setting where $r$ is much smaller than the number of variables $n$, each $T_i$ is essentially an $r$-variate polynomial masquerading as an $n$-variate polynomial using an affine transformation. 
+In particular, the set of $n$ first order derivatives of $T$ have rank at most $r$. 
+This yields the following observation.
 
 \begin{observation}
-Let $T = \ell_1\dots \ell_d$ with $\dim\inbrace{\ell_1,\dots, \ell_d}\leq r$. Then for any $k$, we have
+Let $T = \ell_1\dots \ell_d$ with $\dim\inbrace{\ell_1,\dots, \ell_d}\leq r$. 
+Then for any $k$, we have
 $$
 \Gamma_k(T) \spaced{\eqdef}\dim\inparen{\partial^{=k}(T)} \spaced{\leq} \binom{r+k}{k}.
 $$
 \end{observation}
 
-Thus once again by sub-additivity, for any polynomial $f$ computable by a rank-$r$ $\Sigma\Pi\Sigma$ circuit of size $s$, we have $\Gamma_k(f) \leq s\cdot \binom{r+k}{r}$. Note that a random polynomial is expected to have $\Gamma_k(f)$ close to $\binom{n+k}{k}$, which could be much larger for $r\ll n$. We already saw that $\Gamma_k(\Det_n) = \binom{n}{k}^2$. This immediately gives the following lower bound, the proof of which we leave as an exercise to the interested reader. 
+Thus once again by sub-additivity, for any polynomial $f$ computable by a rank-$r$ $\Sigma\Pi\Sigma$ circuit of size $s$, we have $\Gamma_k(f) \leq s\cdot \binom{r+k}{r}$. 
+Note that a random polynomial is expected to have $\Gamma_k(f)$ close to $\binom{n+k}{k}$, which could be much larger for $r\ll n$. 
+We already saw that $\Gamma_k(\Det_n) = \binom{n}{k}^2$. 
+This immediately gives the following lower bound, the proof of which we leave as an exercise to the interested reader. 
 
 \begin{theorem}\label{thm:low-rank-sps-lb}
-Let $r \leq n^{2-\delta}$ for some constant $\delta > 0$. For $k = \epsilon n^{\delta}$, where $\epsilon > 0$ is sufficiently small, we have
+Let $r \leq n^{2-\delta}$ for some constant $\delta > 0$. 
+For $k = \epsilon n^{\delta}$, where $\epsilon > 0$ is sufficiently small, we have
 $$
 \frac{\binom{n}{k}^2}{\binom{r+k}{k}} \quad=\quad \exp\inparen{\Omega(n^{\delta})}.
 $$
@@ -98,13 +133,25 @@ Hence, any rank-$r$ $\Sigma\Pi\Sigma$ circuit computing $\Det_n$ or $\Perm_n$ mu
 \end{theorem}
 
 
-This technique of using the rank of partial derivatives was introduced by Nisan and Wigderson \cite{nw1997} to prove lower bounds for \emph{homogeneous depth-$3$ circuits} (which also follows as a corollary of \autoref{thm:low-rank-sps-lb}). The survey of Chen, Kayal and Wigderson \cite{ckw11} give a comprehensive exposition of the power of the \emph{partial derivative method}. \\
+This technique of using the rank of partial derivatives was introduced by Nisan and Wigderson \cite{nw1997} to prove lower bounds for \emph{homogeneous depth-$3$ circuits} (which also follows as a corollary of \autoref{thm:low-rank-sps-lb}). 
+The survey of Chen, Kayal and Wigderson \cite{ckw11} give a comprehensive exposition of the power of the \emph{partial derivative method}. \\
 
-In the examples we saw above, Step $1$ of constructing the normal forms were obtained from just the model of computation. We conclude this chapter with a more non-trivial example of a lower bound where the building blocks are constructed differently. 
+In the examples we saw above, Step $1$ of constructing the normal forms were obtained from just the model of computation. 
+We conclude this chapter with a more non-trivial example of a lower bound where the building blocks are constructed differently. 
 
 \section{Lower bounds for monotone circuits}
 
-We shall now see a  slight generalization of a lower bound by Jerrum and Snir~\cite{js82}.  To motivate our presentation here, let us first assume that the underlying field is $\RR$, the field of real numbers. A monotone circuit over $\RR$ is a circuit having $+, \times$ gates in which all the field constants are {\em non-negative} real numbers. Such a circuit can compute any polynomial $f$ over $\RR$ all of whose coefficients are nonnegative real numbers, such as for example the permanent. It is then natural to ask whether there are small monotone circuits over $\RR$ computing the permanent. Jerrum and Snir \cite{js82} obtained an exponential lower bound on the size of monotone circuits over $\RR$ computing the permanent. Note that this definition of monotone circuits is valid only over $\RR$ (actually more generally over ordered fields but not over say finite fields) and such circuits can only compute polynomials with non-negative coefficients. Here we will present Jerrum and Snir's argument in a slightly more generalized form such that the circuit model makes sense over any field $\FF$ and is complete, i.e.  can compute any polynomial over $\FF$.\footnote{This generalization was told to me by Neeraj Kayal} Let us first explain the motivation behind the generalized circuit model that we present here. Observe that in any monotone circuit over $\RR$, there is no cancellation as there are no negative coefficients. Formally, for a node $v$ in our circuits let us denote by $f_{v}$ the polynomial computed at that node. For a polynomial $f$ let us denote by $\Mon(f)$ the set of monomials having a nonzero coefficient in the polynomial $f$.
+We shall now see a  slight generalization of a lower bound by Jerrum and Snir~\cite{js82}. 
+To motivate our presentation here, let us first assume that the underlying field is $\RR$, the field of real numbers. 
+A monotone circuit over $\RR$ is a circuit having $+, \times$ gates in which all the field constants are {\em non-negative} real numbers. 
+Such a circuit can compute any polynomial $f$ over $\RR$ all of whose coefficients are nonnegative real numbers, such as for example the permanent. 
+It is then natural to ask whether there are small monotone circuits over $\RR$ computing the permanent. 
+Jerrum and Snir \cite{js82} obtained an exponential lower bound on the size of monotone circuits over $\RR$ computing the permanent. 
+Note that this definition of monotone circuits is valid only over $\RR$ (actually more generally over ordered fields but not over say finite fields) and such circuits can only compute polynomials with non-negative coefficients. 
+Here we will present Jerrum and Snir's argument in a slightly more generalized form such that the circuit model makes sense over any field $\FF$ and is complete, i.e.  can compute any polynomial over $\FF$.\footnote{This generalization was told to me by Neeraj Kayal} Let us first explain the motivation behind the generalized circuit model that we present here. 
+Observe that in any monotone circuit over $\RR$, there is no cancellation as there are no negative coefficients. 
+Formally, for a node $v$ in our circuits let us denote by $f_{v}$ the polynomial computed at that node. 
+For a polynomial $f$ let us denote by $\Mon(f)$ the set of monomials having a nonzero coefficient in the polynomial $f$.
 \begin{enumerate}
 \item If $w = u + v$ then 
   $$ \Mon(f_{w}) = \Mon(f_{u}) \cup \Mon(f_{v}). $$
@@ -113,12 +160,15 @@ We shall now see a  slight generalization of a lower bound by Jerrum and Snir~\c
   $$ \Mon(f_{w}) = \Mon(f_{u}) \cdot \Mon(f_{v}) \eqdef \setdef{m_1\cdot m_2}{m_1 \in \Mon(f_{u}), m_2\in \Mon(f_{v})}. $$
 			
 \end{enumerate}
-This means that for any node $v$ in a monotone circuit over $\RR$ one can determine $\Mon(f_{v})$ in a very syntactic manner starting from the leaf nodes. Let us make precise this syntactic computation that we have in mind.
+This means that for any node $v$ in a monotone circuit over $\RR$ one can determine $\Mon(f_{v})$ in a very syntactic manner starting from the leaf nodes. 
+Let us make precise this syntactic computation that we have in mind.
 
 \begin{definition}[Formal Monomials.]
-  Let $\Phi$ be an arithmetic circuit. The \emph{formal monomials} at any node $v\in \Phi$, which shall be denoted by $\FM(v)$, shall be inductively defined as follows:
+  Let $\Phi$ be an arithmetic circuit. 
+The \emph{formal monomials} at any node $v\in \Phi$, which shall be denoted by $\FM(v)$, shall be inductively defined as follows:
   \begin{quote}
-    If $v$ is a leaf labelled by a variable $x_i$, then $\FM(v) = \inbrace{x_i}$. If it is labelled by a constant, then $\FM(v) = \inbrace{1}$.
+    If $v$ is a leaf labelled by a variable $x_i$, then $\FM(v) = \inbrace{x_i}$. 
+If it is labelled by a constant, then $\FM(v) = \inbrace{1}$.
     
     If $v = v_1 + v_2$, then $\FM(v) = \FM(v_1) \union \FM(v_2)$. 
     
@@ -130,7 +180,8 @@ This means that for any node $v$ in a monotone circuit over $\RR$ one can determ
   \end{quote}
 \end{definition}
 
-\noindent Note that for any node $v$ in any circuit we have $\Mon(f_{v}) \subseteq \FM(v)$ but in a monotone circuit over $\RR$ this containment is in fact an equality at every node. This motivates our definition of a slightly more general notion of a monotone circuit as follows.
+\noindent Note that for any node $v$ in any circuit we have $\Mon(f_{v}) \subseteq \FM(v)$ but in a monotone circuit over $\RR$ this containment is in fact an equality at every node. 
+This motivates our definition of a slightly more general notion of a monotone circuit as follows.
 
 	
 \begin{definition}[Monotone circuits]
@@ -148,7 +199,8 @@ The main theorem of this section is the following:
 The proof of this theorem is relatively short assuming the following structural result (which is present in standard depth-reduction proofs \cite{vsbr83,ajmv98}).
 
 \begin{lemma}\label{lem:vsbr-two-thirds}
-  Let $f$ be a degree $d$ polynomial computed by a monotone circuit of size $s$. Then, $f$ can be written of the form $f = \sum_{i=1}^s f_i \cdot g_i$ where the $f_i$'s and $g_i$'s satisfy the following properties.
+  Let $f$ be a degree $d$ polynomial computed by a monotone circuit of size $s$. 
+Then, $f$ can be written of the form $f = \sum_{i=1}^s f_i \cdot g_i$ where the $f_i$'s and $g_i$'s satisfy the following properties.
 \begin{enumerate}
 \item For each $i\in [s]$, we have $\frac{d}{3} < \deg{g_i} \leq
   \frac{2d}{3}$.
@@ -160,7 +212,8 @@ The proof of this Lemma is just an application of \eqref{eqn:vsbr-for-u} with $t
 \[
 f\spaced{=} [\mathrm{root}] \spaced{=} \sum_{v\in \mathcal{F}_t} [\mathrm{root}:v] \cdot [v]
 \]
-It is easy to observe that $[\mathrm{root}:v]$ and $[v]$ are polynomials of degree between $d/3$ and $2d/3$. Further, it can also be seen that the above equation  preserves monotonicity if the original circuit was monotone. 
+It is easy to observe that $[\mathrm{root}:v]$ and $[v]$ are polynomials of degree between $d/3$ and $2d/3$. 
+Further, it can also be seen that the above equation  preserves monotonicity if the original circuit was monotone. 
 \end{proof-sketch}
 
 \begin{exercise}
@@ -168,18 +221,25 @@ Show that the process of homogenization and depth reduction via \autoref{thm:vsb
 \end{exercise}
 
 
-The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that is crucial in the lower bound. Although \autoref{thm:monotone-circuit-lbs} gives a lower bound for $\Det_n$ and $\Perm_n$, we shall give a simpler lower bound for a different polynomial and leave proving a lower bound for $\Det_n$ and $\Perm_n$ 
+The complexity measure $\Gamma(f)$ in this case is just the number of monomials in $f$, but it is the above \emph{normal form} that is crucial in the lower bound. 
+Although \autoref{thm:monotone-circuit-lbs} gives a lower bound for $\Det_n$ and $\Perm_n$, we shall give a simpler lower bound for a different polynomial and leave proving a lower bound for $\Det_n$ and $\Perm_n$ 
 
 
 \begin{theorem}
 Any monotone circuit $\Phi$ computing the polynomial $\NW_{n,n,n/10}$  must have size $n^{\Omega(n)}$. 
 \end{theorem}
 \begin{proof}
-  Let us assume that $\Phi$ is a size $s$ monotone circuit that computes $f = \NW_{n,n,n/10}$. Then by \autoref{lem:vsbr-two-thirds},
+  Let us assume that $\Phi$ is a size $s$ monotone circuit that computes $f = \NW_{n,n,n/10}$. 
+Then by \autoref{lem:vsbr-two-thirds},
   \[
   f \spaced{=} \sum_{i=1}^s f_i \cdot g_i
   \]
-  with the appropriate degree bounds. Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. But this contradicts the key property of the $\NW$ family (\autoref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials and hence $\Gamma(f_i\cdot g_i) \leq 1$ for each $i$. This then immediately forces 
+  with the appropriate degree bounds. 
+Suppose $f_i$ had at least two non-zero monomials $m_1$ and $m_2$, for any monomial $m \in g_i$ we would have $m_1 \cdot m \in \FM(f)$ and $m_2 \cdot m \in \FM(f)$. 
+But since $g_i$ is a polynomial of degree at least $n/3$, this implies the monomials $m_1\cdot m$ and $m_2 \cdot m$ are two distinct monomials that intersect in at least $n/3$ places. 
+But this contradicts the key property of the $\NW$ family (\autoref{lem:NW-low-intersection}) which is that no two monomials intersect in more than $n/10$ places. 
+Thus, each of the $f_i$'s and $g_i$'s must in fact be monomials and hence $\Gamma(f_i\cdot g_i) \leq 1$ for each $i$. 
+This then immediately forces 
 \[
 \Gamma(\NW_{n,n,n/10}) \spaced{=} n^{\Omega(n)} \spaced{\leq} \sum_{i=1}^s \Gamma(f_i \cdot g_i) \spaced{\leq} s
 \]
@@ -190,15 +250,21 @@ Using the normal form provided by \autoref{lem:vsbr-two-thirds} to prove a $2^{\
 \end{exercise}
 
 % \begin{proofof}{Theorem~\ref{thm:monotone-circuit-lbs}}
-% Suppose $\Phi$ is a monotone circuit of size $s$ that computes $\Det_n$. Then by Lemma~\ref{lem:vsbr-two-thirds}, 
+% Suppose $\Phi$ is a monotone circuit of size $s$ that computes $\Det_n$. 
+Then by Lemma~\ref{lem:vsbr-two-thirds}, 
 % $$
 % \Det_n \quad=\quad \sum_{i=1}^s f_i \cdot g_i
 % $$
-% with $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(\Det_n)$. The building blocks are terms of the form $T = f\cdot g$, where $\FM(f)  \cdot \FM(g) \subseteq \FM(\Det_n)$. \\
+% with $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(\Det_n)$. 
+The building blocks are terms of the form $T = f\cdot g$, where $\FM(f)  \cdot \FM(g) \subseteq \FM(\Det_n)$. \\
 
-% Since all the monomials in $\Det_n$ are products of variables from distinct columns and rows, the rows (and columns) containing the variables $f$ depends on is disjoint from the rows (and columns) containing variables that $g$ depends on. Hence, there exists sets of indices $A,B \subseteq [n]$ such that $f$ depends only on $\setdef{x_{jk}}{j\in A, k\in B}$ and $g$ depends only on $\setdef{x_{jk}}{j\in\overline{A}, k\in \overline{B}}$.
+% Since all the monomials in $\Det_n$ are products of variables from distinct columns and rows, the rows (and columns) containing the variables $f$ depends on is disjoint from the rows (and columns) containing variables that $g$ depends on. 
+Hence, there exists sets of indices $A,B \subseteq [n]$ such that $f$ depends only on $\setdef{x_{jk}}{j\in A, k\in B}$ and $g$ depends only on $\setdef{x_{jk}}{j\in\overline{A}, k\in \overline{B}}$.
 
-% Further, since $\Det_n$ is a homogeneous polynomial of degree $n$, we also have that both $f$ and $g$ must be homogeneous as well. Also as all monomials of $g$ using distinct row and column indices from $\overline{A}$ and $\overline{B}$ respectively, we see that $\deg g = |\overline{A}| = |\overline{B}|$ and $\deg f = |A| = |B|$. Using Lemma~\ref{lem:vsbr-two-thirds}, let $|A| = \alpha n$ for some $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$. This implies that $\Gamma(f)\leq (\alpha n)!$, and $\Gamma(g)\leq ((1-\alpha)n)!$ and hence
+% Further, since $\Det_n$ is a homogeneous polynomial of degree $n$, we also have that both $f$ and $g$ must be homogeneous as well. 
+Also as all monomials of $g$ using distinct row and column indices from $\overline{A}$ and $\overline{B}$ respectively, we see that $\deg g = |\overline{A}| = |\overline{B}|$ and $\deg f = |A| = |B|$. 
+Using Lemma~\ref{lem:vsbr-two-thirds}, let $|A| = \alpha n$ for some $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$. 
+This implies that $\Gamma(f)\leq (\alpha n)!$, and $\Gamma(g)\leq ((1-\alpha)n)!$ and hence
 % $$\Gamma(f\cdot g) \quad \leq\quad (\alpha n)! ((1-\alpha)n)! \spaced{\leq} \frac{n!}{\binom{n}{n/3}} $$
 % as $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$.
 % Also, $\Gamma$ is clearly sub-additive and we have $$\Gamma(f_1g_1 + \dots + f_s g_s) \spaced{\leq} s \cdot \frac{n!}{\binom{n}{n/3}}.$$

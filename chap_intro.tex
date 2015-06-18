@@ -1,9 +1,22 @@
 \chapter{Introduction}
 
 
-``What is the best way to compute a given polynomial $f(x_1,\dots, x_n)$ from basic operations such as $+$ and $\times$?'' This is the main motivating problem in the field of arithmetic circuit complexity. The notion of \emph{complexity} of a polynomial is measured via the size of the smallest arithmetic circuit computing it. Arithmetic circuits provide a robust model of computation for polynomials. Formally, these are directed acyclic graphs with a unique sink vertex, where internal nodes are labelled by $+$ and $\times$ and each source node labelled with either a variable or a field constant. Each $+$ gate computes the sum of the polynomials computed at its children, and $\times$ gates the product. The unique sink vertex is called the root or the output gate, and the polynomial computed by that gate is the polynomial computed by the circuit. 
+``What is the best way to compute a given polynomial $f(x_1,\dots, x_n)$ from basic operations such as $+$ and $\times$?'' This is the main motivating problem in the field of arithmetic circuit complexity. 
+The notion of \emph{complexity} of a polynomial is measured via the size of the smallest arithmetic circuit computing it. 
+Arithmetic circuits provide a robust model of computation for polynomials. 
+Formally, these are directed acyclic graphs with a unique sink vertex, where internal nodes are labelled by $+$ and $\times$ and each source node labelled with either a variable or a field constant. 
+Each $+$ gate computes the sum of the polynomials computed at its children, and $\times$ gates the product. 
+The unique sink vertex is called the root or the output gate, and the polynomial computed by that gate is the polynomial computed by the circuit. 
 
-There are several interesting questions that can be asked about arithmetic circuits, and polynomials that they compute. One category of problems are of the form, ``Is there an explicit polynomial $f(x_1,\dots, x_n)$ that require (perhaps restricted) arithmetic circuits of size $2^{\Omega(n)}$ to compute them?'', or questions about proving lower bounds. Another category of problems are of the form, ``Is the given circuit computing the $0$ polynomial?'', which is also called `Polynomial Identity Testing (PIT)'. Yet another class of questions are of the form ``Given oracle access to a circuit, can you write down the polynomial computed by this circuit?'', which are also called `polynomial reconstruction'. Several of these problems have very strong connections between each other despite being of very different flavours. Formal connections between PIT and lower bounds have been shown by \cite{ki03,a05}. Further, strong lower bounds for restricted models have often been succeeded by reconstruction algorithms (at least on average). In this article we shall mainly be looking at lower bounds. For more on reconstruction and PIT questions, the author is invited to read other excellent surveys such as \cite{sy,ckw11}. 
+There are several interesting questions that can be asked about arithmetic circuits, and polynomials that they compute. 
+One category of problems are of the form, ``Is there an explicit polynomial $f(x_1,\dots, x_n)$ that require (perhaps restricted) arithmetic circuits of size $2^{\Omega(n)}$ to compute them?'', or questions about proving lower bounds. 
+Another category of problems are of the form, ``Is the given circuit computing the $0$ polynomial?'', which is also called `Polynomial Identity Testing (PIT)'. 
+Yet another class of questions are of the form ``Given oracle access to a circuit, can you write down the polynomial computed by this circuit?'', which are also called `polynomial reconstruction'. 
+Several of these problems have very strong connections between each other despite being of very different flavours. 
+Formal connections between PIT and lower bounds have been shown by \cite{ki03,a05}. 
+Further, strong lower bounds for restricted models have often been succeeded by reconstruction algorithms (at least on average). 
+In this article we shall mainly be looking at lower bounds. 
+For more on reconstruction and PIT questions, the author is invited to read other excellent surveys such as \cite{sy,ckw11}. 
 
 \section{Arithmetic complexity classes}
 In the seminal paper of \cite{v79}, Valiant defined two classes of polynomials which we now call $\VP$ and $\VNP$. 
@@ -16,42 +29,66 @@ The class $\VNP$ is defined as the set of all polynomial $f(x_1,\dots, x_n)$ suc
 f(x_1,\dots, x_n) \quad = \quad \sum_{y_1=0}^1\dots \sum_{y_m=0}^1 g(x_1,\dots, x_n, y_1,\dots, y_m)
 \]
 \end{definition}
-The class $\VP$ is synonymous to what we understand as \emph{efficiently computable} polynomials. The class $\VNP$, whose definition is similar to the boolean class $\NP$, is in some sense a notion of what deem as \emph{explicit}. 
+The class $\VP$ is synonymous to what we understand as \emph{efficiently computable} polynomials. 
+The class $\VNP$, whose definition is similar to the boolean class $\NP$, is in some sense a notion of what deem as \emph{explicit}. 
 
 \begin{fact}
-Let $f(x_1,\dots, x_n)$ be a polynomial such that $\deg(f) = n^{O(1)}$ and given any exponent vector $e_1,\dots, e_n$, the coefficient of the monomial $x_1^{e_1}\dots x_n^{e_n}$ in $f$ can be computed in polynomial time. Then, $f \in \VNP$. 
+Let $f(x_1,\dots, x_n)$ be a polynomial such that $\deg(f) = n^{O(1)}$ and given any exponent vector $e_1,\dots, e_n$, the coefficient of the monomial $x_1^{e_1}\dots x_n^{e_n}$ in $f$ can be computed in polynomial time. 
+Then, $f \in \VNP$. 
 \end{fact}
 
-For example, consider the permanent of a symbolic $n\times n$ matrix. In fact, \cite{v79} showed that the symbolic $n\times n$ permanent is in some sense complete for the class $\VNP$. Further, he also showed that the determinant of a symbolic  $n\times n$ matrix is (almost) complete for the class $\VP$. Separating the determinant and the permanent is the Holy Grail in the field of arithmetic circuit complexity. \\
+For example, consider the permanent of a symbolic $n\times n$ matrix. 
+In fact, \cite{v79} showed that the symbolic $n\times n$ permanent is in some sense complete for the class $\VNP$. 
+Further, he also showed that the determinant of a symbolic  $n\times n$ matrix is (almost) complete for the class $\VP$. 
+Separating the determinant and the permanent is the Holy Grail in the field of arithmetic circuit complexity. \\
 
-{\bf Remark.} Note that the above fact merely gives a sufficient condition for a polynomial to be in $\VNP$. There are examples of polynomials $f$ where computing the coefficient of a given monomial is believed to be very hard but $f\in \VNP$.\footnote{For example, consider the $n^2$ variate multilinear polynomial $f$ such that the coefficient $x_{11}^{e_{11}}\dots x_{nn}^{e_{nn}}$ is the permanent of the $n\times n$ matrix $(\!(e_{ij})\!)_{i,j}$. Turns out $f \in \VNP$. In fact, a necessary and sufficient condition is that the coefficient of a given monomial can be computed in $\#\mathsf{P}/\poly$. }  In this article however, all the polynomials we shall be dealing with would have this property that the coefficient of a given monomial can be efficiently computed. For more about completeness classes in arithmetic complexity, \cite{bcs97} is a wonderful text. 
+{\bf Remark.} Note that the above fact merely gives a sufficient condition for a polynomial to be in $\VNP$. 
+There are examples of polynomials $f$ where computing the coefficient of a given monomial is believed to be very hard but $f\in \VNP$.\footnote{For example, consider the $n^2$ variate multilinear polynomial $f$ such that the coefficient $x_{11}^{e_{11}}\dots x_{nn}^{e_{nn}}$ is the permanent of the $n\times n$ matrix $(\!(e_{ij})\!)_{i,j}$. 
+Turns out $f \in \VNP$. 
+In fact, a necessary and sufficient condition is that the coefficient of a given monomial can be computed in $\#\mathsf{P}/\poly$. }  In this article however, all the polynomials we shall be dealing with would have this property that the coefficient of a given monomial can be efficiently computed. 
+For more about completeness classes in arithmetic complexity, \cite{bcs97} is a wonderful text. 
 
 
 \section{Prior lower bounds}
 
-Proving lower bounds is generally considered challenging, in most models of computation. For general circuits, the best lower bound we have for an explicit polynomial is by \cite{BS83} who prove an $\Omega(n\log n)$ lower bound. For the subclass of arithmetic formulas, \cite{k85} has shown a $\Omega(n^{3/2})$ lower bound. On the other hand, we know by standard counting methods that most $n$-variate degree $d$ polynomials require circuits of size $\Omega\inparen{\sqrt{\binom{n+d}{d}}}$.
+Proving lower bounds is generally considered challenging, in most models of computation. 
+For general circuits, the best lower bound we have for an explicit polynomial is by \cite{BS83} who prove an $\Omega(n\log n)$ lower bound. 
+For the subclass of arithmetic formulas, \cite{k85} has shown a $\Omega(n^{3/2})$ lower bound. 
+On the other hand, we know by standard counting methods that most $n$-variate degree $d$ polynomials require circuits of size $\Omega\inparen{\sqrt{\binom{n+d}{d}}}$.
 
-To gain better understanding of computation by arithmetic circuits, researchers focused on proving lower bounds for restricted models of computation. One very natural restriction is the depth of the circuit. Proving lower bounds for depth two circuits are trivial. For general depth three circuits, the best lower bound we have is by \cite{sw2001} who present an $\Omega(n^2)$ lower bound. Exponential lower bounds are known with additional restrictions like \emph{homogeneity} \cite{nw1997}, \emph{multilinearity} \cite{raz2004,raz-yehudayoff}, over finite fields \cite{gr00,grigoriev98}, \emph{monotonicity} \cite{js82} etc. 
+To gain better understanding of computation by arithmetic circuits, researchers focused on proving lower bounds for restricted models of computation. 
+One very natural restriction is the depth of the circuit. 
+Proving lower bounds for depth two circuits are trivial. 
+For general depth three circuits, the best lower bound we have is by \cite{sw2001} who present an $\Omega(n^2)$ lower bound. 
+Exponential lower bounds are known with additional restrictions like \emph{homogeneity} \cite{nw1997}, \emph{multilinearity} \cite{raz2004,raz-yehudayoff}, over finite fields \cite{gr00,grigoriev98}, \emph{monotonicity} \cite{js82} etc. 
 
 For multilinear models, more is known for even larger depth. \cite{raz2004} showed an $n^{\Omega(\log n)}$ lower bound for the class of multilinear formulas. \cite{raz-yehudayoff} extended those techniques to show an $2^{n^{\Omega(1/\Delta)}}$ lower bound for multilinear formulas of depth $\Delta$. 
 
 \section{Relevance of shallow circuits for ``$\VP$ vs $\VNP$''}
 
-The study of lower bounds for shallow circuits is not just an attempt to simplify the problem and gain insight on the larger goal. The class of shallow arithmetic circuits are surprisingly powerful, unlike the boolean case. Shallow circuits in the arithmetic world almost capture the entire computational power of unrestricted circuits! 
+The study of lower bounds for shallow circuits is not just an attempt to simplify the problem and gain insight on the larger goal. 
+The class of shallow arithmetic circuits are surprisingly powerful, unlike the boolean case. 
+Shallow circuits in the arithmetic world almost capture the entire computational power of unrestricted circuits! 
 
-There has been a long series of results that simulate a general arithmetic circuit $C$ by a \emph{shallow} circuit of size comparable to the size of $C$. This task simulating a circuit but another not-too-large circuit of small depth is called \emph{depth reduction}. The first result in this regard is by \cite{vsbr83} who proved the following. 
+There has been a long series of results that simulate a general arithmetic circuit $C$ by a \emph{shallow} circuit of size comparable to the size of $C$. 
+This task simulating a circuit but another not-too-large circuit of small depth is called \emph{depth reduction}. 
+The first result in this regard is by \cite{vsbr83} who proved the following. 
 
 \begin{theorem}[\cite{vsbr83}]
-Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$ of size $s$. Then, $f$ can be equivalently computed by a homogeneous circuit $C'$ of depth $O(\log d)$ with unbounded fan-in $+$ and $\times$ gates and size $s' = (nds)^{O(1)}$. 
+Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$ of size $s$. 
+Then, $f$ can be equivalently computed by a homogeneous circuit $C'$ of depth $O(\log d)$ with unbounded fan-in $+$ and $\times$ gates and size $s' = (nds)^{O(1)}$. 
 \end{theorem}
 
 
-The above theorem allows us to focus on just homogeneous circuits of $O(\log d)$ depth and attempt lower bounds for this model. Any super-polynomial lower bound for the class of $O(\log d)$ depth circuits automatically yields a super-polynomial lower bound for general circuits. \\
+The above theorem allows us to focus on just homogeneous circuits of $O(\log d)$ depth and attempt lower bounds for this model. 
+Any super-polynomial lower bound for the class of $O(\log d)$ depth circuits automatically yields a super-polynomial lower bound for general circuits. \\
 
-However, if we really hope to prove much stronger lower bounds for $\Perm_n$ like say $2^{\Omega(n)}$, maybe we can afford to incur a slightly larger blow-up in size to obtain an even shallower circuit. This line was first pursued by \cite{av08}, and subsequently strengthened by \cite{koiran} and \cite{Tav13} to yield the following result. 
+However, if we really hope to prove much stronger lower bounds for $\Perm_n$ like say $2^{\Omega(n)}$, maybe we can afford to incur a slightly larger blow-up in size to obtain an even shallower circuit. 
+This line was first pursued by \cite{av08}, and subsequently strengthened by \cite{koiran} and \cite{Tav13} to yield the following result. 
 
 \begin{theorem}[\cite{av08,koiran,Tav13}] 
-  Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$. Then $f$ can be computed by a homogeneous $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit of size $s' \leq s^{O(\sqrt{d})}$
+  Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit of size $s$. 
+Then $f$ can be computed by a homogeneous $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit of size $s' \leq s^{O(\sqrt{d})}$
 
 More generally, for any $0\leq r\leq d$, there is a homogeneous $\SPSPfanin{O(d/r)}{r}$ circuit of top fan-in at most $s^{O(d/t)}$ computing $f$. 
 \end{theorem}
@@ -61,15 +98,19 @@ Recall that a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit computes a polynomial 
 f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ia} \quad,\quad \text{where $a = O(\sqrt{d})$ and $\deg Q_{ij} \leq \sqrt{d}$}
 \]
 
-In other words, if we can prove a lower bound of $n^{\omega(\sqrt{d})}$ for the class of $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits, we would have a super-polynomial lower bound for the class of general arithmetic circuits! In fact, the model of depth $4$ circuits seem so central in that almost all known lower bounds for other restricted models proceed by proving a suitable lower bound for a depth $4$ analogue. Several examples of this may be seen in \cite{KayalRP}. \\
+In other words, if we can prove a lower bound of $n^{\omega(\sqrt{d})}$ for the class of $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits, we would have a super-polynomial lower bound for the class of general arithmetic circuits! 
+In fact, the model of depth $4$ circuits seem so central in that almost all known lower bounds for other restricted models proceed by proving a suitable lower bound for a depth $4$ analogue. 
+Several examples of this may be seen in \cite{KayalRP}. \\
 
-The first breakthrough was obtained by \cite{gkks13} who showed an $2^{\Omega(\sqrt{d})}$ lower bound for such circuits computing the symbolic $d\times d$ determinant or permanent. Subsequently, there was a flurry of activity towards achieving the goal of proving $n^{\omega(\sqrt{d})}$ lower bounds \cite{KSS13,FLMS13,KS14a}, and this is where we currently stand. 
+The first breakthrough was obtained by \cite{gkks13} who showed an $2^{\Omega(\sqrt{d})}$ lower bound for such circuits computing the symbolic $d\times d$ determinant or permanent. 
+Subsequently, there was a flurry of activity towards achieving the goal of proving $n^{\omega(\sqrt{d})}$ lower bounds \cite{KSS13,FLMS13,KS14a}, and this is where we currently stand. 
 
 \begin{theorem}
 There is an explicit homogeneous $n$-variate degree $d$ polynomial $f$ that can be computed by a homogeneous depth $4$ circuit of size $n^{O(1)}$ but any $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ computing it requires top fanin $s = n^{\Omega(\sqrt{d})}$.
 \end{theorem}
 
-If we could change the $n^{\Omega(\sqrt{d})}$ to $n^{\omega(\sqrt{d})}$ in the above theorem (of course, the polynomial $f$ cannot then have a small arithmetic circuit computing it), we would have proved a super-polynomial lower bound for general arithmetic circuits! The following is the simplest formulation of a lower bound of shallow circuit that would imply lower bounds for general circuits. \\
+If we could change the $n^{\Omega(\sqrt{d})}$ to $n^{\omega(\sqrt{d})}$ in the above theorem (of course, the polynomial $f$ cannot then have a small arithmetic circuit computing it), we would have proved a super-polynomial lower bound for general arithmetic circuits! 
+The following is the simplest formulation of a lower bound of shallow circuit that would imply lower bounds for general circuits. \\
 
 \begin{openproblem}\label{openprob:main} Find an explicit $n$-variate degree $d$ polynomial $f$ such that any expression of the form
 \[
@@ -79,17 +120,27 @@ must have $s = n^{\omega(\sqrt{d})}$.
 \end{openproblem}
 \bigskip 
 
-Subsequent to this line of work, several researchers addressed the task of proving lower bounds for homogeneous depth $4$ circuits without any restriction on the fan-ins. It is worth noting that a lower bound for homogeneous depth $4$ circuits must be on the total size and not the top fan-in, as otherwise one could just compute the polynomial $f$ in a single gate of the bottom two layers. 
+Subsequent to this line of work, several researchers addressed the task of proving lower bounds for homogeneous depth $4$ circuits without any restriction on the fan-ins. 
+It is worth noting that a lower bound for homogeneous depth $4$ circuits must be on the total size and not the top fan-in, as otherwise one could just compute the polynomial $f$ in a single gate of the bottom two layers. 
 
 \subsection*{What to expect from this article}
 
-This article is intended to be a rolling survey of (almost) all known lower bounds in arithmetic circuit complexity. Most of the proofs in this article are complete and self-contained. However, as one would expect in the more delicate proofs, there would eventually involve a fair amount of calculation and setting of parameters. There might be proofs where this last technical calculation is avoided, but the hope is to make the presentation insightful enough so that it would enable any student to do the calculations (him/her)self.
+This article is intended to be a rolling survey of (almost) all known lower bounds in arithmetic circuit complexity. 
+Most of the proofs in this article are complete and self-contained. 
+However, as one would expect in the more delicate proofs, there would eventually involve a fair amount of calculation and setting of parameters. 
+There might be proofs where this last technical calculation is avoided, but the hope is to make the presentation insightful enough so that it would enable any student to do the calculations (him/her)self.
 
-Also, quite a lot of the proofs presented here are slightly different from the original proofs. The reason for the deviation would almost always be for more clarify and intuition. However, this process might also make the parameters involved a little weaker than in the original statements. We shall try to ensure that such losses do not change the overall strength of the theorem by much, and if they do we shall mention that explicitly. 
+Also, quite a lot of the proofs presented here are slightly different from the original proofs. 
+The reason for the deviation would almost always be for more clarify and intuition. 
+However, this process might also make the parameters involved a little weaker than in the original statements. 
+We shall try to ensure that such losses do not change the overall strength of the theorem by much, and if they do we shall mention that explicitly. 
 
 \subsection*{What is not (yet) covered in this survey}
 
-There are a few notable lower bounds that are not (yet) discussed in the survey. Some of them are the determinantal complexity lower bound of Mignon and Ressayre \cite{mr04}, the quadratic lower bound for depth-$3$ circuits over zero characteristic fields of Shpilka and Wigderson \cite{sw2001}, non-commutative ABP lower bounds of Nisan \cite{nis91} etc. Perhaps these gaps shall be filled in the near\footnote{:-)} future. Perhaps. 
+There are a few notable lower bounds that are not (yet) discussed in the survey. 
+Some of them are the determinantal complexity lower bound of Mignon and Ressayre \cite{mr04}, the quadratic lower bound for depth-$3$ circuits over zero characteristic fields of Shpilka and Wigderson \cite{sw2001}, non-commutative ABP lower bounds of Nisan \cite{nis91} etc. 
+Perhaps these gaps shall be filled in the near\footnote{:-)} future. 
+Perhaps. 
 
 
 %%% Local Variables: 
