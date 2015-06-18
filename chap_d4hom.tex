@@ -172,7 +172,7 @@ The proof of this lemma is exactly along the description in of Intuition - (2): 
 But to just put things in perspective, we shall be dealing with parameters $r = \sqrt{d}/100$, $k = \sqrt{d}$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = O\inparen{\frac{\log d}{\sqrt{d}}}$. 
 The above bound, by \autoref{lem:binom-approx}, can be seen to reduce to
 \[
-\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \quad \leq \quad s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{2rs} \cdot 2^{O(\sqrt{d})}
+\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \quad \leq \quad s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{2rk} \cdot 2^{O(\sqrt{d})}
 \]
 
 
@@ -433,6 +433,14 @@ Since $\sum_{i,j}\abs{A_i' \intersection A_j'}$ drops by a factor of $p^2$, we a
 \end{eqnarray*}
 \end{proof}
 
+\begin{corollary}\label{cor:inc-exc-str}
+Considers sets $A_1,\dots, A_r$  and let $S_1 = \sum_i \abs{A_i}$ and $S_2 = \sum_{i\neq j} \abs{A_i \intersection A_j}$. 
+Then, 
+\[
+\abs{\Union A_i} \spaced{\geq} \frac{S_1}{4} \cdot \min\inparen{1,\frac{S_1}{S_2}}
+\]
+\end{corollary}
+
 We can now proceed to lower bound $\abs{\Union A(\alpha, \beta)}$ via inclusion exclusion.
 
 \subsection*{Estimating $\abs{\Union A(\alpha, \beta)}$ via Inclusion-Exclusion}
@@ -440,7 +448,7 @@ We can now proceed to lower bound $\abs{\Union A(\alpha, \beta)}$ via inclusion 
 \abs{\Union_{\alpha, \beta}A(\alpha,\beta)}\spaced{\geq} \sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{-} \sum_{(\alpha, \beta)\neq (\alpha',\beta')}\abs{A(\alpha, \beta) \intersection A(\alpha',\beta')}
 \]
 
- Let us first address the term $\sum \abs{A(\alpha, \beta)}$. 
+Let us first address the term $\sum \abs{A(\alpha, \beta)}$. 
 As mentioned earlier, it is not an easy task to get a good handle on the set $A(\alpha, \beta)$ for polynomial such as $\NW$ or $\IMM$, for any reasonable monomial ordering. 
 However, \cite{KS14} circumvent this difficult by using an indirect approach to estimate this term. 
 
@@ -535,11 +543,12 @@ Thus,
 T_2 \quad \lesssim \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}
 \]
 \end{proof}
-Combining this with \autoref{lem:T_1-value} and using \autoref{lem:str-inc-exc},
+\noindent
+Combining this with \autoref{lem:T_1-value} and using Inclusion-Exclusion (\autoref{cor:inc-exc-str}),
 \[
-\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{\geq} \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}
+\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{\gtrsim} \text{(\# derivs)}\cdot T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}
 \]
-To maximize this, if we choose the parameters $m,d,e$ such that $T_1(\alpha) = T_2(\alpha)$, we obtain the following corollary. 
+To maximize this, if we choose the parameters $m,d,e$ such that $T_1(\alpha) \approx T_2(\alpha)$, we obtain the following corollary. 
 \begin{corollary}\label{cor:T2-bound}
 Consider the polynomial $\NW_{d,m,e}$ with $n = md$ and $m = \Omega(d)$. 
 If $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = \Theta\inparen{\frac{\log d}{\sqrt{d}}}$ and $e$ chosen so that
@@ -554,8 +563,8 @@ then
 \begin{proof}
 If $T_1(\alpha) \approx T_2(\alpha)$ then
 \begin{eqnarray*}
-\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} &\geq& \text{(\# derivs)}\cdot \frac{T_1(\alpha)}{\max(2, \frac{4T_2(\alpha)}{T_1(\alpha)})}\\
- & = & \text{(\# derivs)} \cdot \frac{T_1(\alpha)^2}{4 T_2(\alpha)}\\
+\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} &\gtrsim & \text{(\# derivs)}\cdot T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}\\
+ & = & \text{(\# derivs)} \cdot T_1(\alpha)\\
  & \approx & \text{(\# derivs)} \cdot \binom{n}{\ell}
 \end{eqnarray*}
 Note that $T_1(\alpha) \approx T_2(\alpha)$ forces 
@@ -615,7 +624,8 @@ T_3 \quad \lesssim \quad \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot 
 \]
 \end{lemma}
 \begin{proof}
-Fix a pair of derivatives $\alpha,\alpha'$. As before, we shall first count the number of pairs of monmials $\beta \in \partial_\alpha P$ and $\beta' \in \partial_{\alpha'} P$ such that $\gcd(\beta, \beta') = t$. 
+Fix a pair of derivatives $\alpha,\alpha'$. 
+As before, we shall first count the number of pairs of monmials $\beta \in \partial_\alpha P$ and $\beta' \in \partial_{\alpha'} P$ such that $\gcd(\beta, \beta') = t$. 
 Once again, this is easily seen to be at most
 \[
 m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t}. 
@@ -636,27 +646,32 @@ Recalling that we have chosen our parameters so that
 \]
 the above equation reduces to 
 \[
-T_3 \quad \leq \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
+T_3 \quad \lesssim \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
 \]
 We shall choose our set of derivatives so that $\text{(\# deriv)} \approx (1+\epsilon)^{2(d-k)}$. 
 With that setting, we can readily see that $T_3 \lesssim T_1$. 
 
-Combining with \autoref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$ via Inclusion-Exclusion (\autoref{lem:str-inc-exc}). 
+Combining with \autoref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$ via Inclusion-Exclusion (\autoref{cor:inc-exc-str}). 
 
 \begin{lemma}
-Let $m = d^2$ (so that $n = md = d^3$). Let $k = O(\sqrt{d})$ and  $\ell  = \frac{n}{2}\inparen{1 - \epsilon}$ for $\epsilon = \frac{\log d}{c \sqrt{d}}$ where $c$ is a constant. If $c$ and $e$ are tailored so that 
+Let $m = d^2$ (so that $n = md = d^3$). 
+Let $k = O(\sqrt{d})$ and  $\ell  = \frac{n}{2}\inparen{1 - \epsilon}$ for $\epsilon = \frac{\log d}{c \sqrt{d}}$ where $c$ is a constant. 
+If $c$ and $e$ are tailored so that 
 \begin{eqnarray*}
  m^k & \gtrsim &  (1+\epsilon)^{2d - 2k}\\
  m^{e-k} & \approx & \inparen{\frac{2}{1+\epsilon}}^{d-k}
 \end{eqnarray*}
 Then, for the polynomial $\NW_{d,m,e}$, if we consider a subset of non-zero derivatives order $k$ of size $\floor{(1+\epsilon)^{2d - 2k}}$, then
 \[
-\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,m,e})\spaced{\geq}\abs{\Union_{\alpha, \beta} A(\alpha, \beta)} \spaced{\gtrsim} \binom{n}{\ell} \cdot (1+\epsilon)^{2d-2k}
+\Gamma^{\mathrm{PSD}}_{k,\ell}(\NW_{d,m,e})\spaced{\geq}\abs{\Union_{\alpha, \beta} A(\alpha, \beta)} \spaced{\gtrsim} \binom{n}{\ell} \cdot (1+\epsilon)^{2d-2k}.
 \] 
 \end{lemma}
 
-With \autoref{lem:upper-bound-low-supp}, we obtain the lower bound for low-bottom-support homogeneous depth $4$ circuits. 
-
+By \autoref{lem:upper-bound-low-supp}, we know that any homogeneous depth $4$ circuit $C$ of size $s$ and bottom fan-in $r$ satisfies
+\[
+\Gamma^{\mathrm{PSD}}_{k,\ell}(C)\spaced{\leq} s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{rk} \cdot 2^{O(\sqrt{d})}.
+\]
+Hence, if $r$ was small enough (say $r = \sqrt{d}/1000}$) so that $rk \leq (d-k)$, then we have a lower bound of $s \geq (1+\epsilon)^{d-k} \cdot 2^{O(\sqrt{d})}$ which is $d^{\Omega(\sqrt{d})}$ by the choice of $\epsilon$. 
 \begin{theorem}[\cite{KS14}]\label{thm:IMM-lowsup-lb}
 Any homogeneous depth $4$ circuit with bottom support bounded by $r = \sqrt{d}/1000$ computing, over any field $\F$, the polynomial $\NW_{d,m,e}$ with parameters as defined above must have top fan-in $s = d^{\Omega(\sqrt{d})}$. 
 
