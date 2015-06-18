@@ -51,7 +51,7 @@ One particular instantiation that shall also appear frequently shall be the foll
 Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. 
 For any $a, b$ such that $a,b = O(\sqrt{n})$, 
 \[
-\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \exp(O(b^2\epsilon))
+\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \exp(O(b\cdot \epsilon^2))
 \]
 \end{restatable}
 \begin{proof}
@@ -60,7 +60,7 @@ The proof of the above lemma would repeated use \autoref{lem:factorial-ratio}.
 \frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
 & \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
 & = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
-& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b^2 \epsilon))
+& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2))
 \end{eqnarray*}
 \end{proof}
 

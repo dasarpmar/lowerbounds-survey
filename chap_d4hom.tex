@@ -492,7 +492,8 @@ T_1 &=& \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n-d+k}
 \end{eqnarray*}
 \end{lemma}
 
-We shall be simplifying such binomial coefficients very often so let us recall the following lemma. 
+\noindent
+We shall be simplifying such binomial coefficients very often so let us recall the \autoref{lem:binom-approx}. 
 
 \binomapprox*
 
@@ -625,15 +626,17 @@ T_3 \quad \lesssim \quad \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot 
 \end{lemma}
 \begin{proof}
 Fix a pair of derivatives $\alpha,\alpha'$. 
-As before, we shall first count the number of pairs of monmials $\beta \in \partial_\alpha P$ and $\beta' \in \partial_{\alpha'} P$ such that $\gcd(\beta, \beta') = t$. 
+As before, we shall first count the number of pairs of monomials $\beta \in \partial_\alpha P$ and $\beta' \in \partial_{\alpha'} P$ such that $\gcd(\beta, \beta') = t$. 
+Note that since $\alpha$ may differ from $\alpha'$, we could potentially have $\gcd(\beta_1,\beta_2) = e$. 
 Once again, this is easily seen to be at most
 \[
 m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t}. 
 \]
+
 Therefore,
 \begin{eqnarray*}
-T_3(\alpha, \alpha') & \leq & \sum_{t=0}^{e-k} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \binom{n- 2d + 2k +t}{\ell - d + k + t}\\
-& \approx & \sum_{t=0}^{e-k} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \cdot \binom{n}{\ell} \inparen{\frac{1}{2}}^{2d - 2k -t}  (1+\epsilon)^{t}\\
+T_3(\alpha, \alpha') & \leq & \sum_{t=0}^{e} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \binom{n- 2d + 2k +t}{\ell - d + k + t}\\
+& \approx & \sum_{t=0}^{e} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \cdot \binom{n}{\ell} \inparen{\frac{1}{2}}^{2d - 2k -t}  (1+\epsilon)^{t}\\
 & \leq & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \cdot \inparen{1 + \frac{2(1+\epsilon)}{m}}^{d-k}\\
 & \approx & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \quad = \quad \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\\
 \implies T_3 & \lesssim & \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\qedhere
