@@ -3,11 +3,11 @@
 \begin{definition}
   The determinantal complexity of a polynomial $f$, over $n$ variables, is the minimum $m$ such that there are affine linear functions $A_{k,\ell}$, $1\leq k,\ell\leq m$ defined over the same set of variables and $f= \det((A_{k,\ell})_{1 \leq k,\ell \leq m})$. It is denoted by $\dc(f)$.  
 \end{definition}
-To resolve Valiant's hypothesis, proving $\dc(\Perm_n) = n^{\omega(\log n)}$ is sufficient. Von zur Gathen \cite{von1986}  proved $\dc(\Perm_n) \geq \sqrt{\frac{8}{7}}n$. Later Cai\cite{cai1990}, Babai and Seress \cite{von1987}, and Meshulam\cite{mesh1989} independently improved the lower bound to $\sqrt{2}n$. In 2004, Mignon and Ressayre\cite{mt2004} came up with a new idea of using second order derivatives and proved that $\dc(\Perm_n) \geq \frac{n^2}{2}$ over the fields of characteristic zero. Subsequently, Cai et al.\cite{ccl2008} extended the result of Mignon and Ressayre to all fields of characteristic $\neq 2$.
+To resolve Valiant's hypothesis, proving $\dc(\Perm_n) = n^{\omega(\log n)}$ is sufficient. Von zur Gathen \cite{von1986}  proved $\dc(\Perm_n) \geq \sqrt{\frac{8}{7}}n$. Later Cai\cite{cai1990}, Babai and Seress \cite{von1987}, and Meshulam\cite{mesh1989} independently improved the lower bound to $\sqrt{2}n$. In 2004, Mignon and Ressayre\cite{mr04} came up with a new idea of using second order derivatives and proved that $\dc(\Perm_n) \geq \frac{n^2}{2}$ over the fields of characteristic zero. Subsequently, Cai et al.\cite{ccl2008} extended the result of Mignon and Ressayre to all fields of characteristic $\neq 2$.
 
-For any polynomial $f$, Valiant\cite{val1979} proved that $\dc(f) \leq 2(F(f)+ 1)$ where $F(f)$ is the arithmetic formula complexity of $f$. It can be seen that $\dc(f) = O(B(f))$ where $B(f)$ is the arithmetic branching program complexity of $f$ \cite{mp2008}.
+For any polynomial $f$, Valiant proved that $\dc(f) \leq 2(F(f)+ 1)$ where $F(f)$ is the arithmetic formula complexity of $f$ \cite{v79}. It can be seen that $\dc(f) = O(B(f))$ where $B(f)$ is the arithmetic branching program complexity of $f$ \cite{mp08}.
 
-\begin{remark}
+\begin{remark}[\cite{mp08}]
   Any weakly skew circuit of size $m$ can be written as a projection of $\Det_{m+1}$
 \end{remark}
 
@@ -28,7 +28,7 @@ For any polynomial $f$, Valiant\cite{val1979} proved that $\dc(f) \leq 2(F(f)+ 1
   \end{pmatrix}
 \end{align*}
 
-Since $\det(Y_0)=0$, $s<m$. From the previous works \cite{von1987}, \cite{cai1990}, \cite{mt2004}, and \cite{ccl2008}, it is enough to assume that $s=m-1$. Since the first row and the first column of $CY_0D$ are zero, we may multiply $CY_0D$ by $\diag(\det(C)^{-1},1,\dots,1)$ and $\diag(\det(D)^{-1},1,\dots,1)$ on the left and the right side. Without loss of generality, we may assume that $\det(C)=\det(D)=1$. By multiplying with $C$ and $D$ on the left and the right and suitably renaming $(L_{k,\ell}(X-X_0))_{1\leq k,\ell\leq m}$ and $Y_0$ we get
+Since $\det(Y_0)=0$, $s<m$. From the previous works \cite{von1987}, \cite{cai1990}, \cite{mr04}, and \cite{ccl2008}, it is enough to assume that $s=m-1$. Since the first row and the first column of $CY_0D$ are zero, we may multiply $CY_0D$ by $\diag(\det(C)^{-1},1,\dots,1)$ and $\diag(\det(D)^{-1},1,\dots,1)$ on the left and the right side. Without loss of generality, we may assume that $\det(C)=\det(D)=1$. By multiplying with $C$ and $D$ on the left and the right and suitably renaming $(L_{k,\ell}(X-X_0))_{1\leq k,\ell\leq m}$ and $Y_0$ we get
 \begin{align*}
   f(X) = \det((L_{k,\ell}(X-X_0)_{1\leq k,\ell\leq m} + Y_0))
 \end{align*}
@@ -41,5 +41,42 @@ We use $\hess_{f}(X)$ to denote the Hessian matrix of the iterated matrix multip
 \end{align*}
 where $x_{ij}^{(s)}$ and $x_{k\ell}^{(t)}$  denote the $(i,j)$th and $(k,\ell)$th entries of the variable sets $X^{(s)}$ and $X^{(t)}$ respectively. 
 
-By taking second order derivatives and evaluating the Hessian matrices of $f(X)$ and $\det((A_{k,\ell}(X))_{1\leq k,\ell\leq m})$ at $X_0$, we obtain $\hess_{f}(X_0) = L\hess_{\det}(Y_0)L^{T}$ where $L$ is a $n\times m^2$ matrix with entries from the field. It follows that $\rank(\hess_{f}(X_0)) \leq \rank(\hess_{\det}(Y_0))$. It was observed in the earlier work  of \cite{mt2004} and \cite{ccl2008} that it is relatively easy to get an upper bound for $\rank(\hess_{\det}(Y_0))$. 
+By taking second order derivatives and evaluating the Hessian matrices of $f(X)$ and $\det((A_{k,\ell}(X))_{1\leq k,\ell\leq m})$ at $X_0$, we obtain $\hess_{f}(X_0) = L\hess_{\det}(Y_0)L^{T}$ where $L$ is a $n\times m^2$ matrix with entries from the field. It follows that $\rank(\hess_{f}(X_0)) \leq \rank(\hess_{\det}(Y_0))$. It was observed in the earlier work  of \cite{mr04} and \cite{ccl2008} that it is relatively easy to get an upper bound for $\rank(\hess_{\det}(Y_0))$. 
 The main task is to construct a point $X_0$ such that $f(X_0)=0$, yet the rank of $\hess_{f}(X_0)$ is high. 
+
+\subsection{Upper bound for the rank of $\hess_{det}(Y_0)$}
+
+ When we take a  partial derivative of the determinant polynomial with respect to the variable $x_{ij}$, what we get is the minor after striking out the row $i$ and column $j$. 
+ The second order derivative of $\det(Y)$ with respect to the variables $y_{ij}$ and $y_{k\ell}$ eliminates the rows $\{i,k\}$ and the columns $\{j,\ell\}$. Considering the form of $Y_0$, the non-zero entries in $\hess_{\det}(Y_0)$ are obtained only if $1\in\{i,k\}$ and $1\in\{j,\ell\}$ and thus $(ij,k\ell)$ are of the form $(11,tt)$ or $(t1,1t)$ or $(1t,t1)$ for any $t>1$. Thus, $\rank(\hess_{\det}(Y_0)) = 2m$.
+ 
+\subsection{Lower bounds}
+
+\begin{theorem}[\cite{mr04}]
+	Over a field of characteristic zero, for any $d>3$, rank of $\hess_{\Perm}(A)$ is $d^2$ where $A$ is a $d\times d$ sized matrix defined as follows.
+	
+	\begin{align*}
+		(A)_{ij} = \begin{cases}
+			d-1& \mbox{if $i=j=1$}\\
+			1& \mbox{otherwise}
+		\end{cases}
+		% A =
+% 	    \begin{bmatrix}
+% 	      d-1& 1& \cdots& 1\\
+% 	      1& 1& \cdots& 1\\
+% 		  \vdots& \vdots& \vdots& \vdots\\
+% 		  1& 1& \cdots& 1\\
+% 	    \end{bmatrix}
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}[\cite{ccl2008}]
+	Let $p > 2$ be a prime, then
+	\begin{enumerate}
+		\item If $p \neq 23$, then for any $n > 2$ satisfying $p\lvert 􏰄􏰄(n+1)$, $\Perm(M^n_1) \equiv 0 (\mod p)$ and $\rank(\hess_{\Perm}(M^n_1)) \geq (n-2)(n-3)$;
+		\item If $p \neq 3, 5$, then for any $n > 1$ satisfying $p\lvert􏰄􏰄(n + 2)$, $\Perm(M^n_2) \equiv 0 (\mod p)$ and $\rank(\hess_{\Perm}(M^n_2)) \geq (n-2)(n-3)$;
+	\end{enumerate}
+	
+	where $M^n_v$ is a $(n+1)\times(n+1)$ matrix over $\F^{(n+1)\times(n+1)}$ and $M^n_v = (M_{i,j}) : M_{(n+1),(n+1)} = v$; $M_{i,i} = M_{i,(n+1)} = M_{(n+1),i} = 1$ for all $i\in[n]$ and $M_{i,j}=0$ otherwise.
+	
+\end{theorem}
+
