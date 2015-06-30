@@ -1,50 +1,97 @@
 \usetikzlibrary{arrows}
 
 \numberwithin{equation}{chapter}
-\declaretheoremstyle[bodyfont=\it,qed=$\qed$]{noproofstyle} 
+\declaretheoremstyle[bodyfont=\it,qed=\qedsymbol]{noproofstyle} 
 
 \declaretheorem[numberlike=equation]{axiom}
+
 \declaretheorem[numberlike=equation]{observation}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Observation]{observationwp}
+\declaretheorem[name=Observation,numbered=no]{observation*}
+
 \declaretheorem[numberlike=equation]{fact}
 \declaretheorem[numberlike=equation]{subclaim}
 \declaretheorem[numberlike=equation]{problem}
 
 \declaretheorem[numberlike=equation]{theorem}
-\declaretheorem[numberlike=equation,name=Theorem,style=noproofstyle]{theoremwp}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Theorem]{theoremwp}
+\declaretheorem[name=Theorem,numbered=no]{theorem*}
+
 \declaretheorem[numberlike=equation]{lemma}
-\declaretheorem[numberlike=equation,name=Lemma,style=noproofstyle]{lemmawp}
+\declaretheorem[name=Lemma,numbered=no]{lemma*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Lemma]{lemmawp}
+
 \declaretheorem[numberlike=equation]{corollary}
-\declaretheorem[numberlike=equation,name=Corollary,style=noproofstyle]{corollarywp}
+\declaretheorem[name=Corollary,numbered=no]{corollary*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Corollary]{corollarywp}
+
 \declaretheorem[numberlike=equation]{proposition}
+\declaretheorem[name=Proposition,numbered=no]{proposition*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Proposition]{propositionwp}
+
 \declaretheorem[numberlike=equation]{claim}
+\declaretheorem[name=Claim,numbered=no]{claim*}
+\declaretheorem[numberlike=equation,style=noproofstyle,name=Claim]{claimwp}
+
 \declaretheorem[numberlike=equation]{conjecture}
+\declaretheorem[name=Conjecture,numbered=no]{conjecture*}
+
 \declaretheorem[numberlike=equation]{question}
+\declaretheorem[name=Question,numbered=no]{question*}
+\declaretheoremstyle[
+    headfont=\bfseries, 
+    notebraces={[}{]},
+    bodyfont=\normalfont\itshape,
+    headpunct={},
+%    postheadspace=\newline,
+%    postheadhook={\textcolor{red}{\rule[.6ex]{\linewidth}{0.4pt}}\\},
+    spacebelow=\parsep,
+    spaceabove=\parsep,
+    mdframed={
+        backgroundcolor=white, 
+            linecolor=black!80, 
+            innertopmargin=6pt,
+            roundcorner=5pt, 
+            innerbottommargin=6pt, 
+            skipabove=\parsep, 
+            skipbelow=\parsep } 
+]{exercisestyle}
 
-\declaretheorem[unnumbered,name=Theorem,style=noproofstyle]{theorem*}
-\declaretheorem[unnumbered,name=Lemma,style=noproofstyle]{lemma*}
-\declaretheorem[unnumbered,name=Corollary,style=noproofstyle]{corollary*}
-\declaretheorem[unnumbered,name=Proposition,style=noproofstyle]{proposition*}
+\declaretheoremstyle[
+    headfont=\bfseries, 
+    notebraces={[}{]},
+    bodyfont=\normalfont\itshape,
+    headpunct={},
+    postheadspace=\newline,
+    postheadhook={\textcolor{black}{\rule[.6ex]{\linewidth}{0.4pt}}\\},
+    spacebelow=\parsep,
+    spaceabove=\parsep,
+    mdframed={
+        backgroundcolor=black!5, 
+            linecolor=black!80, 
+            innertopmargin=6pt,
+            roundcorner=5pt, 
+            innerbottommargin=6pt, 
+            skipbelow=\parsep, 
+            skipbelow=\parsep } 
+]{myopenprobstyle}
 
-\declaretheorem[unnumbered,name=Claim]{claim*}
-\declaretheorem[unnumbered,name=Conjecture]{conjecture*}
-\declaretheorem[unnumbered,name=Question]{question*}
-
-\declaretheorem[name=Open Problem]{openproblem}
-\declaretheorem[name=Exercise]{exercise}
+\declaretheorem[name=Open Problem,style=myopenprobstyle]{openproblem}
+\declaretheorem[name=Exercise,style=exercisestyle]{exercise}
 \numberwithin{openproblem}{chapter}
 \numberwithin{exercise}{chapter}
 
-
-\declaretheorem[name=Theorem,style=noproofstyle]{thmm}
-
-%\theoremstyle{definition}
 \declaretheoremstyle[bodyfont=\it,qed=$\lozenge$]{defstyle} 
+
 \declaretheorem[numberlike=equation,style=defstyle]{definition}
 \declaretheorem[unnumbered,name=Definition,style=defstyle]{definition*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{example}
 \declaretheorem[unnumbered,name=Example,style=defstyle]{example*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{notation}
 \declaretheorem[unnumbered,name=Notation=defstyle]{notation*}
+
 \declaretheorem[numberlike=equation,style=defstyle]{construction}
 \declaretheorem[unnumbered,name=Construction,style=defstyle]{construction*}
 
@@ -53,57 +100,12 @@
 
 \renewcommand{\subsectionautorefname}{Subsection}
 \renewcommand{\sectionautorefname}{Section}
-
-
-% %% Theorems and related environments. 
-% \newtheorem{theorem}{Theorem}
-% \numberwithin{theorem}{chapter}
-% \newtheorem{theorem*}{Theorem}
-% \newtheorem{axiom}{Axiom}
-% \newtheorem{corollary}[theorem]{Corollary}
-% \newtheorem{lemma}[theorem]{Lemma}
-% \def\lemmaautorefname{Lemma}
-% \newtheorem{observation}[theorem]{Observation}
-% \newtheorem{conjecture}[theorem]{Conjecture}
-% \newtheorem{proposition}[theorem]{Proposition}
-% \newtheorem{definition}[theorem]{Definition}
-% \newtheorem{claim}[theorem]{Claim}
-% \newtheorem{remark}[theorem]{Remark}
-% \newtheorem*{remark*}{Remark}
-% \newtheorem*{nclaim}{Claim}
-% \newtheorem{fact}[]{Fact}
-% \newtheorem{subclaim}[theorem]{Subclaim}
-% \newtheorem{problem}[]{Problem}
-% \newtheorem{openproblem}[]{Open Problem}
-% \newtheorem{exercise}{Exercise}
-
-
-
 \newenvironment{myproof}[1]%
 {\vspace{1ex}\noindent{\em Proof.}\hspace{0.5em}\def\myproof@name{#1}}%
 {\hfill{\tiny \qed\ (\myproof@name)}\vspace{1ex}}
-
-
-% %Useful for recalling theorems. (hat-tip texexchange)
-% \makeatletter
-% \newtheorem*{rep@theorem}{\rep@title}
-% \newcommand{\newreptheorem}[2]{%
-% \newenvironment{rep#1}[1]{%
-%  \def\rep@title{#2 \ref{##1} (restated)}%
-%  \begin{rep@theorem}}%
-%  {\end{rep@theorem}}}
-% \makeatother
-
-% \newreptheorem{theorem}{Theorem}
-% \newreptheorem{lemma}{Lemma}
-% \newreptheorem{conjecture}{Conjecture}
-% \newreptheorem{problem}{Problem}
-
-
 \newenvironment{proof-sketch}{\medskip\noindent{\em Sketch of Proof.}\hspace*{1em}}{\qed\bigskip}
 \newenvironment{proof-attempt}{\medskip\noindent{\em Proof attempt.}\hspace*{1em}}{\bigskip}
 \newenvironment{proofof}[1]{\medskip\noindent\emph{Proof of #1.}\hspace*{1em}}{\qed\bigskip}
-
 
 
 \newcommand{\inparen }[1]{\left(#1\right)}             %\inparen{x+y}  is (x+y)
@@ -133,6 +135,8 @@
 \newcommand{\parderiv}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\pderiv}[2]{\partial_{#2}\inparen{#1}}
 \newcommand{\zof}[2]{\inbrace{0,1}^{#1}\longrightarrow \inbrace{0,1}^{#2}}
+
+\newcommand*{\mywedge}{\mathord{\wedge}}
 
 
 % Commonly used blackboard letters
@@ -175,8 +179,8 @@
 
 \newcommand{\Det}{\mathsf{Det}}
 \newcommand{\Perm}{\mathsf{Perm}}
-\newcommand{\ESym}{\mathrm{Esym}}
-\newcommand{\PSym}{\mathrm{Pow}}
+\newcommand{\ESym}{\mathsf{Sym}}
+\newcommand{\PSym}{\mathsf{Pow}}
 \newcommand{\NW}{\mathrm{NW}}
 \newcommand{\IMM}{\mathrm{IMM}}
 
@@ -215,10 +219,12 @@
 %%% Circuit classes
 \newcommand{\SPS}{\Sigma\Pi\Sigma}
 \newcommand{\SPSP}{\Sigma\Pi\Sigma\Pi}
-\newcommand{\SPSE}{\Sigma\Pi\Sigma\wedge}
+\newcommand{\SPSE}{\Sigma\Pi\Sigma\mathord{\wedge}}
 \newcommand{\SPSPfanin}[2]{\Sigma\Pi^{[#1]}\Sigma\Pi^{[#2]}}
 \newcommand{\SPSPsupp}[1]{\Sigma\Pi\Sigma\Pi^{\{#1\}}}
-\newcommand{\SESES}{\Sigma\!\wedge\!\Sigma\!\wedge\!\Sigma}
+\newcommand{\SESES}{\Sigma\mathord{\wedge}\Sigma\mathord{\wedge}\Sigma}
+\newcommand{\SES}{\Sigma\mathord{\wedge}\Sigma}
+\newcommand{\SESE}{\Sigma\mathord{\wedge}\Sigma\mathord{\wedge}}
 
 %%% Some complexity classes. (Don't want to include complexity.sty jsut for this. Messes up with \R etc.
 \newcommand{\VP}{\mathsf{VP}}
@@ -239,3 +245,5 @@
 %%% Garbage to be replaced later
 \newcommand{\mathify}[1]{\mathrm{#1}}
 %\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\pfrac}[2]{\inparen{\frac{#1}{#2}}}
+

@@ -1,0 +1,547 @@
+\chapter{Lower bounds for non-homogeneous depth three circuits, and beyond}
+
+In a very recent result, Kayal and Saha~\cite{KayalSaha14} show that
+similar techniques can also be used to prove lower bounds for
+subclasses of non-homogeneous depth three circuits, namely depth three
+circuits with \emph{bounded bottom fan-in}. 
+We shall denote the class of depth three circuits of bottom fan-in
+bounded by $r$ as $\SPS^{[r]}$ circuits. 
+The ideas involved have also been useful in addressing depth-$4$
+circuits with ``low-arity'' \cite{KumarSaraf15,KayalSaha15}.
+
+But before we see this lower bound, let us first understand the
+computational power of depth three circuits, and the depth reduction
+of \cite{gkks13b} as the ideas there are central for these lower
+bounds.\\
+
+
+\noindent
+A $\Sigma\Pi\Sigma$ circuit computes a polynomial of the form
+\[
+f\quad=\quad \sum_{i=1}^s \ell_{i1}\dots \ell_{iD}.
+\]
+If the circuit is non-homogeneous, the degree of the circuit $D$ could potentially be much larger than $\deg(f)$. \\
+
+The class of depth three arithmetic circuits can compute polynomials
+in non-trivial ways.
+To illustrate a couple of examples, there is a homogeneous $\SPS$
+circuit for $\Perm_n$ of size $2^{O(n)}$ called Ryser's Formula
+\cite{rys63}
+\begin{equation}\label{eqn:ryser}
+\Perm_n \spaced{=} \sum_{S \subseteq[n]} (-1)^{n - |S|} \prod_{i=1}^n \inparen{\sum_{j\in S} x_{ij}}
+\end{equation}
+On the other hand, no $\SPS$ circuit for the $\Det_n$ significantly
+better than writing it as a sum of $n!$ monomials was known (until
+\cite{gkks13b}). 
+Further, the elementary symmetric polynomials $\ESym_k(x_1,\dots,
+x_n)$ of degree $k$ defined as
+\[
+\ESym_k(\vecx) \spaced{=} \sum_{\substack{S\subset \vecx\\|S| = k}} \prod_{x_i\in S}x_i
+\]
+can be computed by a non-homogeneous depth $3$ circuit of size
+$O(n^2)$ over any characteristic zero field.
+In stark contrast, \cite{nw1997} showed that any homogeneous depth $3$
+circuit computing $\ESym_k$ requires size
+$n^{\Omega(k)}$. \cite{nw1997} also showed a $2^{\Omega(n)}$ lower
+bound for homogeneous depth $3$ circuits computing $\Perm_n$ or
+$\Det_n$. 
+
+Also, the results of \cite{gr00,grigoriev98} showed a $2^{\Omega(n)}$
+lower bound for $\SPS$ circuits \emph{over finite fields} that compute
+$\Det_n$ or $\Perm_n$.
+All these results seemed to suggest that there perhaps is an
+$2^{\Omega(n)}$ lower bound for $\SPS$ circuits computing $\Det_n$
+over characteristic zero fields as well.
+If it was true over finite fields, and for homogeneous $\SPS$
+circuits, how much power can characteristic zero fields and
+non-homogeneity add? 
+As it turns out, quite a lot!
+
+\begin{theorem}[\cite{gkks13b}] \label{thm:chasm-at-3} Let $f$ be an
+  $n$-variate degree $d$ polynomial computed by an arithmetic circuit
+  of size $s$ over any characteristic zero field.
+  Then there is a $\SPS$ circuit of size $s' \leq s^{O(\sqrt{d})}$
+  that computes $f$. 
+\end{theorem}
+\begin{corollary}[\cite{gkks13b}]\label{cor:det-sps}
+There is a $\SPS$ circuit over $\Q$, the field of rational numbers, of size $n^{O(\sqrt{n})}$. 
+\end{corollary}
+
+
+The proof is quite short and comprises of two steps using known
+reductions, and going through a bizarre intermediate model of
+\emph{depth $5$ powering circuits}.
+But before we see this, let us first see how non-homogeneous depth-$3$
+circuits can be dealt with, and also see the lower bound of Kayal and
+Saha~\cite{KayalSaha14}. 
+
+
+\section{Handling non-homogeneous depth-$3$ circuits}\label{sec:non-hom-d3}
+
+Non-homogeneous models are generally difficult to deal with in the
+context of lower bounds.
+A natural question to ask if any such non-homogeneous circuit can be
+converted to a suitable homogeneous model which may then be attacked.
+This was first studied by Shpilka and Wigderson~\cite{sw2001}. \\
+
+Let $f$ be a homogeneous degree $d$ polynomial computed by a possibly
+non-homogeneous depth $3$ circuit $C$ of the form
+\[
+f\quad=\quad \sum_{i=1}^s \ell_{i1}\dots \ell_{iD}
+\]
+As a first step, let us extract the degree $d$ homogeneous component
+of each summand on the RHS.
+Since $f$ is a homogeneous degree $d$ polynomial, $f$ has to be sum of
+the degree $d$ homogeneous components of each summand on the RHS.
+Consider a single term of the form
+\[
+T \spaced{=} (\ell_1 + \alpha_1)\cdots (\ell_D + \alpha_D)
+\]
+where each $\ell_i$ is a homogeneous linear polynomial, and $\alpha$
+are elements from the field.
+Assuming that the first $r$ of the $\alpha_i$'s are zero, we can write
+$T$ in the form (with some reuse of symbols)
+\begin{eqnarray*}
+T & = &  \alpha \cdot \ell_1\dots \ell_r \cdot (\ell_{r+1} + 1)\dots (\ell_D+1)\\
+\implies \quad \mathrm{Hom}_d(T) & = & \ell_1 \dots \ell_r \cdot \ESym_{d-r}(\ell_{r+1}, \dots, \ell_D)
+\end{eqnarray*}
+where $\ESym_{k}(\vecx)$, the elementary symmetric polynomial of
+degree $k$ defined as
+\[
+\ESym_k(\vecx) \spaced{=} \sum_{\substack{S\subset \vecx\\|S| = k}} \prod_{x_i\in S}x_i
+\]
+Hence, if we can show that $\ESym_{d-r}(\vecx)$ has a not-too-large
+homogeneous depth $4$ circuit, then we can immediately infer that $f$
+can be computed by a not-too-large homogeneous depth $5$ circuit.
+The following identities, attributed to Newton (cf. \cite{kalman00}),
+is exactly what we need.
+Define the \emph{power symmetric polynomials}, denoted by
+$\mathrm{Pow}_k(\vecx)$ as
+\[
+\mathrm{Pow}_k(\vecx) \quad = \quad \sum_{x_i \in \vecx} x_i^k
+\]
+
+\begin{lemma}[Newton Identities]\label{lem:newton-identities}
+  Let $\ESym_k(x_1,\ldots,x_m)$ and $\PSym_k(x_1,\ldots,x_m)$ denote
+  the \emph{elementary symmetric} and \emph{power symmetric} polynomials of degree
+  $k$ respectively, as defined above. 
+Then,
+  $$
+  \ESym_k\spaced{=}\frac{1}{k!} \cdot 
+  \begin{vmatrix}\PSym_1 & 1 & 0 & \cdots & 0 & 0\\ 
+    \PSym_2 & \PSym_1 & 2 & \cdots & 0 & 0 \\ 
+    \vdots& \vdots & \ddots & \ddots &  & \vdots \\
+    \vdots& \vdots &  & \ddots & \ddots & \vdots \\
+    \PSym_{k-1} & \PSym_{k-2} & \PSym_{k-3}& \cdots & \PSym_1 & k-1 \\ 
+    \PSym_k & \PSym_{k-1} & \PSym_{k-2} & \cdots & \PSym_2 & \PSym_1 
+  \end{vmatrix}.
+  $$
+\end{lemma}
+
+Expanding the determinant on the RHS, we obtain a homogeneous
+expression
+\begin{equation}\label{eqn:esym}
+\ESym_k(\vecx) \quad = \quad \sum_{\veca\;:\; \sum_i ia_i = k} \alpha_\veca \cdot (\PSym_1)^{a_1}\dots (\PSym_k)^{a_k}
+\end{equation}
+The number of summands bounded by the number of non-negative solutions
+to $\sum i a_i = k$ , which is precisely the number of partitions of
+$k$.
+By the estimates of \cite{hr18}, we know that the number of partitions
+of $k$ is bounded by $2^{\Theta(\sqrt{k})}$.
+Thus, (\ref{eqn:esym}) yields a homogeneous depth $4$ circuit for
+$\ESym_k(x_1,\dots, x_m)$ of size $2^{\Theta(\sqrt{k})} \cdot m$.
+In fact, the circuit is a homogeneous $\SPSE$ circuit, i.e. a $\SPSP$
+circuit where the bottom layer of multiplication in fact just raises a
+single variable to a higher power. 
+
+Let us summarizing this as a lemma. 
+
+\begin{lemma}[\cite{sw2001}]\label{lem:d3-d5} For every $d \leq n$, the elementary
+  symmetric polynomial $\ESym_d$ can be computed by a homogeneous
+  $\SPSE$ circuit of size $2^{O(\sqrt{d})} \cdot \poly(n)$ over any
+  field $\F$ of characteristic zero. 
+
+  Thus, if $f$ is a homogeneous degree $d$ polynomial computed by a (possibly
+  non-homogeneous) depth-$3$ circuit $C$ of size $s$ over a field $\F$ of
+  characteristic zero, then $f$ can be equivalently computed by a
+  $\Sigma\Pi\SES$ of size at most $2^{O(\sqrt{d})} \cdot \poly(s)$.
+\end{lemma}
+
+\subsection{Lower bounds for $\SPS$ circuits with small bottom fan-in}
+
+Now let us focus on $\SPS^{[r]}$ circuits, where all linear
+polynomials in the circuit depend on at most $r$ variables.
+The following is the key observation of Kayal and Saha
+\cite{KayalSaha14} and can be verified easily from the proof of
+Lemma~\autoref{lem:d3-d5}. 
+
+\begin{observation}[\cite{KayalSaha14}]
+  Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a
+  homogeneous $n$-variate polynomial of degree $d$, the resulting
+  $\Sigma\Pi\Sigma\mywedge\Sigma$ circuit $C'$ obtained from
+  \autoref{lem:d3-d5} is in fact a
+  $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit of size $s' =
+  \poly(s) \cdot 2^{O(\sqrt{d})}$. 
+
+  Thus, by expanding the all powers of linear polynomials computed in
+  the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit
+  $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$
+  circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot
+  d^r$
+\end{observation}
+
+This observation in combination with \autoref{thm:KLSS-lowsupp}
+immediately yields the main theorem of \cite{KayalSaha14}. 
+
+\begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
+  Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
+  $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen
+  parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
+  n^{\Omega(d/r)}$. 
+\end{theorem}
+
+Kayal and Saha \cite{KayalSaha14} also prove lower bounds for depth $5$ circuits
+where the bottom fan-in is bounded.
+The result proceeds by analysing the random restriction process
+carefully to decompose any $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$ circuit
+into a $\Sigma\Pi\Sigma\Pi^{[\sqrt{d}]}$ circuit and another circuit
+$C'$ such that $\Gamma_{k,\ell}^{[\mathrm{PSD}]}(C') = 0$.
+We just state their theorem here without proof.
+
+\begin{theorem}\label{thm:kaysaha-d5}
+  Let $\F$ be a field of characteristic zero, and let $0\leq \mu < 1$.
+  If $\alpha = \frac{2\mu + 1}{1 - \mu}$ and $\tau = O(N^\mu)$, then
+  there is a family of $n$-variate degree $d$ polynomials
+  $\inbrace{f_n}$ in $\VNP$ with $n\in [d^{2+\alpha}, 2d^{2+\alpha}]$
+  such that any homogeneous $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$
+  circuit computing this polynomial requires size
+  $n^{\Omega(\sqrt{d})}$.
+\end{theorem}
+
+\section{Depth reduction to depth three circuits}\label{sec:depth-3-red}
+
+In this section we shall see the proof of the depth reduction of
+\cite{gkks13b}.
+As mentioned earlier, the proof is quite short but we shall give a
+slightly lengthier exposition that is close to how the result was
+discovered.
+This route via an attempt to prove better lower bounds for depth-$4$
+circuits might be more insightful than the actual proof itself. 
+
+\subsubsection{Towards proving better lower bounds for depth $4$ circuits}
+
+From the depth reduction to depth-$4$ (\autoref{thm:av}), it suffices to
+prove a better lower bound for explicit polynomials computed as
+\begin{equation}\label{eqn:d4-LB}
+f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ir} \quad\text{where}\quad \deg(Q_{ij})\leq \sqrt{d}\;,\; r\leq O(\sqrt{d})
+\end{equation}
+A noble goal is to show a lower bound of $s = n^{\omega(\sqrt{d})}$.
+Perhaps a simpler question to ask is to prove a lower bound for
+expressions of the form
+\begin{equation}\label{eqn:d4pow-LB}
+f\spaced{=} \sum_{i=1}^s Q_{i}^{\sqrt{d}} \quad\text{where }\deg(Q_i)\leq \sqrt{d}
+\end{equation}
+Fortunately, if the goal is to prove lower bounds of
+$n^{\omega(\sqrt{d})}$, then without loss of generality we can focus
+on this equation instead.
+
+\begin{lemma}\label{lem:fischer}
+  Over any characteristic zero field, given an expression of the form
+  \[
+  f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ir} \quad\text{where}\quad \deg(Q_{ij})\leq \sqrt{d}\;,\; r\leq O(\sqrt{d})
+  \]
+  there is an equivalent equation
+  \[
+  f\spaced{=} \sum_{i=1}^{s'} Q_{i}^r\quad\text{where}\quad \deg(Q_{i})\leq \sqrt{d}
+  \]
+  with $s' \leq s \cdot 2^{O(\sqrt{r})}$. 
+\end{lemma}
+\begin{proof}
+  Consider Ryser's formula (\ref{eqn:ryser}) applied for to the
+  $r\times r$ matrix where each row is $[y_1,\dots, y_r]$. 
+  \[
+  \Perm \insquare{\begin{array}{ccc} y_1 & \dots & y_r\\ \vdots & \ddots & \vdots \\ y_1 & \dots & y_r\end{array}} \quad = \quad r! \cdot y_1\dots y_r \quad = \quad \sum_{S\subseteq [r]} \inparen{\sum_{j\in S} y_j}^n
+  \]
+  The lemma follows by applying this identity on each term
+  $Q_{i1}\dots Q_{ir}$. 
+\end{proof}
+
+A very similar identity, to convert a product into sums of powers of
+linear polynomials, is often attributed to Fischer \cite{fischer}.
+We shall refer to this as the Ryser-Fischer trick. 
+
+\begin{lemma}[Ryser-Fischer Trick]\label{lem:ryser-fischer}
+$$y_1 \dots y_r  = \frac{1}{r!} \cdot \sum_{S\subseteq [r]} \inparen{\sum_{j\in S} y_j}^n$$
+\end{lemma}
+
+Note that since we need to divide by $r!$, the above lemma fails over
+low characteristic fields, in particular finite fields.
+Thus, proving an $n^{\omega(\sqrt{d})}$ lower bound for expressions
+such as (\ref{eqn:d4pow-LB}) implies an $n^{\omega(\sqrt{d})}$ lower
+bound for expressions such as (\ref{eqn:d4-LB}).
+We shall call expressions such as (\ref{eqn:d4pow-LB}) as
+$\Sigma\mywedge\Sigma\Pi^{[\sqrt{d}]}$ circuits. 
+
+Just as we converted the top $\Pi$ layer into powering layers using
+the Ryser-Fischer identity, the same can be done to the lower layer of
+$\Pi$ gates as well.
+
+\begin{corollary}\label{cor:pow-genckt}
+  If a homogeneous $n$-variate degree $d$ polynomial $f$ can be
+  computed by a $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ of size $s =
+  n^{O(\sqrt{d})}$, then $f$ can also be computed by an
+  $\Sigma\mathord{\wedge^{[O(\sqrt{d})]}}\Sigma\mathord{\wedge^{[\sqrt{d}]}}\Sigma$
+  circuit of size $s' = s \cdot 2^{O(\sqrt{d})}$. 
+
+  Conversely, if $f$ requires
+  $\Sigma\mathord{\wedge^{[O(\sqrt{d})]}}\Sigma\mathord{\wedge^{[\sqrt{d}]}}\Sigma$
+  circuits of size $s' = n^{\omega(\sqrt{d})}$ to compute it, then $f$
+  cannot be computed by polynomial sized arithmetic circuits. 
+\end{corollary}
+
+We shall take a small detour to apply this to the conversion of non-homogeneous depth $3$
+circuits  to homogeneous shallow circuits.
+
+\subsubsection{Revisiting non-homogeneous depth $3$ circuits}
+
+From \autoref{sec:non-hom-d3}, we know that any non-homogeneous $\SPS$
+circuit can be converted to a homogeneous $\Sigma\Pi\SES$ circuit, and
+this was essentially by writing elementary symmetric polynomial
+$\ESym_d$ has a homogeneous $\SPSE$ circuit of size $2^{O(\sqrt{d})}
+\cdot \poly(n)$:
+\[
+\ESym_d(\vecx) \quad = \quad \sum_{\veca\;:\; \sum_i ia_i = d} \alpha_\veca \cdot (\PSym_1)^{a_1}\dots (\PSym_d)^{a_d}
+\]
+
+To convert this $\Sigma\Pi\Sigma\mywedge$ circuit to a
+$\Sigma\mywedge\Sigma\mywedge$ circuit, we could use
+Ryser-Fischer's identity again.
+At first sight, it appears as though this would yield a blow up of
+$2^d$ as some of the product gates could have fan-in $d$.
+However, notice that the sum is over $a_i$'s satisfying $\sum i\cdot
+a_i = d$.
+Hence, there can be at most $O(\sqrt{d})$ of the $a_i$'s that are
+non-zero.
+By looking at Ryser-Fischer's identity applied on $y_1^{a_1}\dots
+y_{d}^{a_d}$ more carefully, we see that it uses at most $(1+a_1)\dots
+(1+a_d) \leq d^{O(\sqrt{d})}$ distinct linear polynomials instead of the
+\naive bound of $2^{d}$.
+This fact of expressing any degree $d$ monomial over $m$ variables as
+a $\Sigma\mywedge\Sigma$ circuit of size $d^{O(m)}$ was also observed
+by Ellison \cite{ellison}. 
+
+Thus, if $f$ admits a poly-sized depth three circuit (possibly non-homogeneous), then $f$ also
+admits a homogeneous $\Sigma\mywedge\Sigma\mywedge\Sigma$ circuit of
+size $d^{O(\sqrt{d})} \cdot \poly(n)$.
+The following lemma summarizes this discussion. 
+
+\begin{lemma}\label{lem:pow-depth3}
+  Let $f$ be an $n$-variate degree $d$ polynomial that is computable
+  by depth three circuit of size $s$ over $\Q$.
+  Then, $f$ is equivalently computable by a homogeneous
+  $\Sigma\mywedge\Sigma\mywedge\Sigma$ circuit of size
+  $d^{O(\sqrt{d})}\cdot \poly(s)$. 
+
+  Conversely, if $f$ requires $\Sigma\mywedge\Sigma\mywedge\Sigma$
+  circuits of size $n^{\omega(\sqrt{d})}$ over $\Q$ to compute it,
+  then $f$ requires depth three circuits of size
+  $n^{\omega(\sqrt{d})}$. 
+\end{lemma}
+
+In fact, this bound can be improved further and we shall address this
+shortly. 
+
+\subsubsection{Completing the picture}
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\node (SESES) at (0,0) {$\begin{array}{c}n^{\omega(\sqrt{d})} \text{ LB} \\\text{ for } \SESES \text{ circuits}\end{array}$};
+\node (genCkt) at (-2.5,-2) {$\begin{array}{c} n^{\omega(1)} \text{ LB} \\ \text{ for general circuits} \end{array}$}
+edge[stealth-, very thick] (SESES);
+\node (SEPS) at (2.5,-2) {$\begin{array}{c} n^{\omega(\sqrt{d})} \text{ LB} \\ \text{ for $\SPS$ circuits} \end{array}$}
+edge[stealth-, very thick] (SESES)
+edge[->, draw=gray, dashed, thick] (genCkt);
+\node[text=gray] at (0,-1.7) {??};
+\end{tikzpicture}
+\end{center}
+\caption{Power of $\SESES$ ckts.}
+\label{fig:SESES}
+\end{figure}
+
+
+We now have an interesting situation (\autoref{fig:SESES}).
+On one hand, \autoref{cor:pow-genckt} states that a lower bound of
+$n^{\omega(\sqrt{d})}$ for $\SESES$ circuits would yield a
+super-polynomial lower bound for general arithmetic circuits.
+On the other, \autoref{lem:pow-depth3} states that an
+$n^{\omega(\sqrt{d})}$ lower bound for $\SESES$ circuits would yield a
+lower bound of $n^{\omega(\sqrt{d})}$ for depth three circuits. 
+
+Could this just be a coincidence? 
+Or, is it the case that any
+poly-sized arithmetic circuit can be equivalently expressed as a depth
+three circuit of size $n^{O(\sqrt{d})}$ over $\Q$? 
+As it turns out,
+there is indeed a depth reduction to convert any arithmetic circuit to
+a not-too-large depth three circuit over $\Q$. \\
+
+To complete the picture, it suffices to show that a
+$\mywedge\Sigma\mywedge$ circuit can be expressed as a
+$\Sigma\Pi\Sigma$ circuit.
+This would automatically imply a reduction from $\SESES$ circuits to
+$\Sigma\Pi\Sigma$ circuits.
+The last step of the puzzle is the \emph{duality trick} of
+\cite{sax08}. 
+
+\begin{lemma}[The Duality Trick \cite{sax08}]\label{lem:duality} There exists univariate polynomials $f_{ij}$'s of degree at most $b$ such that
+$$
+\inparen{z_1 + \dots + z_s}^b \quad = \quad \sum_{i=1}^{sb+1}
+f_{i1}(z_1)\dots f_{is}(z_s).
+$$
+\end{lemma}
+
+It is worth noting that the degree of each term on the RHS is $sb$,
+whereas the LHS just has degree $b$.
+This is the place where non-homogeneity is introduced.
+Applying the above lemma for a $\mywedge\Sigma\mywedge$ circuit such
+as $(y_1^a + \dots + y_s^a)^b$ gives
+
+\begin{eqnarray*}
+  (y_1^a + \dots + y_s^a)^b & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s f_{ij}(y_j^a)\\
+  & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s \tilde{f}_{ij}(y_j)
+\end{eqnarray*}
+where $\tilde{f}_{ij}(y) = f_{ij}(y^a)$.
+Since each $\tilde{f}_{ij}(y)$ is a univariate polynomial, it can be
+factorized completely over the $\C$, the field of complex numbers.
+Hence, if $f_{ij}(y) = \prod_k (y - \zeta_{ijk})$, then we get
+\begin{eqnarray*}
+  (y_1^a + \dots + y_s^a)^b & = & \sum_{i=1}^{sb+1} \prod_{j=1}^s \tilde{f}_{ij}(y_j)\\
+  &= & \sum_{i=1}^{sb+1} \prod_{j=1}^s \prod_{k=1}^b (y_j - \zeta_{ijk})\\
+\end{eqnarray*}
+which is a depth three circuit! 
+Thus, $(y_1^a + \dots + y_s^a)$ can be
+expressed as a depth three circuit of size $\poly(s,a,b)$ over $\C$.
+With a little more effort, one can construct a depth three circuit
+over $\Q$ as well.
+Summarizing this is a lemma, we have the following. 
+
+\begin{lemma}
+  Any $n$-variate degree $d$ polynomial $f$ computed by a homogeneous
+  $\SESES$ of size $s$ over a characteristic zero field $\F$ can also
+  be computed by a depth three circuit of size $\poly(s,n,d)$ over
+  $\F$. 
+\end{lemma}
+
+Combining with \autoref{cor:pow-genckt} and \autoref{thm:av}, we obtain the main result of \cite{gkks13b}. \\
+
+\noindent {\bf \autoref{thm:chasm-at-3} (restated). }{\em Let $f$ be
+  an $n$-variate degree $d$ polynomial computed by an arithmetic
+  circuit of size $s$ over any characteristic zero field.
+  Then there is a $\SPS$ circuit of size $s' \leq s^{O(\sqrt{d})}$
+  that computes $f$. 
+}\\
+
+{\bf Remark. } Note that if we were to start with a degree $d$
+polynomial $f$ and apply the above depth reduction, all the linear
+polynomials that we obtain at bottom are essentially from the
+application of Ryser-Fischer's identity on the bottom $\Pi$ layer of
+fanin $\sqrt{d}$ of the $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuit.
+Hence, the each of the linear polynomials that appear in the final
+$\SPS$ circuit depend on at most $\sqrt{d}$ variables.
+In other words, the above Theorem yields a reduction to
+$\SPS^{[\sqrt{d}]}$ circuits.
+Note that Kayal and Saha \cite{KayalSaha14} gave a
+$n^{\Omega(\sqrt{d})}$ for $\SPS^{[\sqrt{d}]}$ circuits.
+Thus, one could separate $\VP$ and $\VNP$ (for characteristic zero
+fields) also by improving this bound to $n^{\omega(\sqrt{d})}$. 
+
+
+\section{Revisiting the depth-five powering circuit for $\ESym_d$ }
+
+As mentioned earlier, the conversion of a non-homogeneous depth-$3$
+circuit to a homogeneous depth-$5$ circuit proceeds via the
+construction of Shpilka and Wigderson~\cite{sw2001} for the elementary
+symmetric polynomial.
+A slightly more careful study of the resulting depth-$5$ circuit of
+this construction would be useful for the lower bounds of Kumar and
+Saraf~\cite{KumarSaraf15}, and Kayal and Saha~\cite{KayalSaha15}.
+
+The first step in building the circuit for $\ESym_d$ was \eqref{eqn:esym}, to express it as
+\[
+\ESym_d(\vecx) \quad = \quad \sum_{\veca\;:\; \sum_i ia_i = d} \alpha_\veca \cdot (\PSym_1)^{a_1}\dots (\PSym_d)^{a_d}.
+\]
+
+In the next step, we used the Ryser-Fischer trick
+(\autoref{lem:ryser-fischer}) to replace the top $\times$-gate by a
+$\Sigma\mathord{\wedge}\Sigma$ circuit.
+We then observed that a monomial $y_1^{a_1}\cdots y_d^{a_d}$ can be
+expressed as a $\SES$ circuit of top fan-in at most $(1 + a_1)\cdots
+(1+a_d)$.
+Since we know that the above expression has $\sum i \cdot a_i = d$, at
+most $O(\sqrt{d})$ of the $a_i$'s are non-zero and this gives a bound
+of $d^{O(\sqrt{d})}$. 
+
+However, one can very easily obtain a slightly better bound of
+$2^{O(\sqrt{d})}$ instead of $d^{O(\sqrt{d})}$. 
+
+\begin{proposition}\label{prop:sym-d5-am-gm}
+If $a_1,\dots, a_d$ are non-negative integers with $\sum_{i=1}^d i \cdot a_i  = d$, then 
+\[
+(1+a_1)\cdots (1+a_d) \quad \leq \quad 2^{O(\sqrt{d})}
+\]
+\end{proposition}
+\begin{proof}
+  Without loss of generality, we may assume that the non-zero $a_i$'s
+  are the first $r$ for some $r = O(\sqrt{d})$.
+  Given $\sum i \cdot a_i = d$, we wish to infer a bound for
+  $(1+a_1)\cdots (1+a_r)$ and a natural approach to do this is to use
+  the AM-GM inequality somehow.
+  Indeed,
+  \begin{eqnarray*}
+    (1 + a_1) + (2 + 2a_2) + \cdots + (r + r a_r) & = & \frac{r(r+1)}{2} + d \; \leq \;2d \\
+    \implies    (1 + a_1) \cdot (2 + 2a_2) \cdots (r + r a_r) & \leq & \pfrac{2d}{r}^r \quad\text{(AM-GM inequality)}\\
+    \implies    (1 + a_1) \cdot (1 + a_2) \cdots (1 + a_r) & \leq & \pfrac{2d}{r}^r \pfrac{1}{r!} \quad = \quad \pfrac{d}{r^2}^r \cdot \exp(r)
+  \end{eqnarray*}
+  which is $2^{O(\sqrt{d})}$ for all $r = O(\sqrt{d})$. 
+\end{proof}
+
+\begin{corollary}\label{cor:d5-pow-for-esym}
+  For every $d \leq n$, the elementary symmetric polynomial $\ESym_d$
+  can be computed by a homogeneous $\SESE$ circuit of size at most
+  $2^{O(\sqrt{d})} \cdot \poly(n)$ over any field $\F$ of
+  characteristic $0$.
+\end{corollary}
+
+Thus, specializing to non-homogeneous depth-$3$ circuits, we have the
+following immediate corollary. 
+
+\begin{corollary}\label{cor:d5-pow-for-nonhom-d3}
+  Let $f$ be computed by a (possibly non-homogeneous) depth-$3$
+  circuit $C$ of size $s$.
+  Then, for every $d \leq \deg(f)$, the $d$-th homogeneous part of $f$
+  can be computed by a $\SESES$ circuit of size $\exp(\sqrt{d}) \cdot
+  poly(s)$.
+
+  Further, any bound on the bottom fan-in of the circuit $C$
+  translates to a similar bound on the bottom fan-in of the resulting
+  $\SESES$ circuit. 
+\end{corollary}
+
+\autoref{cor:d5-pow-for-esym} in particular implies that the monomial
+$x_1\cdots x_n$ has a $\SESE$ circuit of size $2^{O(\sqrt{n})}$.
+This is pretty surprising as we know of a $2^{\Omega(n)}$ lower bound
+for $\SES$ circuits computing the monomial.
+Allowing higher powers at bottom layer might appear to be of no
+assistance in computing a multilinear monomial but surprisingly it
+does!\footnote{This observation is by Michael Forbes. }
+
+\begin{openproblem}
+Show a lower bound on the size of an $\SESE$ circuit computing the monomial $x_1\cdots x_n$. 
+\end{openproblem}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

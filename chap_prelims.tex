@@ -3,9 +3,15 @@
 We first explain some notation that shall be used throughout this article. 
 
 \begin{itemize}
-\item In most cases, the degree of the polynomial shall be denoted by $d$ and the number of variables shall be denoted by $n$. In some cases, $n$ would refer to a parameter that would determine the number of variables (though perhaps not exactly). 
-\item Almost all the polynomials that we shall be studying would be multilinear. In multilinear polynomials, we shall identify a monomial with the \emph{set of variables} that it is a product of. This would allow us to abuse notation and say $x_i \in m$ to mean that $x_i$ divides the monomial $m$, or to say $m_1 \intersection m_2$ to refer to the $\gcd(m_1,m_2)$. We shall also use the notation $m \in f$ to mean that the polynomial $m$ has a non-zero coefficient for the monomial $m$. 
-\item We shall use $[n]$ to denote $\inbrace{1,\dots, n}$ and we shall use boldface letters such as $\mathbf{x}$ to denote sets of variables. Further, $\mathbf{x}_{[n]}$ shall refer to a set of variables $\inbrace{x_1,\dots, x_n}$. However, if the number of variables is understood, we shall drop the subscript. 
+\item In most cases, the degree of the polynomial shall be denoted by $d$ and the number of variables shall be denoted by $n$. 
+In some cases, $n$ would refer to a parameter that would determine the number of variables (though perhaps not exactly). 
+\item Almost all the polynomials that we shall be studying would be multilinear. 
+In multilinear polynomials, we shall identify a monomial with the \emph{set of variables} that it is a product of. 
+This would allow us to abuse notation and say $x_i \in m$ to mean that $x_i$ divides the monomial $m$, or to say $m_1 \intersection m_2$ to refer to the $\gcd(m_1,m_2)$. 
+We shall also use the notation $m \in f$ to mean that the polynomial $m$ has a non-zero coefficient for the monomial $m$. 
+\item We shall use $[n]$ to denote $\inbrace{1,\dots, n}$ and we shall use boldface letters such as $\mathbf{x}$ to denote sets of variables. 
+Further, $\mathbf{x}_{[n]}$ shall refer to a set of variables $\inbrace{x_1,\dots, x_n}$. 
+However, if the number of variables is understood, we shall drop the subscript. 
 \end{itemize}
 
 
@@ -14,7 +20,10 @@ We first explain some notation that shall be used throughout this article.
 As mentioned earlier, the most robust model of computation that are studied are arithmetic circuits, which are formally defined as follows. 
 
 \begin{definition}[Arithmetic circuits and formulas]\label{defn:arithmetic-circuit}
-An arithmetic circuit is a directed acyclic graph with a unique sink vertex called the \emph{root}. The source vertices are labelled by either formal variables or field constants, and each internal node of the graph is labelled by either $+$ or $\times$. Nodes compute formal polynomials in the input variables  in the natural way. Further, edges entering a $+$ nodes also might have field constants on them to allow the $+$ to compute an $\F$-linear combination of the children (rather than just a sum). 
+An arithmetic circuit is a directed acyclic graph with a unique sink vertex called the \emph{root}. 
+The source vertices are labelled by either formal variables or field constants, and each internal node of the graph is labelled by either $+$ or $\times$. 
+Nodes compute formal polynomials in the input variables  in the natural way. 
+Further, edges entering a $+$ nodes also might have field constants on them to allow the $+$ to compute an $\F$-linear combination of the children (rather than just a sum). 
 
 The polynomial computed by the circuit is defined as the polynomial computed by the root. \\
 
@@ -26,16 +35,20 @@ If the underlying graph is a \emph{tree} instead of a general acyclic graph, the
 Another model of computation that is studied often is the model \emph{algebraic branching programs}, defined as follows. 
 
 \begin{definition}[Algebraic Branching Program]\label{defn:ABP}
-An algebraic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. The polynomial computed by the ABP is defined as 
+An algebraic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). 
+All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. 
+The polynomial computed by the ABP is defined as 
 \[
 f\spaced{=} \sum_{\gamma: s \leadsto t} \mathrm{wt}(\gamma)
 \]
 where for every path $\gamma$ from $s\leadsto t$, the weight $\mathrm{wt}(\gamma)$ is defined as the product of the labels over the edges in $\gamma$. 
 \end{definition}
 
-The width of the ABP is defined as the maximum number of vertices in any layer, and the depth is defined as the length of the longest path from $s$ to $t$. The polynomial computed by an ABP is captured by the \emph{iterated matrix multiplication} polynomial that we shall soon see. 
+The width of the ABP is defined as the maximum number of vertices in any layer, and the depth is defined as the length of the longest path from $s$ to $t$. 
+The polynomial computed by an ABP is captured by the \emph{iterated matrix multiplication} polynomial that we shall soon see. 
 
-It is easy to observe that any arithmetic formula of size $s$ can be simulated by an algebraic branching program of size $\poly(s)$, and any algebraic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. It is a major open problem to show a separation between any of these. 
+It is easy to observe that any arithmetic formula of size $s$ can be simulated by an algebraic branching program of size $\poly(s)$, and any algebraic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. 
+It is a major open problem to show a separation between any of these. 
 
 \[
 \mathrm{Formulas} \spaced{\subseteq} \mathrm{ABPs} \spaced{\subseteq} \mathrm{Circuits}
@@ -47,7 +60,10 @@ Show a super-polynomial separation between any of the models -- formulas, ABPs a
 
 \subsection{Constant depth circuits}
 
-We shall be dealing a lot with constant depth circuits. Normally, the root is assumed to be a $+$ gate\footnote{the reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates. A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. Thus, a depth two circuit consist of the form 
+We shall be dealing a lot with constant depth circuits. 
+Normally, the root is assumed to be a $+$ gate\footnote{the reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates. 
+A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. 
+Thus, a depth two circuit consist of the form 
 \[
 f\quad = \quad \sum_{i=1}^s \prod_{j=1}^d x_{ij}
 \]
@@ -60,13 +76,18 @@ Any arithmetic circuit of depth $\Delta$ and size $s$, can be simulated by an ar
 Thus for constant depth circuits (where $\Delta = O(1)$), we may assume that we are dealing with formulas without much loss of generality.
 
 
-It would also be useful to keep track of the \emph{fan-in} of the gates in a certain layer (especially of multiplication gates). We shall use superscripts to denote this. For example, an $\Sigma\Pi^{[a]}\Sigma\Pi^{[b]}$ circuits computes a polynomial of the form
+It would also be useful to keep track of the \emph{fan-in} of the gates in a certain layer (especially of multiplication gates). 
+We shall use superscripts to denote this. 
+For example, an $\Sigma\Pi^{[a]}\Sigma\Pi^{[b]}$ circuits computes a polynomial of the form
 \[
 f \spaced{=} \sum_i \prod_{j=1}^a Q_{ij}
 \]
 where each $Q_{ij}$ is a polynomial of degree at most $b$. \\
 
-It would also be useful to consider special layers of multiplication gates that multiply the same polynomial several times, rather than multiplying several different polynomials together. Since such gates simply raise the input to a certain power, these would be called \emph{exponentiation} gates. A layer of exponentiation will be denoted by $\wedge$ \footnote{To say a little on the choice of notation, it was introduced in \cite{gkks13b} and the first choice was to use ${}^{\wedge}$, but looked rather ugly to write it as say $\Sigma{}^{\wedge}\Sigma$. Hence, $\Sigma\!\wedge\!\Sigma$  was chosen instead. } and, for example, a $\Sigma\!\wedge\!\Sigma$ circuit computes a polynomial of the form 
+It would also be useful to consider special layers of multiplication gates that multiply the same polynomial several times, rather than multiplying several different polynomials together. 
+Since such gates simply raise the input to a certain power, these would be called \emph{exponentiation} gates. 
+A layer of exponentiation will be denoted by $\wedge$ \footnote{To say a little on the choice of notation, it was introduced in \cite{gkks13b} and the first choice was to use ${}^{\wedge}$, but looked rather ugly to write it as say $\Sigma{}^{\wedge}\Sigma$. 
+Hence, $\Sigma\!\wedge\!\Sigma$  was chosen instead. } and, for example, a $\Sigma\!\wedge\!\Sigma$ circuit computes a polynomial of the form 
 \[
 f\spaced{=} \sum_{i=1}^s \ell_{i}^d
 \]
@@ -80,7 +101,8 @@ Show that any constant width ABP can be simulated by a polynomial sized formula.
 
 \section{Polynomials of interest}
 
-There are a few polynomials that are the usual suspects while proving lower bounds. The polynomials that we would be dealing with in this article are defined below. 
+There are a few polynomials that are the usual suspects while proving lower bounds. 
+The polynomials that we would be dealing with in this article are defined below. 
 
 \subsection*{The determinant and the permanent families}
 
@@ -93,23 +115,32 @@ The permanent of an $n\times n$ symbolic matrix shall be denoted by $\Perm_n$ an
 \Perm_n \spaced{=} \sum_{\sigma \in S_n}x_{1,\sigma(1)}\dots x_{n,\sigma(n)}
 \]
 
-Both of these polynomials are of degree $n$ and over $n^2$ variables. We know that $\Det_n$ can be computed by a polynomial sized arithmetic circuit and it is widely believed that the permanent requires circuits of size $2^{\Omega(n)}$. 
+Both of these polynomials are of degree $n$ and over $n^2$ variables. 
+We know that $\Det_n$ can be computed by a polynomial sized arithmetic circuit and it is widely believed that the permanent requires circuits of size $2^{\Omega(n)}$. 
 
 \subsection*{The Nisan-Wigderson polynomial families}
 
-Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\leq m$. Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\F_m$ of $m$ elements. Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_{n,m,d}$ is defined as
+Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\leq m$. 
+Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\F_m$ of $m$ elements. 
+Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. 
+The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_{n,m,d}$ is defined as
 \[
 \NW_{n,m,d}(\vecx) \spaced{=} \sum_{\substack{p(t) \in \F_m[t]\\ \deg(p) \leq d}} x_{1,p(1)}\dots x_{n,p(n)}
 \]
-That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. This is a polynomial of degree $n$ over $mn$ variables.
+That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. 
+This is a polynomial of degree $n$ over $mn$ variables.
 
 This monomials of this polynomial satisfy a very useful ``low pairwise-intersection'' property. 
 
 \begin{lemma}\label{lem:NW-low-intersection}
-Let $m_1$ and $m_2$ be any two distinct monomials in $\NW_{n,m,d}(\vecx)$. Then, there are at most $d$ variables that divide both $m_1$ and $m_2$. 
+Let $m_1$ and $m_2$ be any two distinct monomials in $\NW_{n,m,d}(\vecx)$. 
+Then, there are at most $d$ variables that divide both $m_1$ and $m_2$. 
 \end{lemma}
 \begin{proof}
-Let $m_1$ and $m_2$ correspond to univariates $p_1(t), p_2(t) \in \F_m[t]$ of degree at most $d$. Then if $x_{ij}$ divides $m_1$, then $p_1(i) = j$, similarly for $m_2$. But since $p_1$ and $p_2$ are two distinct polynomials of degree at most $d$, they can agree in at most $d$ evaluations. Thus, there can be at most $d$ variables that divide both $m_1$ and $m_2$. 
+Let $m_1$ and $m_2$ correspond to univariates $p_1(t), p_2(t) \in \F_m[t]$ of degree at most $d$. 
+Then if $x_{ij}$ divides $m_1$, then $p_1(i) = j$, similarly for $m_2$. 
+But since $p_1$ and $p_2$ are two distinct polynomials of degree at most $d$, they can agree in at most $d$ evaluations. 
+Thus, there can be at most $d$ variables that divide both $m_1$ and $m_2$. 
 \end{proof}
 
 For most generic choices of the parameters, the polynomial $\NW_{n,m,d}$ is believed to require circuits of exponential size to compute them. 
@@ -127,7 +158,8 @@ $$
 
 It is often useful to think of this as the polynomial computed by a \emph{generic algebraic branching program} of width $n$ and depth $n$ (where the edge connecting vertex $i$ of layer $\ell$ to vertex $j$ of layer $\ell+1$ has weight $x_{ij}^{(\ell)}$). 
 
-This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}. Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
+This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}. 
+Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
 
 
 %%% Local Variables: 

@@ -1,6 +1,7 @@
 \chapter{Some estimates for binomial coefficients}
 
-Throughout this article, we would be seeing several binomial coefficients. The following estimates would allow us to get a better handle on the growth of such terms. 
+Throughout this article, we would be seeing several binomial coefficients.  
+The following estimates would allow us to get a better handle on the growth of such terms. 
 
 We shall use $\log$ to refer to $\log_2$ and $\ln$ to refer to the natural logarithm. 
 
@@ -34,7 +35,8 @@ For any constants $\alpha, \beta$,
 In particular, if $\beta = \alpha/2$, then $\binom{\alpha n}{\beta{n}} = 2^{\alpha n} / \poly(n)$. 
 \end{proposition}
 
-For the more recent lower bounds, we would encounter several delicate ratios of binomial coefficients. The following lemma would help us simplify several such expressions and get a better handle on the growth. 
+For the more recent lower bounds, we would encounter several delicate ratios of binomial coefficients. 
+The following lemma would help us simplify several such expressions and get a better handle on the growth. 
 
 \begin{lemma}{\cite[Lemma 6]{gkks13}}\label{lem:factorial-ratio} For any $a,b = O(\sqrt{n})$, then
 \[
@@ -42,21 +44,23 @@ For the more recent lower bounds, we would encounter several delicate ratios of 
 \]
 \end{lemma}
 
-We shall be using the above lemma very often in the lower bounds. One particular instantiation that shall also appear frequently shall be the following lemma.  
+We shall be using the above lemma very often in the lower bounds. 
+One particular instantiation that shall also appear frequently shall be the following lemma.  
 
-\begin{lemma}\label{lem:binom-approx}
-Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. For any $a, b$ such that $a,b = O(\sqrt{n})$, 
+\begin{restatable}{lemma}{binomapprox}\label{lem:binom-approx}
+Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. 
+For any $a, b$ such that $a,b = O(\sqrt{n})$, 
 \[
-\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \poly(n)
+\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \exp(O(b\cdot \epsilon^2))
 \]
-\end{lemma}
+\end{restatable}
 \begin{proof}
 The proof of the above lemma would repeated use \autoref{lem:factorial-ratio}. 
 \begin{eqnarray*}
 \frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
 & \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
 & = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
-& \stackrel{\poly}{\approx} & 2^{-a} \cdot (1+\epsilon)^{a - 2b}
+& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2))
 \end{eqnarray*}
 \end{proof}
 
