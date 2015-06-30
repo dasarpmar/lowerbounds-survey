@@ -11,7 +11,7 @@
 *.dvi
 *-converted-to.*
 # these rules might exclude image files for figures etc.
-# *.ps
+*.ps
 # *.eps
 *.pdf
 auto/*
@@ -108,3 +108,4 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+sha.tex
