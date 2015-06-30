@@ -80,3 +80,122 @@ The main task is to construct a point $X_0$ such that $f(X_0)=0$, yet the rank o
 	
 \end{theorem}
 
+
+\section{Yabe's improvement~\cite{Yabe15}}
+
+A recent result of Yabe~\cite{Yabe15} improves the lower bound to $\dc(\Perm_d) \geq (d-1)^2 + 1$ and we give an description of the proof now. 
+
+The main idea in Yabe's proof is to use the determinantal complexity of a polynomial to a certain \emph{bi-linear rank} of a quadratic form closely related to the Hessian. 
+
+\begin{definition}[Quadratic forms and associated matrices]
+A quadratic form $Q$ over $n$-variables is a homogeneous degree $2$ polynomial $Q(\vecx) = \sum_{i,j} q_{ij} x_i x_j$. 
+
+For every such quadratic form $Q$, we shall define the following symmetric matrix (that shall also be called $Q$) such that $Q_{i,j} = \frac{q_{ij}}{2}$ if $i\neq j$ (half the coefficient of $x_i x_j$) and $Q_{i,i} = q_{i,i}$ (the coefficient of $x_i^2$). 
+\end{definition}
+
+For example, the matrix corresponding to the quadratic form $x_1^2 + 2x_1x_2 + x_2^2$ would be the $2\times 2$ of ones.\\
+
+For any point $X_0 \in \R^{d\times d}$, the Hessian of $\Perm_d$ at the point $X_0$ can be interpreted as a quadratic form as well. The following observation gives an alternate method to understand this quadratic form. 
+
+\begin{observation}\label{obs:hessian-deg2-hom}
+Let $f$ be any $n$-variate polynomial and let $\veca \in \R^n$Then the quadratic form associated with the Hessian of $f$ evaluated at $\veca$, denoted by $\hess(f)(\veca)$, can be equivalently expressed as
+\[
+\sum_{i,j} x_{i} x_{j} \cdot \pfrac{\partial^2 f}{\partial x_{i} \partial x_{j}}\inparen{\veca} \spaced{=} \Hom_2(f(\vecx + \veca))
+\]
+\end{observation}
+\begin{proof}
+The statement follows almost immediately when $f(\vecx + \veca)$ is expanded around $\mathbf{0}$ using the Taylor Expansion. 
+\end{proof}
+
+
+\noindent 
+For any quadratic form $Q$, there is a very natural notation of rank that can be defined. 
+
+\begin{definition}[Bi-linear rank of a quadratic form] For any quadratic form $Q$ we shall define its \emph{bi-linear rank}, denoted by $\brank(Q)$, as the smallest integer $r$ for which there exists linear forms $\ell_1,\ldots, \ell_r, \ell_1',\ldots,  \ell_r'$ such that 
+\[
+Q \spaced{=} \ell_1 \ell_1' + \cdots + \ell_r \ell_r'. \qedhere
+\]
+\end{definition}
+
+\begin{observation}\label{obs:brank-rank}
+A quadratic form $Q$ satisfies $\brank(Q) \leq r$ if and only if there exists a matrix $B$ such that $Q = B + B^T$ and $\rank(B) \leq r$. 
+\end{observation}
+\begin{proof}
+TODO
+\end{proof}
+
+\subsection{Using $\brank$ to lower bound determinantal complexity}
+
+The usual methods to get a bound on determinantal complexity is to find a suitable point $X_0 \in \R^{d\times d}$ such that $\Perm_d(X_0) = 0$ and look at the rank of the Hessian at $X_0$. Mignon and Ressayre~\cite{mr04} showed that $\rank(\hess(\Perm_d)(X_0))$ is upper-bounded by $2\cdot \dc(\Perm_d)$. Thus, one just needs to find a suitable matrix $X_0$ for which the Hessian has rank about $d^2$. 
+
+Yabe~\cite{Yabe15} deviates from this plan and instead studies the $\brank$ of the Hessian. The first step in his approach is to connect the determinantal complexity to the $\brank$ of the Hessian. 
+
+
+\begin{lemma}\label{lem:detcomplexity-to-brank} Let $f$ be an $n$-variate polynomial and $\veca \in \R^n$ be a point such that $f(\veca) = 0$. Then, $\brank(\Hom_2(f(\vecx + \veca))) \leq \max(\dc(f),4)$. 
+\end{lemma}
+\begin{proof}
+Let $\dc(f) = m$. This means that $f$ can be computed as the determinant of an $m\times m$ matrix of linear polynomials in $\vecx$, that is there are matrices $A$ and $B$ such that  
+\begin{eqnarray*}
+f(\vecx + \veca) & = & \Det_m(A(\vecx) + B)
+\end{eqnarray*}
+Since $f(\veca) = 0$, we know that the matrix $B$ is not invertible. Hence, there exists some pair of matrices $S, T$ with $\det(S) = \det(T) = 1$ such that $S B T$ takes the form of a diagonal matrix with either ones or zeroes on the diagonal. Furthermore, since $\det(B) = 0$, we know that there must be at least one $0$ on the diagonal. Let $\Lambda_s$ refer to the diagonal matrix with $s$ zeroes on the diagonal followed by ones. Then, $S B T = \Lambda_s$ for some $s \geq 1$. Therefore 
+\begin{eqnarray*}
+f(\vecx + \veca) & = & \Det_m(S) \cdot \Det_m(A(\vecx) + B) \cdot \Det_m(T)\\
+ & = & \Det_m( S (A(\vecx)) T + \Lambda_s)\\
+ & = & \Det_m( A'(\vecx) + \Lambda_s).
+\end{eqnarray*}
+We are interested in the degree $2$ homogeneous component of the RHS. If $s > 2$, then every monomial in $\Det_m(A'(\vecx) + \Lambda_s)$ has degree at least $3$ so the homogeneous degree $2$ part is just zero. If $s = 2$, then the homogeneous degree $2$ part is just $A'_{11}(\vecx) A'_{22}(\vecx) - A'_{12}(\vecx) A'_{21}(\vecx)$ and hence $\brank(\Hom_2(f(\vecx + \veca)))\leq 4$. 
+
+In the case of $s = 1$, it is easy to check that the only degree $2$ monomials are $A_{11}'(\vecx) A_{ii}(\vecx)$ and $A_{1i}'(\vecx) A_{i1}'(\vecx)$. Thus, any linear combination of them can be written as
+\[
+A_{11}'(\vecx) \cdot \ell  \;+\;  \sum_{i=2}^m \alpha_i \cdot A_{1i}'(\vecx)A_{i1}'(\vecx)
+\]
+and hence $\brank(\Hom_2(f(\vecx + \veca))) \leq m$
+\end{proof}
+
+In the original argument of Mignon and Ressayre, they get that $\rank(\hess(\Perm_d)(X_0)) \leq 2 \cdot \dc(\Perm_d)$ and this is the loss that eventually results in the lower bound of $d^2/2$. But \autoref{lem:detcomplexity-to-brank} saves this factor of two but we are now left with the task of showing that the quadratic form associated with $\hess(\Perm_d)(X_0)$ has large bi-linear rank. Yabe~\cite{Yabe15} does this by using \emph{Sylvester's Law of Inertia}.
+
+\begin{lemma}[Sylvester's Law of Inertia]\label{lem:sylvester-law-of-inertia} Let $Q$ be a real symmetric matrix that has $n_+$ positive eigenvalues, $n_-$ negative eigenvalues. Then, if $Q = B + B^T$, we must have $\rank(B) \geq \max(n_+, n_-)$. 
+\end{lemma}
+\begin{proof}
+TODO
+\end{proof}
+
+By \autoref{lem:sylvester-law-of-inertia} and \autoref{obs:brank-rank}, in order to lower-bound $\brank(\hess(\Perm_d)(X_0))$, we just need to show that $\hess(\Perm_d)(X_0)$ many eigenvalues of the same sign. This is the main technical calculation. 
+
+\begin{lemma}\label{lem:X0-neg-eigenvalue-bound}
+Let $X_0$ be the matrix defined by 
+\[
+X_0 \spaced{=} \insquare{\begin{array}{cccc}
+1-d & 1 & \cdots & 1\\
+1 & 1 & \cdots & 1\\
+\vdots & \vdots & \ddots & \vdots\\
+1 & 1 & \cdots & 1
+\end{array}}
+\]
+that satisfies $\Perm_d(X_0) = 0$. The matrix $\hess(\Perm_d)(X_0)$ has $(d-1)^2 + 1$ negative eigenvalues. 
+\end{lemma}
+
+\noindent 
+We shall defer this calculation to the end of the chapter and finish the lower bound. 
+
+\begin{theorem}[\cite{Yabe15}]\label{thm:dc-comp-yabe}
+$\dc(\Perm_d) \geq (d-1)^2 + 1$. 
+\end{theorem}
+\begin{proof}
+Let $X_0$ be the matrix as in \autoref{lem:X0-neg-eigenvalue-bound}. By \autoref{lem:detcomplexity-to-brank}, we get that
+\[
+\brank(\Hom_2(\Perm_d(X + X_0))) \spaced{\leq} \dc(\Perm_d). 
+\]
+On the other hand, \autoref{obs:brank-rank}, \autoref{lem:sylvester-law-of-inertia} and  \autoref{lem:X0-neg-eigenvalue-bound} imply that 
+\[
+\brank(\Hom_2(\Perm_d(X + X_0))) \spaced{\geq} (d-1)^2 + 1
+\]
+forcing $\dc(\Perm_d) \geq (d-1)^2 + 1$. 
+\end{proof}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 
