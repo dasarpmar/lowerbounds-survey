@@ -17,6 +17,17 @@
 @string{TCS = "Theoretical Computer Science"}
 @string{TOC = "Theory of Computing"}
 
+@inproceedings{smolensky87,
+ author = {Smolensky, Roman},
+ title = {Algebraic Methods in the Theory of Lower Bounds for Boolean Circuit Complexity},
+ booktitle = {\STOC{1987}},
+ year = {1987},
+ pages = {77--82},
+ numpages = {6},
+ doi = {10.1145/28395.28404},
+} 
+
+
 @InProceedings{	  a05,
   author	= {Manindra Agrawal},
   title		= {{P}roving {L}ower {B}ounds {V}ia {P}seudo-random
@@ -26,6 +37,20 @@
   pages		= {92-105},
   doi       = {10.1007/11590156_6},
 }
+
+@Article{razborov87,
+year={1987},
+issn={0001-4346},
+journal={Mathematical notes of the Academy of Sciences of the USSR},
+volume={41},
+number={4},
+doi={10.1007/BF01137685},
+title={Lower bounds on the size of bounded depth circuits over a complete basis with logical addition},
+url={http://dx.doi.org/10.1007/BF01137685},
+author={Razborov, Alexander A.},
+pages={333-338},
+}
+
 
 @Article{	  a52,
   author	= {Nesmith C. Ankeny},
@@ -60,6 +85,19 @@
   booktitle	= {\STOC{1998}},
   year		= {1998},
   pages		= {10-19}
+}
+
+@article{aad00,
+  author    = {Manindra Agrawal and
+               Eric Allender and
+               Samir Datta},
+  title     = {On $\mathrm{TC}^0$, $\mathrm{AC}^0$, and {A}rithmetic {C}ircuits},
+  journal   = JCSS,
+  volume    = 60,
+  number    = 2,
+  pages     = {395--421},
+  year      = 2000,
+  doi       = {10.1006/jcss.1999.1675},
 }
 
 @InProceedings{	  ab99,
@@ -316,6 +354,16 @@
   pages		= {290-295}
 }
 
+@inproceedings{BC15,
+  author    = {Suman K. Bera and
+               Amit Chakrabarti},
+  title     = {A Depth-Five Lower Bound for Iterated Matrix Multiplication},
+  booktitle = CCC,
+  pages     = {183--197},
+  year      = {2015},
+  doi       = {10.4230/LIPIcs.CCC.2015.183},
+}
+
 @article{Berk84,
 title = "On computing the determinant in small parallel time using a small number of processors ",
 journal = "Information Processing Letters ",
@@ -495,7 +543,7 @@ doi       = {10.1016/0020-0190(84)90018-8},
   series={Algorithms and Computation in Mathematics},
   year={2000},
   publisher={Springer},
-  url={http://math-www.uni-paderborn.de/agpb/work/habil.ps}
+  note = {Online version: \url{http://math-www.uni-paderborn.de/agpb/work/habil.ps}}
 }
 
 
@@ -629,6 +677,17 @@ doi       = {10.1016/0020-0190(84)90018-8},
   eprint        = {1308.1640},
   doi       = {10.4230/LIPIcs.STACS.2014.239},
 }
+@inproceedings{CM14a,
+  author    = {Suryajith Chillara and
+               Partha Mukhopadhyay},
+  title     = {On the Limits of Depth Reduction at Depth 3 Over Small Finite Fields},
+  booktitle = MFCS,
+  pages     = {177--188},
+  year      = {2014},
+  doi       = {10.1007/978-3-662-44465-8_16},
+  eprint = {1401.0189}
+}
+
 
 
 @Article{	  cos86,
@@ -877,7 +936,7 @@ doi       = {10.1016/0020-0190(84)90018-8},
   booktitle = {\STOC{2014}},
   pages     = {128--135},
   year      = {2014},
-   doi       = {10.1145/2591796.2591824},
+  url       = {http://doi.acm.org/10.1145/2591796.2591824},
   timestamp = {Wed, 18 Jun 2014 08:38:28 +0200},
   eccc      = {TR13/100},
   ecccurlid  = {2013/100},
@@ -1004,6 +1063,7 @@ doi       = {10.1016/0020-0190(84)90018-8},
   booktitle = {\FOCS{2013}},
   year      = {2013},
   pages     = {578--587},
+  doi       = {10.1109/FOCS.2013.68},
   eccc      = {TR13/026},
   ecccurlid = {2013/026}
 }
@@ -1209,6 +1269,15 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   number    = {3},
   pages     = {559--578},
 }
+
+@unpublished{github,
+title= {A survey of lower bounds in arithmetic circuit complexity},
+author = {Ramprasad Saptharishi},
+year = 2015,
+note= {Github survey},
+URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
+}
+
 
 @article{GLSS12,
   author    = {Dmitry Gavinsky and
@@ -1523,7 +1592,7 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   title		= {{An Exponential Lower Bound for Homogeneous Depth Four Arithmetic Circuits}},
   booktitle	= {\FOCS{2014}},
   year		= 2014,
-  doi           = {FOCS.2014.15},
+  doi           = {10.1109/FOCS.2014.15},
   eccc          = {TR14/005},
   ecccurlid     = {2014/005},
 }
@@ -1557,7 +1626,7 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   year		= {2012},
   volume	= {448},
   pages		= {56--65},
-  doi           = {j.tcs.2012.03.041},
+  doi           = {10.1016/j.tcs.2012.03.041},
   eprint        = {1006.4700}
 }
 
@@ -1567,7 +1636,7 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   booktitle = {\ICALP{2008}},
   year      = {2008},
   pages     = {575-586},
-  doi       = {978-3-540-70575-8_47},
+  doi       = {10.1007/978-3-540-70575-8_47},
 }
 
 @Article{	  kp07,
@@ -1641,7 +1710,7 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   title     = {The limits of depth reduction for arithmetic formulas: it's all about
                the top fan-in},
   booktitle = {\STOC{2014}},
-  doi       = {10.1145/2591796.2591827},
+  url       = {http://doi.acm.org/10.1145/2591796.2591827},
   year      = {2014},
   pages     = {136--145},
   eccc      = {TR13/068},
@@ -1699,7 +1768,7 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   booktitle = {\STOC{2014}},
   pages     = {146--153},
   year      = {2014},
-  doi       = {10.1145/2591796.2591847},
+  url       = {http://doi.acm.org/10.1145/2591796.2591847},
   eccc      = {TR13/091},
   ecccurlid = {2013/091},
 }
@@ -2051,7 +2120,7 @@ note={Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1
   booktitle = {\SODA{1997}},
   year      = {1997},
   pages     = {730-738},
-  doi       = {10.1.1.31.1673},
+  url       = {http://dl.acm.org/citation.cfm?id=314161.314429},
   note       = {Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.31.1673}{\tt citeseer:10.1.1.31.1673}}
 }
 
@@ -2090,7 +2159,7 @@ note={Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1
   booktitle	= {\STOC{1991}},
   year		= {1991},
   pages		= {410-418},
-  doi           = {10.1.1.17.5067},
+  url       = {http://doi.acm.org/10.1145/103418.103462},
   note           = {Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.17.5067}{\tt citeseer:10.1.1.17.5067}}
 }
 
@@ -2322,9 +2391,9 @@ note={Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1
   booktitle = {\STOC{2010}},
   year      = {2010},
   pages     = {659-666},
+  url       = {http://doi.acm.org/10.1145/2535928},
   eccc      = {TR10/002},
   ecccurlid = {2010/002},
-
 }
 
 @unpublished{raz10fool,
@@ -2787,9 +2856,7 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   volume	= {5},
   pages		= {207--388},
   month		= {March},
-  acmid		= {1923902},
-  address	= {Hanover, MA, USA},
-  doi		= {http://dx.doi.org/10.1561/0400000039},
+  url		= {http://dx.doi.org/10.1561/0400000039},
   issn		= {1551-305X},
   issue		= {3\&\#8211;4},
   issue_date	= {March 2010},
