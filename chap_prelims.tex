@@ -120,6 +120,7 @@ We know that $\Det_n$ can be computed by a polynomial sized arithmetic circuit a
 
 \subsection*{The Nisan-Wigderson polynomial families}
 
+\begin{definition}[Nisan-Wigderson Polynomials]\label{defn:NW-polyfamilies}
 Let $n,m,d$ be arbitrary parameters with $m$ being a power of a prime, and $n,d\leq m$. 
 Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\F_m$ of $m$ elements. 
 Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. 
@@ -129,6 +130,8 @@ The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_
 \]
 That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. 
 This is a polynomial of degree $n$ over $mn$ variables.
+\end{definition}
+
 
 This monomials of this polynomial satisfy a very useful ``low pairwise-intersection'' property. 
 

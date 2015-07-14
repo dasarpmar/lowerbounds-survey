@@ -224,6 +224,7 @@ If we could ensure that no two monomials of $F$ have a gcd of degree $k$ or more
 If we were to interpret the set of non-zero monomials of $F$ as just subsets over the variables, then the above constraint can be rephrased as a set system with \emph{small pairwise intersection}. 
 Such systems are well studied and are known as Nisan-Wigderson designs \cite{nw94}. 
 With this in mind, \cite{KSS13} studied the following polynomial family inspired by an explicit construction of a Nisan-Wigderson design. 
+The definition below is a specialization of \autoref{defn:NW-polyfamilies}. 
 
 \begin{definition}[Nisan-Wigderson Polynomial]. 
 Let $n$ be a power of $2$ and let $\F_n$ be the finite field with $n$ elements that are identified with the set $\inbrace{1,\dots, n}$. 
@@ -233,8 +234,7 @@ $$
 $$
 \end{definition}
 
-It is easy to show that the above family of polynomials is in $\mathsf{VNP}$. 
-Further, since any two distinct univariate polynomials of degree less than $k$ intersects in less than $k$ places, we have the following observation. 
+We recall the main observation about the set of monomials of the Nisan-Wigderson polynomial which is the \emph{low pairwise-intersection} property. 
 
 \begin{observation}
 Any two monomials of $\mathrm{NW}_k$ intersect in less than $k$ variables. 
