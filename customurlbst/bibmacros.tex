@@ -7,8 +7,18 @@
 
 \newcommand{\cSTOC}[1]{\nth{\intcalcSub{#1}{1968}}\ Annual\ ACM\ Symposium\ on\ Theory\ of\ Computing\ (STOC\ #1)}
 \newcommand{\cFSTTCS}[1]{\nth{\intcalcSub{#1}{1980}}\ International\ Conference\ on\ Foundations\ of\ Software\ Technology\ and\ Theoretical\ Computer\ Science\ (FSTTCS\ #1)}
-\newcommand{\cCCC}[1]{\ifnumcomp{#1}{>}{1995}{\nth{\intcalcSub{#1}{1985}}\ Annual\ifnumcomp{#1}{<}{2015}{\ IEEE}{}\ Conference\ on\ Computational\ Complexity\ (CCC\ #1)}{\nth{\intcalcSub{#1}{1985}}\ Annual\ Structure\ in\ Complexity\ Theory\ Conference\ (CCC\ #1)}}
-\newcommand{\cFOCS}[1]{\nth{\intcalcSub{#1}{1959}}\ Annual\ IEEE\ Symposium\ on\ Foundations\ of\ Computer\ Science\ (FOCS\ #1)}
+\newcommand{\cCCC}[1]{\ifnumcomp{#1}{<}{1996}{%1985-1995
+\nth{\intcalcSub{#1}{1985}}\ Annual\ Structure\ in\ Complexity\ Theory\ Conference\ (Structures\ #1)}%
+{\ifnumcomp{#1}{<}{2015}{%1996-2014
+\nth{\intcalcSub{#1}{1985}}\ Annual\ IEEE\ Conference\ on\ Computational\ Complexity (CCC\ #1)}%
+{%2015-
+\nth{\intcalcSub{#1}{1985}}\ Annual\ Computational\ Complexity\ Conference\ (CCC\ #1)}}}
+\newcommand{\cFOCS}[1]{\ifnumcomp{#1}{<}{1966}{%1960-1965
+\nth{\intcalcSub{#1}{1959}}\ Annual\ Symposium\ on\ Switching\ Circuit\ Theory\ and\ Logical\ Design (SWCT #1)}%
+{\ifnumcomp{#1}{<}{1975}{%1966-1974
+\nth{\intcalcSub{#1}{1959}}\ Annual\ Symposium\ on\ Switching\ and\ Automata\ Theory\ (SWAT #1)}%
+{%1975--
+\nth{\intcalcSub{#1}{1959}}\ Annual\ IEEE\ Symposium\ on\ Foundations\ of\ Computer\ Science\ (FOCS\ #1)}}}
 \newcommand{\cRANDOM}[1]{\nth{\intcalcSub{#1}{1996}}\ International\ Workshop\ on\ Randomization\ and\ Computation\ (RANDOM\ #1)}
 \newcommand{\cISSAC}[1]{#1\ International\ Symposium\ on\ Symbolic\ and\ Algebraic\ Computation\ (ISSAC\ #1)}
 \newcommand{\cICALP}[1]{\nth{\intcalcSub{#1}{1973}}\ International\ Colloquium\ on\ Automata,\ Languages and\ Programming\ (ICALP\ #1)}
