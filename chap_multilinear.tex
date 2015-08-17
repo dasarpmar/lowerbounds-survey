@@ -331,7 +331,7 @@ Let us attempt to compute the polynomial using a small circuit in the following 
 \[
 f_{i,j}(\vecx) \spaced{=} \begin{cases}
 (x_ix_j+1) & \text{if $j = i+1$}\\
-0 & \text{if $j-i$ is odd}\\
+0 & \text{if $j-i$ is even}\\
 (x_ix_j+1) \cdot f_{i+1,j-1} &\\
  \spaced{+} \sum\limits_{r=i+1}^{j-1} f_{i,r}\cdot f_{r+1,j} & \text{otherwise}
 \end{cases}
@@ -342,7 +342,7 @@ Raz and Yehudayoff take a slight variant of it by adding a few auxiliary variabl
 \[
 \tilde{f}_{i,j}(\vecx) \spaced{=} \begin{cases}
 (x_ix_j+1) & \text{if $j = i+1$}\\
-0 & \text{if $j-i$ is odd}\\
+0 & \text{if $j-i$ is even}\\
 (x_ix_j+1) \cdot \tilde{f}_{i+1,j-1} &\\
  \spaced{+} \sum\limits_{r=i+1}^{j-1} \tilde{f}_{i,r}\cdot \tilde{f}_{r+1,j} \cdot \omega_{i,r,j} & \text{otherwise}
 \end{cases}
