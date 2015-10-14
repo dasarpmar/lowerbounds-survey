@@ -54,6 +54,29 @@ The \emph{shifted partials of $f$}, denoted by $\SPD{k}{\ell}{f}$, is the vector
 The dimension of this space shall be denoted by $\CM{Kay}_{k,\ell}(f)$. 
 \end{definition}
 
+\begin{tikzpicture}
+\draw[fill=black!20] (0,0) rectangle (5,3);
+
+\draw[decorate,decoration={brace,amplitude=10pt,raise=4pt},yshift=0pt]
+(0,0) -- (0,3);
+\node[anchor=east] at (-0.5,1.5) {$\vecx^{=\ell} \cdot \partial^{=k}$};
+\draw[decorate,decoration={brace,amplitude=10pt,mirror, raise=4pt},yshift=0pt] 
+(0,0) -- (5,0);
+\node[anchor=north] at (2.5,-0.5) {Monomials of degree $\ell + d - k$};
+
+\draw[fill=black!30] (1,0) rectangle (1.5,3);
+\node at (1.25,3.2) {$m$};
+
+\draw[fill=black!30] (0,2) rectangle (5,2.5);
+\node[anchor=west] at (5.2,2.2) {$\vecx^{\alpha} \cdot \partial_{\vecx^\beta}$};
+
+\draw[very thick] (1,2) rectangle (1.5,2.5);
+
+\node[anchor=west] at (6,1) {coefficient of $m$ in $\vecx^\alpha \partial_{\vecx^\beta}(f)$}
+edge[<-,bend left] (1.25,2);
+\end{tikzpicture}
+
+
 The above observation shows that any element of $\SPD{k}{\ell}{Q^d}$ is divisible by $Q^{d-k}$ and we thereby have the following lemma. 
 
 \begin{lemma}
@@ -201,6 +224,7 @@ If we could ensure that no two monomials of $F$ have a gcd of degree $k$ or more
 If we were to interpret the set of non-zero monomials of $F$ as just subsets over the variables, then the above constraint can be rephrased as a set system with \emph{small pairwise intersection}. 
 Such systems are well studied and are known as Nisan-Wigderson designs \cite{nw94}. 
 With this in mind, \cite{KSS13} studied the following polynomial family inspired by an explicit construction of a Nisan-Wigderson design. 
+The definition below is a specialization of \autoref{defn:NW-polyfamilies}. 
 
 \begin{definition}[Nisan-Wigderson Polynomial]. 
 Let $n$ be a power of $2$ and let $\F_n$ be the finite field with $n$ elements that are identified with the set $\inbrace{1,\dots, n}$. 
@@ -210,8 +234,7 @@ $$
 $$
 \end{definition}
 
-It is easy to show that the above family of polynomials is in $\mathsf{VNP}$. 
-Further, since any two distinct univariate polynomials of degree less than $k$ intersects in less than $k$ places, we have the following observation. 
+We recall the main observation about the set of monomials of the Nisan-Wigderson polynomial which is the \emph{low pairwise-intersection} property. 
 
 \begin{observation}
 Any two monomials of $\mathrm{NW}_k$ intersect in less than $k$ variables. 

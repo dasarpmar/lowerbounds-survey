@@ -15,6 +15,8 @@
 # *.eps
 *.pdf
 auto/*
+*.swp
+*.xdv
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
@@ -86,6 +88,7 @@ auto/*
 
 # minted
 *.pyg
+*.pyc
 
 # morewrites
 *.mw
@@ -108,4 +111,9 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+ignore-*
+*-ign
+.dropbox
+*.orig
 sha.tex

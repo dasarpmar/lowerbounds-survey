@@ -1,0 +1,84 @@
+\usepackage{nth}
+\usepackage{intcalc}
+\usepackage{etoolbox}
+\usepackage{xstring}
+
+\newcommand{\mfbiberr}[1]{\PackageWarning{miforbes-bibtex}{#1}}
+
+\newcommand{\cSTOC}[1]{\nth{\intcalcSub{#1}{1968}}\ Annual\ ACM\ Symposium\ on\ Theory\ of\ Computing\ (STOC\ #1)}
+\newcommand{\cFSTTCS}[1]{\nth{\intcalcSub{#1}{1980}}\ International\ Conference\ on\ Foundations\ of\ Software\ Technology\ and\ Theoretical\ Computer\ Science\ (FSTTCS\ #1)}
+\newcommand{\cCCC}[1]{\ifnumcomp{#1}{<}{1996}{%1985-1995
+\nth{\intcalcSub{#1}{1985}}\ Annual\ Structure\ in\ Complexity\ Theory\ Conference\ (Structures\ #1)}%
+{\ifnumcomp{#1}{<}{2015}{%1996-2014
+\nth{\intcalcSub{#1}{1985}}\ Annual\ IEEE\ Conference\ on\ Computational\ Complexity (CCC\ #1)}%
+{%2015-
+\nth{\intcalcSub{#1}{1985}}\ Annual\ Computational\ Complexity\ Conference\ (CCC\ #1)}}}
+\newcommand{\cFOCS}[1]{\ifnumcomp{#1}{<}{1966}{%1960-1965
+\nth{\intcalcSub{#1}{1959}}\ Annual\ Symposium\ on\ Switching\ Circuit\ Theory\ and\ Logical\ Design (SWCT #1)}%
+{\ifnumcomp{#1}{<}{1975}{%1966-1974
+\nth{\intcalcSub{#1}{1959}}\ Annual\ Symposium\ on\ Switching\ and\ Automata\ Theory\ (SWAT #1)}%
+{%1975--
+\nth{\intcalcSub{#1}{1959}}\ Annual\ IEEE\ Symposium\ on\ Foundations\ of\ Computer\ Science\ (FOCS\ #1)}}}
+\newcommand{\cRANDOM}[1]{\nth{\intcalcSub{#1}{1996}}\ International\ Workshop\ on\ Randomization\ and\ Computation\ (RANDOM\ #1)}
+\newcommand{\cISSAC}[1]{#1\ International\ Symposium\ on\ Symbolic\ and\ Algebraic\ Computation\ (ISSAC\ #1)}
+\newcommand{\cICALP}[1]{\nth{\intcalcSub{#1}{1973}}\ International\ Colloquium\ on\ Automata,\ Languages and\ Programming\ (ICALP\ #1)}
+\newcommand{\cCOLT}[1]{\nth{\intcalcSub{#1}{1987}}\ Annual\ Conference\ on\ Computational\ Learning\ Theory\ (COLT\ #1)}
+\newcommand{\cCSR}[1]{\nth{\intcalcSub{#1}{2005}}\ International\ Computer\ Science\ Symposium\ in\ Russia\ (CSR\ #1)}
+\newcommand{\cMFCS}[1]{\nth{\intcalcSub{#1}{1975}}\ Internationl\ Symposium\ on\ the\ Mathematical\ Foundations\ of\ Computer\ Science\ (MFCS\ #1)}
+\newcommand{\cEUROSAM}[1]{International\ Symposium\ on\ Symbolic\ and\ Algebraic\ Computation\ (EUROSAM\ #1)}
+\newcommand{\cSODA}[1]{\nth{\intcalcSub{#1}{1989}}\ Annual\ ACM-SIAM\ Symposium\ on\ Discrete\ Algorithms\ (SODA\ #1)}
+\newcommand{\cSTACS}[1]{\nth{\intcalcSub{#1}{1983}}\ Symposium\ on\ Theoretical\ Aspects\ of\ Computer\ Science\ (STACS\ #1)}
+
+
+
+\newcommand{\pSTOC}[1]{Preliminary\ version\ in\ the\ \emph{\cSTOC{#1}}}
+\newcommand{\pFSTTCS}[1]{Preliminary\ version\ in\ the\ \emph{\cFSTTCS{#1}}}
+\newcommand{\pCCC}[1]{Preliminary\ version\ in\ the\ \emph{\cCCC{#1}}}
+\newcommand{\pFOCS}[1]{Preliminary\ version\ in\ the\ \emph{\cFOCS{#1}}}
+\newcommand{\pRANDOM}[1]{Preliminary\ version\ in\ the\ \emph{\cRANDOM{#1}}}
+\newcommand{\pISSAC}[1]{Preliminary\ version\ in\ the\ \emph{\cISSAC{#1}}}
+\newcommand{\pICALP}[1]{Preliminary\ version\ in\ the\ \emph{\cICALP{#1}}}
+\newcommand{\pCOLT}[1]{Preliminary\ version\ in\ the\ \emph{\cCOLT{#1}}}
+\newcommand{\pCSR}[1]{Preliminary\ version\ in\ the\ \emph{\cCSR{#1}}}
+\newcommand{\pMFCS}[1]{Preliminary\ version\ in\ the\ \emph{\cMFCS{#1}}}
+\newcommand{\pEUROSAM}[1]{Preliminary\ version\ in\ the\ \emph{\cEUROSAM{#1}}}
+\newcommand{\pSODA}[1]{Preliminary\ version\ in\ the\ \emph{\cSODA{#1}}}
+\newcommand{\pSTACS}[1]{Preliminary\ version\ in\ the\ \emph{\cSTACS{#1}}}
+
+
+\newcommand{\STOC}[1]{Proceedings\ of\ the\ \cSTOC{#1}}
+\newcommand{\FSTTCS}[1]{Proceedings\ of\ the\ \cFSTTCS{#1}}
+\newcommand{\CCC}[1]{Proceedings\ of\ the\ \cCCC{#1}}
+\newcommand{\FOCS}[1]{Proceedings\ of\ the\ \cFOCS{#1}}
+\newcommand{\RANDOM}[1]{Proceedings\ of\ the\ \cRANDOM{#1}}
+\newcommand{\ISSAC}[1]{Proceedings\ of\ the\ \cISSAC{#1}}
+\newcommand{\ICALP}[1]{Proceedings\ of\ the\ \cICALP{#1}}
+\newcommand{\COLT}[1]{Proceedings\ of\ the\ \cCOLT{#1}}
+\newcommand{\CSR}[1]{Proceedings\ of\ the\ \cCSR{#1}}
+\newcommand{\MFCS}[1]{Proceedings\ of\ the\ \cMFCS{#1}}
+\newcommand{\EUROSAM}[1]{Proceedings\ of\ the\ \cEUROSAM{#1}}
+\newcommand{\SODA}[1]{Proceedings\ of\ the\ \cSODA{#1}}
+\newcommand{\STACS}[1]{Proceedings\ of\ the\ \cSTACS{#1}}
+
+\newcommand{\arXiv}[1]{\texttt{\href{http://arxiv.org/abs/#1}{arXiv:#1}}}
+\newcommand{\farXiv}[1]{Full\ version\ at\ \arXiv{#1}}
+\newcommand{\parXiv}[1]{Preliminary\ version\ at\ \arXiv{#1}}
+
+\newcommand{\ECCCurl}[2]{http://eccc.hpi-web.de/report/\ifnumcomp{#1}{>}{93}{19}{20}#1/#2/}
+\newcommand{\cECCC}[2]{\href{\ECCCurl{#1}{#2}}{Electronic\ Colloquium\ on\ Computational\ Complexity\ (ECCC),\ Technical\ Report\ TR#1-#2}}
+\newcommand{\shortECCC}[2]{\texttt{\href{http://eccc.hpi-web.de/report/\ifnumcomp{#1}{>}{93}{19}{20}#1/#2/}{eccc:TR#1-#2}}}
+\newcommand{\ECCC}{Electronic\ Colloquium\ on\ Computational\ Complexity\ (ECCC)}
+\newcommand{\fECCC}[2]{Full\ version\ in\ the\ \cECCC{#1}{#2}}
+\newcommand{\pECCC}[2]{Preliminary\ version\ in\ the\ \cECCC{#1}{#2}}
+
+\newcommand{\parseECCC}[1]{% Takes a string of the form TRxx/xxx or
+%                          % TRxx-xxx and returns short ECCC link
+\StrSubstitute{#1}{TR}{}[\tmpstring]%
+\IfSubStr{\tmpstring}{/}{ %assuming string is of the form TRxx/xxx
+\StrBefore{\tmpstring}{/}[\ecccyear]%
+\StrBehind{\tmpstring}{/}[\ecccreport]%
+}{% assuming string is of the form TRxx-xxx
+\StrBefore{\tmpstring}{-}[\ecccyear]%
+\StrBehind{\tmpstring}{-}[\ecccreport]%
+}%
+\shortECCC{\ecccyear}{\ecccreport}}

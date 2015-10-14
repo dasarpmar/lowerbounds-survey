@@ -41,6 +41,30 @@ We shall use $\Gamma^{\mathrm{[Raz]}}_{Y,Z}(f)$ to denote $\mathrm{rank}(M_{Y,Z}
 Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ is full-rank.
 \end{definition}
 
+\begin{tikzpicture}
+\node at (-5,1.5) {$M_{Y,Z}(f) \quad= $};
+\draw[fill=black!20] (0,0) rectangle (5,3);
+
+\draw[decorate,decoration={brace,amplitude=10pt,raise=4pt},yshift=0pt]
+(0,0) -- (0,3);
+\node[anchor=east] at (-0.5,1.5) {Monomials in $Y$};
+\draw[decorate,decoration={brace,amplitude=10pt,mirror, raise=4pt},yshift=0pt] 
+(0,0) -- (5,0);
+\node[anchor=north] at (2.5,-0.5) {Monomials in $Z$};
+
+\draw[fill=black!30] (1,0) rectangle (1.5,3);
+\node at (1.25,3.2) {$m_Z$};
+
+\draw[fill=black!30] (0,2) rectangle (5,2.5);
+\node at (5.5,2.2) {$m_Y$};
+
+\draw[very thick] (1,2) rectangle (1.5,2.5);
+
+\node[anchor=west] at (6,1) {$\mathrm{coeff}_f(m_Y \cdot m_Z)$}
+edge[<-,bend left] (1.25,2);
+\end{tikzpicture}
+
+
 Here are some basic properties of the partial derivative matrix which would be extremely useful in later calculations.
 
 \begin{observation}[Sub-additivity]\label{obs:pdm-subadditivity}
@@ -307,7 +331,7 @@ Let us attempt to compute the polynomial using a small circuit in the following 
 \[
 f_{i,j}(\vecx) \spaced{=} \begin{cases}
 (x_ix_j+1) & \text{if $j = i+1$}\\
-0 & \text{if $j-i$ is odd}\\
+0 & \text{if $j-i$ is even}\\
 (x_ix_j+1) \cdot f_{i+1,j-1} &\\
  \spaced{+} \sum\limits_{r=i+1}^{j-1} f_{i,r}\cdot f_{r+1,j} & \text{otherwise}
 \end{cases}
@@ -318,7 +342,7 @@ Raz and Yehudayoff take a slight variant of it by adding a few auxiliary variabl
 \[
 \tilde{f}_{i,j}(\vecx) \spaced{=} \begin{cases}
 (x_ix_j+1) & \text{if $j = i+1$}\\
-0 & \text{if $j-i$ is odd}\\
+0 & \text{if $j-i$ is even}\\
 (x_ix_j+1) \cdot \tilde{f}_{i+1,j-1} &\\
  \spaced{+} \sum\limits_{r=i+1}^{j-1} \tilde{f}_{i,r}\cdot \tilde{f}_{r+1,j} \cdot \omega_{i,r,j} & \text{otherwise}
 \end{cases}
