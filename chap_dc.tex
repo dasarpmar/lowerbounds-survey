@@ -1,4 +1,18 @@
 \chapter{Determinantal Complexity lower bounds}\label{chap:dc}
+
+Recall that any polynomial $f$ that is computable by an ABP of polynomial size can be written as a projection of the determinant (\autoref{thm:vp}). 
+Thus, a direct way to prove lower bounds is to find an explicit polynomial that requires super-polynomially large determinants to compute it. 
+Hence, for a polynomial $f$, it is natural to ask ``If $f$ is to be written as a projection of an $m\times m$ determinant, how large should $m$ be?''
+This is called the \emph{determinantal complexity} of $f$. 
+
+\begin{definition}
+  Let $f$ be an $n$-variate polynomial.
+  The determinantal complexity of $f(\vecx)$, denoted by $\dc(f)$ is the smallest $m$ such that there is an $m\times m$ matrix $A(\vecx)$ with each entry being an linear function in $\vecx$ such that $f = \det(A(\vecx))$. 
+\end{definition}
+
+\noindent
+By \autoref{thm:vp}, if we could show that $\dc(\Perm_n) = n^{\omega(1)}$, then this immediately would imply super-polynomial circuit lower bounds. 
+
 \section{Introduction}
 \begin{definition}
   The determinantal complexity of a polynomial $f$, over $n$ variables, is the minimum $m$ such that there are affine linear functions $A_{k,\ell}$, $1\leq k,\ell\leq m$ defined over the same set of variables and $f= \det((A_{k,\ell})_{1 \leq k,\ell \leq m})$. It is denoted by $\dc(f)$.  
