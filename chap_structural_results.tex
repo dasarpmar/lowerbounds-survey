@@ -211,150 +211,6 @@ Then there is an arithmetic
   depth $O(\log d)$.
 \end{theorem}
 
-% We may assume without loss of generality that $\Phi$ is a homogeneous circuit. 
-We will also assume that all multiplication gates in $\Phi$ have fan-in at most $2$, and also that the degree of the right child of any multiplication gate is at least as large as the degree of the left child. 
-Such circuits are also referred to as \emph{right heavy} circuits. 
-We shall need the following definition of gate quotients.
-
-% \begin{definition}\label{defn:gate-quotient}
-% For any pair of gates $u,v$, the polynomial $[u:v]$ is defined as follows:
-% \begin{enumerate}
-% \item If $u$ and $v$ are the same nodes, then $[u:v] = 1$. 
-% \item If $u$ is a leaf, and $u\neq v$, then $[u:v] = 0$. 
-% \item If $u = u_1 + u_2$, then $[u:v] = [u_1:v] + [u_2:v]$.
-% \item If $u = u_1 \times u_2$, then $[u:v] = [u_1] \cdot [u_2 : v]$. 
-% \end{enumerate}
-% \end{definition}
-
-% It is easy to see that $[u:v]$ is a homogeneous polynomial of degree $\deg(u) - \deg(v)$. 
-% To understand this definition better, consider the case of a formula instead of a circuit. 
-Then for any node $u$, and another node $v$ in the sub-formula rooted at $u$, the polynomial $[u]$ can depends on $[v]$ linearly as $[u] = A [v] + B$ for some $A,B$. 
-In this setting, $[u:v] = A$. 
-For circuits however, there could be multiple paths from $u$ leading to $v$. 
-One possible alternate definition could have been to \emph{differentiate} $[u]$ by $[v]$ but this would require some additional care. 
-The above definition makes sure we are exploring only one of the children of any multiplication gate, and yields a much simpler proof. 
-
-% \begin{definition}[Frontier]\label{defn:frontier}
-% For any parameter $a$, define the \emph{frontier at degree $a$} as
-% \[
-% \mathcal{F}_a \quad=\quad \setdef{v}{\deg(v) \geq a\;,\; \deg(v_L), \deg(v_R) < a}
-% \]
-% That is, $\mathcal{F}_a$ are the deepest nodes in the circuit that have degree at least $a$. 
-% \end{definition}
-
-% Note that from the above definition, all frontier nodes are multiplication gates (since we are working with a homogeneous circuit). 
-Also, if $v_1,v_2$ are two distinct nodes in $\mathcal{F}_a$, then $v_1$ does not occur in the sub-circuit rooted at $v_2$ (and vice-versa). 
-
-% \begin{observation}\label{obs:vsbr-antichain}
-% If a node $v$ does not occur in the sub-formula rooted at $u$, then $[u:v] = 0$. 
-In particular, if $u\neq v\in \mathcal{F}_a$ for some $a$, then $[u:v]=0$.
-% \end{observation}
-
-% The following is the key lemma for the depth reduction. 
-
-% \begin{lemma}
-% Suppose $\Phi$ is a homogeneous, right-heavy circuit. 
-Let $a$ be a parameter such that $\deg(u) \geq a$. 
-Then,
-% \begin{equation}\label{eqn:vsbr-for-u}
-% [u]\spaced{=} \sum_{w\in \mathcal{F}_a} [u:w] \cdot [w]
-% \end{equation}
-% Also, if $u,v$ are nodes such that $\deg(u) \geq a > \deg(v)$, then
-% \begin{equation}\label{eqn:vsbr-for-uv}
-% [u:v] \spaced{=} \sum_{w\in \mathcal{F}_a} [u:w] [w:v]
-% \end{equation}
-% \end{lemma}
-% \begin{proof}
-% The proof would be by induction on the depth of $u$. 
-Note that if $u = u_1 + u_2$, then it follows immediately that 
-% \begin{eqnarray*}
-%   [u] &=& [u_1] + [u_2] \\
-%   &=& \sum_{w\in \mathcal{F}_a} \inparen{[u_1: w]\cdot [w]  + [u_2:w]\cdot [w]}\quad\text{(inductive hypothesis)}\\
-%   &=& \sum_{w\in \mathcal{F}_a} [u:w] \cdot [w] \quad\text{(\autoref{defn:gate-quotient})}
-% \end{eqnarray*}
-% \begin{eqnarray*}
-%   [u:v] &=& [u_1:v] + [u_2:v] \\
-%   &=& \sum_{w\in \mathcal{F}_a} \inparen{[u_1: w]\cdot [w:v]  + [u_2:w]\cdot [w:v]}\quad\text{(inductive hypothesis)}\\
-%   &=& \sum_{w\in \mathcal{F}_a} [u:w] \cdot [w:v] \quad\text{(\autoref{defn:gate-quotient})}
-% \end{eqnarray*}
-% Suppose $u = u_1 \times u_2$. 
-If $\deg(u_2) \geq a$ as well, then by induction we have
-% \begin{eqnarray*}
-% [u] &=& [u_1] \cdot [u_2]\\
-%     &=& [u_1] \cdot \inparen{\sum_{w\in \mathcal{F}_a} [u_2:w]\cdot [w]} \quad\text{(inductive hypothesis)}\\
-%     &=& \sum_{w\in \mathcal{F}_a}([u_1]\cdot [u_2:w]) \cdot [w] = \sum_{w\in \mathcal{F}_a}[u:w] \cdot [w]\quad\text{(\autoref{defn:gate-quotient})}
-% \end{eqnarray*}
-% \begin{eqnarray*}
-% [u:v] &=& [u_1] \cdot [u_2:v]\\
-%     &=& [u_1] \cdot \inparen{\sum_{w\in \mathcal{F}_a} [u_2:w]\cdot [w:v]} \quad\text{(inductive hypothesis)}\\
-%     &=& \sum_{w\in \mathcal{F}_a}([u_1]\cdot [u_2:w]) \cdot [w:v] = \sum_{w\in \mathcal{F}_a}[u:w] \cdot [w:v]\quad\text{(\autoref{defn:gate-quotient})}
-% \end{eqnarray*}
-
-% If $\deg(u_2) < a$, then note that $u \in \mathcal{F}_a$. 
-Hence,
-% \begin{eqnarray*}
-% \sum_{w\in \mathcal{F}_a} [u:w] \cdot [w] &=& [u:u] \cdot [u] \spaced{+}\sum_{\substack{w\in \mathcal{F}_a\\w\neq u}} [u:w] \cdot [w] \spaced{=} [u] \spaced{+} 0\\
-% \sum_{w\in \mathcal{F}_a} [u:w] \cdot [w:v] &=& [u:u] \cdot [u:v] \spaced{+}\sum_{\substack{w\in \mathcal{F}_a\\w\neq u}} [u:w] \cdot [w:v] \spaced{=} [u:v] \spaced{+} 0
-% \end{eqnarray*}
-% as $[u:w] = 0$ for all $u\neq w \in \mathcal{F}_a$ (\autoref{obs:vsbr-antichain}).
-% \end{proof}
-
-% Now we are ready to write down the depth reduced circuit. 
-The original proof of \cite{vsbr83} follows a bottom-up approach, but it would be more useful to us to take a top-down approach (as in \cite{ajmv98}) to obtain some additional structural properties that we would require. \\
-
-% \begin{theorem}
-% Let $\Phi$ be a homogeneous, left-heavy circuit of size $s$ computing an $n$-variate degree $d$ polynomial. 
-Then, there is a circuit $\Phi'$ of size $\poly(s)$ with the following properties:
-% \begin{enumerate}
-% \item For every $u\in \Phi$, there is a node in $\Phi'$ that computes $[u]$.
-% \item For every $u,v\in \Phi$, there is a node in $\Phi'$ that computes $[u:v]$. 
-% \item All addition gates in $\Phi'$ have fan-in at most $s^2$. 
-% \item All multiplication gates in $\Phi'$ have fan-in at most $5$. 
-% \item For every multiplication gate in $\Phi'$, all its children have at most half its degree. 
-% \end{enumerate}
-% \end{theorem}
-% \begin{proof}
-% All nodes $[u]$ and $[u:v]$ of degree at most $1$ are linear polynomials, and hence can are written down explicitly in $\Phi'$. 
-
-% For any node $u\in \Phi$, let $\mathcal{F}(u) = \mathcal{F}_a$ for $a = \deg(u)/2$. 
-Thus by \eqref{eqn:vsbr-for-u},
-% \begin{eqnarray*}
-% [u] & = & \sum_{w\in \mathcal{F}(u)} [u:w] \cdot [w]\\ 
-%     & = & \sum_{w\in \mathcal{F}(u)} [u:w] \cdot [w_L] \cdot [w_R]
-% \end{eqnarray*}
-% Note that by the choice of $a$, all the terms on the RHS have degree at most $\deg(u)/2$. 
-
-% For any pair of nodes $u,v\in \Phi$, let $\mathcal{F}(u,v) = \mathcal{F}_a$ for $a = (\deg(u) + \deg(v))/2$. 
-By \eqref{eqn:vsbr-for-uv},
-% \begin{eqnarray*}
-% [u:v] & = & \sum_{w\in \mathcal{F}(u,v)} [u:w] \cdot [w:v]\\ 
-%     & = & \sum_{w\in \mathcal{F}(u,v)} [u:w] \cdot [w_L] \cdot [w_R:v]
-% \end{eqnarray*}
-% Again by the choice of $a$, the degree of $[u:w]$ and the degree of $[w_R:v]$ is at most $(\deg(u) - \deg(v))/2$. 
-The degree of $[w_L]$ however could be as large as $\deg(u) - \deg(v)$. 
-Nevertheless, we can use the above expansion once more to write it as
-% \begin{eqnarray*}
-%   [u:v] & = & \sum_{w\in \mathcal{F}(u,v)} [u:w] \cdot [w_L] \cdot [w_R:v]\\
-%         & = & \sum_{w\in \mathcal{F}(u,v)} [u:w] \inparen{\sum_{p \in \mathcal{F}(w_L)} [w_L:p] \cdot [p_L] \cdot [p_R]}\cdot [w_R:v]\\
-%         & = & \sum_{w\in \mathcal{F}(u,v)}\sum_{p\in \mathcal{F}(w_L)} [u_w] \cdot  [w_L:p] \cdot [p_L] \cdot [p_R]\cdot [w_R:v]
-% \end{eqnarray*}
-% Now all the terms on the RHS have degree at most $(\deg(u) - \deg(v))/2$ as required. 
-% \end{proof}
-
-% \begin{remark}\label{remark:vsbr}
-% From the proof above, we can see that the resulting circuit $\Phi'$ has useful structural properties. 
-% \begin{itemize}
-%   \item The circuit is homogeneous. 
-%   \item Addition gates have fan-in bounded by $\poly(s)$. 
-%   \item Multiplication gates have fan-in bounded by $5$. 
-%   \item If $u$ is any multiplication gate, then all its children $v$ satisfy $\deg(v)\leq \deg(u)/2$. 
-% \end{itemize}
-% \end{remark}
-
-% These additional properties would be useful in the next section, where we shall squash $\Phi'$ down to a depth four circuit!
-
-% \subsection{Temp dump}
-
 We may assume without loss of generality that $\Phi$ is a homogeneous
 circuit. 
 We will also assume that all multiplication gates in $\Phi$
@@ -362,8 +218,7 @@ have fan-in at most $2$, and that the degree of the right child of any
 multiplication gate is at least as large as the degree of the its left
 child. 
 Such circuits are known to as \emph{right heavy} circuits. 
-For
-any gate $u$ in $\Phi$, we denote by $[u]$ the polynomial computed at
+For any gate $u$ in $\Phi$, we denote by $[u]$ the polynomial computed at
 gate $u$. 
 It will also denote a gate label in the new depth reduced
 circuit.
@@ -376,10 +231,11 @@ For any pair of gates $u,v$, the polynomial $[u:v]$ is defined as follows:
 \item If $u$ and $v$ are the same nodes, then $[u:v] = 1$. 
 \item If $u$ is a leaf, and $u\neq v$, then $[u:v] = 0$. 
 \item If $u = u_1 + u_2$, then $[u:v] = [u_1:v] + [u_2:v]$.
-\item If $u = u_1 \times u_2$, then $[u:v] = [u_1] \cdot [u_2 : v]$. 
+\item If $u = u_1 \times u_2$, then $[u:v] = [u_1] \cdot [u_2 : v]$. \qedhere
 \end{enumerate}
 \end{definition}
 
+\noindent
 It is easy to see that $[u:v]$ is a homogeneous polynomial of degree
 $\deg(u) - \deg(v)$. 
 
