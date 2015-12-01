@@ -87,12 +87,12 @@ Thus,
 \[
 f \quad = \quad (\hat{\Phi}_v(1) - \hat{\Phi}_v(0))\cdot \Phi_v \spaced{+} \hat{\Phi}_v(0)
 \]
-All the formulas in the above equation have size at most $\frac{2s}{3}$. 
+All the formulas (i.e. $\hat{\Phi}_v(1)$, $\hat{\Phi}_v(0)$, and $\Phi_v$) in the above equation have size at most $\frac{2s}{3}$. 
 Thus, by recursively applying this process on each of these sub-formulas, we obtain
 \begin{eqnarray*}
 \mathrm{Depth}(s) & = & \mathrm{Depth}(2s/3) \spaced{+} 3\\
 \implies \mathrm{Depth}(s) &=& O(\log s)\\
-\mathrm{Size}(s) & \leq & 3\cdot \mathrm{Size}(2s/3) \spaced{+} 3\\
+\mathrm{Size}(s) & \leq & 4\cdot \mathrm{Size}(2s/3) \spaced{+} O(1)\\
 \implies \mathrm{Size}(s) &=& \poly(s).
 \end{eqnarray*}
 \end{proof}
