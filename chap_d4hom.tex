@@ -392,11 +392,11 @@ We then have
 \Gamma^{\mathrm{PSD}}_{k,\ell}(P) \spaced{\geq} \abs{\Union_{\alpha, \beta} A(\alpha, \beta)}
 \end{equation}
 
-\begin{remark*}
-Sometimes, it may be useful to not look at all derivatives of order $k$ but instead look at some specific subset of derivatives of order $k$. 
-In such a setting, the above union would only be over $\alpha$'s that belong to this set. 
-We shall abuse notation to use $\Gamma^{\mathrm{PSD}}_{k,\ell}$ even though we are only considering a subset of derivatives. 
-\end{remark*}
+\noindent
+{\bf Choice of derivatives:} Instead of looking at all derivatives in  $\partial^{=k}$, we shall restrict ourselves to just a subset of derivatives. Restricting the above union to a subset $\Delta  \subset \vecx^{=k}$ still continues to remain a lower bound for $\Gamma^{\mathrm{PSD}}_{k,\ell}(P)$. Keeping in mind that we are dealing with $P = \NW_{d,m,e}$ we shall choose $\Delta$ to be a set of monomials of the form $x_{1a_1}\cdots x_{ka_k}$ with each $a_i \leq m$ so as to have $m^k$ derivatives in total. This shall become relevant later. 
+\begin{equation}\label{eqn:union-of-As}
+\Gamma^{\mathrm{PSD}}_{k,\ell}(P) \spaced{\geq} \abs{\Union_{\substack{\alpha \in \Delta \\\beta \in \vecx^{=\ell}}} A(\alpha, \beta)}
+\end{equation}
 
 The standard technique to obtain a lower bound on the union of sets is via the \emph{Inclusion-Exclusion} principle. 
 
@@ -511,7 +511,7 @@ Let us call the three terms in the RHS of the last equation as $T_1$, $T_2$ and 
 Since we know the size of each $S(\alpha, \beta)$ exactly, the value of $T_1$ is easily obtained. 
 \begin{lemma}[\cite{KS14}]\label{lem:T_1-value}
 \begin{eqnarray*}
-T_1 &=& \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n-d+k}{\ell}
+T_1(\alpha) \spaced{:=} \sum_{\beta}\abs{S(\alpha,\beta)}&=&\text{(\# mons in a deriv)} \cdot \binom{n-d+k}{\ell}
 \end{eqnarray*}
 \end{lemma}
 
@@ -522,28 +522,27 @@ We shall be simplifying such binomial coefficients very often so let us recall t
 
 \noindent
 Since our of parameters would be $\epsilon = \Theta\inparen{\frac{\log d}{\sqrt{d}}}$, the bound on $T_1$ can be simplified as
-\[
-T_1  =    \text{(\# derivs)} \cdot \text{(\# mons in a deriv)} \cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{d-k} \cdot \exp(O(\log^2 d))
-\]
-
+\begin{eqnarray*}
+T_1(\alpha)  & =  &\text{(\# mons in a deriv)} \cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{d-k} \cdot \exp(O(\log^2 d))\\
+& = & m^{e-k}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{d-k} \cdot \exp(O(\log^2 d))
+\end{eqnarray*}
 \begin{remark*}To avoid writing this factor of $\exp(O(\log^2 d))$, we shall use $\approx$ of $\gtrsim$ or $\lesssim$ to indicate that a factor $\exp(O(\log^2 d))$ is omitted. 
 \end{remark*}
 
 \bigskip
 
-Let $T_1(\alpha) =\sum_\beta \abs{S(\alpha, \beta)}$ for any choice of $\alpha$. 
 So far we have not used any property of the polynomial $P$. 
 But this becomes crucial in the calculation of $T_2$ and $T_3$. 
 To get a sense of how these calculations proceed in \cite{KS14}, we present the full calculation for the case of $P = \NW_{d,m,e}$ for suitable choices of the parameters $m,d,e$. 
 \begin{lemma}[\cite{KS14}]\label{lem:T_2-for-NW}
-For the polynomial $\NW_{d,m,e}$, if $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = \Theta\inparen{\frac{\log d}{\sqrt{d}}}$
+For the polynomial $\NW_{d,m,e}$, if $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = \Theta\inparen{\frac{\log d}{\sqrt{d}}}$, for every $\alpha \in \Delta$, 
 \[
-T_2 \quad \lesssim \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k} 
+T_2(\alpha)\spaced{:=} \sum_{\beta\neq \beta'}\abs{S(\alpha, \beta)\intersection S(\alpha, \beta')} \quad \lesssim \quad m^{2(e-k)}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k} 
 \]
 \end{lemma}
 \begin{proof}
-For any fixed derivative $\alpha$, define \[T_2(\alpha) = \sum_{\beta\neq \beta'}\abs{S(\alpha, \beta)\intersection S(\alpha, \beta')}.\] 
-For any pair of multilinear degree $(d-k)$ monomials $\beta \neq \beta' \in \partial_\alpha(P)$ such that $\deg(\gcd(\beta, \beta')) = t$, we know that 
+Recall that $S(\alpha,\beta) \intersection S(\alpha,\beta')$ is just set of all multilinear monomials $\gamma$ of degree $\ell$ that are disjoint from both $\beta$ and $\beta'$.
+Hence, for any pair of multilinear degree $(d-k)$ monomials $\beta \neq \beta' \in \partial_\alpha(P)$ such that $\deg(\gcd(\beta, \beta')) = t$, we know that 
 \[
 \abs{S(\alpha, \beta)\intersection S(\alpha, \beta')} \spaced{=} \binom{n - 2d + 2k +t}{\ell}
 \]
@@ -560,18 +559,15 @@ T_2(\alpha) &\leq& \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-
 & \approx  & \sum_{t=0}^{e-k} m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t} \cdot  \binom{n}{\ell} \frac{1}{2^{2d-2k -t}}\cdot (1+\epsilon)^{2d - 2k - t}\\
 & \leq & m^{2(e-k)}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot\sum_{t=0}^{e-k}\binom{d-k}{t}\inparen{\frac{2}{(1+\epsilon)m}}^t\\
 & \leq & m^{2(e-k)}\binom{n}{\ell}\inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot \inparen{1+\frac{2}{(1+\epsilon)m}}^{d-k}\\
-& = & m^{2(e-k)}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot O(1) \qquad\text{if $m = \Omega(d)$}
+& = & m^{2(e-k)}\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}\cdot O(1) \qquad\text{if $m = \Omega(d)$}\qedhere
 \end{eqnarray*}
-Thus,
-\[
-T_2 \quad \lesssim \quad\text{(\# derivs)} \cdot \text{(\# mons per deriv)}^2\cdot \binom{n}{\ell} \cdot \inparen{\frac{1+\epsilon}{2}}^{2d -2k}
-\]
 \end{proof}
 \noindent
 Combining this with \autoref{lem:T_1-value} and using Inclusion-Exclusion (\autoref{cor:inc-exc-str}),
-\[
-\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} \spaced{\gtrsim} \text{(\# derivs)}\cdot T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}
-\]
+\begin{eqnarray*}
+\abs{\Union_{\beta} S(\alpha,\beta)} &\spaced{\gtrsim}& T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}\\
+& \approx & T_1(\alpha) \cdot \min\inparen{1,\frac{\pfrac{2}{1+\epsilon}^{d-k}}{m^{e-k}}}
+\end{eqnarray*}
 To maximize this, if we choose the parameters $m,d,e$ such that $T_1(\alpha) \approx T_2(\alpha)$, we obtain the following corollary. 
 \begin{corollary}\label{cor:T2-bound}
 Consider the polynomial $\NW_{d,m,e}$ with $n = md$ and $m = \Omega(d)$. 
@@ -581,19 +577,23 @@ m^{e-k} \quad \stackrel{\poly}{=} \quad \inparen{\frac{2}{1+\epsilon}}^{d-k}
 \]
 then
 \[
-\sum_{\alpha, \beta}\abs{A(\alpha, \beta)} \spaced{\gtrsim} \text{(\# derivs)}\cdot  \binom{n}{\ell}
+\sum_{\substack{\alpha \in \Delta\\\beta \in \partial_\alpha(\mathrm{NW})}}\abs{A(\alpha, \beta)} \spaced{\gtrsim} \abs{\Delta}\cdot  \binom{n}{\ell}
 \]
 \end{corollary}
 \begin{proof}
-If $T_1(\alpha) \approx T_2(\alpha)$ then
-\begin{eqnarray*}
-\sum_{\alpha,\beta}\abs{A(\alpha, \beta)} &\gtrsim & \text{(\# derivs)}\cdot T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}\\
- & = & \text{(\# derivs)} \cdot T_1(\alpha)\\
- & \approx & \text{(\# derivs)} \cdot \binom{n}{\ell}
-\end{eqnarray*}
-Note that $T_1(\alpha) \approx T_2(\alpha)$ forces 
+By \autoref{lem:As-to-Ss}, we know that
 \[
-\text{(\# mons per deriv)} \spaced{=}  m^{e-k} \spaced{\approx} \inparen{\frac{2}{1+\epsilon}}^{d-k}.
+\sum_{\substack{\alpha\in \Delta\\\beta \in \partial_\alpha(P)}} \abs{A(\alpha,\beta)} \spaced{\geq} \abs{\Delta} \cdot \abs{\Union_{\beta} S(\alpha,\beta)}.
+\]
+Furthermore, from the discussion above, if $T_1(\alpha) \approx T_2(\alpha)$ then
+\begin{eqnarray*}
+\abs{\Union_{\beta}S(\alpha, \beta)} &\gtrsim &  T_1(\alpha) \cdot \min\inparen{1,\frac{T_1(\alpha)}{T_2(\alpha)}}\\
+ & = & T_1(\alpha)\\
+ & \approx & \binom{n}{\ell}
+\end{eqnarray*}
+as $T_1(\alpha) \approx T_2(\alpha)$ forces $m^{e-k} \approx \inparen{\frac{2}{1+\epsilon}}^{d-k}$. Therefore,
+\[
+\sum_{\substack{\alpha\in \Delta\\\beta \in \partial_\alpha(P)}} \abs{A(\alpha,\beta)} \spaced{\gtrsim} \abs{\Delta} \cdot \binom{n}{\ell}\qedhere
 \]
 \end{proof}
 
@@ -644,7 +644,7 @@ One needs a similar argument as in the case of $T_2$ to figure out how many pair
 \begin{lemma}[\cite{KS14}] \label{lem:T3-bound}
 For the polynomial $\NW_{d,m,e}$, and $n = md$ and $\ell = \frac{n}{2}(1 - \epsilon)$ for $\epsilon = \Theta\inparen{\frac{\log d}{\sqrt{d}}}$, 
 \[
-T_3 \quad \lesssim \quad \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}
+T_3 \quad \lesssim \quad \abs{\Delta}^2 \cdot \pfrac{m^{e-k}}{2^{d-k}}^2 \cdot \binom{n}{\ell}
 \]
 \end{lemma}
 \begin{proof}
@@ -655,14 +655,14 @@ Once again, this is easily seen to be at most
 \[
 m^{e-k} \cdot \binom{d-k}{t} \cdot (m-1)^{e-k-t}. 
 \]
-
-Therefore,
+\noindent Therefore, using \autoref{obs:T3-proxy}, 
 \begin{eqnarray*}
 T_3(\alpha, \alpha') & \leq & \sum_{t=0}^{e} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \binom{n- 2d + 2k +t}{\ell - d + k + t}\\
 & \approx & \sum_{t=0}^{e} m^{e-k} \cdot (m-1)^{e-k -t} \binom{d-k}{t} \cdot \binom{n}{\ell} \inparen{\frac{1}{2}}^{2d - 2k -t}  (1+\epsilon)^{t}\\
 & \leq & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \cdot \inparen{1 + \frac{2(1+\epsilon)}{m}}^{d-k}\\
-& \approx & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \quad = \quad \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\\
-\implies T_3 & \lesssim & \text{(\# deriv)}^2 \text{(\# mons per deriv)}^2 \cdot \binom{n}{\ell}\cdot \inparen{\frac{1}{2}}^{2d - 2k}\qedhere
+& \approx & \frac{m^{2(e-k)}}{2^{2(d-k)}} \cdot \binom{n}{\ell} \qquad\text{(as $m = \Omega(d)$)}\\
+\implies T_3 & \lesssim & \abs{\Delta}^2 \cdot \pfrac{m^{e-k}}{2^{d-k}}^2 \cdot \binom{n}{\ell}
+\qedhere
 \end{eqnarray*}
 \end{proof}
 \noindent
@@ -672,19 +672,19 @@ Recalling that we have chosen our parameters so that
 \]
 the above equation reduces to 
 \[
-T_3 \quad \lesssim \quad \text{(\# deriv)}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
+T_3 \quad \lesssim \quad \abs{\Delta}^2 \inparen{\frac{1}{1+\epsilon}}^{2(d-k)} \cdot \binom{n}{\ell}.
 \]
-We shall choose our set of derivatives so that $\text{(\# deriv)} \approx (1+\epsilon)^{2(d-k)}$. 
+We shall choose our set of derivatives so that $\abs{\Delta} \approx (1+\epsilon)^{2(d-k)}$. 
 With that setting, we can readily see that $T_3 \lesssim T_1$. 
 
 Combining with \autoref{cor:T2-bound}, we obtain the required bound for $\abs{\Union A(\alpha, \beta)}$ via Inclusion-Exclusion (\autoref{cor:inc-exc-str}). 
 
-\begin{lemma}
+\begin{lemma}\label{lem:d4hom-goldilocks-LB}
 Let $m = d^2$ (so that $n = md = d^3$). 
 Let $k = O(\sqrt{d})$ and  $\ell  = \frac{n}{2}\inparen{1 - \epsilon}$ for $\epsilon = \frac{\log d}{c \sqrt{d}}$ where $c$ is a constant. 
 If $c$ and $e$ are tailored so that 
 \begin{eqnarray*}
- m^k & \gtrsim &  (1+\epsilon)^{2d - 2k}\\
+ \abs{\Delta} \spaced{=} m^k & \gtrsim &  (1+\epsilon)^{2d - 2k}\\
  m^{e-k} & \approx & \inparen{\frac{2}{1+\epsilon}}^{d-k}
 \end{eqnarray*}
 Then, for the polynomial $\NW_{d,m,e}$, if we consider a subset of non-zero derivatives order $k$ of size $\floor{(1+\epsilon)^{2d - 2k}}$, then
@@ -693,7 +693,7 @@ Then, for the polynomial $\NW_{d,m,e}$, if we consider a subset of non-zero deri
 \] 
 \end{lemma}
 
-By \autoref{lem:upper-bound-low-supp}, we know that any homogeneous depth $4$ circuit $C$ of size $s$ and bottom fan-in $r$ satisfies
+By \autoref{lem:upper-bound-low-supp}, we know that any homogeneous depth-$4$ circuit $C$ of size $s$ and bottom fan-in $r$ satisfies
 \[
 \Gamma^{\mathrm{PSD}}_{k,\ell}(C)\spaced{\leq} s \cdot \binom{n}{\ell} \cdot (1+\epsilon)^{rk} \cdot 2^{O(\sqrt{d})}.
 \]
@@ -712,6 +712,8 @@ Any homogeneous depth $4$ circuit computing, over any field $\F$,  the polynomia
 A similar lower bound $d^{\Omega(\sqrt{d})}$ holds also for the polynomial $\mathrm{IMM}_{n,d} \circ \mathrm{Lin}$ for suitable choices of $n$ and $d$. 
 \end{theorem}
 
+\begin{exercise} Show that the there indeed does exist settings of $c$ and $e$ so as to satisfy the constraints in \autoref{lem:d4hom-goldilocks-LB}.
+\end{exercise}
 
 
 %%% Local Variables: 
