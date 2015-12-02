@@ -249,29 +249,6 @@ This then immediately forces
 Using the normal form provided by \autoref{lem:vsbr-two-thirds} to prove a $2^{\Omega(n)}$ lower bound for $\Det_n$ and $\Perm_n$. 
 \end{exercise}
 
-% \begin{proofof}{Theorem~\ref{thm:monotone-circuit-lbs}}
-% Suppose $\Phi$ is a monotone circuit of size $s$ that computes $\Det_n$. 
-Then by Lemma~\ref{lem:vsbr-two-thirds}, 
-% $$
-% \Det_n \quad=\quad \sum_{i=1}^s f_i \cdot g_i
-% $$
-% with $\FM(f_i)\cdot \FM(g_i) \subseteq \FM(\Det_n)$. 
-The building blocks are terms of the form $T = f\cdot g$, where $\FM(f)  \cdot \FM(g) \subseteq \FM(\Det_n)$. \\
-
-% Since all the monomials in $\Det_n$ are products of variables from distinct columns and rows, the rows (and columns) containing the variables $f$ depends on is disjoint from the rows (and columns) containing variables that $g$ depends on. 
-Hence, there exists sets of indices $A,B \subseteq [n]$ such that $f$ depends only on $\setdef{x_{jk}}{j\in A, k\in B}$ and $g$ depends only on $\setdef{x_{jk}}{j\in\overline{A}, k\in \overline{B}}$.
-
-% Further, since $\Det_n$ is a homogeneous polynomial of degree $n$, we also have that both $f$ and $g$ must be homogeneous as well. 
-Also as all monomials of $g$ using distinct row and column indices from $\overline{A}$ and $\overline{B}$ respectively, we see that $\deg g = |\overline{A}| = |\overline{B}|$ and $\deg f = |A| = |B|$. 
-Using Lemma~\ref{lem:vsbr-two-thirds}, let $|A| = \alpha n$ for some $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$. 
-This implies that $\Gamma(f)\leq (\alpha n)!$, and $\Gamma(g)\leq ((1-\alpha)n)!$ and hence
-% $$\Gamma(f\cdot g) \quad \leq\quad (\alpha n)! ((1-\alpha)n)! \spaced{\leq} \frac{n!}{\binom{n}{n/3}} $$
-% as $\frac{1}{3}\leq \alpha \leq \frac{2}{3}$.
-% Also, $\Gamma$ is clearly sub-additive and we have $$\Gamma(f_1g_1 + \dots + f_s g_s) \spaced{\leq} s \cdot \frac{n!}{\binom{n}{n/3}}.$$
-% Since $\Gamma(\Det_n) = n!$, this forces $s \geq
-% \binom{n}{n/3} = 2^{\Omega(n)}$.
-% \end{proofof}
-
 We shall now proceed towards some more involved lower bounds. 
 
 
