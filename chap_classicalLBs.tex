@@ -92,40 +92,30 @@ Hence, by adding at most $5$ additional edges to $\mathbb{D}(\Phi')$, we can con
 
 \section{Lower bounds for formulas}\label{sec:Kalorkoti}
 
-This section would be devoted to the proof of Kalorkoti's lower bound
-\cite{k85} for formulas computing $\Det_n$, $\Perm_n$.
+This section would be devoted to the proof of Kalorkoti's lower bound \cite{k85} for formulas computing $\Det_n$, $\Perm_n$.
 
 \begin{theorem}[\cite{k85}]\label{thm:kalorkoti}
-  Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires
-  $\Omega(n^3)$ size.
+  Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires $\Omega(n^3)$ size.
 \end{theorem}
 
-The exploitable weakness in this setting is again to use the fact that the polynomials computed at intermediate gates share many polynomial dependencies. 
+The exploitable weakness in this setting is again to use the fact that the polynomials computed at intermediate gates share many polynomial dependencies.
 
 \begin{definition}[Algebraic independence]
-  A set of polynomials $\inbrace{f_1,\dots, f_m}$ is said to be
-  \emph{algebraically independent} if there is no non-trivial polynomial 
-  $H(z_1,\dots, z_m)$ such that $H(f_1,\dots, f_m)=0$. 
+  A set of polynomials $\inbrace{f_1,\dots, f_m}$ is said to be \emph{algebraically independent} if there is no non-trivial polynomial $H(z_1,\dots, z_m)$ such that $H(f_1,\dots, f_m)=0$.
 
-  The size of the largest algebraically independent subset of
-  $\vecf=\inbrace{f_1,\dots, f_m}$ is called the \emph{transcendence
-    degree} (denoted by $\mathrm{trdeg}(f)$).
+  The size of the largest algebraically independent subset of $\vecf=\inbrace{f_1,\dots, f_m}$ is called the \emph{transcendence degree} (denoted by $\mathrm{trdeg}(f)$).
 \end{definition}
-
-The proof of Kalorkoti's theorem proceeds by defining a \emph{complexity measure} using the above notion of algebraic independence. \\
+The proof of Kalorkoti's theorem proceeds by defining a \emph{complexity measure} using the above notion of algebraic independence.
+\\
 
 
 {\bf The Measure:} 
-For any subset of variables $Y\subseteq X$, we can write a polynomial
-$f \in \F[X]$ of the form $f = \sum_{i=1}^s f_i \cdot m_i$ where $m_i$'s are
-distinct monomials in the variables in $Y$, and $f_i \in
-F[X \setminus Y]$. 
+For any subset of variables $Y\subseteq X$, we can write a polynomial $f \in \F[X]$ of the form $f = \sum_{i=1}^s f_i \cdot m_i$ where $m_i$'s are distinct monomials in the variables in $Y$, and $f_i \in F[X \setminus Y]$.
 We shall denote by $\mathrm{td}_Y(f)$ the transcendence degree of $\inbrace{f_1,\dots, f_s}$
 
 
-Fix a partition of variables $X = X_1 \sqcup \dots
-\sqcup X_r$. 
-For any polynomial $f\in \F[X]$, define the map $\CM{Kal}:\F[X]\rightarrow \Z_{\geq 0}$  as
+Fix a partition of variables $X = X_1 \sqcup \dots \sqcup X_r$.
+For any polynomial $f\in \F[X]$, define the map $\CM{Kal}:\F[X]\rightarrow \Z_{\geq 0}$ as
 $$
 \CM{Kal}(f) \quad=\quad \sum_{i=1}^r \mathrm{td}_{X_i}(f).
 $$
@@ -139,44 +129,41 @@ The lower bound proceeds in two natural steps:
 \subsection{Upper bounding $\CM{Kal}$ for a formula}
 
 \begin{lemma}\label{lem:kal-upperbound}
-  Let $f$ be computed by a fan-in two formula $\Phi$ of size $s$. 
-Then
-  for any partition of variables $X = X_1\sqcup \dots \sqcup X_r$, we
-  have $\CM{Kal}(f) = O(s)$.
+  Let $f$ be computed by a fan-in two formula $\Phi$ of size $s$.
+Then for any partition of variables $X = X_1\sqcup \dots \sqcup X_r$, we have $\CM{Kal}(f) = O(s)$.
 \end{lemma}
 \begin{proof}
-  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves
-  of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote
-  the leaves of the subtree rooted at $v$ that are in the part
-  $X_i$. 
-Since the underlying graph of $\Phi$ is a tree, it follows
-  that the size of $\Phi$ is bounded by a twice the number of
-  leaves. 
-For each part $X_i$, we shall show that
-  $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which
-  would prove the required bound. \\
+  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote the leaves of the subtree rooted at $v$ that are in the part $X_i$.
+Since the underlying graph of $\Phi$ is a tree, it follows that the size of $\Phi$ is bounded by a twice the number of leaves.
+For each part $X_i$, we shall show that $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which would prove the required bound.
+\\
 
-  Fix an arbitrary part $Y = X_i$. 
-Define the following three 
-  sets of nodes
+Fix an arbitrary part $Y = X_i$.
+Since the goal is really to just get a bound on $\textsc{Leaf}_{Y}(\Phi)$, we shall modify the formula $\Phi$ by introducing new leaf variables that compute polynomial in $\F[X \setminus Y]$.
+This does not affect the size of $\textsc{Leaf}_{Y}(\Phi)$.
+This in some sense is allowing $\Phi$ to ``freely'' compute any polynomial on variables outside $Y$, as we are only interested in how many times the $Y$ variables are used in the computation of $\Phi$.
+
+We modify $\Phi$ by introducing a new type of gate $\boxtimes$ that takes a node $g$ and two leaves $\ell_1$ and $\ell_2$ and computes $\boxtimes(g,\ell_1,\ell_0) = (\ell_1 \cdot g) + \ell_0$.
+We shall always ensure that when we introduce new leaf nodes, they only hold polynomials $\F[X \setminus Y]$.
+
+Define the following three sets of nodes:
   \begin{eqnarray*}
     V_0 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 0 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
     V_1 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 1 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
     V_2 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} \geq 2}.
   \end{eqnarray*}
 
-  Each node $v\in V_0$ computes a polynomial in $f_v \in
-  \F[X\setminus Y]$, and we shall replace the subtree at $v$ by a node
-  computing the polynomial $f_v$. 
-Similarly, any node $v\in V_1$
-  computes a polynomial of the form $f^{(0)}_v + f^{(1)}_v y_v$ for some $y_v\in Y$
-  and $f^{(0)}_v, f^{(1)}_v \in \F[X\setminus Y]$. 
-We shall again replace the
-  subtree rooted at $v$ by a node computing $f^{(0)}_v + f^{(1)}_v y_v$. 
+
+  Each node $v\in V_0$ computes a polynomial in $f_v \in \F[X\setminus Y]$, and we shall replace the subtree at $v$ by a leaf computing the polynomial $f_v$.
+
+  Similarly, any node $v\in V_1$ computes a polynomial of the form $f_1 \cdot y_v + f_0$ for some $y_v\in Y$
+  and $f_0,f_1 \in \F[X\setminus Y]$. 
+  We shall create two new leaf nodes $\ell_0,\ell_1$ computing $f_0$ and $f_1$ respectively, and replace the gate $v$ by a $\boxtimes$ gate with inputs $y_v,\ell_1,\ell_0$ so that it computes $\boxtimes(y_v,\ell_1,\ell_0) = (f_1 \cdot y_v) + f_0$
 
   Hence, the formula $\Phi$ now reduces to a smaller formula $\Phi_Y$ with
   leaves  being the nodes in $V_0$ and $V_1$ (and nodes in $V_2$ are
   unaffected). 
+  Furthermore, all new leaves that are added compute polynomials in $\F[X \setminus Y]$ and hence $\textsc{Leaf}_Y$ is unchanged. 
 We would like to show that the size of the reduced
   formula, which is at most twice the number of its leaves, is
   $O(\abs{\textsc{Leaf}_Y(\Phi)})$.
@@ -184,27 +171,17 @@ We would like to show that the size of the reduced
   \begin{observation}\label{obs:v1-bound}$\abs{V_1} \leq \abs{\textsc{Leaf}_Y(\Phi)}$.    
   \end{observation}
   \begin{myproof}{Obs}
-    Each node in $V_1$ has a distinct leaf labelled with a variable in
-    $Y$. 
-Hence, $\abs{V_1}$ is bounded by the number of leaves
-    labelled with a variable in $Y$.
+    Each node in $V_1$ has a distinct leaf labelled with a variable in $Y$.
+Hence, $\abs{V_1}$ is bounded by the number of leaves labelled with a variable in $Y$.
   \end{myproof}
   
-  This shows that the $V_1$ leaves are not too many. 
-Unfortunately, we
-  cannot immediately bound the number of $V_0$ leaves, since we could
-  have a long chain of $V_2$ nodes each with one sibling being a $V_0$
-  leaf. 
-The following observation would show how we can eliminate such
-  long chains.
+  This shows that the $V_1$ leaves are not too many.
+Unfortunately, we cannot immediately bound the number of $V_0$ leaves, since we could have a long chain of $V_2$ nodes each with one sibling being a $V_0$ leaf.
+The following observation would show how we can eliminate such long chains.
 
   \begin{observation}\label{obs:same-leaf-collapse}
-    Let $u$ be an arbitrary node, and $v$ be another node in the
-    subtree rooted at $u$ with $\textsc{Leaf}_Y(u) =
-    \textsc{Leaf}_Y(v)$. 
-Then the polynomial $g_u$ computed at $u$ and
-    the polynomial $g_v$ computed at $v$ are related as $g_u = f_1 g_v
-    + f_2$ for some $f_1,f_2 \in \F[X\setminus Y]$.
+    Let $u$ be an arbitrary node, and $v$ be another node in the subtree rooted at $u$ with $\textsc{Leaf}_Y(u) = \textsc{Leaf}_Y(v)$.
+Then the polynomial $g_u$ computed at $u$ and the polynomial $g_v$ computed at $v$ are related as $g_u = f_1 g_v + f_0$ for some $f_1,f_0 \in \F[X\setminus Y]$.
   \end{observation}
   \begin{myproof}{Obs}
     If $\textsc{Leaf}_Y(u) =\textsc{Leaf}_Y(v)$, then every node on
@@ -214,35 +191,37 @@ The
   \end{myproof}
 
   Using the above observation, we shall remove the need for $V_0$
-  nodes completely by augmenting each node $u$ (computing a polynomial
-  $g_u$) in $\Phi_Y$ with polynomials $f_u^{(0)}, f_u^{(1)} \in \F[X\setminus Y]$
-  to enable them to compute $f_u^{(1)}g_u + f_u^{(0)}$. 
-Let this augmented formula be called $\hat{\Phi}_Y$. 
-Using
-  \autoref{obs:same-leaf-collapse}, we can now contract any
-  two nodes $u$ and $v$ with $\textsc{Leaf}_Y(u) =
-  \textsc{Leaf}_Y(v)$, and eliminate all $V_0$ nodes
-  completely. 
-Since all $V_2$ nodes are internal nodes, the only leaves of the augmented formula $\hat{\Phi}_Y$ are in $V_1$. 
-Hence, the size of the augmented formula $\hat{\Phi}_Y$ is  bounded by $2\abs{V_1}$, which is bounded by
-  $2\abs{\textsc{Leaf}_Y(\Phi)}$ by \autoref{obs:v1-bound}.\\
+  nodes completely by adding new $\F[X\setminus Y]$ leaves and $\boxtimes$ gates. 
+  Formally, if a $V_0$ node computing $f$ was connected to a $+$ node that was computing $f + g$, then we can replace the $V_0$ node by a new leaf $\ell_f$ computing $f$ and replace that $+$ node with $\boxtimes(g,1,\ell_f) = (g \cdot 1) + f$. Similarly, if a $V_0$ node computing $f$ was incident on a $\times$ node that was computing $f \cdot g$, then we can replace the $V_0$ node by a new leaf $\ell_f$ computing $f$ and replace the $\times$ gate with a $\boxtimes(g,\ell_f,0) = g \cdot f + 0$. 
 
-  Suppose $\Phi$ computes a polynomial $f$, which can be written as  $f
-  = \sum_{i=1}^t f_i\cdot m_i$ with $f_i \in \F[X\setminus Y]$ and $m_i$'s being
-  distinct monomials in $Y$. 
-Since $\hat{\Phi}_Y$ also computes $f$, each $f_i$ is a polynomial
-  combination of the polynomials $S_Y = \setdef{f_{u}^{(0)},
-    f_{u}^{(1)}}{u\in \hat{\Phi}_Y}$. 
-Since $\hat{\Phi}_Y$ consists of at
-  most $2\abs{\textsc{Leaf}_Y(\Phi)}$ augmented nodes, we have that
-  $\mathrm{td}_Y(f) \leq |S_Y| \leq 4\abs{\textsc{Leaf}_Y(\Phi)}$. 
-Therefore, 
-  $$
-  \mathrm{td}_Y(f) \quad=\quad \mathrm{trdeg}\setdef{f_i}{i\in [t]} \quad\leq\quad 4\abs{\textsc{Leaf}_Y(\Phi)}
-  $$
-  Hence, 
-  $$\CM{Kal}(\Phi) = \sum_{i=1}^r \mathrm{td}_{X_i}(f_i) \leq 4\inparen{\sum_{i=1}^r \abs{\textsc{Leaf}_{X_i}}} = O(s).
-  $$
+Furthermore, using \autoref{obs:same-leaf-collapse}, we can now contract any two nodes $u$ and $v$ with $\textsc{Leaf}_Y(u) = \textsc{Leaf}_Y(v)$, we can replace the entire chain from $u$ to $v$ by an appropriate $\boxtimes$ node. 
+This ensures that no $\boxtimes$ node is connected to another $\boxtimes$ node. 
+Overall, $\Phi$ has been transformed in the following ways:
+\begin{enumerate}
+\itemsep 0pt
+\item all $V_0$ nodes are replaced by leaves,
+\item all $V_1$ are replaced by $\boxtimes$ nodes with three leaves incident on it,
+\item no $\boxtimes$ node is incident on another $\boxtimes$ node, and hence its parent is a $V_2$ node,
+\item distinct vertices $u,v\in V_2$ satisfy $\textsc{Leaf}_Y(u) \neq \textsc{Leaf}_Y(v)$, 
+\item leaves in $Y$ are untouched,
+\item all new leaves compute polynomials only in $\F[X \setminus Y]$.
+\end{enumerate}
+(3) implies that the number of $\boxtimes$ nodes in $\hat{\Phi}_Y$ is at most $|V_2| + 1$.
+Also (4) implies the number of $V_2$ nodes is at most $\abs{\textsc{Leaf}_Y(\Phi)} - 1$.
+Therefore, the size of the augmented formula $\hat{\Phi}_Y$ is at most $2\abs{\textsc{Leaf}_Y(\Phi)}$.
+\\
+
+Suppose $\Phi$ computes a polynomial $f$, which can be written as $f = \sum_{i=1}^t f_i\cdot m_i$ with $f_i \in \F[X\setminus Y]$ and $m_i$'s being distinct monomials in $Y$.
+Since $\hat{\Phi}_Y$ also computes $f$, each $f_i$ is a polynomial combination of the leaves of $\hat{\Phi}_Y$ that compute polynomials in $\F[X \setminus Y]$.
+Since $\hat{\Phi}_Y$ consists of at most $2\abs{\textsc{Leaf}_Y(\Phi)}$ augmented nodes, we have that $\mathrm{td}_Y(f) \leq 4\abs{\textsc{Leaf}_Y(\Phi)}$.
+Therefore,
+$$
+\mathrm{td}_Y(f) \quad=\quad \mathrm{trdeg}\setdef{f_i}{i\in [t]} \quad\leq\quad 4\abs{\textsc{Leaf}_Y(\Phi)}
+$$
+Hence, 
+$$
+\CM{Kal}(\Phi) = \sum_{i=1}^r \mathrm{td}_{X_i}(f_i) \leq 4\inparen{\sum_{i=1}^r \abs{\textsc{Leaf}_{X_i}}} = O(s).\qedhere
+$$
 \end{proof}
 
 \subsection{Lower bounding $\CM{Kal}(\Det_n)$}
