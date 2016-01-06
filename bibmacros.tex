@@ -3,6 +3,12 @@
 \usepackage{etoolbox}
 \usepackage{xstring}
 
+\usepackage{ifpdf}
+\ifpdf
+\else
+\usepackage[quadpoints=false]{hypdvips}
+\fi
+
 \newcommand{\mfbiberr}[1]{\PackageWarning{miforbes-bibtex}{#1}}
 
 \newcommand{\cSTOC}[1]{\nth{\intcalcSub{#1}{1968}}\ Annual\ ACM\ Symposium\ on\ Theory\ of\ Computing\ (STOC\ #1)}
