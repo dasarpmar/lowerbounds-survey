@@ -66,7 +66,7 @@ STRINGS { urlintro
   citedstring onlinestring linktextstring
   openinlinelink closeinlinelink }
 INTEGERS { hrefform inlinelinks makeinlinelink
-  addeprints addeeresolver adddoiresolver addpubmedresolver }
+  addeprints addeeresolver adddoiresolver addpubmedresolver lowerCaseTitle}
 FUNCTION {init.urlbst.variables}
 {
   % The following constants may be adjusted by hand, if desired
@@ -78,7 +78,7 @@ FUNCTION {init.urlbst.variables}
   #1 'addpubmedresolver :=     % 0=no PUBMED resolver; 1=include it
   #2 'hrefform :=           % 0=no crossrefs; 1=hypertex xrefs; 2=hyperref refs
   #1 'inlinelinks :=        % 0=URLs explicit; 1=URLs attached to titles
-
+  #0 'lowerCaseTitle :=    % 0=titles won't be made lower case; 1=titles are made lower case
   % String constants, which you _might_ want to tweak.
   "URL: " 'urlintro := % prefix before URL; typically "Available from:" or "URL":
   "online" 'onlinestring := % indication that resource is online; typically "online"
@@ -418,9 +418,13 @@ FUNCTION {format.editors}
 }
 
 FUNCTION {format.title}
-{ title empty$
-    { "" }
-    { title "t" change.case$ }
+{ lowerCaseTitle #1 = 
+    {title empty$
+       { "" }
+       { title "t" change.case$ }
+     if$
+    }
+    { title }
   if$
 }
 
