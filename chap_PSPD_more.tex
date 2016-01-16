@@ -140,7 +140,7 @@ edge[<-,bend left] (1.25,2);
 $\mathcal{I} = \inangle{x_i^2 \;:\; i\in [n]}$ but working modulo other ideals is at times more useful.
 In fact, there is a fairly large class of ideals $\mathcal{I}$ for which $f \bmod \mathcal{I}$ has a unique multilinear representative. But to make it applicable for lower bounds for homogeneous depth-$4$ circuits, we will need a mechanism to transform a ``low support polynomial'' to a ``low degree polynomial''. 
 
-\begin{definition}[Support-to-degree ideals]
+\begin{definition}[Support-to-degree ideals]\label{defn:supp-to-degree-ideal}
 An ideal $\mathcal{I}$ is said to be a \emph{support-to-degree} ideal if there exist linear polynomials $\ell_1, \cdots, \ell_n$ such that
 \[
 \mathcal{I} \spaced{=} \inangle{x_i^2 - \ell_i(x_i) \;:\; i\in [n]}. \qedhere
@@ -223,14 +223,265 @@ A concrete instance of this was the lower bound by Kumar and Saptharishi~\cite{K
 
 \section{Lower bounds for depth five circuits over finite fields}
 
+The plan would be to combine the ideas from the lower bound of Grigoriev and Karpinski \cite{grigoriev98} (discussed in \autoref{chap:GK}) with the above perspective of projected shifted partial derivatives.
+The main theorem of this chapter would be the result of Kumar and Saptharishi~\cite{KumarSapt15}.
+
+\begin{theorem}[\cite{KumarSapt15}]\label{thm:Kumar-Sapt-d5-thm}
+Consider $\NW_{d,m,e}$ for some suitable choice of parameter. For any finite field $\F_q$, any homogeneous depth-$5$ circuit computing $\NW_{d,m,e}$ must be of size $\exp(\Omega_q(\sqrt{d}))$. 
+\end{theorem}
+
+\noindent 
+The plan that one could adopt is the following. 
+\begin{enumerate}
+\itemsep 0pt
+\item\label{item:PSPD-1} Take the measure to be $\Gamma^{\mathrm{PSD}}_{k,\ell,\mathcal{I}}$ where $\mathcal{I} = \inangle{x_i^q - x_i \;:\; i\in [n]}$, which is the \emph{evaluation perspective} of the shifted partial derivatives on $\F_q^n$.
+\item\label{item:PSPD-2} As an analogue of ``support'' for the hom. $\SPSP$ lower bounds, we shall look at look at ``rank'' of products of linear polynomials computed by the bottom two layers of the circuit. 
+\item\label{item:PSPD-3} Intuitively, any term of rank at most $r$ should be essentially behave like a term of degree at most $(q-1)r$, as $\mathcal{I}$ reduces any variable of exponent $q$ or above. 
+
+Hence, the ``low-rank'' part of the circuit (only considering terms of rank at most $\sqrt{d}$) should behave like a homogeneous $\SPSP^{[q\sqrt{d}]}$ circuit, for which we can upper bound the measure in a similar fashion. 
+\item\label{item:PSPD-4} To eliminate the ``high-rank'' products of linear polynomials, just as in the lower bound of Grigoriev and Karpinski \cite{grigoriev98} (as discussed in \autoref{chap:GK}), these ``high-rank'' gates are zero on almost all evaluations. 
+Therefore, we can modify our measure to not look at all evaluations on $\F_q^n$ but instead at $\F_q^n \setminus \mathcal{E}$ where $\mathcal{E}$ a tiny subset of $\F_q^n$ (of about $\exp(-\sqrt{d}) \cdot q^n$ size). 
+
+\item\label{item:PSPD-5} For the hard polynomial $\NW_{d,m,e}$, hopefully the measure continues to remain large even under the evaluation perspective on $\F_q^n \setminus \mathcal{E}$. 
+\end{enumerate}
+
+This is certainly a legitimate plan but the difficulty is in proving~\autoref{item:PSPD-5}.
+The calculations for the projected shifted partials were intricate enough, and it unclear how to convert those to the evaluation perspective with a few columns removed.
+Furthermore, it is important to keep the rough ballpark of parameters in mind.
+If we are hoping to have parameters for $k$ and $\ell$ similar to those in \autoref{chap:d4hom}, then we are dealing with matrices with roughly $2^n \cdot \exp(O(\sqrt{d}\log n))$ rows (indexed by derivatives of order $k = O(\sqrt{d})$ and shifts of order $\ell \approx n/2$) but close to $q^n$ columns.
+It would have been fine if we actually had all $q^n$ columns but we have to instead work with evaluations only on $\F_q^n \setminus \mathcal{E}$ for a set $\mathcal{E}$ of size $\exp{(-\sqrt{d})} \cdot q^n \gg 2^n$. 
+
+In \autoref{chap:GK}, we used the property that any linear combination of determinantal minors have many non-zero evaluations. Such a statement is simply false for this setting as we are dealing with polynomials that are multiplied by monomials of degree $\approx n/2$ and are hence going to be zero at many evaluations. Therefore, one needs a different strategy. \\
+
+{\bf Idea 1:} Since we are dealing with a matrix of evaluations, it can be naturally written as a product of a ``coefficient matrix'' and a ``Vandermonde matrix''.
+
+\begin{tikzpicture}[scale=0.7]
+  \draw[decorate,decoration={brace,amplitude=10pt,mirror, raise=4pt},yshift=0pt] 
+  (0,0) -- (5,0);
+  \node[anchor=north,text width=5cm] at (4,-0.7) {Mons of degree\\at most $\ell + d - k$};
+  \draw[fill=black!30] (0,2) rectangle (5,2.5);
+  \draw[dashed,thick] (9,-2) rectangle (10,3);
+  \draw[decorate,decoration={brace,mirror, raise=4pt},yshift=0pt] 
+  (9,-2) -- (10,-2);
+  \node at (9.5,-3) {$\mathcal{E}$};
+  \draw[fill=black!30] (6.5,3) rectangle (7,-2);
+  \node at (6.75,3.2) {$\veca$};
+  \node[anchor=east] at (0,2.25) {$\vecx^{\beta}\partial_{\vecx^\alpha}$};
+  \draw[thick] (6,-2) rectangle (9,3);
+  \draw[thick] (0,0) rectangle (5,3);
+
+  \begin{scope}[shift={(12,0)}]
+  \node at (-1,1.5) {$=$};
+  \draw[decorate,decoration={brace,mirror, raise=4pt},yshift=0pt] 
+  (4,0) -- (5,0);
+  \node[anchor=north] at (4.5,-0.5) {$\mathcal{E}$};
+  
+  \draw[fill=black!30] (1,0) rectangle (1.5,3);
+  \node at (1.25,3.2) {$\veca$};
+  
+  \draw[fill=black!30] (0,2) rectangle (4,2.5);
+  \draw[dashed] (4,2) rectangle (5,2.5);
+  \node[anchor=west] at (5.2,2.2) {$\vecx^{\beta}\partial_{\vecx^\alpha}$};
+  
+  \draw[very thick] (1,2) rectangle (1.5,2.5);
+  
+  \node[anchor=west] at (0,-2) {eval. of $\vecx^{\beta}\partial_{\vecx^\alpha}(f)$ at $\veca$}
+  edge[<-,bend right] (1.5,2);
+  \draw[thick] (0,0) rectangle (4,3);
+  \draw[dashed,thick] (4,0) rectangle (5,3);
+  \end{scope}
+\end{tikzpicture}
+
+Formally, let $C$ be  a matrix with rows indexed by shifted partials and columns indexed by monomials of the right degree, so that each row of $C$ is just the coefficients of a shifted partial $\vecx^{\beta} \partial_{\vecx^\alpha}(f) \bmod \mathcal{I}$ listed down. Also, let $V$ be the evaluation matrix of the monomials where rows are indexed by monomials and columns indexed by points in $\F_q^n$. Then the product $C \cdot V$ is precisely the evaluation matrix of shifted partials modulo $\mathcal{I}$. Furthermore, discarding a set $\mathcal{E}$ of evaluations is just discarding the corresponding columns from $V$. 
+
+In \autoref{chap:d4hom}, we essentially showed that the matrix $C$ for $\NW_{d,m,e}$ has pretty large row-rank.
+Furthermore, it is easy to show that $V$ also has full-rank.
+Since $\mathcal{E}$ is a fairly small set, we should expect $\tilde{V}$, which is $V$ with the columns indexed by $\mathcal{E}$ removed, to also have very large rank.
+Can we therefore claim that $C \cdot \tilde{V}$ also has large rank?
+In some sense, we  certainly can.
+
+\begin{lemma}[Rank of products]\label{lem:rank-of-products}
+For matrices $X \cdot Y = Z$, we always have that
+\[
+\rank(X) \spaced{\geq} \rank(Y) \;+\; \rank(Z) \;-\; (\mathrm{common\ dimension})
+\]
+where $\mathrm{common\ dimension}$ denotes the number of columns of $X$ or the number of rows of $Y$. 
+\end{lemma}
+
+Of course, if $\tilde{V}$ has full-rank then $\rank(M) = \rank(C)$.
+The problem is that if we are forced to look at a subset of evaluations and hence $\tilde{V}$ may not be full rank.
+When we are looking at all evaluations on $\F_q^n$, then the matrix $V$ and $\tilde{V}$ has much more $2^n$ rows as row indices would also involve non-multilinear monomials.
+However $C$ just has $2^n$ rows and hence they could potentially all be in the left-kernel of $\tilde{V}$ thus making $C \cdot \tilde{V} = 0$.
+Thus, we need a way of reducing the number of rows in $V$ to about $2^n$.
+\\
+
+{\bf Idea 2:} Do not consider evaluations on $\F_q^n$ but just evaluations on $\set{0,1}^n \subset \F_q^n$. \\
+
+\noindent
+That way, it is equivalent to reducing all polynomials $\mathcal{I} = \inangle{x_i^2 - x_i \;:\;i\in [n]}$ and hence the rows of $V$ (or columns of $C$) would be indexed by only multilinear monomials of degree at most $\ell+d-k$, which is the same regime as in \autoref{chap:d4hom}.
+Hence, we can hope to use \autoref{lem:rank-of-products} to lower bound the measure for $\NW_{d,m,e}$.
+
+The problem now becomes \autoref{item:PSPD-4}, the ``high rank'' gates.
+Consider the high-rank term $(x_1 + 2) \cdots (x_n + 2)$ over say $\F_7$.
+This term remains non-zero when we evaluate on any point in $\set{0,1}^n$.\\
+
+{\bf Idea 3:} Do not consider evaluations on $\set{0,1}^n$ but rather on a \emph{shift} of $\set{0,1}^n$. \\
+
+Picking a random point $\F_q^n$ can be thought of as first picking a point $\vecc \in \F_q^n$, and then picking a shift $\vecx \in \set{0,1}^n$ and returning $\vecc + \vecx$.
+Therefore, if we have an event that is \emph{good} for a random point in $\F_q^n$, this also shows that there exists a $\vecc \in \F_q^n$ for which the event is \emph{good} for a random point in $\vecc + \set{0,1}^n$.
+
+\begin{lemma}\label{lem:shift-of-hypercube-averaging}
+Let $A$ be an function on $\F_q^n$ and suppose $\E_{\vecy \in \F_q^n}[A(\vecy)] \geq \delta$. Then, there exists a point $\vecc \in \F_q^n$ such that 
+\[
+\E\limits_{\vecy \in \vecc + \set{0,1}^n}[A(\vecy)] \spaced{\geq} \delta
+\]
+\end{lemma}
+
+In this setting, if the event is the vanishing of all high-rank gates, we now have that there exists a \emph{translate of a hypercube} $\vecc + \set{0,1}^n$ such all high rank gates vanish on most points in this translate of a hypercube.
+
+We are now back to~\autoref{item:PSPD-5}, lower bounding the rank of the evaluation matrix for $\NW_{d,m,e}$.
+Since we are only dealing with a translate of a hypercube, we can finding a support-to-degree ideal $\mathcal{I}$ that respects evaluations on $\vecc + \set{0,1}^n$.
+
+\begin{lemma}[\cite{KumarSapt15} Multilinearization for translate of hypercubes]\label{lem:multilinearization-translate}
+  Let $\vecc + \set{0,1}^n$.
+Then there exists a support-to-degree ideal $\mathcal{I}$ such that every polynomial $f(\vecx) \in \F_q^n$ has a unique multilinear representative $g$ with $\deg(g) \leq \deg(f)$ that agrees with $f$ on $\vecc + \set{0,1}^n$.
+\end{lemma}
+\begin{proof}
+  Since each $x_i$ can only take values $c_i$ or $c_i + 1$, it suffices to replace each $x_i^2$ by either $c_i^2$ or $(c_i + 1)^2$ depending on the value of $x_i$.
+It is easy to find a linear polynomial $\ell_i$ such that $\ell_i(c_i) = c_i^2$ and $\ell_i(c_i+1) = (c_i+1)^2$ --- a simple calculation yields $\ell_i(x) = c_i^2 + (x - c_i)(2c_i + 1)$.
+Hence, if we define $\mathcal{I}$ to be
+\[
+\mathcal{I} \spaced{=} \setdef{x_i^2 - c_i^2 - (x_i - c_i)(2c_i + 1)}{i\in [n]},
+\]
+clearly this is a support-to-degree ideal (\autoref{defn:supp-to-degree-ideal}) and by definition does not alter the evaluation on $\vecc + \set{0,1}^n$. 
+\end{proof}
+
+With this multilinearization lemma, the coefficient matrix $C$ has columns indexed by just multilinear monomials of degree at most $\ell + d - k$ which makes the dimensions $C$ more balanced. 
+
+These are the main ideas that go into the proof of Kumar and Saptharishi \cite{KumarSapt15} and from here on is just setting the right parameters etc.
+The rest of the exposition will leave a lot of the proofs as exercises to the readers as the main intuitions have been exposed.
+
+\subsubsection*{The formal measure}
+
+For a set $\mathcal{A} \subseteq \F_q^n$, define the measure $\CM{KS}_{k,\ell,\mathcal{A}}$ as follows
+\[
+\CM{KS}_{k,\ell,\mathcal{A}}(f) \spaced{=} \rank \set{\inparen{\vecx^{= \ell} \cdot \partial^{=k}(f)  }_{\veca \in \mathcal{A}}}
+\]
+or in other words is the rank of the matrix where rows are indexed by shifts and partial derivatives, columns are indexed by elements $\mathcal{A}$ and the corresponding entry being the evaluation of the shifted partial derivative of $f$ at the point $\veca$.
+
+\subsection{Upper bound for a homogeneous depth-$5$ circuit}
+
+The upper bound would proceed in the following natural steps, similar to the discussion in \ref{chap:GK}. 
+
+\begin{lemma}[\cite{KumarSapt15} Eliminating high-rank gates]
+  Let $C$ be a homogeneous depth-$5$ circuit that computes an $n$-variate degree $d$ polynomial over $\F_q$.
+Assume that $\mathrm{size}(C) \leq 2^{\sqrt{d}/100}$.
+Let $\tau = q\sqrt{d}/6$ and $k = \tau / 2q^3 = O_q(\sqrt{d})$.
+Then, there is a set $\mathcal{E}$ of size at most $\exp{-O(\sqrt{d})} \cdot q^n$ such that all products of linear polynomials of rank greater than $\tau$ that are computed by the bottom to layers of $C$ vanish on all of $\F_q^n \setminus \mathcal{E}$ with multiplicity at least $k$.
+\end{lemma}
+\begin{exercise}
+Prove this. 
+\end{exercise}
 
 
+\begin{lemma}[\cite{KumarSapt15} Upper bound]\label{lem:PSPD-more-upper-bound-ckt}
+Let $C$ be a homogeneous depth-$5$ circuit of size at most $2^{\sqrt{d}/100}$ that computes an $n$-variate degree $d$ polynomial over $\F_q$. Let $\tau, k, \mathcal{E}$ be as above. 
+Then, for any $\mathcal{A} \subset \F_q^n \setminus \mathcal{E}$ that is contained in some $\vecc + \set{0,1}^n$, we have
+\[
+\CM{KS}_{k,\ell,\mathcal{A}}(C) \spaced{\leq} 2^{\sqrt{d}/100} \cdot \binom{\frac{4d}{\tau} + 1}{k} \cdot \binom{n}{\ell + k\tau q} \cdot \poly(n)
+\]
+\end{lemma}
 
+This proof would proceed in a few steps. 
 
+\begin{claim}
+Consider the polynomial $C'$ which is obtained from $C$ by \emph{dropping all products of linear polynomials or rank at least $\tau$}. Then, by the choice of $\mathcal{A}$,
+\[
+\CM{KS}_{k,\ell,\mathcal{A}}(C) \spaced{=}\CM{KS}_{k,\ell,\mathcal{A}}(C')
+\]
+\end{claim}
 
+\begin{claim}
+  If $C'$ is a homogeneous depth-$5$ circuit with all products of linear forms having rank at most $\tau$, and if $\mathcal{A}$ is contained in some translate of a hypercube $\vecc + \set{0,1}^n$, then
+\[
+\CM{KS}_{k,\ell,\mathcal{A}}(C') \spaced{=} \mathrm{size}(C') \cdot \binom{\frac{4d}{\tau} + 1}{k} \cdot \binom{n}{\ell + k\tau q} \cdot \poly(n)
+\]
+\end{claim}
 
+\begin{exercise}
+Complete the proofs using \autoref{obs:support-redn} and \autoref{lem:multilinearization-translate}. 
+\end{exercise}
+
+\subsection{Lower bound for $\NW_{d,m,e}$}
+
+As mentioned earlier, to lower bound the rank of the evaluation matrix we shall write this as $C \cdot V$ and use \autoref{lem:rank-of-products} to lower bound the rank. The matrices $C$ and $V$ shall be the following:
+\begin{quote}
+{\bf The matrix $C$:}
+
+Rows are indexed by shifted partials, columns are indexed by multilinear monomials of degree at most $\ell + d - k$, and the entry in $(\vecx^{\alpha} \cdot \partial_{\vecx^{\beta}} , m)$ is the coefficient of the monomial $m$ in the unique multilinear representative of $\vecx^{\alpha} \cdot \partial_{\vecx^{\beta}}(f) \bmod{\mathcal{I}}$ (\autoref{lem:multilinearization-translate}). 
+
+{\bf The matrix $V({\mathcal{A}})$:}
+Rows are indexed by multilinear monomials of degree at most $\ell + d - k$, columns are indexed by points in $\mathcal{A}$, and the entry at $(m,\veca)$ is the evaluation of $m$ at $\veca$. 
+\end{quote}
+
+We shall set parameters in $\NW_{d,m,e}$ as we had in \autoref{lem:d4hom-goldilocks-LB}, then by \autoref{lem:PSD-I-lowerbound}, we have the following bound for the rank of $C$.
+
+\begin{eqnarray}
+\rank(C) & \geq & \binom{n}{\ell} \cdot (1 + \epsilon)^{2d-2k} \cdot \exp(-O(\log^2 n))\nonumber\\
+ & = & \binom{n}{\ell + d - k} \cdot \exp(-O(\log^2 n))\label{eqn:rank-C-lower-bound}
+\end{eqnarray}
+
+Moving on to the rank of $V(\mathcal{A})$. Currently, $\mathcal{A}$ is contained in some translate $\vecc + \set{0,1}^n$. The following observation allows us to instead look at subsets of $\set{0,1}^n$, which is easier to study. 
+
+\begin{observation} For any set $\mathcal{A}$ and a point $\vecc \in \F_q^n$, we have 
+\[
+\rank(V(\mathcal{A}) = \rank(V(\mathcal{A} - \vecc)). 
+\]
+\end{observation}
+\begin{exercise}
+Prove this. 
+\end{exercise}
+
+Due to this observation, we might as well assume that $\mathcal{A} \subset \set{0,1}^n$. 
+Suppose we consider the simpler matrix $\tilde{V}$ where we have a column for every $\veca \in \set{0,1}^n$.
+How do we show that $\tilde{V}$ has full rank?
+This is because the matrix $\tilde{V}$ has an lower-triangular matrix sitting inside with ones on the diagonal.
+To elaborate a bit, if we were to order the rows by decreasing order of degrees, and match each row (monomial) by the characteristic vector (a point $\veca$ of hamming weight at most $\ell + d - k$), then it is easy to see that this is a lower-triangular matrix with ones on the diagonal.
+
+Due to this, if it so happens that $\mathcal{A}$ has many points from 
+\[\mathcal{H}_{\leq \ell+ d - k} = \setdef{\veca \in \set{0,1}^n}{\mathrm{wt}(\veca) \leq \ell + d - k},\]
+then $\rank(V)$ would also be large. The point is that we only need to avoid the set $\mathcal{E}$ but we are free to choose any translate we want. The same averaging argument comes into play here to ensure that we have a large intersection with a translate of $\mathcal{H}_{\leq \ell+ d - k}$. 
+\begin{lemma}
+Let $\mathcal{E} \subset \F_q^n$ be a set of size $\delta \cdot q^n$. Then, there exists $\vecc \in \F_q^n$ such that 
+\[
+\abs{(\vecc + \mathcal{H}_{\leq \ell+ d - k}) \intersection \mathcal{E}} \spaced{\leq} \delta \cdot \abs{\mathcal{H}_{\ell + d - k}}
+\]
+\end{lemma}
+
+From this lemma, the rank bound follows. 
+
+\begin{lemma}
+For any set $\mathcal{E} \in \F_q^n$ of size at most $\delta \cdot q^n$, there exists a set $\mathcal{A}$ that is contained in some $\vecc + \set{0,1}^n$ for which 
+\[
+\rank(V(\mathcal{A})) \spaced{\geq} \binom{n}{\ell + d - k} \cdot (1 - \delta)
+\] 
+\end{lemma}
+\begin{exercise}
+Prove this. 
+\end{exercise}
+
+Putting all of this together yields the require lower bound for the rank of the evaluation matrix for $\NW_{d,m,e}$. 
+
+\begin{lemma}
+Let the parameters of $\NW_{d,m,e}$ be chosen appropriately. Then, for any set $\mathcal{E} \subset \F_q^n$ of size at most $\exp(-O(\sqrt{d})) \cdot q^n$, there exists a set $\mathcal{A}$ contained in $\vecc + \set{0,1}^n$ and is disjoint from $\mathcal{E}$ such that
+\[
+\CM{KS}_{k,\ell,\mathcal{A}}(\NW_{d,m,e}) \spaced{\geq} \binom{n}{\ell + d - k} \cdot \exp(-O(\log^2 n))
+\]
+\end{lemma}
+
+Combining this with \ref{lem:PSPD-more-upper-bound-ckt}, the main theorem (\autoref{thm:Kumar-Sapt-d5-thm}) of Kumar and Saptharishi~\cite{KumarSapt15} (almost\footnote{there is a slight technicality here that depending on $F_q$ we choose $k$ accordingly and hence we get that ``for each $q$ there is a polynomial $f$ for which the bound holds''. This can be fixed to instead get the right order of quantifiers --- ``There is a polynomial $f$ such that for every $q$ ...''}) follows. 
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
