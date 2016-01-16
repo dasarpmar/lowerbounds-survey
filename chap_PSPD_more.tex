@@ -414,14 +414,16 @@ Complete the proofs using \autoref{obs:support-redn} and \autoref{lem:multilinea
 
 \subsection{Lower bound for $\NW_{d,m,e}$}
 
-As mentioned earlier, to lower bound the rank of the evaluation matrix we shall write this as $C \cdot V$ and use \autoref{lem:rank-of-products} to lower bound the rank. The matrices $C$ and $V$ shall be the following:
+As mentioned earlier, to lower bound the rank of the evaluation matrix we shall write this as $C \cdot V$ and use \autoref{lem:rank-of-products} to lower bound the rank.
+The matrices $C$ and $V$ shall be the following:
 \begin{quote}
 {\bf The matrix $C$:}
 
 Rows are indexed by shifted partials, columns are indexed by multilinear monomials of degree at most $\ell + d - k$, and the entry in $(\vecx^{\alpha} \cdot \partial_{\vecx^{\beta}} , m)$ is the coefficient of the monomial $m$ in the unique multilinear representative of $\vecx^{\alpha} \cdot \partial_{\vecx^{\beta}}(f) \bmod{\mathcal{I}}$ (\autoref{lem:multilinearization-translate}). 
 
-{\bf The matrix $V({\mathcal{A}})$:}
-Rows are indexed by multilinear monomials of degree at most $\ell + d - k$, columns are indexed by points in $\mathcal{A}$, and the entry at $(m,\veca)$ is the evaluation of $m$ at $\veca$. 
+{\bf The matrix $V({\mathcal{A}})$:} 
+
+Rows are indexed by multilinear monomials of degree at most $\ell + d - k$, columns are indexed by points in $\mathcal{A}$, and the entry at $(m,\veca)$ is the evaluation of $m$ at $\veca$.
 \end{quote}
 
 We shall set parameters in $\NW_{d,m,e}$ as we had in \autoref{lem:d4hom-goldilocks-LB}, then by \autoref{lem:PSD-I-lowerbound}, we have the following bound for the rank of $C$.
@@ -431,7 +433,9 @@ We shall set parameters in $\NW_{d,m,e}$ as we had in \autoref{lem:d4hom-goldilo
  & = & \binom{n}{\ell + d - k} \cdot \exp(-O(\log^2 n))\label{eqn:rank-C-lower-bound}
 \end{eqnarray}
 
-Moving on to the rank of $V(\mathcal{A})$. Currently, $\mathcal{A}$ is contained in some translate $\vecc + \set{0,1}^n$. The following observation allows us to instead look at subsets of $\set{0,1}^n$, which is easier to study. 
+Moving on to the rank of $V(\mathcal{A})$.
+Currently, $\mathcal{A}$ is contained in some translate $\vecc + \set{0,1}^n$.
+The following observation allows us to instead look at subsets of $\set{0,1}^n$, which is easier to study.
 
 \begin{observation} For any set $\mathcal{A}$ and a point $\vecc \in \F_q^n$, we have 
 \[
@@ -442,7 +446,7 @@ Moving on to the rank of $V(\mathcal{A})$. Currently, $\mathcal{A}$ is contained
 Prove this. 
 \end{exercise}
 
-Due to this observation, we might as well assume that $\mathcal{A} \subset \set{0,1}^n$. 
+Due to this observation, we might as well assume that $\mathcal{A} \subset \set{0,1}^n$.
 Suppose we consider the simpler matrix $\tilde{V}$ where we have a column for every $\veca \in \set{0,1}^n$.
 How do we show that $\tilde{V}$ has full rank?
 This is because the matrix $\tilde{V}$ has an lower-triangular matrix sitting inside with ones on the diagonal.
@@ -450,7 +454,9 @@ To elaborate a bit, if we were to order the rows by decreasing order of degrees,
 
 Due to this, if it so happens that $\mathcal{A}$ has many points from 
 \[\mathcal{H}_{\leq \ell+ d - k} = \setdef{\veca \in \set{0,1}^n}{\mathrm{wt}(\veca) \leq \ell + d - k},\]
-then $\rank(V)$ would also be large. The point is that we only need to avoid the set $\mathcal{E}$ but we are free to choose any translate we want. The same averaging argument comes into play here to ensure that we have a large intersection with a translate of $\mathcal{H}_{\leq \ell+ d - k}$. 
+then $\rank(V)$ would also be large.
+The point is that we only need to avoid the set $\mathcal{E}$ but we are free to choose any translate we want.
+The same averaging argument comes into play here to ensure that we have a large intersection with a translate of $\mathcal{H}_{\leq \ell+ d - k}$.
 \begin{lemma}
 Let $\mathcal{E} \subset \F_q^n$ be a set of size $\delta \cdot q^n$. Then, there exists $\vecc \in \F_q^n$ such that 
 \[
@@ -479,7 +485,9 @@ Let the parameters of $\NW_{d,m,e}$ be chosen appropriately. Then, for any set $
 \]
 \end{lemma}
 
-Combining this with \ref{lem:PSPD-more-upper-bound-ckt}, the main theorem (\autoref{thm:Kumar-Sapt-d5-thm}) of Kumar and Saptharishi~\cite{KumarSapt15} (almost\footnote{there is a slight technicality here that depending on $F_q$ we choose $k$ accordingly and hence we get that ``for each $q$ there is a polynomial $f$ for which the bound holds''. This can be fixed to instead get the right order of quantifiers --- ``There is a polynomial $f$ such that for every $q$ ...''}) follows. 
+Combining this with \ref{lem:PSPD-more-upper-bound-ckt}, the main theorem (\autoref{thm:Kumar-Sapt-d5-thm}) of Kumar and Saptharishi~\cite{KumarSapt15} (almost\footnote{there is a slight technicality here that depending on $F_q$ we choose $k$ accordingly and hence we get that ``for each $q$ there is a polynomial $f$ for which the bound holds''.
+This can be fixed to instead get the right order of quantifiers --- ``There is a polynomial $f$ such that for every $q$ ...''})
+follows.
 
 %%% Local Variables: 
 %%% mode: latex
