@@ -1,0 +1,88 @@
+\chapter{The Partial Derivative Matrix}\label{chap:evalDim}
+
+In this chapter, we shall look at a powerful technique introduced by Nisan~\cite{nis91} that has been instrumental in many lower bound proofs and also in constructing polynomial identity tests.
+Nisan~\cite{nis91} introduced the notion of the partial derivative matrix in the context of proving lower bounds for \emph{non-commutative} ABPs, and we shall see that first.
+
+\section{Non-commutative models of computation}
+
+A non-commutative polynomials over many variables, denoted by $\F\inbrace{x_1,\cdots, x_n}$, are formal polynomials over the variables wherein the variables do not commute. Hence, a polynomial $x_1x_2 - x_2x_1$ in $\F\set{x_1,\cdots, x_n}$ is a non-zero polynomial. They naturally can be added or multiplied but the order in which the variables are multiplied become important. Hence,
+\[
+(x_1 + x_2)(x_1 + x_2) \spaced{=} x_1^2 + x_2x_1 + x_1x_2 + x_2^2 \spaced{\neq} x_1^2 + 2x_1x_2 + x_2^2
+\]
+Each monomial is no longer identifiable by just an exponent vector but is rather a \emph{word} on the set $\set{x_1,\cdots, x_n}$. 
+
+In this space, we can continue to talk about arithmetic circuits or algebraic branching programs where we always keep track of the order of variables multiplied. In arithmetic circuits or formulas, every $\times$ gate has labelled left and right children. In an algebraic branching program, the weight of a path from source to sink is the product of the edge weights \emph{in the order from left to right}. 
+
+Nisan \cite{nis91} asked the question of whether we can prove lower bounds in this more restricted model of computation. In his paper, he introduced the complexity measure via the \emph{Partial Derivative Matrix}, and used it to not just prove lower bounds but exactly calculate the size of the smallest non-commutative ABP computing a homogeneous polynomial $f$. \\
+
+\begin{exercise}
+Show that, given any non-commutative ABP of size $s$ computing a homogeneous non-commutative polynomial of degree $d$, we can construct a homogeneous non-commutative ABP (edge weights are homogeneous linear forms) of size at most $s \cdot \poly(d)$ computing $f$. 
+\end{exercise}
+
+\subsection{Partial derivative matrix for non-commutative ABPs}
+
+\begin{definition}[Partial derivative matrix \cite{nis91}] Let $f$ be an $n$-variate homogeneous non-commutative polynomial of degree $d$. For any $i \in [d]$, the matrix $M_i(f)$ is defined follows:
+  \begin{quote}
+    The matrix $M_i(f)$ has $n^i$ rows and $n^{d-i}$ columns, indexed by monomials (or words) of length $i$ and $d-i$ respectively. The entry at $(m_1, m_2)$ is the coefficient of the monomial (or word) $m_1 \cdot m_2$ in $f$. \qedhere
+  \end{quote}
+\end{definition}
+
+\begin{theorem}[\cite{nis91}]\label{thm:nis-noncomm-abp}
+For any $n$-variate homogeneous non-commutative polynomial $f$ of degree $d$, the smallest non-commutative ABP that computes $f$ must have size
+\[
+\rank(M_0(f)) + \rank(M_1(f)) +  \cdots + \rank(M_{d-1}(f)).
+\]
+\end{theorem}
+The above is not an estimate; Nisan's result says that the sum of the ranks of the partial derivative matrix is \emph{exactly} the size of the smallest ABP.
+The proof of this theorem is not hard, especially once you know what the answer is.
+We shall prove part of the proof to show that the sum of the ranks is a lower-bound for the size of the smallest ABP, and leave the other direction as an exercise.
+
+\begin{proof}
+Let $C$ be the smallest non-commutative ABP computing the polynomial $f$. We shall show that number of vertices in layer $i$ is at least the rank of $M_i(f)$. 
+
+Suppose $v_1,\cdots, v_r$ are the vertices in the $i$-th layer, and let $s$ be the unique source node and let $t$ be the unique sink node.
+For each $i \in [r]$, let $g_i$ be the non-commutative polynomial computed by the restricted ABP if we consider $s$ as the source and $v_i$ as the sink.
+Similarly, let $h_i$ be the non-commutative polynomial computed by the restricted ABP with $v_i$ as source and $t$ as the sink.
+Then, $f = g_1 h_1 + \cdots + g_r h_r$. Since the ABP is homogeneous, each $g_i$ is a homogeneous non-commutative polynomial of degree $i$ and each $h_i$ is a homogeneous non-commutative polynomial of degree $d-i$. Now consider the matrix the $n^i \times r$ matrix $G$, with rows indexed by monomials (or words) of degree $i$ and columns indexed by $[r]$, with the $(m,i)$ entry being the coefficient of $m$ in $g_i$. Similarly, let $H$ be the $r \times n^{d-i}$ matrix, with rows indexed by $[r]$ and columns indexed by monomials (or words) of degree $d-i$, with the $(j,m)$ entry being the coefficient of $m$ in $g_j$. 
+\begin{subclaim}\label{subclaim:Nisan-ABP-proof}
+$M_i = G \cdot H$. 
+\end{subclaim}
+\noindent 
+With this claim, it follows that the rank of $M$ is a lower bound for $r$. 
+\end{proof}
+
+\begin{exercise}
+Complete the proof of  \autoref{subclaim:Nisan-ABP-proof}, and also show that the bound is tight to show the other direction of \autoref{thm:nis-noncomm-abp}. 
+\end{exercise}
+
+\subsection{An explicit hard polynomial}
+
+To complete the proof, we just need to construct an explicit polynomial for which one of the $M_i$'s has large rank. A natural attempt is to make $M_{d/2}$ to be full-rank by making it something like the identity matrix. Indeed, if we choose the polynomial to be the \emph{double polynomial} $\mathrm{Doub}_d$ defined as
+\[
+\mathrm{Doub}_d \spaced{:=} \sum_{w\in \set{x_1, \cdots, x_n}^{d/2}} \vecx_{w} \vecx_w
+\]
+or the \emph{Palindrome polynomial} $\mathrm{Pal}_d$ defined as
+\[
+\mathrm{Pal}_d \spaced{:=} \sum_{w\in \set{x_1, \cdots, x_n}^{d/2}} \vecx_{w} \vecx_{\mathrm{reverse}(w)},
+\]
+then clearly $\rank(M_{d/2})$ is $n^{d/2}$ giving the required lower bound. 
+
+\begin{theorem}[\cite{nis91}] Any non-commutative ABP computing the polynomial $\mathrm{Doub}_d$ or $\mathrm{Pal}_d$ must have size $n^{\Omega(d)}$. 
+\end{theorem}
+
+As an added bonus, it is easy to see that $\mathrm{Pal}_d$ can in fact be computed by a non-commutative circuit of size $\poly(n,d)$.
+Thus, this in fact yields an exponential separation between non-commutative ABPs and non-commutative circuits.
+ 
+An important point to also observe is that this lower bound implies that an analogue of the depth reduction of \cite{vsbr83} is simply not possible in the non-commutative world. 
+
+\section{Applications in the commutative world}
+
+There are some instances in the commutative world where computation behaves like a non-commutative computation.
+An example of this is the class of what are called \emph{read-once oblivious algebraic branching programs (ROABP)}, first defined by Forbes and Shpilka~\cite{FS13}.
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
