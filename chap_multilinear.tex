@@ -124,6 +124,12 @@ Let $n\geq 2d$. For any set of non-negative integers satisfying $n_1 + \cdots + 
 \end{lemma}
 The theorem immediately follows from this lemma as each $d_i \geq \sqrt{d}$ and there are $\Omega(\log d)$ of them. 
 
+Before we prove this theorem, let us quickly look at the simpler case when $d = n/2$. In that case, $\binom{n}{d} \approx 2^n / \sqrt{n}$ and the LHS is clearly upper bounded as
+\[
+\binom{n_1}{d_1} \cdots \binom{n_\ell}{d_\ell} \spaced{\leq} \frac{2^{n_1+ \cdots + n_\ell}}{\sqrt{n_1 \cdots n_\ell}}
+\]
+giving us a similar bound. The case of general $d$ requires a bit more work but is quite natural (once you know it is true). 
+
 \begin{myproof}{\autoref{lem:HY-prod-binom}}[of \autoref{lem:HY-prod-binom}]
 Without loss of generality, we may assume that $n_i \geq 2d_i$ for all $i$. We are trying to understand the following distribution:
 \begin{quote}
