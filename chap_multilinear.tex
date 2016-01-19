@@ -23,9 +23,143 @@ Given any arithmetic formula $\Phi$ that is multilinear, show that it can be con
 This section shall deal mainly with multilinear formulas so we may assume without loss of generality that they are syntactically multilinear. 
 Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. 
 The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. 
-The complexity measure used here would also be the \emph{rank of the partial derivative matrix} from \autoref{chap:evalDim} and we shall first see some intuition as to why it is applicable in this setting as well. 
+\Hrubes and Yehudayoff~\cite{HY11a} then showed a super-polynomial lower bound \emph{homogeneous} multilinear formulas computing the elementary symmetric polynomial.
 
-\section{The partial derivative matrix, again}
+Although the lower bound of \Hrubes and Yehudayoff was subsequent to the results of Raz and Yehudayoff~\cite{raz2004,raz-yehudayoff}, we shall see their lower bound first which uses a suprisingly simple complexity measure. For the non-homogeneous setting, the complexity measure used here would also be the \emph{rank of the partial derivative matrix} from \autoref{chap:evalDim}. We shall start off with a structural result whenever we are dealing with formulas, which builds on the depth reduction for formulas \autoref{lem:formula-depth-reduction}. 
+
+\section{Log-product representations for formulas}
+
+The following structural lemma shows that any multilinear formula can be converted in to a small sum of \emph{log-product} polynomials. 
+The techniques of the following lemma can also be used in other settings with minor modifications, and we shall encounter a different version of this lemma later as well.
+These normal forms is from the survey of Shpilka and Yehudayoff~\cite{sy}, and also from the result of \Hrubes and Yehudayoff~\cite{HY11a}. 
+
+\begin{definition}\label{defn:mult-logproduct}
+  A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
+  \begin{itemize}
+  \item $g_i \in \F[X_i]$ for all $i \in [t]$.
+  \item $\frac{|X|}{3^i} \leq |X_i| \leq \frac{2|X|}{3^i}$ for all
+    $i$, and $|X_t| = 1$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-logproduct}
+  Let $\Phi$ be a multilinear formula of size $s$ computing a polynomial $p$. 
+Then $p$ can be written as a sum of $(s+1)$ log-product multivariate polynomials.
+\end{lemma}
+\begin{proof}
+  Similar to \autoref{lem:formula-depth-reduction}, let $v$ be a node in $\Phi$ such that set of variables $X_v$ that it depends on satisfies $\frac{|X|}{3} \leq \abs{X_v} \leq \frac{2|X|}{3}$. 
+If $\Phi_v$ is the polynomial computed at this node, then $f$ can be written as
+  $$
+  f \spaced{=} \Phi_v \cdot g_1 + \Phi_{v=0} \quad\text{for some $g_1 \in \F[X\setminus X_v]$}.
+  $$
+  where $\Phi_{v=0}$ is the formula obtained by replacing the node $v$ by zero. 
+Note that the subtree at the node $v$ is completely disjoint from $\Phi_{v=0}$. 
+Hence the sum of the sizes of $\Phi_v$ and $\Phi_{v=0}$ is at most $s$. 
+Hence, $g_1 \in \F[X\setminus X_v]$ and $\frac{|X|}{3} \leq \abs{X \setminus X_v} \leq \frac{2|X|}{3}$. 
+Inducting on the formulas $\Phi_v$ and $\Phi_{v=0}$ gives the lemma.
+\end{proof}
+
+There are many variants of this formula depending on how you pick the node $v$ in the proof above.
+Here is another variant that find a node $v$ based on \emph{degree} rather than the number of variables that it depends on.
+We state it here without proof but it follows exactly as in the lines of \autoref{lem:mult-logproduct}.
+
+\begin{lemma}\label{lem:hom-logproduct}
+  Let $\Phi$ be a homogeneous formula of size $s$ computing a polynomial $p$ of degree $d$.
+Then $p$ can be written as a sum of $(s+1)$ \emph{log-product} polynomials, that is,
+\[
+p \spaced{=} f_1 + \cdots + f_{r}\quad\quad \text{with $r \leq s+1$}
+\]
+where for each $i \in [r]$, we have $f_i = f_{i1} \cdots f_{i\ell}$ satisfying
+\begin{itemize}
+\item each $f_{ij}$ is homogeneous,
+\item $(d / 3^j) \leq \deg(f_{ij}) \leq (2d / 3^j)$,
+\item $f_{i\ell} = 1$.
+\end{itemize}
+In particular, each $f_i$ factors into $\Omega(\log d)$ non-trivial factors of geometrically decreasing degrees. 
+
+Furthermore, if $\Phi$ was a multilinear formula to begin with, then so is the expression on the RHS. 
+\end{lemma}
+
+
+We shall see yet another variant of this trick later in this chapter but we have enough for now to prove the lower bound of \Hrubes and Yehudayoff \cite{HY11a}. 
+
+\section{Lower bounds for homogeneous multilinear formulas}
+
+The main theorem of this section would be the following.
+
+\begin{theorem}[\cite{HY11a}]\label{thm:Hrubes-Yehudayoff}
+Any homogeneous multilinear formula that computes the polynomial $\ESym_d$, for $d \leq n/2$, must have size $d^{\Omega(\log d)}$. 
+\end{theorem}
+
+The complexity measure used here would be ridiculously simple --- just the number of monomials!
+Surprisingly, this is enough to prove the lower bound for homogeneous multilinear formulas. Before we get into the proof, we would need the following approximation for the binomial coefficient. This follows from Stirling's approximation of $n!$. 
+
+\begin{lemma}[Stirling's approximation of $\binom{n}{k}$]\label{lem:stirling-binom} For $n \geq 3k/2$, the following 
+\[
+\pfrac{1}{3\sqrt{k}} \cdot \pfrac{n^n}{k^k \cdot (n-k)^{n-k}} \spaced{\leq} \binom{n}{k} \spaced{\leq} \pfrac{1}{\sqrt{k}} \cdot \pfrac{n^n}{k^k \cdot (n-k)^{n-k}}
+\]
+\end{lemma}
+
+\begin{proofof}{\autoref{thm:Hrubes-Yehudayoff}}
+If there is a size $s$ homogeneous multilinear formula computing $\ESym_d$, then by \autoref{lem:hom-logproduct} we have an expression of the form
+\[
+\ESym_d \spaced{=} \sum_{i=1}^{s+1} f_{i1} \cdots f_{i\ell}
+\]
+with $\ell = \Omega(\log d)$.
+We shall show that each multilinear term of the form $f_{i1} \cdots f_{i\ell}$, with geometrically decreasing degrees, can contribute at most $d^{-\Omega(d)} \cdot \binom{n}{d}$ monomials.
+This would immediately imply that $s = d^{\Omega(d)}$. \\
+
+
+Consider a term of the form $f_1 \cdots f_\ell$. Since the degrees drop geometrically, we may assume without loss of generality that $\ell = \Omega(\log d)$ and $\deg(f_i) \geq \sqrt{d}$ (by just multiplying all polynomials of smaller degree together). This is a homogeneous multilinear expression so let $\deg(f_i) = d_i$ and let $f_i$ depend on the variables $X_i$. If $n_i = \abs{X_i}$, then each $f_i$ has at most $\binom{n_i}{d_i}$ monomials. Hence, the total number of monomials from this term is at most
+\[
+\binom{n_1}{d_1} \cdots \binom{n_\ell}{d_\ell}.
+\]
+All that's left to do is show that this is significantly smaller than $\binom{n}{d}$. 
+
+\begin{lemma}[\cite{HY11a}]\label{lem:HY-prod-binom}
+Let $n\geq 2d$. For any set of non-negative integers satisfying $n_1 + \cdots + n_\ell = n$ and $d_1 + \cdots + d_\ell = d$, we have
+\[
+\binom{n_1}{d_1} \cdots \binom{n_\ell}{d_\ell} \spaced{\leq} 3 \sqrt{\frac{d}{d_1 \cdots d_\ell}} \cdot \binom{n}{d}
+\]
+\end{lemma}
+The theorem immediately follows from this lemma as each $d_i \geq \sqrt{d}$ and there are $\Omega(\log d)$ of them. 
+
+\begin{myproof}{\autoref{lem:HY-prod-binom}}[of \autoref{lem:HY-prod-binom}]
+Without loss of generality, we may assume that $n_i \geq 2d_i$ for all $i$. We are trying to understand the following distribution:
+\begin{quote}
+  If we pick $d$ elements out of $n$ elements, what's the probability that we pick $d_1$ elements from the first $n_1$, and $d_2$ from the next $n_2$ ... etc. 
+\end{quote}
+The first step is to ask, for fixed values of $n_1, \cdots, n_\ell$, what values of $d_1, \cdots, d_\ell$ maximize this probability. Intuitively, each $d_i$ ought to be proportional to $n_i$ as that is what we would get in expectation. In the perfect regime where $n = \alpha \cdot  d$ and  $n_i = \alpha \cdot d_i$ for each $i \in [\ell]$, we can now use the approximation from \autoref{lem:stirling-binom} to get
+\begin{eqnarray*}
+\binom{n}{d} & \geq  &  \pfrac{1}{3\sqrt{d}} \cdot \pfrac{n^n}{d^d \cdot (n-d)^{n-d}}\\
+ & = & \pfrac{1}{3\sqrt{d}} \cdot \pfrac{d^n \cdot \alpha^n}{d^d \cdot d^{n-d} \cdot (\alpha - 1)^{n-d}}\\
+ & = & \pfrac{1}{3\sqrt{d}} \cdot \pfrac{\alpha^n}{(\alpha - 1)^{n-d}}\\
+\text{and} \quad\binom{n_i}{d_i} & \leq  &  \pfrac{1}{\sqrt{d_i}} \pfrac{\alpha^{n_i}}{(\alpha - 1)^{n_i-d_i}}\\
+\implies \binom{n_1}{d_1} \cdots \binom{n_\ell}{d_\ell}  & \leq & 3 \sqrt{\frac{d}{d_1 \cdots d_\ell}} \cdot \binom{n}{d}
+\end{eqnarray*}
+
+To complete the proof, we just have to show that $\binom{n_1}{d_1} \cdots \binom{n_\ell}{d_\ell}$ is maximized when $n_i/d_i \approx n/d$.
+To do this, let us consider a term $\binom{n_1}{d_1} \cdot \binom{n_2}{d_2}$ with $d_1/n_1 \gg d_2/n_2$ and show that $\binom{n_1}{d_1 - 1} \cdot \binom{n_2}{d_2 + 1}$ is larger.
+This is easy to see because
+\begin{eqnarray*}
+\frac{\binom{n_1}{d_1 - 1} \cdot \binom{n_2}{d_2 + 1}}{\binom{n_1}{d_1} \cdot \binom{n_2}{d_2}} & = & \frac{d_1 \cdot (n_2 - d_2)}{(n_1 - d_1 + 1) \cdot (d_2 + 1)}\\
+ & = & \frac{\pfrac{n_2 + 1}{d_2 + 1} - 1 }{\pfrac{n_1 + 1}{d_1} - 1}\\
+ & > & 1.
+\end{eqnarray*}
+This is still a little incomplete as this ensures that the product is maximized when $d_i$ is as close as possible to $d \cdot (n_i/n)$ but perhaps not quite exactly equal. This can be handled with some minor\footnote{`minor' if one is willing to afford some loss in parameters. But it is also possible to prove the statement claimed with some more work.} changes in the calculation above.  
+\end{myproof}
+
+\noindent
+The theorem follows immediately from this lemma. 
+\end{proofof}
+
+\section{Lower bounds for (non-homogeneous)  multilinear formulas}
+
+Homogeneity is crucially used in the proof of \autoref{thm:Hrubes-Yehudayoff}.
+A simple example is just the term $(x_1 + 1) \cdots (x_n + 1)$ which generates every possible multilinear monomial rendering a sparsity based complexity measure completely useless.
+
+However, once again, we can use the \emph{partial derivative matrix} that we studied in \autoref{chap:evalDim} here. In this section, we shall see the lower bounds of Raz \cite{raz2004}, and the lower bound of Raz and Yehudayoff \cite{raz-yehudayoff}. 
+
 \subsection*{Intuition}
 
 A natural first step is to try the simpler task of proving lower bounds for depth-$3$ multilinear circuits. 
@@ -139,47 +273,17 @@ $$
 \end{proof-sketch}
 
 More generally, if $f = g_1(X_1)\dots g_t(X_t)$ where the $X_i$'s are mutually disjoint, then a random partition is very unlikely to partition all the $X_i$'s into almost equal parts. 
-This shall be formalized in the next section to prove the lower bound for multilinear formulas. 
+This naturally calls for using the multilinear log-product representation from \autoref{lem:mult-logproduct} for the case of multilinear formulas. The rest of this section would be proof of Raz's wonderful result \cite{raz2004}. 
 
-\section{Lower bound for multilinear formulas}
-	We now present the lower bound for multilinear formulas due 
-	to \cite{raz2004}. 
-The first step of our roadmap is to find 
-	a suitable normal form for multilinear formulas. 
-The normal 
-	form that we use is from the survey by Shpilka and 
-	Yehudayoff \cite{sy}. 	
+\begin{theorem}[\cite{raz2004}] \label{thm:raz-ml-det}
+Any multilinear formula computing $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. 
+\end{theorem}
 
-\subsection{Formulas to log-product sums}
-
-The following structural lemma shows that any multilinear formula can be converted in to a small sum of \emph{log-product} polynomials. 
-The techniques of the following lemma can also be used in other settings with minor modifications, and we shall encounter a different version of this lemma later as well.
-
-\begin{definition}\label{defn:mult-logproduct}
-  A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
-  \begin{itemize}
-  \item $g_i \in \F[X_i]$ for all $i \in [t]$.
-  \item $\frac{|X|}{3^i} \leq |X_i| \leq \frac{2|X|}{3^i}$ for all
-    $i$, and $|X_t| = 1$.
-  \end{itemize}
-\end{definition}
-
-\begin{lemma}\label{lem:mult-logproduct}
-  Let $\Phi$ be a multilinear formula of size $s$ computing a polynomial $p$. 
-Then $p$ can be written as a sum of $(s+1)$ log-product multivariate polynomials.
-\end{lemma}
-\begin{proof}
-  Similar to \autoref{lem:formula-depth-reduction}, let $v$ be a node in $\Phi$ such that set of variables $X_v$ that it depends on satisfies $\frac{|X|}{3} \leq \abs{X_v} \leq \frac{2|X|}{3}$. 
-If $\Phi_v$ is the polynomial computed at this node, then $f$ can be written as
-  $$
-  f \spaced{=} \Phi_v \cdot g_1 + \Phi_{v=0} \quad\text{for some $g_1 \in \F[X\setminus X_v]$}.
-  $$
-  where $\Phi_{v=0}$ is the formula obtained by replacing the node $v$ by zero. 
-Note that the subtree at the node $v$ is completely disjoint from $\Phi_{v=0}$. 
-Hence the sum of the sizes of $\Phi_v$ and $\Phi_{v=0}$ is at most $s$. 
-Hence, $g_1 \in \F[X\setminus X_v]$ and $\frac{|X|}{3} \leq \abs{X \setminus X_v} \leq \frac{2|X|}{3}$. 
-Inducting on the formulas $\Phi_v$ and $\Phi_{v=0}$ gives the lemma.
-\end{proof}
+The proof would be as outlined. If $f$ is computable by a size $s$ multilinear formula, then by \autoref{lem:mult-logproduct} we know that $f$ admits a log-product representation:
+\[
+f \spaced{=} \sum_{i=1}^{s+1} f_{i1} \cdots f_{i\ell}
+\]
+Using this, we shall first obtain an upper-bound on $\CM{Raz}_{Y,Z}(f)$ for a random partition $X = Y \sqcup Z$ by showing that any single log-product is far from full-rank. Finally, for $\Det_n$ or $\Perm_n$, we shall prove a lower bound on $\CM{Raz}_{Y,Z}$ for most partitions and that would complete the proof. 
 
 \subsection{Log-products are far from full-rank on a random
   partition}
