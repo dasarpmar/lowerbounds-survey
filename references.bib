@@ -17,17 +17,6 @@
 @string{TCS = "Theoretical Computer Science"}
 @string{TOC = "Theory of Computing"}
 
-@inproceedings{smolensky87,
- author = {Smolensky, Roman},
- title = {Algebraic Methods in the Theory of Lower Bounds for Boolean Circuit Complexity},
- booktitle = {\STOC{1987}},
- year = {1987},
- pages = {77--82},
- numpages = {6},
- doi = {10.1145/28395.28404},
-} 
-
-
 @InProceedings{	  a05,
   author	= {Manindra Agrawal},
   title		= {{P}roving {L}ower {B}ounds {V}ia {P}seudo-random
@@ -37,20 +26,6 @@
   pages		= {92-105},
   doi       = {10.1007/11590156_6},
 }
-
-@Article{razborov87,
-year={1987},
-issn={0001-4346},
-journal={Mathematical notes of the Academy of Sciences of the USSR},
-volume={41},
-number={4},
-doi={10.1007/BF01137685},
-title={Lower bounds on the size of bounded depth circuits over a complete basis with logical addition},
-url={http://dx.doi.org/10.1007/BF01137685},
-author={Razborov, Alexander A.},
-pages={333-338},
-}
-
 
 @Article{	  a52,
   author	= {Nesmith C. Ankeny},
@@ -354,30 +329,6 @@ pages={333-338},
   pages		= {290-295}
 }
 
-@inproceedings{BC15,
-  author    = {Suman K. Bera and
-               Amit Chakrabarti},
-  title     = {A Depth-Five Lower Bound for Iterated Matrix Multiplication},
-  booktitle = CCC,
-  pages     = {183--197},
-  year      = {2015},
-  doi       = {10.4230/LIPIcs.CCC.2015.183},
-}
-
-@article{Berk84,
-title = "On computing the determinant in small parallel time using a small number of processors ",
-journal = "Information Processing Letters ",
-volume = "18",
-number = "3",
-pages = "147 - 150",
-year = "1984",
-issn = "0020-0190",
-author = "Stuart J. Berkowitz",
-doi       = {10.1016/0020-0190(84)90018-8},
-}
-
-
-
 @TechReport{	  b84,
   author	= {Bach,, Eric},
   title		= {{Discrete Logarithms and Factoring}},
@@ -412,6 +363,16 @@ doi       = {10.1016/0020-0190(84)90018-8},
   note		= "http://www.maths.gla.ac.uk/{$\scriptstyle\sim$ajb}/dvi-ps/padicnotes.pdf"
 		  ,
   year		= 2007
+}
+
+@inproceedings{BC15,
+  author    = {Suman K. Bera and
+               Amit Chakrabarti},
+  title     = {A Depth-Five Lower Bound for Iterated Matrix Multiplication},
+  booktitle = CCC,
+  pages     = {183--197},
+  year      = {2015},
+  doi       = {10.4230/LIPIcs.CCC.2015.183},
 }
 
 @InProceedings{	  bc88,
@@ -451,6 +412,20 @@ doi       = {10.1016/0020-0190(84)90018-8},
   year = {2011},
   pages = {519-528},
 }
+
+@article{Berk84,
+title = "On computing the determinant in small parallel time using a small number of processors ",
+journal = "Information Processing Letters ",
+volume = "18",
+number = "3",
+pages = "147 - 150",
+year = "1984",
+issn = "0020-0190",
+author = "Stuart J. Berkowitz",
+doi       = {10.1016/0020-0190(84)90018-8},
+}
+
+
 
 @Article{	  bgl95,
   author	= "E. Bach and J. von zur Gathen and H. Lenstra",
@@ -689,14 +664,6 @@ doi       = {10.1016/0020-0190(84)90018-8},
   doi           = {10.1007/978-0-387-35651-8}
 }
 
-@Article{	  CM14,
-  author	= {Suryajith Chillara and Partha Mukhopadhyay},
-  title		= {{Depth-4 Lower Bounds, Determinantal Complexity : A Unified Approach}},
-  journal	= {\STACS{2014}},
-  year		= {2014},
-  eprint        = {1308.1640},
-  doi       = {10.4230/LIPIcs.STACS.2014.239},
-}
 @inproceedings{CM14a,
   author    = {Suryajith Chillara and
                Partha Mukhopadhyay},
@@ -710,6 +677,14 @@ doi       = {10.1016/0020-0190(84)90018-8},
 
 
 
+@Article{	  CM14,
+  author	= {Suryajith Chillara and Partha Mukhopadhyay},
+  title		= {{Depth-4 Lower Bounds, Determinantal Complexity : A Unified Approach}},
+  journal	= {\STACS{2014}},
+  year		= {2014},
+  eprint        = {1308.1640},
+  doi       = {10.4230/LIPIcs.STACS.2014.239},
+}
 @Article{	  cos86,
   author	= {Don Coppersmith and Andrew M. Odlyzko and Richard
 		  Schroeppel},
@@ -974,19 +949,20 @@ doi       = {10.1016/0020-0190(84)90018-8},
   pages		= {327--334}
 }
 
-@ARTICLE{FS12,
-  author = {Michael Forbes and Amir Shpilka},
-  title = {{Quasipolynomial-time Identity Testing of Non-Commutative and Read-Once Oblivious Algebraic Branching Programs}},
-  journal = ECCC,
-  year = {2012},
-  ee = {http://www.eccc.uni-trier.de/report/2012/115/}
-}
 
-@misc{gro:SE,
-  author = {Joshua Grochow},
-  note = {\url{http://cstheory.stackexchange.com/questions/19261/degree-restriction-for-polynomials-in-mathsfvp/19268#19268}}
-}
 
+@inproceedings{FS13,
+  author    = {Michael A. Forbes and
+               Amir Shpilka},
+  title     = {Quasipolynomial-Time Identity Testing of Non-commutative and Read-Once
+               Oblivious Algebraic Branching Programs},
+  booktitle = {\FOCS{2013}},
+  pages     = {243--252},
+  year      = {2013},
+  url       = {http://dx.doi.org/10.1109/FOCS.2013.34},
+  doi       = {10.1109/FOCS.2013.34},
+  eprint    = {abs/1209.2408}
+}
 
 @Article{	  g01,
   author	= {Shuhong Gao},
@@ -1058,6 +1034,13 @@ doi       = {10.1016/0020-0190(84)90018-8},
   pages		= {1-9}
 }
 
+@unpublished{github,
+title= {A survey of lower bounds in arithmetic circuit complexity},
+author = {Ramprasad Saptharishi},
+year = 2015,
+note= {Github survey},
+URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
+}
 @article{gkks13,
   author    = {Ankit Gupta and
                Pritish Kamath and
@@ -1103,6 +1086,18 @@ doi       = {10.1016/0020-0190(84)90018-8},
   volume	= {19},
   year		= {2012},
   ee		= {http://eccc.hpi-web.de/report/2012/033}
+}
+
+@article{GLSS12,
+  author    = {Dmitry Gavinsky and
+               Shachar Lovett and
+               Michael Saks and
+               Srikanth Srinivasan},
+  title     = {A Tail Bound for Read-k Families of Functions},
+  journal   = {CoRR},
+  volume    = {abs/1205.1478},
+  year      = {2012},
+  eprint    = {1205.1478},
 }
 
 @Article{	  gp01,
@@ -1153,6 +1148,12 @@ doi       = {10.1016/0020-0190(84)90018-8},
   doi		= "10.1145/276698.276872"
 }
 
+@misc{gro:SE,
+  author = {Joshua Grochow},
+  note = {\url{http://cstheory.stackexchange.com/questions/19261/degree-restriction-for-polynomials-in-mathsfvp/19268#19268}}
+}
+
+
 @Article{	  gs92,
   author	= {Joachim von zur Gathen and Victor Shoup},
   title		= {{Computing Frobenius Maps and Factoring Polynomials}},
@@ -1171,19 +1172,6 @@ doi       = {10.1016/0020-0190(84)90018-8},
   number	= {6},
   year		= {1999},
   pages		= {1757-1767}
-}
-
-@article{Hyafil1978,
-  author    = {Laurent Hyafil},
-  title     = {On the Parallel Evaluation of Multivariate Polynomials},
-  journal   = SIAMJC,
-  volume    = {8},
-  number    = {2},
-  pages     = {120--123},
-  year      = {1979},
-  url       = {http://dx.doi.org/10.1137/0208010},
-  doi       = {10.1137/0208010},
-  note      = {\pSTOC{1978}}
 }
 
 @Article{	  h18,
@@ -1264,6 +1252,17 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
   bibsource	= {DBLP, http://dblp.uni-trier.de}
 }
 
+@article{HY11a,
+  author    = {Pavel Hrubes and
+               Amir Yehudayoff},
+  title     = {Homogeneous Formulas and Symmetric Polynomials},
+  journal   = {Computational Complexity},
+  year      = {2011},
+  volume    = {20},
+  number    = {3},
+  pages     = {559--578},
+}
+
 @article{hy11,
  author = {Pavel Hrube{\v{s}} and Amir Yehudayoff},
  title = {Arithmetic Complexity in Ring Extensions},
@@ -1276,36 +1275,17 @@ url={http://ramanujan.sirinudi.org/Volumes/published/ram36.pdf}
  number = {8},
 }
 
-@article{HY11a,
-  author    = {Pavel Hrubes and
-               Amir Yehudayoff},
-  title     = {Homogeneous Formulas and Symmetric Polynomials},
-  journal   = {Computational Complexity},
-  year      = {2011},
-  volume    = {20},
-  number    = {3},
-  pages     = {559--578},
-}
-
-@unpublished{github,
-title= {A survey of lower bounds in arithmetic circuit complexity},
-author = {Ramprasad Saptharishi},
-year = 2015,
-note= {Github survey},
-URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
-}
-
-
-@article{GLSS12,
-  author    = {Dmitry Gavinsky and
-               Shachar Lovett and
-               Michael Saks and
-               Srikanth Srinivasan},
-  title     = {A Tail Bound for Read-k Families of Functions},
-  journal   = {CoRR},
-  volume    = {abs/1205.1478},
-  year      = {2012},
-  eprint    = {1205.1478},
+@article{Hyafil1978,
+  author    = {Laurent Hyafil},
+  title     = {On the Parallel Evaluation of Multivariate Polynomials},
+  journal   = SIAMJC,
+  volume    = {8},
+  number    = {2},
+  pages     = {120--123},
+  year      = {1979},
+  url       = {http://dx.doi.org/10.1137/0208010},
+  doi       = {10.1137/0208010},
+  note      = {\pSTOC{1978}}
 }
 
 @inproceedings{icm,
@@ -1572,16 +1552,6 @@ URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
   year      = {2015},
 }
 
-@inproceedings{KumarSaraf15,
-  author    = {Mrinal Kumar and
-               Shubhangi Saraf},
-  title     = {Sums of products of polynomials in few variables : lower bounds and
-               polynomial identity testing},
-  booktitle   = {\ECCC TR15-073},
-  year      = {2015},
-  url       = {http://eccc.hpi-web.de/report/2015/071},
-}
-
 @InProceedings{	  kaysar09,
   author	= {Neeraj Kayal and Shubhangi Saraf},
   title		= {{Blackbox polynomial identity testing for depth-$3$
@@ -1744,6 +1714,18 @@ URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
   ecccurlid     = {2014/045},
 }
 
+@inproceedings{ks15,
+  author    = {Neeraj Kayal and
+               Chandan Saha},
+  title     = {Multi-k-ic Depth Three Circuit Lower Bound},
+  booktitle = {\STACS{2015}},
+  volume    = {30},
+  pages     = {527--539},
+  year      = {2015},
+  doi       = {10.4230/LIPIcs.STACS.2015.527},
+  eccc      = {TR15/015},
+  ecccurlid = {2015/015}
+}
 
 @InProceedings{	  ks91,
   author	= {Erich Kaltofen and B. David Saunders},
@@ -1762,19 +1744,6 @@ URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
   number	= {223},
   year		= {1998},
   pages		= {1179-1197}
-}
-
-@inproceedings{ks15,
-  author    = {Neeraj Kayal and
-               Chandan Saha},
-  title     = {Multi-k-ic Depth Three Circuit Lower Bound},
-  booktitle = {\STACS{2015}},
-  volume    = {30},
-  pages     = {527--539},
-  year      = {2015},
-  doi       = {10.4230/LIPIcs.STACS.2015.527},
-  eccc      = {TR15/015},
-  ecccurlid = {2015/015}
 }
 
 @inproceedings{KSS13,
@@ -1797,6 +1766,28 @@ URL= {https://github.com/dasarpmar/lowerbounds-survey/releases/},
   booktitle	= {\FOCS{2008}},
   year		= {2008},
   pages		= {146-155}
+}
+
+@article{KumarSapt15,
+  author    = {Mrinal Kumar and
+               Ramprasad Saptharishi},
+  title     = {An exponential lower bound for homogeneous depth-5 circuits over finite
+               fields},
+  journal   = {CoRR},
+  url       = {http://arxiv.org/abs/1507.00177},
+  volume    = {abs/1507.00177},
+  year      = {2015},
+  note    = {\arXiv{1507.00177}},
+}
+
+@inproceedings{KumarSaraf15,
+  author    = {Mrinal Kumar and
+               Shubhangi Saraf},
+  title     = {Sums of products of polynomials in few variables : lower bounds and
+               polynomial identity testing},
+  booktitle   = {\ECCC TR15-073},
+  year      = {2015},
+  url       = {http://eccc.hpi-web.de/report/2015/071},
 }
 
 @InProceedings{	  ky08,
@@ -2412,6 +2403,15 @@ note={Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1
 }
 
 
+@unpublished{raz10fool,
+title= {How to fool people to work on circuit lower bounds},
+author = {Ran Raz},
+year = {2010},
+note= {Invited talk at Microsoft Research},
+URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
+}
+
+
 @inproceedings{raz10,
   author    = {Ran Raz},
   title     = {Tensor-rank and lower bounds for arithmetic formulas},
@@ -2422,15 +2422,6 @@ note={Available on \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1
   eccc      = {TR10/002},
   ecccurlid = {2010/002},
 }
-
-@unpublished{raz10fool,
-title= {How to fool people to work on circuit lower bounds},
-author = {Ran Raz},
-year = {2010},
-note= {Invited talk at Microsoft Research},
-URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
-}
-
 
 @Article{	  raz2004,
   author	= "Ran Raz",
@@ -2445,6 +2436,20 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   doi       = {10.1145/1502793.1502797},
   note      = {\pSTOC{2004}},
 }
+
+@Article{razborov87,
+year={1987},
+issn={0001-4346},
+journal={Mathematical notes of the Academy of Sciences of the USSR},
+volume={41},
+number={4},
+doi={10.1007/BF01137685},
+title={Lower bounds on the size of bounded depth circuits over a complete basis with logical addition},
+url={http://dx.doi.org/10.1007/BF01137685},
+author={Razborov, Alexander A.},
+pages={333-338},
+}
+
 
 @article{   raz-yehudayoff,
   author    = {Ran Raz and
@@ -2473,13 +2478,6 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   pages		= {556--557}
 }
 
-@phdthesis{rp,
-	author		= {Ramprasad Saptharishi},
-	title 		= {Unified Approaches to Polynomial Identity Testing and Lower Bounds},
-	year 		= {2012},
-	school      = {Chennai Mathematical Institute}
-}
-
 @article{rp:beatcs,
   author    = {Ramprasad Saptharishi},
   title     = {Recent Progress on Arithmetic Circuit Lower Bounds},
@@ -2492,6 +2490,13 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   bibsource = {dblp computer science bibliography, http://dblp.org}
 }
 
+
+@phdthesis{rp,
+	author		= {Ramprasad Saptharishi},
+	title 		= {Unified Approaches to Polynomial Identity Testing and Lower Bounds},
+	year 		= {2012},
+	school      = {Chennai Mathematical Institute}
+}
 
 @Article{	  rr97,
   author	= {Alexander A. Razborov and Steven Rudich},
@@ -2673,6 +2678,14 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   pages		= {180-193}
 }
 
+@UNPUBLISHED{saptharishivinay14,
+  author        = {Ramprasad Saptharishi and V. Vinay},
+  title         = {{An alternate proof of Tavenas' depth reduction}},
+  note          = {Unpublished manuscript},
+  year          = 2014
+}
+
+
 @InProceedings{	  sax08,
   author	= {Nitin Saxena},
   title		= {{Diagonal Circuit Identity Testing and Lower Bounds}},
@@ -2730,6 +2743,17 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   SCHOOL = {The Hebrew University},
   YEAR = {2001}
 }
+
+@inproceedings{smolensky87,
+ author = {Smolensky, Roman},
+ title = {Algebraic Methods in the Theory of Lower Bounds for Boolean Circuit Complexity},
+ booktitle = {\STOC{1987}},
+ year = {1987},
+ pages = {77--82},
+ numpages = {6},
+ doi = {10.1145/28395.28404},
+} 
+
 
 @misc{Srikanth13,
   author = "Srikanth Srinivasan",
@@ -2834,14 +2858,6 @@ URL= {http://research.microsoft.com/apps/video/default.aspx?id=140730},
   year		= {1985},
   pages		= {484-502}
 }
-
-@UNPUBLISHED{saptharishivinay14,
-  author        = {Ramprasad Saptharishi and V. Vinay},
-  title         = {{An alternate proof of Tavenas' depth reduction}},
-  note          = {Unpublished manuscript},
-  year          = 2014
-}
-
 
 @InProceedings{	  sv-icalp10,
   author	= {Amir Shpilka and Ilya Volkovich},
