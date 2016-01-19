@@ -294,26 +294,26 @@ The interested reader can refer to \cite{KSS13} for more details.
 
 \subsection{Shifted partials of the Iterated-matrix-multiplication polynomial}
 
-Fourier, Limaye, Malod and Srinivasan \cite{FLMS13} showed the same lower bound as \cite{KSS13} but for the \emph{iterated matrix multiplication} polynomial which is known to have polynomial sized circuits computing it. 
+Fourier, Limaye, Malod and Srinivasan \cite{FLMS13} showed the same lower bound as \cite{KSS13} but for the \emph{iterated matrix multiplication} polynomial which is known to have polynomial sized circuits computing it. Let's recall the definition from \autoref{chap:notation}
 
-\begin{definition}[Iterated matrix multiplication polynomial]
+\begin{definition*}[Iterated matrix multiplication polynomial]
 Let $M_1,\dots, M_d$ be $n\times n$ matrices with distinct variables as entries, i.e. $M_k = \inparen{\!\!\inparen{x_{ij}^{(k)}}\!\!}_{i,j\leq n}$ for $k = 1,\dots, d$. 
 The polynomial $\mathrm{IMM}_{n,d}$ is a $(n^2d)$-variate degree-$d$ polynomial defined as the $(1,1)$-th entry of the matrix product $M_1\dots M_d$:
 $$
 \mathrm{IMM}_{n,d}(\vecx) \spaced{=} \inparen{M_1 \dots M_d}_{1,1}.
 $$
-\end{definition}
+\end{definition*}
 
-A more useful perspective is to interpret this as a \emph{canonical algebraic branching program}. 
+A more useful perspective is to interpret this as a \emph{canonical algebraic branching program}, which we recall again. 
 
-\begin{definition}[Algebraic branching program]
+\begin{definition*}[Algebraic branching program]
 An algebraic branching program (ABP) comprises of a layered directed graph $G$ with $(d+1)$ layers of vertices, where the first and last layer consists of a single node (called source and sink respectively), all other layers consist of $n$ vertices, and edges are only between successive layers and have linear polynomials as edge-weights. 
 The ABP is set to compute the polynomial $f$ defined as
 $$
 f(\vecx) \spaced{=} \sum_{\text{source-sink path $\rho$}} \mathrm{weight}(\rho)
 $$
 where the $\mathrm{weight}$ of any path is just the product of the edge weights on the path. 
-\end{definition}
+\end{definition*}
 
 The canonical ABP comprises of the graph where the $i$-th vertex of layer $(\ell-1)$ is connected to the $j$-th vertex of layer $\ell$ with edge-weight $x_{ij}^{(\ell)}$ for every choice of $i,j$ and $\ell$. 
 It is easy to see that the polynomial computed by the canonical ABP is in fact $\mathrm{IMM}_{n,d}$. \\
