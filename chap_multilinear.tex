@@ -17,15 +17,15 @@ However, for arithmetic formulas, the two notions are equivalent.
 Given any arithmetic formula $\Phi$ that is multilinear, show that it can be converted to a formula $\Phi'$ of size $\poly(\Phi)$ that is syntactically multilinear. 
 
 \noindent
-{\bf (Imp.)} Does the same hold for multilinear circuits? 
+{\bf (Imp.)} Why does the same not work for multilinear circuits? 
 \end{exercise}
 
 This section shall deal mainly with multilinear formulas so we may assume without loss of generality that they are syntactically multilinear. 
 Raz \cite{raz2004} showed that multilinear formulas computing the $\Det_n$ or $\Perm_n$ must be of size $n^{\Omega(\log n)}$. 
 The complexity measure used by Raz also led to exponential lower bounds for constant depth multilinear circuits \cite{raz-yehudayoff} and super-linear lower bounds for syntactic multilinear circuits \cite{RSY08}. 
-We shall first give some intuition behind the complexity measure before actually seeing the lower bounds. 
+The complexity measure used here would also be the \emph{rank of the partial derivative matrix} from \autoref{chap:evalDim} and we shall first see some intuition as to why it is applicable in this setting as well. 
 
-\section{The partial derivative matrix}
+\section{The partial derivative matrix, again}
 \subsection*{Intuition}
 
 A natural first step is to try the simpler task of proving lower bounds for depth-$3$ multilinear circuits. 
@@ -36,13 +36,11 @@ The task is now to construct a measure $\Gamma$ such that $\Gamma(\ell_1\dots \e
 Consider the simplest case of $f = (a_1  + b_1x)(a_2  + b_2y)$. 
 An observation is that the coefficients of $f$ are given by the $2\times 2$ matrix obtained as $[a_1\ b_1]^T [a_2\ b_2] = \insquare{\begin{array}{cc} a_1a_2 & a_1b_2\\ a_2 b_1 & b_1 b_2\end{array}}$. 
 In other words, a polynomial $f = a_0 + a_1x + a_2y + a_3xy$ factorizes into two variable disjoint factors if and only if the matrix $\insquare{\begin{array}{cc} a_0 & a_1\\ a_2 & a_3\end{array}}$ has rank $1$. 
-A straight-forward generalization of this to multiple variables yields the \emph{partial derivative matrix} (which was first introduced by Nisan \cite{nis91} in the context of non-commutative ABPs)\\
+This is another way of reading $f$ as a \emph{non-commutative polynomial}, and this is precisely the partial derivative matrix of $f$ with respect to $\set{x,y} = \set{x} \sqcup \set{y}$ as seen in \autoref{chap:evalDim}. 
+\\
 
-\begin{definition}
-For any given partition of variables $X = Y \sqcup Z$, define the \emph{partial derivative matrix} $M_{Y,Z}(f)$ to be the matrix described as follows --- the rows are indexed by monomials in $Y$, columns indexed by monomials in $Z$, and the $(i,j)$-th entry of the matrix is the coefficient of the monomial $m_i(Y)\cdot m_j(Z)$ in $f$. 
-We shall use $\Gamma^{\mathrm{[Raz]}}_{Y,Z}(f)$ to denote $\mathrm{rank}(M_{Y,Z}(f))$. 
-Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ is full-rank.
-\end{definition}
+\noindent
+We recall the definition of the partial derivative matrix with respect to $X = Y \sqcup Z$ from the picture:
 
 \begin{tikzpicture}
 \node at (-5,1.5) {$M_{Y,Z}(f) \quad= $};
@@ -67,6 +65,9 @@ Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ i
 edge[<-,bend left] (1.25,2);
 \end{tikzpicture}
 
+\noindent
+We shall use $\CM{Raz}_{Y,Z}(f)$ to denote the rank of $M_{Y,Z}(f)$. \\
+
 
 Here are some basic properties of the partial derivative matrix which would be extremely useful in later calculations.
 
@@ -89,13 +90,23 @@ $$
   It is not hard to see that $M_{Y,Z}(f_1\cdot f_2)$ is the tensor product $M_{Y_1, Z_1}(f_1) \otimes M_{Y_2, Z_2}(f_2)$, and the rank of a tensor product of two matrices is the product of the ranks.
 \end{proof}
 
-\begin{observation}\label{obs:pdm-upperbound}
-  $\CM{Raz}_{Y,Z}(f) \spaced{\leq} 2^{\min(\abs{Y}, \abs{Z})}$.
+\begin{observation}[Multiplication by univariates]\label{obs:pdm-mult-by-univariate}
+For any $f \in \F[Y,Z]$ and any $g \in \F[Y]$, if $\F$ is large enough then we have that $\CM{Raz}_{Y,Z}(g \cdot f) \leq \CM{Raz}_{Y,Z}(f)$. 
+
+By symmetry, the same is true when $g \in \F[Z]$. 
+\end{observation}
+\begin{proof}
+  The evaluation dimension of $g \cdot f$ is at most the evaluation dimension of $g$ as any partial evaluation (by evaluating $Y$) of $g \cdot f$ is a scalar times a partial evaluation of $g$.
+The observation follows from \autoref{lem:evalDim-to-coeffDim}.
+\end{proof}
+
+
+\begin{observation}[A trivial bound]\label{obs:pdm-upperbound}
+For any multilinear polynomial $f$, we have  $\CM{Raz}_{Y,Z}(f) \spaced{\leq} 2^{\min(\abs{Y}, \abs{Z})}$.
 \end{observation}
 \begin{proof}
   The number of rows is $2^{\abs{Y}}$ and number of columns is $2^{\abs{Z}}$, and hence the rank is upper-bounded by the minimum.
 \end{proof}
-
 
 Let us get back to lower bounds for multilinear models, and attempt to use $\CM{Raz}_{Y,Z}(f)$ defined above. 
 Unfortunately, there are examples of simple polynomials like $f = (y_1 + z_1)\dots (y_n + z_n)$ with $\CM{Raz}_{Y,Z}(f) = 2^n$. 
@@ -600,5 +611,5 @@ Combining this with \autoref{cor:multi-k-ic-ub} directly gives the lower bound o
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 

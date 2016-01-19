@@ -112,8 +112,32 @@ For any given partition of variables $X = Y \sqcup Z$, define the \emph{partial 
 Further, we shall call a polynomial $f$ to be \emph{full-rank} if $M_{Y,Z}(f)$ is full-rank.
 \end{definition}
 
+\begin{tikzpicture}
+\node at (-5,1.5) {$M_{Y,Z}(f) \quad= $};
+\draw[fill=black!20] (0,0) rectangle (5,3);
+
+\draw[decorate,decoration={brace,amplitude=10pt,raise=4pt},yshift=0pt]
+(0,0) -- (0,3);
+\node[anchor=east] at (-0.5,1.5) {Monomials in $Y$};
+\draw[decorate,decoration={brace,amplitude=10pt,mirror, raise=4pt},yshift=0pt] 
+(0,0) -- (5,0);
+\node[anchor=north] at (2.5,-0.5) {Monomials in $Z$};
+
+\draw[fill=black!30] (1,0) rectangle (1.5,3);
+\node at (1.25,3.2) {$m_Z$};
+
+\draw[fill=black!30] (0,2) rectangle (5,2.5);
+\node at (5.5,2.2) {$m_Y$};
+
+\draw[very thick] (1,2) rectangle (1.5,2.5);
+
+\node[anchor=west] at (6,1) {$\mathrm{coeff}_f(m_Y \cdot m_Z)$}
+edge[<-,bend left] (1.25,2);
+\end{tikzpicture}
+
 \medskip
 
+\noindent
 The following observation is a an easy exercise. 
 
 \begin{lemma}
@@ -154,7 +178,7 @@ In other words, $\evalDim_{Y,Z}(f)$ of the space of partial evaluations of $f$ b
 \noindent 
 The following lemma is easy to verify.
 
-\begin{lemma}
+\begin{lemma}\label{lem:evalDim-to-coeffDim}
 Over any field $\F$, we always have that $\evalDim_{Y,Z}(f) \leq \rank(M_{Y,Z}(f))$. If $|\F| \geq \deg(f)$, then
 \[
 \evalDim_{Y,Z}(f) \spaced{=} \rank(M_{Y,Z}(f)).
