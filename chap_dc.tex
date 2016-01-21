@@ -1,0 +1,317 @@
+\chapter{Determinantal Complexity Lower Bounds}\label{chap:dc}
+
+Recall that any polynomial $f$ that is computable by an ABP of polynomial size can be written as a projection of the determinant (\autoref{thm:vp}). 
+Thus, a direct way to prove lower bounds is to find an explicit polynomial that requires super-polynomially large determinants to compute it. 
+Hence, for a polynomial $f$, it is natural to ask ``If $f$ is to be written as a projection of an $m\times m$ determinant, how large should $m$ be?''
+This is called the \emph{determinantal complexity} of $f$. 
+
+\begin{definition}
+  Let $f$ be an $n$-variate polynomial.
+  The determinantal complexity of $f(\vecx)$, denoted by $\dc(f)$ is the smallest $m$ such that there is an $m\times m$ matrix $A(\vecx)$ with each entry being an linear function in $\vecx$ such that $f = \det(A(\vecx))$. 
+\end{definition}
+
+\noindent
+By \autoref{thm:vp}, if we could show that $\dc(\Perm_n) = n^{\omega(1)}$, then this immediately would imply super-polynomial circuit lower bounds. 
+
+\subsubsection*{Some prior work}
+
+In 1986, Von zur Gathen \cite{von1986} proved that $\dc(\Perm_n) \geq \inparen{\sqrt{\frac{8}{7}}}n$.
+Subsequently, Cai \cite{cai1990} and Meshulam~\cite{mesh1989} independently improved the lower bound to $\sqrt{2}n$.
+
+In 2004, Mignon and Ressayre\cite{mr04} came up with a new idea of using second order derivatives and proved the first super-linear lower bound of $\dc(\Perm_n) \geq \frac{n^2}{2}$ over fields of characteristic zero.
+Following that, Cai, Chen and Li \cite{ccl2008} extended the result of Mignon and Ressayre to all fields of characteristic $\neq 2$.\\
+
+In this chapter, we shall see the proof of Mignon and Ressayre's result%, along with a recent improvement by Yabe~\cite{Yabe15}
+.
+We first describe some intuition for the approach of Mignon and Ressayre of using the \emph{Hessian}. 
+
+\section{Why Hessian?}
+
+As in all the previous lower bounds, we would like to identify a certain ``weakness of the model'', and here we are attempting to identify some properties of the determinant that are not shared by the permanent.
+The following is the key question that led Mignon and Ressayre towards their approach. 
+\begin{quote}
+Consider a matrix $X_0$ for which $\Det_n(X_0) = 0$. What are the \emph{perturbations} of $X_0$ that continue to keep $\Det_n$ to be zero? 
+
+What is the answer to the same question for $\Perm_n$?
+\end{quote}
+
+Small perturbation around points where the function stays constant is really just the tangent plane at that point.
+Their main observation was that the answer to the tangent planes at zeros of $\Det_n$ and $\Perm_n$ look very different.
+
+In the case of $\Det_n$, since $\Det_n(X_0) = 0$, there is some non-zero vector $\vecv$ in the kernel.
+Now consider the space vector space $\mathcal{V}$ of matrices that also have $\vecv$ in their kernel.
+Then, clearly $\Det_n(M + X_0)$ is also zero for every $M \in \mathcal{V}$.
+Notice that $\mathcal{V}$ is a space of dimension at least $n^2 - n$ as enforcing $M(\vecv) = \mathbf{0}$ adds just $n$ homogeneous constraints on $n^2$ variables.
+Hence, around any zero of $\Det_n$ is a \emph{huge} subspace in which $\Det_n$ continues to stay zero.
+Such a statement, intuitively, should be unlikely to hold for a generic matrix $X_0$ with $\Perm_n(X_0) = 0$.
+The question now is if we can convert this geometric statement into a measure.\\
+
+Let us attempt to formalize this intuition.
+For an arbitrary $n$-variate function $f$, let us look at the \emph{zero surface} of all points with $f(X) = 0$ and let $X_0$ be one such point on the surface.
+The tangent of the surface at the point $X_0$ is a hyperplane whose normal is specified by the \emph{gradient} of $f$ defined as
+\[
+\nabla f (X_0) \spaced{=} \inparen{\partial_{1}(f), \cdots, \partial_{n}(f)} (X_0)
+\]
+If it so turns out that, $f(\lambda V + X_0) = 0$ for all $\lambda \in \F$, and hence $V$ must also lie on the tangent plane.
+This therefore also implies that $V$ must be perpendicular to $\nabla f (X_0)$ as well.
+Note that this \emph{does not} imply that the gradient at $V + X_0$ must be equal to $\nabla f(X_0)$ but at the very least they must both be perpendicular to $V$. 
+
+
+Now suppose we have a vector space $\mathcal{V}$ of dimension $n-r$ such that for every $V \in \mathcal{V}$ we have $f(V + X_0) = 0$. For any $V\in \F^n$ let $G_V = \nabla f (X_0 + V)$, the gradient of $f$ at $X_0 + V$. By the discussion above, we know that $G_V \perp \mathcal{V}$ for every $V\in \mathcal{V}$. Therefore, \[
+\rank\setdef{G_V}{V \in \mathcal{V}} \spaced{\leq} r.
+\]
+If we have $n - r \geq r$, then this implies that there must be at least $(n - 2r)$ \emph{directions} in which $\nabla f (X_0)$ does not change. This can be precisely captured by the \emph{Hessian} of $f$, denoted by $\hess(f)$, defined as follows:
+\[
+\hess(f) (X_0) \spaced{:=} \insquare{
+\begin{array}{ccc}
+\frac{\partial^2 f}{\partial x_1 \partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_n}\\
+\vdots & \ddots & \vdots \\
+\frac{\partial^2 f}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_n \partial x_n}\\
+\end{array}} (X_0).
+\]
+In other words, the $i$-th row of the Hessian corresponds to the derivative of $\nabla f$ with respect to $x_i$. Since there are $n-2r$ directions in which the gradient does not change, this implies that the rank of the Hessian at $X_0$ is at most $2r$.
+
+\begin{lemmawp}\label{lem:hess-large-perturbations}
+Let $f$ be an $n$-variate polynomial and let $f(X_0) = 0$ for some $X_0 \in \F^n$. If there is a space $\mathcal{V}$ such that $f(X_0 + V) = 0$ for all $V \in \mathcal{V}$ and if $\dim \mathcal{V} = n - r$, then
+\[
+\rank\inparen{\hess(f)(X_0)} \spaced{\leq} 2r. \qedhere
+\]
+\end{lemmawp}
+
+\begin{corollarywp}\label{cor:hess-det}
+For any $X_0$ such that $\Det_n(X_0) = 0$, we have
+\[
+\rank\inparen{\hess(\Det_n)(X_0)} \spaced{\leq} 2n. \qedhere
+\]
+\end{corollarywp}
+
+Thus the rank of the Hessian at a zero of the polynomials certainly seems like a good complexity measure for determinantal complexity. 
+
+\section{The lower bound of Mignon-Ressayre}
+
+The main theorem of this section would be the following. 
+
+\begin{theorem}[\cite{mr04}]\label{thm:Mignon-Ressayre-mainthm}
+Over any characteristic zero field, $\dc(\Perm_n) \geq n^2/2$.
+\end{theorem}
+
+The rest of this section would be dedicated to the proof of this theorem.
+Throughout this section, we shall assume that $\F$ is a characteristic zero field.
+Let $\Perm_n = \Det_m(A(\vecx))$ where $A(\vecx)$ is an $m\times m$ matrix consisting of linear polynomials.
+The goal is to show that $m \geq n^2/2$.
+As mentioned earlier, the complexity measure would the rank of the Hessian at a carefully chosen matrix $X_0$.
+The proof is immediate from the following two lemmas.
+
+\begin{lemma}[Upper bound for determinant]\label{lem:MR-det-ub} Let $X_0 \in \F^{n^2}$ such that $\Det_m(A(X_0)) = 0$. Then, 
+\[
+\rank\Big(\hess(\Det_m(AX))(X_0)\Big) \spaced{\leq} 2m.
+\]
+\end{lemma}
+
+\begin{lemma}[Lower bound for permanent]\label{lem:MR-perm-lb} There exists  $X_0 \in \F^{n^2}$ such that $\Perm_n(X_0) = 0$ and
+\[
+\rank\Big(\hess(\Perm_n(X_0)\Big) \spaced{=} n^2.
+\]
+\end{lemma}
+
+The proof of \autoref{lem:MR-det-ub} is quite an easy adaptation of \autoref{lem:hess-large-perturbations}, and the proof of \autoref{lem:MR-perm-lb} is a just a (slightly tedious) calculation. 
+
+\begin{proof}[Proof of \autoref{lem:MR-det-ub}]
+Let $A(X - X_0) = L(X) + B_0$ where $L(X)$ is a matrix of \emph{linear forms} (no constant term) and $B_0$ a matrix of constants. Since $\Det_m(A(X_0)) = 0$, we must have that $\Det_m(B_0) = 0$. Let $\vecv \in \F^{m^2}$ be a vector such that $B\vecv = \mathbf{0}$. Consider the vector space $\mathcal{V}$ defined by
+\[
+\mathcal{V} \spaced{:=} \setdef{M\in \F^{n^2}}{L(M)\; \vecv = \mathbf{0}}. 
+\]
+As earlier, we have  $\dim \mathcal{V} \geq n^2 - m$ and $\Det_m(A(M + X_0)) = 0$ for all $M \in \mathcal{V}$. Hence, applying \autoref{lem:hess-large-perturbations} to $f(X) = \Det_m(A(X))$, we have
+\[
+\rank\Big(\hess(\Det_m(AX))(X_0)\Big) \spaced{\leq} 2m.\qedhere
+\]
+\end{proof}
+
+\begin{proof}[Proof of \autoref{lem:MR-perm-lb}]
+Mignon and Ressayre \cite{mr04} use the following matrix for $X_0$:
+\[
+X_0 \spaced{=} \insquare{ \begin{array}{cccc}
+1-d & 1 & \cdots & 1\\
+1 & 1 & \cdots & 1\\
+\vdots & \vdots & \ddots & \vdots \\
+1 & 1 & \cdots & 1
+\end{array}}.
+\]
+Since the proof is just a calculation, we only mention the main steps of the proof and leave it as an exercise to fill in the details.
+
+\begin{claim}
+For $X_0$ as defined above, the matrix $\hess(\Perm_n)(X_0)$ can be expressed as
+\[
+\hess(\Perm_n)(X_0) \spaced{=} (d-3)! \cdot \insquare{\begin{array}{ccccc}
+\mathbf{0} & P & P & \cdots & P\\
+P & \mathbf{0} & Q & \cdots & Q\\
+P & Q & \mathbf{0} & \ddots & \vdots\\
+\vdots & \vdots & \ddots & \ddots & Q \\
+P & Q & \cdots & Q & \mathbf{0}
+\end{array}}_{n^2 \times n^2}
+\]
+\begin{center}where
+\end{center}
+\[
+P = (d-2) \insquare{\begin{array}{cccc}
+0 & 1 & \cdots & 1\\
+1 & 0 & \ddots & \vdots \\
+\vdots & \ddots & \ddots & 1\\
+1 & \cdots & 1 & 0
+\end{array}}_{n \times n}
+\spaced{\text{and}}
+Q = 
+\insquare{\begin{array}{ccccc}
+0 & d-2 & d-2 & \cdots & d-2\\
+d-2 & 0 & -2 & \cdots & -2\\
+d-2 & -2 & 0 & \ddots & \vdots\\
+\vdots & \vdots & \ddots & \ddots & -2 \\
+d-2 & -2 & \cdots & -2 & 0
+\end{array}}_{n \times n}.
+\]
+\end{claim}
+
+\begin{claim}
+For any pair of invertible $n\times n$ matrices $P$ and $Q$, the matrix 
+\[\insquare{\begin{array}{ccccc}
+\mathbf{0} & P & P & \cdots & P\\
+P & \mathbf{0} & Q & \cdots & Q\\
+P & Q & \mathbf{0} & \ddots & \vdots\\
+\vdots & \vdots & \ddots & \ddots & Q \\
+P & Q & \cdots & Q & \mathbf{0}
+\end{array}}\quad\text{is also invertible.}
+\]
+\end{claim}
+
+From these two claims, it follows that $\hess(\Perm_n)(X_0)$ is invertible and hence has rank $n^2$. 
+\end{proof}
+
+\noindent
+\autoref{thm:Mignon-Ressayre-mainthm} follows from \autoref{lem:MR-det-ub} and \autoref{lem:MR-perm-lb}. \qed{\tiny (\autoref{thm:Mignon-Ressayre-mainthm})}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    Needs proof-reading work.    %%%%
+%%%%    Enclosing in \ignore{  }     %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\ignore{
+\section{Yabe's improvement~\cite{Yabe15}}
+
+A recent result of Yabe~\cite{Yabe15} improves the lower bound to $\dc(\Perm_d) \geq (d-1)^2 + 1$ and we give an description of the proof now. 
+
+The main idea in Yabe's proof is to use the determinantal complexity of a polynomial to a certain \emph{bi-linear rank} of a quadratic form closely related to the Hessian. 
+
+\begin{definition}[Quadratic forms and associated matrices]
+A quadratic form $Q$ over $n$-variables is a homogeneous degree $2$ polynomial $Q(\vecx) = \sum_{i,j} q_{ij} x_i x_j$. 
+
+For every such quadratic form $Q$, we shall define the following symmetric matrix (that shall also be called $Q$) such that $Q_{i,j} = \frac{q_{ij}}{2}$ if $i\neq j$ (half the coefficient of $x_i x_j$) and $Q_{i,i} = q_{i,i}$ (the coefficient of $x_i^2$). 
+\end{definition}
+
+For example, the matrix corresponding to the quadratic form $x_1^2 + 2x_1x_2 + x_2^2$ would be the $2\times 2$ of ones.\\
+
+For any point $X_0 \in \R^{d\times d}$, the Hessian of $\Perm_d$ at the point $X_0$ can be interpreted as a quadratic form as well. The following observation gives an alternate method to understand this quadratic form. 
+
+\begin{observation}\label{obs:hessian-deg2-hom}
+Let $f$ be any $n$-variate polynomial and let $\veca \in \R^n$Then the quadratic form associated with the Hessian of $f$ evaluated at $\veca$, denoted by $\hess(f)(\veca)$, can be equivalently expressed as
+\[
+\sum_{i,j} x_{i} x_{j} \cdot \pfrac{\partial^2 f}{\partial x_{i} \partial x_{j}}\inparen{\veca} \spaced{=} \Hom_2(f(\vecx + \veca))
+\]
+\end{observation}
+\begin{proof}
+The statement follows almost immediately when $f(\vecx + \veca)$ is expanded around $\mathbf{0}$ using the Taylor Expansion. 
+\end{proof}
+
+
+\noindent 
+For any quadratic form $Q$, there is a very natural notation of rank that can be defined. 
+
+\begin{definition}[Bi-linear rank of a quadratic form] For any quadratic form $Q$ we shall define its \emph{bi-linear rank}, denoted by $\brank(Q)$, as the smallest integer $r$ for which there exists linear forms $\ell_1,\ldots, \ell_r, \ell_1',\ldots,  \ell_r'$ such that 
+\[
+Q \spaced{=} \ell_1 \ell_1' + \cdots + \ell_r \ell_r'. \qedhere
+\]
+\end{definition}
+
+\begin{observation}\label{obs:brank-rank}
+A quadratic form $Q$ satisfies $\brank(Q) \leq r$ if and only if there exists a matrix $B$ such that $Q = B + B^T$ and $\rank(B) \leq r$. 
+\end{observation}
+\begin{proof}
+TODO
+\end{proof}
+
+\subsection{Using $\brank$ to lower bound determinantal complexity}
+
+The usual methods to get a bound on determinantal complexity is to find a suitable point $X_0 \in \R^{d\times d}$ such that $\Perm_d(X_0) = 0$ and look at the rank of the Hessian at $X_0$. Mignon and Ressayre~\cite{mr04} showed that $\rank(\hess(\Perm_d)(X_0))$ is upper-bounded by $2\cdot \dc(\Perm_d)$. Thus, one just needs to find a suitable matrix $X_0$ for which the Hessian has rank about $d^2$. 
+
+Yabe~\cite{Yabe15} deviates from this plan and instead studies the $\brank$ of the Hessian. The first step in his approach is to connect the determinantal complexity to the $\brank$ of the Hessian. 
+
+
+\begin{lemma}\label{lem:detcomplexity-to-brank} Let $f$ be an $n$-variate polynomial and $\veca \in \R^n$ be a point such that $f(\veca) = 0$. Then, $\brank(\Hom_2(f(\vecx + \veca))) \leq \max(\dc(f),4)$. 
+\end{lemma}
+\begin{proof}
+Let $\dc(f) = m$. This means that $f$ can be computed as the determinant of an $m\times m$ matrix of linear polynomials in $\vecx$, that is there are matrices $A$ and $B$ such that  
+\begin{eqnarray*}
+f(\vecx + \veca) & = & \Det_m(A(\vecx) + B)
+\end{eqnarray*}
+Since $f(\veca) = 0$, we know that the matrix $B$ is not invertible. Hence, there exists some pair of matrices $S, T$ with $\det(S) = \det(T) = 1$ such that $S B T$ takes the form of a diagonal matrix with either ones or zeroes on the diagonal. Furthermore, since $\det(B) = 0$, we know that there must be at least one $0$ on the diagonal. Let $\Lambda_s$ refer to the diagonal matrix with $s$ zeroes on the diagonal followed by ones. Then, $S B T = \Lambda_s$ for some $s \geq 1$. Therefore 
+\begin{eqnarray*}
+f(\vecx + \veca) & = & \Det_m(S) \cdot \Det_m(A(\vecx) + B) \cdot \Det_m(T)\\
+ & = & \Det_m( S (A(\vecx)) T + \Lambda_s)\\
+ & = & \Det_m( A'(\vecx) + \Lambda_s).
+\end{eqnarray*}
+We are interested in the degree $2$ homogeneous component of the RHS. If $s > 2$, then every monomial in $\Det_m(A'(\vecx) + \Lambda_s)$ has degree at least $3$ so the homogeneous degree $2$ part is just zero. If $s = 2$, then the homogeneous degree $2$ part is just $A'_{11}(\vecx) A'_{22}(\vecx) - A'_{12}(\vecx) A'_{21}(\vecx)$ and hence $\brank(\Hom_2(f(\vecx + \veca)))\leq 4$. 
+
+In the case of $s = 1$, it is easy to check that the only degree $2$ monomials are $A_{11}'(\vecx) A_{ii}(\vecx)$ and $A_{1i}'(\vecx) A_{i1}'(\vecx)$. Thus, any linear combination of them can be written as
+\[
+A_{11}'(\vecx) \cdot \ell  \;+\;  \sum_{i=2}^m \alpha_i \cdot A_{1i}'(\vecx)A_{i1}'(\vecx)
+\]
+and hence $\brank(\Hom_2(f(\vecx + \veca))) \leq m$
+\end{proof}
+
+In the original argument of Mignon and Ressayre, they get that $\rank(\hess(\Perm_d)(X_0)) \leq 2 \cdot \dc(\Perm_d)$ and this is the loss that eventually results in the lower bound of $d^2/2$. But \autoref{lem:detcomplexity-to-brank} saves this factor of two but we are now left with the task of showing that the quadratic form associated with $\hess(\Perm_d)(X_0)$ has large bi-linear rank. Yabe~\cite{Yabe15} does this by using \emph{Sylvester's Law of Inertia}.
+
+\begin{lemma}[Sylvester's Law of Inertia]\label{lem:sylvester-law-of-inertia} Let $Q$ be a real symmetric matrix that has $n_+$ positive eigenvalues, $n_-$ negative eigenvalues. Then, if $Q = B + B^T$, we must have $\rank(B) \geq \max(n_+, n_-)$. 
+\end{lemma}
+\begin{proof}
+TODO
+\end{proof}
+
+By \autoref{lem:sylvester-law-of-inertia} and \autoref{obs:brank-rank}, in order to lower-bound $\brank(\hess(\Perm_d)(X_0))$, we just need to show that $\hess(\Perm_d)(X_0)$ many eigenvalues of the same sign. This is the main technical calculation. 
+
+\begin{lemma}\label{lem:X0-neg-eigenvalue-bound}
+Let $X_0$ be the matrix defined by 
+\[
+X_0 \spaced{=} \insquare{\begin{array}{cccc}
+1-d & 1 & \cdots & 1\\
+1 & 1 & \cdots & 1\\
+\vdots & \vdots & \ddots & \vdots\\
+1 & 1 & \cdots & 1
+\end{array}}
+\]
+that satisfies $\Perm_d(X_0) = 0$. The matrix $\hess(\Perm_d)(X_0)$ has $(d-1)^2 + 1$ negative eigenvalues. 
+\end{lemma}
+
+\noindent 
+We shall defer this calculation to the end of the chapter and finish the lower bound. 
+
+\begin{theorem}[\cite{Yabe15}]\label{thm:dc-comp-yabe}
+$\dc(\Perm_d) \geq (d-1)^2 + 1$. 
+\end{theorem}
+\begin{proof}
+Let $X_0$ be the matrix as in \autoref{lem:X0-neg-eigenvalue-bound}. By \autoref{lem:detcomplexity-to-brank}, we get that
+\[
+\brank(\Hom_2(\Perm_d(X + X_0))) \spaced{\leq} \dc(\Perm_d). 
+\]
+On the other hand, \autoref{obs:brank-rank}, \autoref{lem:sylvester-law-of-inertia} and  \autoref{lem:X0-neg-eigenvalue-bound} imply that 
+\[
+\brank(\Hom_2(\Perm_d(X + X_0))) \spaced{\geq} (d-1)^2 + 1
+\]
+forcing $\dc(\Perm_d) \geq (d-1)^2 + 1$. 
+\end{proof}
+}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
