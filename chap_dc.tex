@@ -69,14 +69,27 @@ If we have $n - r \geq r$, then this implies that there must be at least $(n - 2
 \frac{\partial^2 f}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_n \partial x_n}\\
 \end{array}} (X_0).
 \]
-In other words, the $i$-th row of the Hessian corresponds to the derivative of $\nabla f$ with respect to $x_i$. Since there are $n-2r$ directions in which the gradient does not change, this implies that the rank of the Hessian at $X_0$ is at most $2r$.
+In other words, the $i$-th row of the Hessian corresponds to the derivative of $\nabla f$ with respect to $x_i$. Since there are $n-2r$ directions in which the gradient does not change, this implies that the rank of the Hessian at $X_0$ is at most $2r$. This is formalized in the following lemma. 
 
-\begin{lemmawp}\label{lem:hess-large-perturbations}
+\begin{lemma}\label{lem:hess-large-perturbations}
 Let $f$ be an $n$-variate polynomial and let $f(X_0) = 0$ for some $X_0 \in \F^n$. If there is a space $\mathcal{V}$ such that $f(X_0 + V) = 0$ for all $V \in \mathcal{V}$ and if $\dim \mathcal{V} = n - r$, then
 \[
 \rank\inparen{\hess(f)(X_0)} \spaced{\leq} 2r. \qedhere
 \]
-\end{lemmawp}
+\end{lemma}
+\begin{proof}
+Consider the $\mathcal{H}:\mathcal{V} \rightarrow \F^n$ that maps $M \in \mathcal{V}$ to $\partial_M(\nabla f) (X_0)$, the coordinate-wise directional derivative of $\nabla f$ in the direction $M$ evaluated at $X_0$. That is, 
+\[
+\partial_M(\nabla f) (X_0) \spaced{=} \inparen{\pfrac{\partial G_1}{\partial M} (X_0) , \cdots, \pfrac{\partial G_n}{\partial M} (X_0)} \in \F^n
+\]
+where $G = (G_1, \cdots, G_n) = \nabla f$. 
+
+We know that $(\nabla f)(X_0)$ is perpendicular to $\mathcal{V}$ but we claim that $\partial_M(\nabla f) (X_0)$ is also perpendicular to $\mathcal{V}$. This is because $(\nabla f)( X_0 + \epsilon M) - (\nabla f)(X_0) \in \mathcal{V}^\perp$ for every $\epsilon \in \F$, and therefore we must have $\partial_M(\nabla f)(X_0) \in \mathcal{V}^{\perp}$. 
+
+Furthermore, note that $\mathcal{H}$ is linear map, just by the definition of directional derivatives. Thus $\mathcal{H}$ is a linear map from a space $\mathcal{V}$ of dimension at least $n-r$ to a $\mathcal{V}^\perp$ of dimension at most $r$. Therefore, the kernel of $\mathcal{H}$ has dimension at least $n - 2r$. Since $\mathcal{H}$ is just the restriction of $\hess(f)(X_0)$ to the space $\mathcal{V}$, it follows that $\rank(\hess(f)(X_0)) \leq 2r$. 
+\end{proof}
+
+
 
 \begin{corollarywp}\label{cor:hess-det}
 For any $X_0$ such that $\Det_n(X_0) = 0$, we have
