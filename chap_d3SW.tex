@@ -1,2 +1,84 @@
-\chapter{Lower bounds for depth-3 over fields of characteristic zero }
+\chapter{Lower bounds for depth-3 circuits}\label{chap:d3SW}
 
+In this chapter, we shall see the lower bound of Shpilka and Wigderson~\cite{sw2001} for non-homogeneous depth-$3$ circuits over arbitrary fields.
+The main theorem of this section would be the following \emph{quadratic} lower bound. 
+
+\begin{theorem}[\cite{sw2001}]\label{thm:SW-SPS-main-thm}
+Any $\SPS$ circuit that computes the polynomial $\Det_n$ (or $\Perm_n$) must have at least $\Omega\pfrac{n^4}{\log n}$ wires. 
+\end{theorem}
+
+Note that the number of variables in $\Det_n$ is $n^2$ and hence the above lower bound is a quadratic lower bound in the number of variables.
+Until recently, this was the best lower bound we knew for the class of general $\Sigma\Pi\Sigma$ circuits but a very recent result of Kayal, Saha and Tavenas~\cite{TODO} has improved this to an almost cubic lower bound (for a different explicit family of polynomials) which we shall see at a later point.
+This section however shall focus on the proof of the above theorem.
+
+\section{Revisiting the hom. $\SPS$ lower bound of \cite{nw1997}}
+
+From \autoref{obs:low-rank-sps-rank}, if $T = \ell_1 \cdots \ell_d$ then for every $0\leq k \leq d$ we have
+\[
+\dim \partial^{=k}(T) \spaced{\leq} \binom{d}{k}. 
+\]
+For a polynomial such as the $\Det_n$, we know that $\partial^{=k}(\Det_n) = \binom{n}{k}^2$. Let us first get a sense of what is the best $k$ to choose for proving lower bounds for $\Sigma\Pi^{[d]}\Sigma$ circuits. We recall some bounds on binomial coefficients from \autoref{chap:binom-estimates}. 
+
+\begin{lemmawp}For any $n\geq k \geq 0$, 
+\[
+\pfrac{n}{k}^k \spaced{\leq} \binom{n}{k} \spaced{\leq} \pfrac{ne}{k}^k\qedhere
+\]
+\end{lemmawp}
+
+\begin{lemma}[\cite{nw1997}]\label{NW:d3hom-mainlemma} For any $d \geq 0$, any $\Sigma\Pi^{[d]}\Sigma$ circuit computing $\Det_n$ must have size $\exp\inparen{\Omega\pfrac{n^2}{d}}$. 
+\end{lemma}
+\begin{proof}
+As just mentioned, if $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of at most $d$ linear polynomials, then 
+\[
+\dim(\partial^{=k}(C)) \spaced{\leq } s \cdot \binom{d}{k}.
+\]
+On the other hand, 
+\[
+\dim(\partial^{=k}(\Det_n)) \spaced{\geq } \binom{n}{k}^2.
+\]
+Therefore, we get a lower bound of 
+\begin{eqnarray*}
+s & \geq & \frac{\binom{n}{k}^2}{\binom{d}{k}}\\
+  & \geq & \pfrac{n}{k}^{2k} / \pfrac{de}{k}^k \spaced{=} \pfrac{n^2}{e\cdot dk}^k
+\end{eqnarray*}
+Thus, by choosing $k = \pfrac{n^2}{2ed}$, we get a lower bound of $2^k = \exp\inparen{\Omega\pfrac{n^2}{d}}$. 
+\end{proof}
+
+
+\section{The win-win proof of \cite{sw2001}}
+
+\begin{proof}[Proof of \autoref{thm:SW-SPS-main-thm}]
+
+
+Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
+We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/100\log n)$).
+By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at most $d$ linear polynomials, we have a lower bound of $\exp(\Omega(n^2/d))$. We shall say a variable $x_{ij}$ is \emph{$d$-good} in $C$ if each $T_i$ that depends on $x_{ij}$ has degree at most $d$. \\
+
+{\bf Case 1:} There is a variable in the first row $x_{1j}$ that is $d$-good. 
+
+\medskip
+
+\noindent 
+In this setting, consider the polynomial $C' = C_{(x_{1i} = 1)} - C_{(x_{1i} = 0)}$.
+As far as $\Det_n$ is concerned, this is equivalent to taking the derivative with respect to $x_{ij}$ and hence the polynomial is the corresponding $(n-1)\times (n-1)$ minor.
+The circuit $C'$ on the other hand now is a $\Sigma\Pi^{[d]}\Sigma$ circuit with top fan-in at most $2s$, as all $T_i$s in $C$ that do not depend on $x_{ij}$ would now be eliminated.
+By \autoref{NW:d3hom-mainlemma}, this implies that $2s > \exp(\Omega((n-1)^2/d))$ which is certainly bigger than $(n^4 / \log n)$ if $d = n^2/100\log n$.\\
+
+{\bf Case 2:} There is \emph{no} variable in the first row that is $d$-good. 
+
+\medskip
+
+\noindent 
+This means that for each $x_{1j}$, there is a term $T_{i_j}$ of degree more than $d$ with a linear factor depending on $x_{1j}$, say of the form $x_{1j} - \ell_j$. 
+
+
+\end{proof}
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
