@@ -8,7 +8,7 @@ Any $\SPS$ circuit that computes the polynomial $\Det_n$ (or $\Perm_n$) must hav
 \end{theorem}
 
 Note that the number of variables in $\Det_n$ is $n^2$ and hence the above lower bound is a quadratic lower bound in the number of variables.
-Until recently, this was the best lower bound we knew for the class of general $\Sigma\Pi\Sigma$ circuits but a very recent result of Kayal, Saha and Tavenas~\cite{TODO} has improved this to an almost cubic lower bound (for a different explicit family of polynomials) which we shall see at a later point.
+Until recently, this was the best lower bound we knew for the class of general $\Sigma\Pi\Sigma$ circuits but a very recent result of Kayal, Saha and Tavenas~\cite{kst16} has improved this to an almost cubic lower bound (for a different explicit family of polynomials) which we shall see at a later point.
 This section however shall focus on the proof of the above theorem.
 
 \section{Revisiting the hom. $\SPS$ lower bound of \cite{nw1997}}
@@ -48,10 +48,10 @@ Thus, by choosing $k = \pfrac{n^2}{2ed}$, we get a lower bound of $2^k = \exp\in
 \section{The win-win proof of \cite{sw2001}}
 
 \begin{proof}[Proof of \autoref{thm:SW-SPS-main-thm}]
+ Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
+We will prove by induction that $s\geq \frac{n^4}{100\log n} + 1$. Starting with $C$, we shall modify the circuit to a new circuit $C'$ that computes $\Det_{n-1}$ (up to renaming variables). 
 
-
-Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
-We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/100\log n)$).
+We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/20\log n)$).
 By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at most $d$ linear polynomials, we have a lower bound of $\exp(\Omega(n^2/d))$. We shall say a variable $x_{ij}$ is \emph{$d$-good} in $C$ if each $T_i$ that depends on $x_{ij}$ has degree at most $d$. \\
 
 {\bf Case 1:} There is a variable in the first row $x_{1j}$ that is $d$-good. 
@@ -62,21 +62,25 @@ By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at mo
 In this setting, consider the polynomial $C' = C_{(x_{1i} = 1)} - C_{(x_{1i} = 0)}$.
 As far as $\Det_n$ is concerned, this is equivalent to taking the derivative with respect to $x_{ij}$ and hence the polynomial is the corresponding $(n-1)\times (n-1)$ minor.
 The circuit $C'$ on the other hand now is a $\Sigma\Pi^{[d]}\Sigma$ circuit with top fan-in at most $2s$, as all $T_i$s in $C$ that do not depend on $x_{ij}$ would now be eliminated.
-By \autoref{NW:d3hom-mainlemma}, this implies that $2s > \exp(\Omega((n-1)^2/d))$ which is certainly bigger than $(n^4 / \log n)$ if $d = n^2/100\log n$.\\
+By \autoref{NW:d3hom-mainlemma}, this implies that $2s > \exp(\Omega((n-1)^2/d))$ which is certainly bigger than $(n^4 / \log n)$ if $d = n^2/20\log n$.\\
 
 {\bf Case 2:} There is \emph{no} variable in the first row that is $d$-good. 
 
 \medskip
 
 \noindent 
-This means that for each $x_{1j}$, there is a term $T_{i_j}$ of degree more than $d$ with a linear factor depending on $x_{1j}$, say of the form $x_{1j} - \ell_j$. 
+We know that the variable $x_{12}$ is not $d$-good.
+This means that there is some $T_i$ of degree more than $d$ which has a factor of the form $(x_{12} - \ell)$.
+We shall now set $x_{12} = \ell$ in $C$ and this eliminates the gate $T_i$ altogether and thereby reducing the size by at least $d$ wires. 
 
+Now move on to $x_{13}$. It is possible now that after eliminating $T_i$ in the previous step, we may now have $x_{13}$ to be $d$-good. Then we reduce to Case 1 and we are done. Otherwise, there is some $T_j$ of degree more than $d$ with a factor of the form $(x_{13} - \ell')$. Once again, we set $x_{13} = \ell'$ to eliminate $T_j$ and thereby reduce the size of the circuit by $d$. \\
 
+Repeating this process for $\set{x_{12}, \cdots, x_{1n}}$, we either reach Case 1 (in which case we are done), or we have thereby reduced the circuit by at least $d(n-1)$ wires. So far, we have only messed with the variables $\set{x_{12},\cdots, x_{1n}}$ but this is not an issue because we can further set $x_{11} = 1$ and $x_{21} = x_{31} = \cdots = x_{n1} = 0$. Therefore, the polynomial thus computed has to be the minor with respect to $x_{11}$ which is just $\Det_{n-1}$ up to renaming variables. But then,
+\[
+\mathrm{size}(C) \spaced{\geq} \mathrm{size}(C') \;+\; \pfrac{(n-1)^2 n^2}{20\log n}
+\]
+Hence, it follows by induction that $\mathrm{size}(C) \geq \pfrac{n^4}{100\log n} + 1$.
 \end{proof}
-
-
-
-
 
 %%% Local Variables: 
 %%% mode: latex
