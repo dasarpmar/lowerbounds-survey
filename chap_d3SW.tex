@@ -19,11 +19,11 @@ From \autoref{obs:low-rank-sps-rank}, if $T = \ell_1 \cdots \ell_d$ then for eve
 \]
 For a polynomial such as the $\Det_n$, we know that $\partial^{=k}(\Det_n) = \binom{n}{k}^2$. Let us first get a sense of what is the best $k$ to choose for proving lower bounds for $\Sigma\Pi^{[d]}\Sigma$ circuits. We recall some bounds on binomial coefficients from \autoref{chap:binom-estimates}. 
 
-\begin{lemmawp}For any $n\geq k \geq 0$, 
+\begin{proposition*}[\autoref{prop:binom-ub-lb}]For any $n\geq k \geq 0$, 
 \[
 \pfrac{n}{k}^k \spaced{\leq} \binom{n}{k} \spaced{\leq} \pfrac{ne}{k}^k\qedhere
 \]
-\end{lemmawp}
+\end{proposition*}
 
 \begin{lemma}[\cite{nw1997}]\label{NW:d3hom-mainlemma} For any $d \geq 0$, any $\Sigma\Pi^{[d]}\Sigma$ circuit computing $\Det_n$ must have size $\exp\inparen{\Omega\pfrac{n^2}{d}}$. 
 \end{lemma}
@@ -49,7 +49,10 @@ Thus, by choosing $k = \pfrac{n^2}{2ed}$, we get a lower bound of $2^k = \exp\in
 
 \begin{proof}[Proof of \autoref{thm:SW-SPS-main-thm}]
  Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
-We will prove by induction that $s\geq \frac{n^4}{100\log n} + 1$. Starting with $C$, we shall modify the circuit to a new circuit $C'$ that computes $\Det_{n-1}$ (up to renaming variables). 
+We will prove by induction that $s\geq \frac{n^4}{100\log n} + 1$. Starting with $C$, we shall modify the circuit to a new circuit $C'$ that computes $\Det_{n-1}$ (up to renaming variables). By induction, we shall assume that 
+\[
+\mathrm{size}(C') \spaced{\geq} \frac{(n-1)^4}{100\log (n-1)}.
+\]
 
 We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/20\log n)$).
 By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at most $d$ linear polynomials, we have a lower bound of $\exp(\Omega(n^2/d))$. We shall say a variable $x_{ij}$ is \emph{$d$-good} in $C$ if each $T_i$ that depends on $x_{ij}$ has degree at most $d$. \\
