@@ -122,6 +122,106 @@ If $f$ is a polynomial computed by an ABP of size $s$, then $f$ reduces to $\Det
 Over any field $\F$ of characteristic not equal to $2$, the polynomial $\Perm_n$ is \emph{complete} for the class $\mathsf{VNP}$ under projections.
 \end{theorem}
 
+\subsection{Formulas to determinants}\label{sec:formula-to-dets}
+
+Let us first show that any polynomial sized arithmetic formula can be expressed as determinant of a small matrix.
+In fact, all matrices that we shall be building this way will have the following structure, and this would be important.\\
+
+\begin{center}
+\begin{tikzpicture}
+\node at  (-1.5,1.5) {$f \quad = \quad \Det$};
+\draw (0,0) rectangle (3,3);
+\node at (0.25,0.25) {1};
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=red] at (0.75,2.25) {$\ast$};
+\node[text=red] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=red] at (2.1,2.1) {$\ast$};
+\begin{scope}[shift={(8,0)}]
+\node at  (-1.5,1.5) {$g \quad = \quad \Det$};
+\draw (0,0) rectangle (3,3);
+\node at (0.25,0.25) {1};
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=blue] at (0.75,2.25) {$\ast$};
+\node[text=blue] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=blue] at (2.1,2.1) {$\ast$};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+We shall assume that the matrices for $f$ and $g$ have the same size (it is easy to pad the matrices while preserving the structure). 
+
+\subsection*{Multiplication}
+
+\begin{center}
+\begin{tikzpicture}
+\draw (0,-3) rectangle (6,3);
+\draw (0,0) rectangle (3,3);
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=red] at (0.75,2.25) {$\ast$};
+\node[text=red] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=red] at (2.1,2.1) {$\ast$};
+\begin{scope}[shift={(3,-3)}]
+\draw (0,0) rectangle (3,3);
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=blue] at (0.75,2.25) {$\ast$};
+\node[text=blue] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=blue] at (2.1,2.1) {$\ast$};
+\end{scope}
+\node at (0.25,-2.75) {1};
+\node at (3.25,0.25) {1};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Addition}
+
+\begin{center}
+\begin{tikzpicture}
+
+\draw (-0.5,-3.5) rectangle (0,3.5);
+\draw (6,-3.5) rectangle (6.5,3.5);
+\draw (6,3) rectangle (0,3.5);
+\draw (0,-3.5) rectangle (6,3);
+
+\draw (-0.5,-3) rectangle (6.5,3);
+\draw (0,0) rectangle (3,3);
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=red] at (0.75,2.25) {$\ast$};
+\node[text=red] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=red] at (2.1,2.1) {$\ast$};
+\begin{scope}[shift={(3,-3)}]
+\draw (0,0) rectangle (3,3);
+\node at (2.75,0.25) {0};
+\node at (0.25,2.75) {0};
+\node[text=blue] at (0.75,2.25) {$\ast$};
+\node[text=blue] at (2.25,0.75) {$\ast$};
+\draw[dotted] (2,1) -- (1,2);
+\draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
+\node[text=blue] at (2.1,2.1) {$\ast$};
+\end{scope}
+\node at (-0.25,-3.25) {1};
+\node at (0.25,3.25) {1};
+\node at (3.25,3.25) {1};
+\node at (6.25,0.25) {1};
+\node at (6.25,-2.75) {1};
+\end{tikzpicture}
+\end{center}
+
+We leave it to as an exercise to check that this indeed works. This may seem bizarre at first but there is indeed a method to this. To understand that, we must realise that there is a graph theoretic way to understand $\Det_n$ and $\Perm_n$. 
+
 \subsubsection*{Graph theoretic representation of $\Det_n$ and $\Perm_n$}
 
 Let us think of an $n\times n$ symbolic matrix as an adjacency matrix of a directed graph $G$ with the edge from $i$ to $j$ having weight $x_{ij}$. 
@@ -154,6 +254,10 @@ The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $\IMM_{n,d}$.
 To see this observe that all cycle covers of $G'$ must consist of a single $s\leadsto t$ path that loops back to $s$ via the edge $t\rightarrow s$ that we added, and self-loops on all excluded vertices. 
 Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers have the same sign. 
 Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (\autoref{thm:vp})}\\
+
+\begin{exercise}
+Look back at the construction in \autoref{sec:formula-to-dets} to convince yourself that the determinants are indeed $f \cdot g$ and $f + g$. 
+\end{exercise}
 
 
 \subsection{$\Det_n$ can be computed by ABPs}
@@ -501,5 +605,5 @@ Also prove that any such construction must involve entries of $A$ with its denom
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
