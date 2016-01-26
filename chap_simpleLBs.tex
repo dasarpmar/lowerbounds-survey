@@ -75,7 +75,7 @@ In this setting, the \emph{building blocks} are terms of the form $\ell^d$.
 The goal would be to construct a \emph{sub-additive} measure $\Gamma$ such that $\Gamma(\ell^d)$ is \emph{small}. 
 Here is the key observation to guide us towards a good choice of $\Gamma$. 
 
-\begin{observation}
+\begin{observation}\label{obs:low-rank-sps-rank}
 Any $k$-th order partial derivative of $\ell^d$ is a constant multiple of $\ell^{d-k}$. 
 \end{observation}
 
@@ -114,7 +114,7 @@ This yields the following observation.
 Let $T = \ell_1\dots \ell_d$ with $\dim\inbrace{\ell_1,\dots, \ell_d}\leq r$. 
 Then for any $k$, we have
 $$
-\Gamma_k(T) \spaced{\eqdef}\dim\inparen{\partial^{=k}(T)} \spaced{\leq} \binom{r+k}{k}.
+\Gamma_k(T) \spaced{\eqdef}\dim\inparen{\partial^{=k}(T)} \spaced{\leq} \min\inparen{\binom{r+k}{k}, \binom{d}{k}}
 $$
 \end{observation}
 
@@ -255,5 +255,5 @@ We shall now proceed towards some more involved lower bounds.
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
