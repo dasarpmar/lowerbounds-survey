@@ -122,14 +122,14 @@ If $f$ is a polynomial computed by an ABP of size $s$, then $f$ reduces to $\Det
 Over any field $\F$ of characteristic not equal to $2$, the polynomial $\Perm_n$ is \emph{complete} for the class $\mathsf{VNP}$ under projections.
 \end{theorem}
 
-\subsection{Formulas to determinants}\label{sec:formula-to-dets}
+\subsection{Warm-up: Formulas to permanents}\label{sec:formula-to-dets}
 
-Let us first show that any polynomial sized arithmetic formula can be expressed as determinant of a small matrix.
+Let us first show that any polynomial sized arithmetic formula can be expressed as permanent of a small matrix.
 In fact, all matrices that we shall be building this way will have the following structure, and this would be important.\\
 
 \begin{center}
 \begin{tikzpicture}
-\node at  (-1.5,1.5) {$f \quad = \quad \Det$};
+\node at  (-1.5,1.5) {$f \quad = \quad \Perm$};
 \draw (0,0) rectangle (3,3);
 \node at (0.25,0.25) {1};
 \node at (2.75,0.25) {0};
@@ -140,7 +140,7 @@ In fact, all matrices that we shall be building this way will have the following
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=red] at (2.1,2.1) {$\ast$};
 \begin{scope}[shift={(8,0)}]
-\node at  (-1.5,1.5) {$g \quad = \quad \Det$};
+\node at  (-1.5,1.5) {$g \quad = \quad \Perm$};
 \draw (0,0) rectangle (3,3);
 \node at (0.25,0.25) {1};
 \node at (2.75,0.25) {0};
@@ -153,7 +153,6 @@ In fact, all matrices that we shall be building this way will have the following
 \end{scope}
 \end{tikzpicture}
 \end{center}
-We shall assume that the matrices for $f$ and $g$ have the same size (it is easy to pad the matrices while preserving the structure). 
 
 \subsection*{Multiplication}
 
@@ -256,7 +255,11 @@ Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is eas
 Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (\autoref{thm:vp})}\\
 
 \begin{exercise}
-Look back at the construction in \autoref{sec:formula-to-dets} to convince yourself that the determinants are indeed $f \cdot g$ and $f + g$. 
+Look back at the construction in \autoref{sec:formula-to-dets} to convince yourself that the permanents are indeed $f \cdot g$ and $f + g$. 
+
+Proving the same for determinants requires handling signs. Modify the construction appropriately for determinants. 
+
+{\bf Hint:} Convert a formula to an ABP with the property that all $s \leadsto t$ paths have the same length?
 \end{exercise}
 
 
