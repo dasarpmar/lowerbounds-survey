@@ -194,6 +194,14 @@ This section would be devoted to the proof of Kalorkoti's lower bound \cite{k85}
   Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires $\Omega(n^3)$ size.
 \end{theorem}
 
+Although this is an $\Omega(n^{3/2})$ lower bound, where $n$ is the number of variables, the same technique can also give an $\Omega(n^2)$ lower bound for the following polynomial.
+
+\begin{theorem}[\cite{k85}]\label{thm:kalorkoti-b}
+  Any arithmetic formula computing $\sum_{i=1}^n \sum_{j=1}^n x_i^j y_j$ requires $\Omega(n^2)$ size.
+\end{theorem}
+
+In this section, we shall prove the lower bound for $\Det_n$ and $\Perm_n$ and leave \autoref{thm:kalorkoti-b} as an exercise. 
+
 The exploitable weakness in this setting is again to use the fact that the polynomials computed at intermediate gates share many polynomial dependencies.
 
 \begin{definition}[Algebraic independence]
@@ -346,7 +354,11 @@ Therefore, $\CM{Kal}(\Det_n) =
 \end{proof}
 
 The proof of \autoref{thm:kalorkoti} follows from
-\autoref{lem:kal-upperbound} and \autoref{lem:kal-lowerbound}.
+\autoref{lem:kal-upperbound} and \autoref{lem:kal-lowerbound}.\\
+
+\begin{exercise}
+Prove an $\Omega(n^2)$ lower bound for $\CM{Kal}(f)$ where $f = \sum_{i=1}^n \sum_{j=1}^n x_i^j y_j$ for an appropriate partition. 
+\end{exercise}
 
 
 
