@@ -1,8 +1,8 @@
-\chapter{Evaluation perspective on projected shifted partial derivatives}
+\chapter{Evaluation perspective on projected shifted partial derivatives}\label{chap:PSPD-more}
 
 The measure used in the lower bounds of Kayal, Limaye, Saha, Srinivasan~\cite{KLSS} and Kumar, Saraf~\cite{KS14} was the dimension of projected shifted partials.
 As seen in that chapter, the calculations are extremely delicate.
-In this chapter, we shall some slight modifications of this measure that is in a sense more \emph{algebraic} and hence useful in other lower bounds. 
+In this chapter, we shall see some slight modifications of this measure that is in a sense more \emph{algebraic} and hence useful in other lower bounds. 
 
 \section{Coefficients vs evaluations}
 
@@ -99,7 +99,7 @@ what is the \emph{coefficient} analogue of this measure?
 Turns out, the answer is a different notion of projected shifted partial derivatives where the projection is not modulo $\setdef{x_i^2}{i\in [n]}$ but instead modulo $\setdef{x_i^2 - x_i}{i\in [n]}$.
 It should be intuitively clear that as long as we are only interested in evaluations on $\set{0,1}^n$, the evaluation of  $f \bmod \setdef{x_i^2 - x_i}{i\in [n]}$ at $\veca\in \set{0,1}^n$ yields the same  as $f(\veca)$. 
 
-What can we say about this modification of projected shifted partial derivatives? Is this also a measure that can give the homogeneous depth-$4$ lower bounds studied in \autoref{chap:d4hom}? Turns out the answer is indeed yes, and this perspective also allows one to generalize the lower bounds to homogeneous depth-$5$ circuits over finite fields (similar to Grigoriev-Karpinski) by Kumar and Saptharishi~\cite{KumarSapt15}. 
+What can we say about this modification of projected shifted partial derivatives? Is this also a measure that can give the homogeneous depth-$4$ lower bounds studied in \autoref{chap:d4hom}? Turns out the answer is indeed yes, and this perspective also allows one to generalize the lower bounds to homogeneous depth-$5$ circuits over finite fields by Kumar and Saptharishi~\cite{KumarSapt15}. There would be like the evaluation perspective of Grigoriev and Karpinski \cite{grigoriev98} (that we saw in \autoref{chap:GK}) of the lower bound of Nisan and Wigderson \cite{nw1997} (that we saw in \autoref{sec:low-rank-sps}). 
 
 \section{Projected shifted partials via $\setdef{x_i^2-x_i}{i\in [n]}$}
 
@@ -152,6 +152,9 @@ For any polynomial $f$ and a support-to-degree ideal $\mathcal{I}$, there is a u
 
 Furthermore, if $f$ is a polynomial such that every monomial in $f$ depends on at most $r$ variables, then the unique multilinear polynomial $g = f \bmod\mathcal{I}$ in fact has degree at most $r$. 
 \end{observation}
+
+It is important to note that the support-to-degree ideal has generators that replace $x_i^2$ by a \emph{linear polynomial in just $x_i$}. Relaxing this to $x_i^2 - \ell$ for an arbitrary linear polynomial $\ell$ could lead to monomials of large support. 
+
 \begin{proof}
 The proof follows immediately by repeatedly replacing $x_i^2$ by $\ell_i(x_i)$.
 \end{proof}
@@ -235,8 +238,8 @@ The plan that one could adopt is the following.
 \begin{enumerate}
 \itemsep 0pt
 \item\label{item:PSPD-1} Take the measure to be $\Gamma^{\mathrm{PSD}}_{k,\ell,\mathcal{I}}$ where $\mathcal{I} = \inangle{x_i^q - x_i \;:\; i\in [n]}$, which is the \emph{evaluation perspective} of the shifted partial derivatives on $\F_q^n$.
-\item\label{item:PSPD-2} As an analogue of ``support'' for the hom. $\SPSP$ lower bounds, we shall look at look at ``rank'' of products of linear polynomials computed by the bottom two layers of the circuit. 
-\item\label{item:PSPD-3} Intuitively, any term of rank at most $r$ should be essentially behave like a term of degree at most $(q-1)r$, as $\mathcal{I}$ reduces any variable of exponent $q$ or above. 
+\item\label{item:PSPD-2} As an analogue of ``support'' for the hom. $\SPSP$ lower bounds, we shall look at the ``rank'' of products of linear polynomials computed by the bottom two layers of the circuit. 
+\item\label{item:PSPD-3} Intuitively, any term of rank at most $r$ should essentially behave like a term of degree at most $(q-1)r$, as $\mathcal{I}$ reduces any variable of exponent $q$ or above. 
 
 Hence, the ``low-rank'' part of the circuit (only considering terms of rank at most $\sqrt{d}$) should behave like a homogeneous $\SPSP^{[q\sqrt{d}]}$ circuit, for which we can upper bound the measure in a similar fashion. 
 \item\label{item:PSPD-4} To eliminate the ``high-rank'' products of linear polynomials, just as in the lower bound of Grigoriev and Karpinski \cite{grigoriev98} (as discussed in \autoref{chap:GK}), these ``high-rank'' gates are zero on almost all evaluations. 
