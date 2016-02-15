@@ -37,7 +37,7 @@ These normal forms is from the survey of Shpilka and Yehudayoff~\cite{sy}, and a
   A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
   \begin{itemize}
   \item $g_i \in \F[X_i]$ for all $i \in [t]$.
-  \item $\frac{|X|}{3^i} \leq |X_i| \leq \frac{2|X|}{3^i}$ for all
+  \item $\pfrac{1}{3}^i |X| \leq |X_i| \leq \pfrac{2}{3}^i |X|$ for all
     $i$, and $|X_t| = 1$.
   \end{itemize}
 \end{definition}
@@ -72,7 +72,7 @@ p \spaced{=} f_1 + \cdots + f_{r}\quad\quad \text{with $r \leq s+1$}
 where for each $i \in [r]$, we have $f_i = f_{i1} \cdots f_{i\ell}$ satisfying
 \begin{itemize}
 \item each $f_{ij}$ is homogeneous,
-\item $(d / 3^j) \leq \deg(f_{ij}) \leq (2d / 3^j)$,
+\item $(1 / 3)^j \cdot d \leq \deg(f_{ij}) \leq (2/ 3)^j \cdot d$,
 \item $f_{i\ell} = 1$.
 \end{itemize}
 In particular, each $f_i$ factors into $\Omega(\log d)$ non-trivial factors of geometrically decreasing degrees. 
