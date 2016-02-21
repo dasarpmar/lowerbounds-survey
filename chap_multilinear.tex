@@ -477,7 +477,7 @@ The polynomial $\tilde{f} = \tilde{f}_{1,2n}$ has the property that for every $X
 \end{lemma}
 \begin{proof}
 The proof shall be over induction on $n$. 
-For the base case, statement is obviously true for $n = 1$ as $\tilde{f} = (x_1 + x_2)$ in this case. 
+For the base case, statement is obviously true for $n = 1$ as $\tilde{f} = (x_1x_2 + 1)$ in this case. 
 
 Suppose $n > 1$, and let $X = Y \sqcup Z$ be any partition with $|Y| = |Z| = |X|/2$. 
 Then, either both $x_1$ and $x_{2n}$ belong to the same side of the partition, or they belong to different sides. 
@@ -487,8 +487,8 @@ Let us handle each case separately.
 \item{Case 1:  $x_1$ and $x_{2n}$ are in different parts}. 
 
 Then, polynomial $\tilde{f}$ where we set $\omega_{1,i,2n} = 0$ for all $i$. 
-Under this substitution, $\tilde{f}$ is equal to $(x_1 + x_{2n})\cdot \tilde{f}_{2,2n-1}$. 
-By induction, we know that $\tilde{f}_{2,2n-1}$ is full-rank under equal sized partition and hence so is $(x_1 + x_{2n}) \cdot \tilde{f}_{2,2n-1}$. 
+Under this substitution, $\tilde{f}$ is equal to $(x_1x_{2n}+ 1)\cdot \tilde{f}_{2,2n-1}$. 
+By induction, we know that $\tilde{f}_{2,2n-1}$ is full-rank under equal sized partition and hence so is $(x_1 x_{2n} + 1) \cdot \tilde{f}_{2,2n-1}$. 
 As setting variables to zero can only reduce the rank, it follows that $M_{Y,Z}(\tilde{f})$ must be full-rank as well. 
 
 \item{Case 2:  $x_1$ and $x_{2n}$ are in the same part}. 
