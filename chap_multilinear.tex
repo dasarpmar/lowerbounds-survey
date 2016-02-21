@@ -462,12 +462,12 @@ f_{i,j}(\vecx) \spaced{=} \begin{cases}
 \]
 However, $f_{1,2n}$ is \emph{not equal} to the polynomial $f$ as the term corresponding to ``()()()$\dots$()'' has coefficient $1$ in $f$ but is $C_n$, the $(n-1)$-th Catalan number. 
 Nevertheless, this inductively defined polynomial $f_{1,2n}$ has most of the properties we need. 
-Raz and Yehudayoff take a slight variant of it by adding a few auxiliary variables $\inbrace{\omega_{i,j,k}}$ to build the following polynomial over the field $\F(\inbrace{\omega_{i,j,k}})$. 
+Raz and Yehudayoff take a slight variant of it by adding a few auxiliary variables $\inbrace{\omega_{i,j,k},\omega_{i,j}}$ to build the following polynomial over the field $\F(\setdef{\omega_{i,j,k},\omega_{i,j}}{i,j,k\in [2n]})$. 
 \[
 \tilde{f}_{i,j}(\vecx) \spaced{=} \begin{cases}
 (x_ix_j+1) & \text{if $j = i+1$}\\
 0 & \text{if $j-i$ is even}\\
-(x_ix_j+1) \cdot \tilde{f}_{i+1,j-1} &\\
+(x_ix_j+1) \cdot \tilde{f}_{i+1,j-1} \omega_{i,j}&\\
  \spaced{+} \sum\limits_{r=i+1}^{j-1} \tilde{f}_{i,r}\cdot \tilde{f}_{r+1,j} \cdot \omega_{i,r,j} & \text{otherwise}
 \end{cases}
 \]
@@ -696,13 +696,13 @@ In particular, if $s < \exp(\frac{|X|}{2^{6k+2}})$, then this happens with proba
 
 All that is left to do is find an explicit $f$ such that $\CM{Raz}_{Y,Z}(f) = (k+1)^{\min(|Y|,|Z|)}$ with high probability and we would have our lower bound. 
 Here is one example that is a slight generalization of the construction in \autoref{sec:fullrankpoly}  of Raz and Yehudayoff~\cite{ry08} that is defined as follows. 
-We shall again work over the field $\F(\setdef{\omega_{a,b,c}}{a,b,c\leq 2n})$. 
+We shall again work over the field $\F(\setdef{\omega_{a,b,c},\omega_{a,b}}{a,b,c\leq 2n})$. 
 
 \[
 f_{i,j}^{(k)} =  \begin{cases}
  \sum\limits_{r=0}^k x_i^r x_{i+1}^r & \text{if $j = i=1$}\\
  0  & \text{if $j -i$ is even}\\
- \inparen{\sum\limits_{r=0}^k x_i^r x_{j}^r} \cdot f_{i+1,j-1}^{(k)} & \\
+ \inparen{\sum\limits_{r=0}^k x_i^r x_{j}^r} \cdot f_{i+1,j-1}^{(k)} \cdot \omega{i,j}& \\
  \quad + \quad \sum\limits_{\ell=i+1}^{j-1} f_{i,\ell}^{(k)} \cdot f_{\ell+1,j}^{(k)} \cdot \omega_{i,\ell,j}\quad\quad & \text{otherwise} 
 \end{cases}
 \]
