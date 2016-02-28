@@ -1,124 +1,196 @@
 \chapter{Tensor rank and formula lower bounds}\label{chap:tensorrk}
 
-In this chapter, we will establish an apriori surprising connection between lower bounds for homogeneous arithmetic formula and constructing explicit tensors of full rank. The chapter is based on a result of Raz~\cite{raz10}. 
+In this chapter, we will establish an apriori surprising connection between lower bounds for homogeneous arithmetic formula and constructing explicit tensors of full rank.
+The chapter is based on a result of Raz~\cite{raz10}.
 
 \section{Setup}
-Let $f \in \F[\vecx]$ be a homogeneous polynomial in $n$ variables of degree $d$ over a field $\F$. Moreover, let $f$ be a set-multilinear polynomial. In other words, let $f$ be multilinear and  there is a partition of $\vecx$ into $\vecx_1, \vecx_2, \ldots, \vecx_d$ such that for every $i \in [d]$, every monomial in $f$ contains exactly one variable from the set $\vecx_i$. We will also assume that each of the sets $\vecx_i$ are of the same size and we denote their size by $m$. So, $n = dm$. For the rest of this chapter, we will consider the set $\vecx_i$ to be equal to $\{x_{i1}, x_{i2}, \ldots, x_{im}\}$ for every $i$.  
+Let $f \in \F[\vecx]$ be a homogeneous polynomial in $n$ variables of degree $d$ over a field $\F$.
+Moreover, let $f$ be a set-multilinear polynomial.
+In other words, let $f$ be multilinear and there is a partition of $\vecx$ into $\vecx_1, \vecx_2, \ldots, \vecx_d$ such that for every $i \in [d]$, every monomial in $f$ contains exactly one variable from the set $\vecx_i$.
+We will also assume that each of the sets $\vecx_i$ are of the same size and we denote their size by $m$.
+So, $n = dm$.
+For the rest of this chapter, we will consider the set $\vecx_i$ to be equal to $\{x_{i1}, x_{i2}, \ldots, x_{im}\}$ for every $i$.
 
-Now, observe that the polynomial $f$ encodes a tensor $T(f):[n]^d \rightarrow \F$ in a very natural way. Namely, the for the cell indexed by $j_1, j_2, \ldots, j_{d}$, the entry in $T(f)$ equals the coefficient of the monomial $x_{ij_1}\cdot x_{2j_2}\cdots x_{dj_d}$. 
+Now, observe that the polynomial $f$ encodes a tensor $T(f):[n]^d \rightarrow \F$ in a very natural way.
+Namely, the for the cell indexed by $j_1, j_2, \ldots, j_{d}$, the entry in $T(f)$ equals the coefficient of the monomial $x_{ij_1}\cdot x_{2j_2}\cdots x_{dj_d}$.
 
-The main result of this chapter is that for appropriate choices of the parameters $d$ and $n$, if the polynomial $f$ is computed by a $\poly(n)$ size arithmetic formula, then the rank of the tensor $T(f)$ is far from full. More precisely, we will prove the following theorem of Raz~\cite{raz10}. 
+The main result of this chapter is that for appropriate choices of the parameters $d$ and $n$, if the polynomial $f$ is computed by a $\poly(n)$ size arithmetic formula, then the rank of the tensor $T(f)$ is far from full.
+More precisely, we will prove the following theorem of Raz~\cite{raz10}.
 
 \begin{theorem}\label{thm:tensor rank}
-Let $f$, $d$, $m$ be as defined above and  $d \leq O(\log m/\log\log m)$. Then, if $f$ can be computed by a formula of size $m^{a}$, then the rank of the tensor $T(f)$ is at most $\frac{m^{d}}{m^{d/2^{O(a)}}}$. 
+  Let $f$, $d$, $m$ be as defined above and $d \leq O(\log m/\log\log m)$.
+Then, if $f$ can be computed by a formula of size $m^{a}$, then the rank of the tensor $T(f)$ is at most $\frac{m^{d}}{m^{d/2^{O(a)}}}$.
 \end{theorem}
 
-An immediate corollary of the theorem is that if we can construct an explicit tensor $A:[m]^d\rightarrow \F$ of rank at least $m^{d(1-o(1))}$, for $\omega(1) \leq d \leq O(\log m/\log\log m)$, then we would obtain superpolynomial lower bounds for arithmetic formula over the field $\F$. To contrast this statement with our current state of  understanding of tensors, the best known constructions of explicit tensors from 
-$[m]^d\rightarrow \F$ have rank $O(m^{d/2})$. Thus, we will need a substantial refinement in the construction of explicit tensors of high rank in order to take this route to proving arithmetic formula lower bounds. 
+An immediate corollary of the theorem is that if we can construct an explicit tensor $A:[m]^d\rightarrow \F$ of rank at least $m^{d(1-o(1))}$, for $\omega(1) \leq d \leq O(\log m/\log\log m)$, then we would obtain superpolynomial lower bounds for arithmetic formula over the field $\F$.
+To contrast this statement with our current state of understanding of tensors, the best known constructions of explicit tensors from $[m]^d\rightarrow \F$ have rank $O(m^{d/2})$.
+Thus, we will need a substantial refinement in the construction of explicit tensors of high rank in order to take this route to proving arithmetic formula lower bounds.
 %At this point, it is quite possible that proving lower bounds for arithmetic formula might turn out be an easier problem than constructing explicit tensors of nearly full rank. However, \autoref{thm:tensor rank} is a surprising and 
 
-The rest of the chapter is devoted to the proof of \autoref{thm:tensor rank}. First, we briefly outline the structure the proof. The proof has three major components, each of which are of independent interest. 
+The rest of the chapter is devoted to the proof of \autoref{thm:tensor rank}.
+First, we briefly outline the structure the proof.
+The proof has three major components, each of which are of independent interest.
 \begin{itemize}
-\item {\bf Homogenization :} In the first step, it is shown that formulas which compute a homogeneous polynomial of degree $d$ in $n$ variables such that $d \leq O(\log n)$ can be converted to an homogeneous formula with only a $\poly(n)$ blowup in their size. 
-\item {\bf Set multilinearization :} In the second step, we show that for any arithmetic formula which computes a homogeneous  set multilinear  polynomial of degree $d$ in $n$ variables, with $d \leq O(\log n/\log \log n)$, we can construct a homogeneous set multilinear formula computing the same polynomial. The blow up in the size of the formula is only by a polynomial factor in $n$ in the process. 
-\item {\bf Tensor rank upper bound :} Finally, we  show that for any homogeneous set multilinear polynomial $f$ of degree $d$ in $n$ variables, such that $d \leq O(\log n/\log \log n) $, if $f$ is computable by a $\poly(n)$ sized homogeneous set-multilinear formula, then the rank of the tensor $T(f)$ is far from full. 
+\item {\bf Homogenization :} In the first step, it is shown that
+  formulas which compute a homogeneous polynomial of degree $d$ in $n$ variables such that $d \leq O(\log n)$ can be converted to an homogeneous formula with only a $\poly(n)$ blowup in their size.
+\item {\bf Set multilinearization :} In the second step, we show that
+  for any arithmetic formula which computes a homogeneous set multilinear polynomial of degree $d$ in $n$ variables, with $d \leq O(\log n/\log \log n)$, we can construct a homogeneous set multilinear formula computing the same polynomial.
+The blow up in the size of the formula is only by a polynomial factor in $n$ in the process.
+\item {\bf Tensor rank upper bound :} Finally, we show that for any
+  homogeneous set multilinear polynomial $f$ of degree $d$ in $n$ variables, such that $d \leq O(\log n/\log \log n) $, if $f$ is computable by a $\poly(n)$ sized homogeneous set-multilinear formula, then the rank of the tensor $T(f)$ is far from full.
 \end{itemize}
 
 
 \section{Homogenization}\label{sec:homogenization}
 
-Suppose we have a homogeneous polynomial $P$ of degree $d$ in $n$ variables which can be computed by an arithmetic formula $\Phi$. 
-We will show that for small  enough (but still growing) $d$, there is in fact a homogeneous formula $\Phi'$ which computes $f$. Moreover, the size of $\Phi'$ is $\poly(n)$ if the size of $\Phi$ was $\poly(n)$ to start with. 
+Suppose we have a homogeneous polynomial $P$ of degree $d$ in $n$ variables which can be computed by an arithmetic formula $\Phi$.
+We will show that for small enough (but still growing) $d$, there is in fact a homogeneous formula $\Phi'$ which computes $f$.
+Moreover, the size of $\Phi'$ is $\poly(n)$ if the size of $\Phi$ was $\poly(n)$ to start with.
 
-Recall that we have already seen such a statement for homogenizing  arithmetic circuits. However, if we start with a formula in place of a circuit, the structure obtained after homogenization is no longer guaranteed to be formula. Hence, a naive attempt to obtain a formula from the homogeneous circuit will lead to a quasipolynomial blow up in the size of the formula. The key insight of the proof  is that this circuit to formula conversion can be done more carefully, and it only leads to a $poly(n)$ blow up in the size for small enough $d$. We now state and prove the following lemma. 
+Recall that we have already seen such a statement for homogenizing arithmetic circuits.
+However, if we start with a formula in place of a circuit, the structure obtained after homogenization is no longer guaranteed to be formula.
+Hence, a naive attempt to obtain a formula from the homogeneous circuit will lead to a quasipolynomial blow up in the size of the formula.
+The key insight of the proof is that this circuit to formula conversion can be done more carefully, and it only leads to a $poly(n)$ blow up in the size for small enough $d$.
+We now state and prove the following lemma.
 
 \begin{lemma}[Formula Homogenization]\label{lem:formula homogenization}
-Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a formula $\phi$ of size $s$. Then, there exists a homogeneous formula $\Phi'$ of size at most ${d + h + 1\choose d+1}$ which computes $f$. Thus, if $d = O(\log n)$ and $s = \poly(n)$, the size of $\Phi'$ is $\poly(n)$. 
+  Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a formula $\phi$ of size $s$.
+Then, there exists a homogeneous formula $\Phi'$ of size at most ${d + h + 1\choose d+1}$ which computes $f$.
+Thus, if $d = O(\log n)$ and $s = \poly(n)$, the size of $\Phi'$ is $\poly(n)$.
 \end{lemma}
 \begin{proof}
-The proof is essentially by first homogenizing $\Phi$, which might result in a circuit $C$ of $poly(s)$ size, and then carefully using the structure of $C$ to convert it back to a formula with an appropriate small blow up in size. 
+  The proof is essentially by first homogenizing $\Phi$, which might result in a circuit $C$ of $poly(s)$ size, and then carefully using the structure of $C$ to convert it back to a formula with an appropriate small blow up in size.
 
-Recall that due to the depth reduction result of Brent and Spira (\autoref{lem:formula-depth-reduction}), we can assume without loss of generality that the fan-in of every gate in $\Phi$ at most $2$ and the depth of $\Phi$ is $O(\log s)$. 
+  Recall that due to the depth reduction result of Brent and Spira (\autoref{lem:formula-depth-reduction}), we can assume without loss of generality that the fan-in of every gate in $\Phi$ at most $2$ and the depth of $\Phi$ is $O(\log s)$.
 
-Now, for every gate $v$ in $\Phi$, we have $d+1$ gates $(v, 0), (v, 2), \ldots, (v, d)$ in $C$. Semantically,  the polynomial computed at such a gate $(v, i)$ is the degree $i$ homogeneous component of the polynomial computed at $v$ in $\Phi$. 
+  Now, for every gate $v$ in $\Phi$, we have $d+1$ gates $(v, 0), (v, 2), \ldots, (v, d)$ in $C$.
+Semantically, the polynomial computed at such a gate $(v, i)$ is the degree $i$ homogeneous component of the polynomial computed at $v$ in $\Phi$.
 
-To ensure this, the edges in $C$ are connected as follows. For a gate $v$ with children $u$ and $w$, we have the following edges:
+To ensure this, the edges in $C$ are connected as follows.
+For a gate $v$ with children $u$ and $w$, we have the following edges:
 \begin{eqnarray*}
 \text{$v = u + w$}\quad\implies\quad (v, i) &=& (u, i) \spaced{+} (w,i)\quad\text{for all $i$}\\
 \text{$v = u \times w$}\quad\implies\quad (v, i) &=& \sum_{j=0}^i (u,j)\cdot (w, {i-j}) \quad\text{for all $i$}
 \end{eqnarray*}
  
-Observe that if $v$ is a product gate, then the out degree of $(u, j)$ and $(w, j)$ could be more than $1$. Hence, the resulting structure is a circuit and not a formula. However, at sum gates, the out degree of the children continue to be $1$. Since $f$ is homogeneous and degree $d$, if $g$ is the root of $\Phi$, the the polynomial computed at $(g,d)$ equals $f$. We call this node the root of $C$.
+Observe that if $v$ is a product gate, then the out degree of $(u, j)$ and $(w, j)$ could be more than $1$.
+Hence, the resulting structure is a circuit and not a formula.
+However, at sum gates, the out degree of the children continue to be $1$.
+Since $f$ is homogeneous and degree $d$, if $g$ is the root of $\Phi$, the the polynomial computed at $(g,d)$ equals $f$.
+We call this node the root of $C$.
 
-To convert $C$ into a formula, we will duplicate every gate of $C$ as many times are there are paths from this gate to the root fo $C$. 
-In order to upper bound the size of the resulting formula we will require an upper bound on the number of distinct paths from every gate $g$ of $C$ to its root. 
+To convert $C$ into a formula, we will duplicate every gate of $C$ as many times are there are paths from this gate to the root fo $C$.
+In order to upper bound the size of the resulting formula we will require an upper bound on the number of distinct paths from every gate $g$ of $C$ to its root.
 
 For this, we need the following two simple observations:
 \begin{itemize}
-\item Every path of length $h$ from a gate $(v, i)$ to the root in $C$ can be mapped to a unique sequence $(a_1, a_2, \ldots, a_h)$ 
-of non-negative integers less than $d$ such that $\sum_j a_j \leq d$. For the proof, we define the sequence inductively. For the base case, $a_1 = i$. After traversing $j$ steps along a path $p$ from $(v,i)$ to the root of $C$, let the sequence so far be $(a_1, a_2, \ldots, a_j)$. Let $(u, b)$ be the top most vertex on the path $p$ traversed so far. If  the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0$. If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$. The upper bound on the sum of the integers follows from the fact that the circuit $C$ is homogeneous and the sum $\sum_{j<j'} a_j$ is a bound on the degree of a polynomial computed at some node in $C$.
+\item Every path of length $h$ from a gate $(v, i)$ to the root in $C$
+  can be mapped to a unique sequence $(a_1, a_2, \ldots, a_h)$ of non-negative integers less than $d$ such that $\sum_j a_j \leq d$.
+For the proof, we define the sequence inductively.
+For the base case, $a_1 = i$.
+After traversing $j$ steps along a path $p$ from $(v,i)$ to the root of $C$, let the sequence so far be $(a_1, a_2, \ldots, a_j)$.
+Let $(u, b)$ be the top most vertex on the path $p$ traversed so far.
+If the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0$.
+If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$.
+The upper bound on the sum of the integers follows from the fact that the circuit $C$ is homogeneous and the sum $\sum_{j<j'} a_j$ is a bound on the degree of a polynomial computed at some node in $C$.
 
-\item We now claim that for every such sequence $(a_1, a_2, \ldots, a_h)$ and every gate $(v,b)$ in $C$, there is at most one path from $(v,b)$ to the root of $C$ which is mapped to $(a_1, a_2, \ldots, a_h)$. This follows from the fact that any two paths from $(v,b)$ to the root diverge at a product gate only (this follows from the construction of $C$), and hence if they diverge after $j$ steps, the integer at the $(j+1)^{st}$ position in their respective sequences will be different.  
+\item We now claim that for every such sequence $(a_1, a_2, \ldots,
+  a_h)$ and every gate $(v,b)$ in $C$, there is at most one path from $(v,b)$ to the root of $C$ which is mapped to $(a_1, a_2, \ldots, a_h)$.
+This follows from the fact that any two paths from $(v,b)$ to the root diverge at a product gate only (this follows from the construction of $C$), and hence if they diverge after $j$ steps, the integer at the $(j+1)^{st}$ position in their respective sequences will be different.
 \end{itemize}
 
-Now, the number of such sequences  such that $a_1 \geq 0$ and $\sum_{j \leq h}a_j \leq d$ is at most ${d + h + 1\choose d+1}$. From the fact that $h = O(\log s)$, the result follows. 
+Now, the number of such sequences such that $a_1 \geq 0$ and $\sum_{j \leq h}a_j \leq d$ is at most ${d + h + 1\choose d+1}$.
+From the fact that $h = O(\log s)$, the result follows.
 \end{proof}
 
 \section{Set-multilinearization}
 We now move on to the second step of the proof as outlines earlier and show the following lemma. 
 
 \begin{lemma}[Formula Set-multilinearization]\label{lem:formula set-multilinearization}
-Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a homogeneous formula $\phi$ of size $s$. Let $\vecx_1, \vecx_2, \ldots, \vecx_d$ be an equipartition of the set $\vecx$ of variables of size $m$ each such that $f$ is set multilinear with respect to this partition. Then, there exists a homogeneous set multilinear formula $\Phi'$ of size at most $O(\log s)^d$ which computes $f$. 
+  Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a homogeneous formula $\phi$ of size $s$.
+Let $\vecx_1, \vecx_2, \ldots, \vecx_d$ be an equipartition of the set $\vecx$ of variables of size $m$ each such that $f$ is set multilinear with respect to this partition.
+Then, there exists a homogeneous set multilinear formula $\Phi'$ of size at most $O(\log s)^d$ which computes $f$.
 \end{lemma}
 \begin{proof}
-The proof is similar in spirit to the proof of \autoref{lem:formula homogenization}. To start with, without loss of generality, let us assume that the formula $\Phi$ is fan-in $2$ and has depth $O(\log s)$. 
-In the first step, we  set multilinearize $\Phi$ in the obvious way to obtain a circuit $C$. To this end, for every gate $v$ in $\Phi$, and vector $a \in \{0,1\}^d$, there is a gate $(v, a)$ in $C$. Semantically, the the polynomial at $(g,a)$ consists of the monomials in the polynomial computed at $g$ (in $\Phi$) which contain exactly one variable from the  set $\vecx_i$ for every $i$ such that $a_i = 1$. The edges in $C$ are connected in a natural way, namely for a gate $v$ with children $u$ and $w$, we have the following edges:
+  The proof is similar in spirit to the proof of \autoref{lem:formula homogenization}.
+To start with, without loss of generality, let us assume that the formula $\Phi$ is fan-in $2$ and has depth $O(\log s)$.
+In the first step, we set multilinearize $\Phi$ in the obvious way to obtain a circuit $C$.
+To this end, for every gate $v$ in $\Phi$, and vector $a \in \{0,1\}^d$, there is a gate $(v, a)$ in $C$.
+Semantically, the the polynomial at $(g,a)$ consists of the monomials in the polynomial computed at $g$ (in $\Phi$) which contain exactly one variable from the set $\vecx_i$ for every $i$ such that $a_i = 1$.
+The edges in $C$ are connected in a natural way, namely for a gate $v$ with children $u$ and $w$, we have the following edges:
 \begin{eqnarray*}
 \text{$v = u + w$}\quad\implies\quad (v, a) &=& (u, a) \spaced{+} (w, a)\quad\text{for all $a$}\\
 \text{$v = u \times w$}\quad\implies\quad (v, a) &=& \sum_{b \leq a} (u, b)\cdot (w, a-b) \quad\text{for all $a$}
 \end{eqnarray*}
- Here, for every $a, b$ in $\{0,1\}^d$, $b \leq a $ holds if for every $i \in [d]$, $b_i = 1$ implies $a_i = 1$. In other words, $b$ is in the downset of $a$. For every such $b$, $a-b$ is defined as the coordinate wise difference of $a$ and $b$. Observe that for every $b \leq a$, $a-b \leq a$ and $a-b \in \{0,1\}^d$.  
+Here, for every $a, b$ in $\{0,1\}^d$, $b \leq a $ holds if for every $i \in [d]$, $b_i = 1$ implies $a_i = 1$.
+In other words, $b$ is in the downset of $a$.
+For every such $b$, $a-b$ is defined as the coordinate wise difference of $a$ and $b$.
+Observe that for every $b \leq a$, $a-b \leq a$ and $a-b \in \{0,1\}^d$.
  
-Clearly, the size of $C$ is at most $2^d\cdot s$. Moreover, the gates in $C$ which have out degree more than one  are of the form $(u,a)$ where $u$ is a child of some multiplication gates at $\Phi$. Since $f$ is set multilinear, the polynomial computed at $(g, 1^d)$ where $g$ is the root of $\Phi$ is equal to $f$. By abusing notation, we will refer to $(g, 1^d)$ as the root of $C$. 
+Clearly, the size of $C$ is at most $2^d\cdot s$.
+Moreover, the gates in $C$ which have out degree more than one are of the form $(u,a)$ where $u$ is a child of some multiplication gates at $\Phi$.
+Since $f$ is set multilinear, the polynomial computed at $(g, 1^d)$ where $g$ is the root of $\Phi$ is equal to $f$.
+By abusing notation, we will refer to $(g, 1^d)$ as the root of $C$.
  
 Like in the proof of \autoref{lem:formula homogenization}, we now convert the circuit $C$ to a formula by making as many copies of a gate  $(v, a)$ as their are paths from  $(v,a)$ to the root of $C$. In order to bound the blow up in size in the process, we will prove an upper bound on the number of such paths. 
 
 To this end, we have the following simple observations:
 \begin{itemize}
-\item Every path of length $h$ from a gate $(v, a)$ to the root in $C$ can be mapped to a sequence $(a_1, a_2, \ldots, a_h)$ where for every $i \in [h]$, $a_i \in \{0,1\}^d$ and for $i\neq j$ the supports of $a_i$ and $a_j$ do not intersect. For the proof, we define the sequence inductively. For the base case, $a_1 = a$. Aafter traversing $j$ steps along a path $p$ from $(v,a)$ to the root of $C$, let the sequence be $(a_1, a_2, \ldots, a_j)$. Let $(u, b)$ be the top most vertex on the path traversed so far. If  the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0^d$. If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$. The disjointness of the supports easily follows from the definition of the map above and the fact that circuit is set multilinear.
+\item Every path of length $h$ from a gate $(v, a)$ to the root in $C$
+  can be mapped to a sequence $(a_1, a_2, \ldots, a_h)$ where for every $i \in [h]$, $a_i \in \{0,1\}^d$ and for $i\neq j$ the supports of $a_i$ and $a_j$ do not intersect.
+For the proof, we define the sequence inductively.
+For the base case, $a_1 = a$.
+After traversing $j$ steps along a path $p$ from $(v,a)$ to the root of $C$, let the sequence be $(a_1, a_2, \ldots, a_j)$.
+Let $(u, b)$ be the top most vertex on the path traversed so far.
+If the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0^d$.
+If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$.
+The disjointness of the supports easily follows from the definition of the map above and the fact that circuit is set multilinear.
 
-\item We now claim that for every such sequence $(a_1, a_2, \ldots, a_h)$ and every gate $(v,b)$ in $C$, there is at most one path from $(v,b)$ to the root of $C$. This follows from the fact that any two paths from $(v,b)$ to the root diverge at a product gate only (this follows from the construction of $C$), and hence if they diverge after $j$ steps, the vector $(j+1)^{st}$ vector in their respective sequences will be different.  
+\item We now claim that for every such sequence $(a_1, a_2, \ldots,
+  a_h)$ and every gate $(v,b)$ in $C$, there is at most one path from $(v,b)$ to the root of $C$.
+This follows from the fact that any two paths from $(v,b)$ to the root diverge at a product gate only (this follows from the construction of $C$), and hence if they diverge after $j$ steps, the vector $(j+1)^{st}$ vector in their respective sequences will be different.
 \end{itemize}
 
-Therefore, the number of paths from $(v,a)$ to the root is at most the number of sequences of   vectors in $\{0,1\}^d$ of length at most $O(\log s)$ with disjoint support. Clearly, the number of such sequences is at most $O(\log s)^d$. 
+Therefore, the number of paths from $(v,a)$ to the root is at most the number of sequences of vectors in $\{0,1\}^d$ of length at most $O(\log s)$ with disjoint support.
+Clearly, the number of such sequences is at most $O(\log s)^d$.
 \end{proof}
 
 \begin{remark} 
-It follows that is $d$ is $O\left(\log n/\log \log n\right)$, and $s = \poly(n)$, then the size of the set-multilinear formula obtained continues to remain $\poly(n)$. 
+  It follows that is $d$ is $O\left(\log n/\log \log n\right)$, and $s = \poly(n)$, then the size of the set-multilinear formula obtained continues to remain $\poly(n)$.
 \end{remark}
 \section{Tensor rank upper bounds}
 
-In this section, we complete the proof of \autoref{thm:tensor rank}. As the first step, we prove the following lemma which proves an upper bound on the tensor rank for set multilinear formulas.
+In this section, we complete the proof of \autoref{thm:tensor rank}.
+As the first step, we prove the following lemma which proves an upper bound on the tensor rank for set multilinear formulas.
 
 \begin{lemma}[Tensor rank of set-multilinear formulas]\label{lem:set-multilinear tensor rank}
-Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a homogeneous set multilinear formula $\phi$ of size $s$. Let $\vecx_1, \vecx_2, \ldots, vecx_d$ be an equipartition of the set $\vecx$ of variables of size $m$ each such that $f$ is set multilinear with respect to this partition. Then, the tensor $T(f) : [m]^d \rightarrow \F$ has rank at most $m^{d\left(1- \frac{1}{2^{O(\log_m s)}}\right)}$. 
+  Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a homogeneous set multilinear formula $\phi$ of size $s$.
+Let $\vecx_1, \vecx_2, \ldots, vecx_d$ be an equipartition of the set $\vecx$ of variables of size $m$ each such that $f$ is set multilinear with respect to this partition.
+Then, the tensor $T(f) : [m]^d \rightarrow \F$ has rank at most $m^{d\left(1- \frac{1}{2^{O(\log_m s)}}\right)}$.
 \end{lemma}
 
 \begin{proof}
-For the proof, we will need some basic properties of tensor rank, which can be easily verified from the definitions. We state them below without a proof. 
+  For the proof, we will need some basic properties of tensor rank, which can be easily verified from the definitions.
+We state them below without a proof.
 \begin{itemize}
 \item {\bf Subadditivity :} For any two tensors $A:[m]^r \rightarrow \F$ and $B:[m]^r \rightarrow \F$, $\rank(A+B) \leq \rank(A) + \rank(B)$.
 \item {\bf Multiplicativity :} For any two tensors $A:[m]^{r_1} \rightarrow \F$ and $B:[m]^{r_2} \rightarrow \F$, $\rank(A\otimes B) = \rank(A) \times \rank(B)$.
 \item {\bf Maximum rank :} For any tensor $A:[m]^{r} \rightarrow \F$, $\rank(A) \leq m^{r-1}$.  
 \end{itemize}
 
-It follows from these properties that for any two tensors $A:[m]^{r_1} \rightarrow \F$ and $B:[m]^{r_2} \rightarrow \F$, $\rank(A\otimes B) = \rank(A) \times \rank(B) \leq m^{r_1 + r_2 -2} = \frac{1}{m}\times \left( m^{r_1 + r_2 -1}\right)$. Note that $A\otimes B$ is a tensor from $[m]^{r_1 + r_2} \rightarrow \F$ and hence can have a maximum rank of $m^{r_1 + r_2 -1}$ based on its dimensions. However, the fact that it is obtained as a tensor product of two tensors in lower dimensions ensures that its rank is always at least a factor $\frac{1}{n}$ away from the largest possible. In other words, obtaining a tensor in higher dimensions by taking tensor products of tensors in lower dimensions leads to tensors of slightly smaller rank. As we will see, this is going to be the key intuition for the proof. 
+It follows from these properties that for any two tensors $A:[m]^{r_1} \rightarrow \F$ and $B:[m]^{r_2} \rightarrow \F$, $\rank(A\otimes B) = \rank(A) \times \rank(B) \leq m^{r_1 + r_2 -2} = \frac{1}{m}\times \left( m^{r_1 + r_2 -1}\right)$.
+Note that $A\otimes B$ is a tensor from $[m]^{r_1 + r_2} \rightarrow \F$ and hence can have a maximum rank of $m^{r_1 + r_2 -1}$ based on its dimensions.
+However, the fact that it is obtained as a tensor product of two tensors in lower dimensions ensures that its rank is always at least a factor $\frac{1}{n}$ away from the largest possible.
+In other words, obtaining a tensor in higher dimensions by taking tensor products of tensors in lower dimensions leads to tensors of slightly smaller rank.
+As we will see, this is going to be the key intuition for the proof.
 
 From the depth reduction for homogeneous formulas, we know that the if $f$ has a homogeneous formula of size $s$, then for every $a \leq d$, $f$ can be written as depth-$4$ circuit of the following form:
 \[
 f = \sum_{i = 1}^{s^{c(d/a)}} Q_{i_1}\cdot Q_{i_2}\cdots Q_{i_t}
 \]  
-where $t = \epsilon(\frac{d\log a}{a})$ for constants $c, \epsilon$ independent of $a, d$. Moreover, if the starting formula is homogeneous and set multilinear, then the resulting depth-$4$ circuit is also homogeneous and syntactically set multilinear. Now, from homogeneity, it follows for every $i$, 
+where $t = \epsilon(\frac{d\log a}{a})$ for constants $c, \epsilon$ independent of $a, d$.
+Moreover, if the starting formula is homogeneous and set multilinear, then the resulting depth-$4$ circuit is also homogeneous and syntactically set multilinear.
+Now, from homogeneity, it follows for every $i$,
 \[\text{degree}(Q_{i_1}) + \text{degree}(Q_{i_2}) + \ldots + \text{degree}(Q_{i_t}) = d\] 
 Now, from subadditivity and multiplicativity of tensor rank, it follows that 
 \[
@@ -142,18 +214,24 @@ Now, if $a$ is chosen such that $c\log_m s - \epsilon \log a = -\epsilon/2 \log 
 \]
 \end{proof}
 
-We are now ready to prove \autoref{thm:tensor rank}. \\
-{\it Proof of \autoref{thm:tensor rank}.} Starting from an arbitrary formula of size $s = \poly(n)$ computing $f$, we construct a homogeneous and set-multilinear formula of size $\poly(s)$ which computes $f$, using \autoref{lem:formula homogenization} and \autoref{lem:formula set-multilinearization} in succession. Then, we apply \autoref{lem:set-multilinear tensor rank} to obtain the bound on tensor rank of $f$. 
+We are now ready to prove \autoref{thm:tensor rank}.
+\\ {\it Proof of \autoref{thm:tensor rank}.}
+Starting from an arbitrary formula of size $s = \poly(n)$ computing $f$, we construct a homogeneous and set-multilinear formula of size $\poly(s)$ which computes $f$, using \autoref{lem:formula homogenization} and \autoref{lem:formula set-multilinearization} in succession.
+Then, we apply \autoref{lem:set-multilinear tensor rank} to obtain the bound on tensor rank of $f$.
 \qedhere
 
 
 \begin{remark}[Circuits vs Formulas]
-Observe that in the proof of \autoref{lem:set-multilinear tensor rank}, it was critical that we started with a set multilinear formula and not a set multilinear circuit. The place in the proof this got used was the fact the value of $t$ could be taken to be $\epsilon \cdot d\log a/a$ instead of $d/a$. It is a good exercise for the readers  to convince themselves that this saving is critical and the proof fails otherwise. Indeed, we do not know how to prove tensor rank upper bounds on set multilinear polynomials which are computed by homogeneous set-multilinear circuits. A resolution of this problem in either direction would be very interesting. 
-
+  Observe that in the proof of \autoref{lem:set-multilinear tensor rank}, it was critical that we started with a set multilinear formula and not a set multilinear circuit.
+The place in the proof this got used was the fact the value of $t$ could be taken to be $\epsilon \cdot d\log a/a$ instead of $d/a$.
+It is a good exercise for the readers to convince themselves that this saving is critical and the proof fails otherwise.
+Indeed, we do not know how to prove tensor rank upper bounds on set multilinear polynomials which are computed by homogeneous set-multilinear circuits.
+A resolution of this problem in either direction would be very interesting.
 \end{remark}
+
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
 
 
