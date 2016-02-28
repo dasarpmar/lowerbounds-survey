@@ -28,7 +28,7 @@ The rest of the chapter is devoted to the proof of \autoref{thm:tensor rank}. Fi
 \section{Homogenization}\label{sec:homogenization}
 
 Suppose we have a homogeneous polynomial $P$ of degree $d$ in $n$ variables which can be computed by an arithmetic formula $\Phi$. 
-We will show that for small  enough (but still growing) $d$, there is in fact a homogeneous formula $\Phi'$ which computes $f$. Moreover, the size of $\Phi'$ is at most $\poly(n)\|\Phi \|$.
+We will show that for small  enough (but still growing) $d$, there is in fact a homogeneous formula $\Phi'$ which computes $f$. Moreover, the size of $\Phi'$ is $\poly(n)$ if the size of $\Phi$ was $\poly(n)$ to start with. 
 
 Recall that we have already seen such a statement for homogenizing  arithmetic circuits. However, if we start with a formula in place of a circuit, the structure obtained after homogenization is no longer guaranteed to be formula. Hence, a naive attempt to obtain a formula from the homogeneous circuit will lead to a quasipolynomial blow up in the size of the formula. The key insight of the proof  is that this circuit to formula conversion can be done more carefully, and it only leads to a $poly(n)$ blow up in the size for small enough $d$. We now state and prove the following lemma. 
 
@@ -56,7 +56,7 @@ In order to upper bound the size of the resulting formula we will require an upp
 For this, we need the following two simple observations:
 \begin{itemize}
 \item Every path of length $h$ from a gate $(v, i)$ to the root in $C$ can be mapped to a unique sequence $(a_1, a_2, \ldots, a_h)$ 
-of non-negative integers less than $d$ such that $\sum_j a_j \leq d$. For the proof, we define the sequence inductively. For the base case, $a_1 = i$. After traversing $j$ steps along a path $p$ from $(v,i)$ to the root of $C$, let the sequence so far be $(a_1, a_2, \ldots, a_j)$. Let $(u, b)$ be the top most vertex on the path $p$ traversed so far. If  the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0$. If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$. The upper bound on the sum of the integers follows from the fact that the circuit $C$ is homogeneous and the sum $\sum_j<j' a_j$ is a bound on the degree of a polynomial computed at some node in $C$.
+of non-negative integers less than $d$ such that $\sum_j a_j \leq d$. For the proof, we define the sequence inductively. For the base case, $a_1 = i$. After traversing $j$ steps along a path $p$ from $(v,i)$ to the root of $C$, let the sequence so far be $(a_1, a_2, \ldots, a_j)$. Let $(u, b)$ be the top most vertex on the path $p$ traversed so far. If  the parent of $(u, b)$ on $p$ is an addition gate, then $a_{j+1} = 0$. If the parent is a product gate, then $a_{j+1} = c$ such that $(w,c)$ is the sibling of $(u,b)$. The upper bound on the sum of the integers follows from the fact that the circuit $C$ is homogeneous and the sum $\sum_{j<j'} a_j$ is a bound on the degree of a polynomial computed at some node in $C$.
 
 \item We now claim that for every such sequence $(a_1, a_2, \ldots, a_h)$ and every gate $(v,b)$ in $C$, there is at most one path from $(v,b)$ to the root of $C$ which is mapped to $(a_1, a_2, \ldots, a_h)$. This follows from the fact that any two paths from $(v,b)$ to the root diverge at a product gate only (this follows from the construction of $C$), and hence if they diverge after $j$ steps, the integer at the $(j+1)^{st}$ position in their respective sequences will be different.  
 \end{itemize}
@@ -153,7 +153,7 @@ Observe that in the proof of \autoref{lem:set-multilinear tensor rank}, it was c
 \end{remark}
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "fancymain"
+%%% TeX-master: "main"
 %%% End: 
 
 
