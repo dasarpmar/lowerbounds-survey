@@ -347,7 +347,7 @@ Clearly, the size of $C$ is at most $2^d\cdot s$.
 Moreover, the gates in $C$ which have out degree more than one are of the form $(u,\veca)$ where $u$ is a child of some multiplication gates at $\Phi$. 
 The root of $C$ would now be $(\text{root},\mathbf{1})$. 
 
-Like in the proof of \autoref{lem:formula-homogenization}, we now convert the circuit $C$ to a formula by replicating notes whenever we need to reuse computations.
+Like in the proof of \autoref{lem:formula-homogenization}, we now convert the circuit $C$ to a formula by replicating nodes whenever we need to reuse computations.
 Hence, we would require as many copies of a gate $(v, \veca)$ as there are paths from $(v,\veca)$ to the root of $C$.
 In order to bound the blow up in size in the process, we will prove an upper bound on the number of such paths.
 Once again, let $v \rightarrow v_1 \rightarrow \cdots \rightarrow v_r$ be the path from $v$ to the root $(=v_r)$.
