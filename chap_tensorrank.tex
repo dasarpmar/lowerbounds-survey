@@ -173,7 +173,7 @@ Raz's \cite{raz10} showed that in certain regimes, an answer to the above questi
 
 \section{Tensor rank of small formulas}
 
-From this section onwards, we shall assume the \emph{set-multilinear polynomial} interpretation of a tensor $T:[n]^r \rightarrow \F$ as described in~\eqref{eqn:tensor-sml}.
+From this section onwards, we shall assume the \emph{set-multilinear polynomial} interpretation of a tensor $T:[n]^d \rightarrow \F$ as described in~\eqref{eqn:tensor-sml}.
 Hence our variables $\vecx$ is partitioned as $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ with $\abs{\vecx_i} = n$ for all $i\in [d]$.
 The main motivating question would be the following:
 \begin{quote}
@@ -229,9 +229,41 @@ We shall first address \autoref{thm:raz-tensorrank-sml} in the next section and 
 
 \subsection{The tensor-rank upper-bound}
 
-TODO
+We shall now prove \autoref{thm:raz-tensorrank-sml}. The proof described here is not the original proof in \cite{raz10} but is an alternate proof by Mrinal Kumar and Saptharishi. 
+
+\begin{proof}[Proof of \autoref{thm:raz-tensorrank-sml}]
 
 
+
+For this we would need the slightly better depth reduction for homogeneous formulas (\autoref{thm:av-formulas}) of Saptharishi and Vinay \cite{saptharishivinay14}. We recall the statement here.
+\begin{theorem*}[\autoref{thm:av-formulas}]
+Let $f$ be a homogeneous $n$-variate degree $d$ polynomial computed by a size $s$ homogeneous formula. 
+Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\Sigma\Pi^{[a]}\Sigma\Pi^{[t]}$ formula of top fan-in $s^{10(d/t)}$ where 
+\[
+a \geq \frac{1}{10}\pfrac{d}{t} \log t.
+\]
+\end{theorem*}
+It is a fairly straightforward observation to see that the above theorem preserves multilinearity and set-multilinearity as well. We shall start with the set-multilinear formula $\Phi$ of size $s = n^c$ that computes the polynomial $f(\vecx_1,\cdots, \vecx_d)$ and apply \autoref{thm:av-formulas} for a suitable choice of $t$ (that shall be set shortly). 
+Therefore we now have a set-multilinear expression of the form
+\[
+f \spaced{=} T_1 + \cdots + T_{s'}
+\]
+where $s' \leq s^{10(d/t)} = n^{10c(d/t)}$ and each $T_i = Q_{i1} \cdots Q_{ia_i}$ is a set-multilinear product. Let us fix one such term $T = Q_{1} \cdots Q_a$ and we know that this is a set-multilinear product with $a \geq \pfrac{d\log t}{10 t}$. Let $d_i = \deg(Q_i)$. By the sub-multiplicativity of tensor rank (\autoref{lem:tensor-submultiplicativity}) and the trivial upper bound (\autoref{lem:tensor-rank-trivial-upperbound}) we have
+\begin{align*}
+\rank(T) & \leq n^{d_1 - 1} \cdots n^{d_a - 1}\\
+ & =  n^{d - a}\\
+\implies \rank(f) & \leq s' \cdot n^{d-a} & \text{(~\autoref{lem:tensor-subadditivity})}\\
+ & =  \pfrac{n^d}{n^{a - 10c(d/t)}}
+\end{align*}
+Let us focus on the exponent of $n$ in the denominator. Using the lower bound on $a$ from \autoref{thm:av-formulas}, we get
+\begin{align*}
+a - 10c(d/t) & \geq \frac{d\log t}{10t} - 10c\pfrac{d}{t}\\
+& = \pfrac{d}{t} \inparen{\frac{\log t}{10} - 10c}\\
+& = \pfrac{d}{2^{O(c)}}& \text{if we set $\frac{\log t}{10} = 11c$}\\
+\implies \rank(f) & \leq \frac{n^d}{n^{d/\exp(c)}}
+\end{align*}
+which is what we set out to prove. 
+\end{proof}
 
 \subsection{Making formulas set-multilinear}
 
@@ -330,76 +362,6 @@ Hence the size of the resulting formula $\Phi'$ is at most $s \cdot 2^{O(d \log 
 
 \autoref{lem:formula-homogenization} and \autoref{lem:formula set-multilinearization} complete the proof of \autoref{thm:form-to-smlform}. 
 
-% \section{Tensor rank upper bounds}
-
-% In this section, we complete the proof of \autoref{thm:tensor rank}.
-% As the first step, we prove the following lemma which proves an upper bound on the tensor rank for set multilinear formulas.
-
-% \begin{lemma}[Tensor rank of set-multilinear formulas]\label{lem:set-multilinear tensor rank}
-%   Let $f$ be an $n$-variate degree $d$ homogeneous polynomial computed by a homogeneous set multilinear formula $\phi$ of size $s$.
-% Let $\vecx_1, \vecx_2, \ldots, vecx_d$ be an equipartition of the set $\vecx$ of variables of size $m$ each such that $f$ is set multilinear with respect to this partition.
-% Then, the tensor $T(f) : [m]^d \rightarrow \F$ has rank at most $m^{d\left(1- \frac{1}{2^{O(\log_m s)}}\right)}$.
-% \end{lemma}
-
-% \begin{proof}
-%   For the proof, we will need some basic properties of tensor rank, which can be easily verified from the definitions.
-% We state them below without a proof.
-% \begin{itemize}
-% \item {\bf Subadditivity :} For any two tensors $A:[m]^r \rightarrow \F$ and $B:[m]^r \rightarrow \F$, $\rank(A+B) \leq \rank(A) + \rank(B)$.
-% \item {\bf Multiplicativity :} For any two tensors $A:[m]^{r_1} \rightarrow \F$ and $B:[m]^{r_2} \rightarrow \F$, $\rank(A\otimes B) = \rank(A) \times \rank(B)$.
-% \item {\bf Maximum rank :} For any tensor $A:[m]^{r} \rightarrow \F$, $\rank(A) \leq m^{r-1}$.  
-% \end{itemize}
-
-% It follows from these properties that for any two tensors $A:[m]^{r_1} \rightarrow \F$ and $B:[m]^{r_2} \rightarrow \F$, $\rank(A\otimes B) = \rank(A) \times \rank(B) \leq m^{r_1 + r_2 -2} = \frac{1}{m}\times \left( m^{r_1 + r_2 -1}\right)$.
-% Note that $A\otimes B$ is a tensor from $[m]^{r_1 + r_2} \rightarrow \F$ and hence can have a maximum rank of $m^{r_1 + r_2 -1}$ based on its dimensions.
-% However, the fact that it is obtained as a tensor product of two tensors in lower dimensions ensures that its rank is always at least a factor $\frac{1}{n}$ away from the largest possible.
-% In other words, obtaining a tensor in higher dimensions by taking tensor products of tensors in lower dimensions leads to tensors of slightly smaller rank.
-% As we will see, this is going to be the key intuition for the proof.
-
-% From the depth reduction for homogeneous formulas, we know that the if $f$ has a homogeneous formula of size $s$, then for every $a \leq d$, $f$ can be written as depth-$4$ circuit of the following form:
-% \[
-% f = \sum_{i = 1}^{s^{c(d/a)}} Q_{i_1}\cdot Q_{i_2}\cdots Q_{i_t}
-% \]  
-% where $t = \epsilon(\frac{d\log a}{a})$ for constants $c, \epsilon$ independent of $a, d$.
-% Moreover, if the starting formula is homogeneous and set multilinear, then the resulting depth-$4$ circuit is also homogeneous and syntactically set multilinear.
-% Now, from homogeneity, it follows for every $i$,
-% \[\text{degree}(Q_{i_1}) + \text{degree}(Q_{i_2}) + \ldots + \text{degree}(Q_{i_t}) = d\] 
-% Now, from subadditivity and multiplicativity of tensor rank, it follows that 
-% \[
-% \rank(T(f)) \leq  \sum_{i = 1}^{s^{c(d/a)}} \rank (T(Q_{i_1}))\cdot \rank(T(Q_{i_2}))\cdots \rank(T(Q_{i_t}))
-% \]
-% Applying the trivial upper bound on the rank of each $T(Q_{i_j})$, we have 
-% \[
-% \rank(T(f)) \leq s^{c(d/a)}\cdot \max_i \left(m^{\text{degree}(Q_{i_1})-1 + \text{degree}(Q_{i_2})-1 + \ldots + \text{degree}(Q_{i_t})-1}\right) 
-% \]
-% From homogeneity, 
-% \[
-% \rank(T(f)) \leq s^{c(d/a)}\cdot m^{d-t} 
-% \]
-% which simplifies to
-% \[
-% \rank(T(f)) \leq m^{d + d/a \cdot (c\log_m s - \epsilon \log a)} 
-% \]
-% Now, if $a$ is chosen such that $c\log_m s - \epsilon \log a = -\epsilon/2 \log a$, i.e $a = 2^{O(\log_m s)}$, then  
-% \[
-% \rank(T(f)) \leq m^{d( 1- \frac{1}{2^{O(\log_m s)}})} 
-% \]
-% \end{proof}
-
-% We are now ready to prove \autoref{thm:tensor rank}.
-% \\ {\it Proof of \autoref{thm:tensor rank}.}
-% Starting from an arbitrary formula of size $s = \poly(n)$ computing $f$, we construct a homogeneous and set-multilinear formula of size $\poly(s)$ which computes $f$, using \autoref{lem:formula homogenization} and \autoref{lem:formula set-multilinearization} in succession.
-% Then, we apply \autoref{lem:set-multilinear tensor rank} to obtain the bound on tensor rank of $f$.
-% \qedhere
-
-
-% \begin{remark}[Circuits vs Formulas]
-%   Observe that in the proof of \autoref{lem:set-multilinear tensor rank}, it was critical that we started with a set multilinear formula and not a set multilinear circuit.
-% The place in the proof this got used was the fact the value of $t$ could be taken to be $\epsilon \cdot d\log a/a$ instead of $d/a$.
-% It is a good exercise for the readers to convince themselves that this saving is critical and the proof fails otherwise.
-% Indeed, we do not know how to prove tensor rank upper bounds on set multilinear polynomials which are computed by homogeneous set-multilinear circuits.
-% A resolution of this problem in either direction would be very interesting.
-% \end{remark}
 
 %%% Local Variables: 
 %%% mode: latex

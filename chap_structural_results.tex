@@ -523,7 +523,7 @@ Define the product-depth of any circuit to be the maximum number of multiplicati
 Show that for any polynomial $n$-variate degree $d$ polynomial $f$ that can be computed by a size $s$ arithmetic circuit, there is a circuit $\Phi'$ of size $s^{O(d^{1/\Delta})}$ and product depth $\Delta$ computing $f$. 
 \end{exercise}
 
-\subsection*{Further depth reductions}
+\subsection*{Reduction to depth three}
 
 There have been some further depth reductions results. 
 
@@ -535,9 +535,60 @@ They would be better placed after we have seen a few of the recent lower bounds 
 We now proceed to see some lower bounds. 
 
 
+\subsection{Depth reduction for formulas, again}
 
+In this section we shall revisit \autoref{thm:av} when it is applied to formulas.
+Do the resulting depth four circuits have any additional structure when we start from a homogeneous formula?
+The alternate proof of Saptharishi and Vinay~\cite{saptharishivinay14} provides some insight into this. 
+
+We would need the following lemma that was present in the survey of Shpilka and Yehudayoff \cite{sy} and also in the result of Hrube\v{s} and Yehudayoff \cite{HY11a} that we shall see a proof of in \autoref{chap:multilinear} as \autoref{lem:mult-logproduct} and \autoref{lem:hom-logproduct}.
+
+
+\begin{lemma}[\autoref{lem:hom-logproduct} stated without proof]\label{lem:hom-logproduct-restated}
+  Let $\Phi$ be a homogeneous formula of size $s$ computing a polynomial $p$ of degree $d$.
+Then $p$ can be written as a sum of $(s+1)$ \emph{log-product} polynomials, that is,
+\begin{equation}\label{eqn:dred-formula-logproduct}
+p \spaced{=} f_1 + \cdots + f_{r}\quad\quad \text{with $r \leq s+1$}
+\end{equation}
+where for each $i \in [r]$, we have $f_i = f_{i1} \cdots f_{i\ell}$ satisfying
+\begin{itemize}
+\item each $f_{ij}$ is homogeneous, and $\sum_j \deg(f_{ij}) = d$,
+\item $(1 / 3)^j \cdot d \leq \deg(f_{ij}) \leq (2/ 3)^j \cdot d$,
+\item $f_{i\ell} = 1$.
+\end{itemize}
+In particular, each $f_i$ factors into $\Omega(\log d)$ non-trivial factors of geometrically decreasing degrees. 
+\end{lemma}
+
+Furthermore, if $\Phi$ was a multilinear formula to begin with, then so is the expression on the RHS.
+And if $\Phi$ was set-multilinear, then so is the expression on the RHS.
+In other words, it says that a homogeneous formula has a homogeneous depth-$4$ formula of the form $\Sigma^{[s+1]}\Pi^{[\log d]}\Sigma\Pi^{[2d/3]}$.
+We can now describe the mild extension of \autoref{thm:av} applied for homogeneous formulas. 
+
+\begin{theorem}[\autoref{thm:av} for homogeneous formulas]\label{thm:av-formulas}
+Let $f$ be a homogeneous $n$-variate degree $d$ polynomial computed by a size $s$ homogeneous formula. 
+Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\Sigma\Pi^{[a]}\Sigma\Pi^{[t]}$ formula of top fan-in $s^{10(d/t)}$ where 
+\[
+a \geq \frac{1}{10}\pfrac{d}{t} \log t.
+\]
+\end{theorem}
+What this means is that even though the degree of all polynomials computed by the bottom two levels of the $\SPSP$ circuit have degree bounded by $t$, each summand is a product of much more than $d/t$ factors. Another way to view this is that \autoref{thm:av} gives a $\SPSP$ circuit of size $s^{O(d/t)}$ where the maximum bottom degree and \emph{average bottom degree} are both bounded by $O(t)$. Whereas in the above theorem we have maximum bottom degree bounded by $t$ but \emph{average bottom degree} bounded by $(t / \log t)$. 
+
+\begin{proof}The proof is exactly along the lines of \autoref{thm:av}
+  but instead of using the $5$-product expression in \eqref{eqn:vsbr-expansion}, we shall use the log-product expression of \eqref{eqn:dred-formula-logproduct}.
+The key point again is that in every such summand, there are two factors of degree at least $d/9$.
+Therefore, the proof of \autoref{thm:av} proceeds verbatim and the number of iterations is bounded by $9(d/t)$.
+This gives the $\SPSP^{[t]}$ formula of size at most $(s+1)^{9(d/t)} \leq s^{10(d/t)}$.
+The only thing left to check is that we do indeed have $\Omega((d\log t) / t)$ non-trivial factors in each summand. We leave this as an exercise with a hint. 
+\end{proof}
+
+\begin{exercise} Complete the proof of \autoref{thm:av-formulas} by showing that the number of non-trivial factors in any summand of the resulting $\SPSP^{[t]}$ circuit has $\Omega((d\log t)/t)$ non-trivial factors. 
+
+{\bf Hint:} Show that in \eqref{eqn:dred-formula-logproduct}, in any summand, if we only consider the factors of degree at most $t$, the sum of their degrees is at most $2t$. Use that to say each term must involve $\Omega(d/t)$ expansions via \eqref{eqn:dred-formula-logproduct} thus yielding $\Omega((d\log t)/t)$ factors. 
+\end{exercise}
+
+This additional structure may be useful in the quest for proving homogeneous formula lower bounds but at the moment it seems unclear. We shall however see one application of this additional structure later in \autoref{chap:tensorrk}. 
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
