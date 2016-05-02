@@ -1,0 +1,326 @@
+\chapter{Arithmetic circuits with locally low algebraic rank}
+\label{chap:lowAlgRank}
+
+%%%%local definitions-mrinal
+\newcommand{\spnew}{\Sigma{\Pi^{(k)}}\Sigma\Pi}
+\newcommand{\spnewn}{\Sigma{\Pi^{(n)}}\Sigma\Pi}
+\newcommand{\spnewbounded}{\Sigma{\Pi^{(k)}}\Sigma\Pi^{[d]}}
+\newcommand{\spgeneral}{\Sigma{\Gamma^{(k)}}\Sigma\Pi}
+\def\h{\mathsf{Hom}}
+
+
+So far, when studying depth-$4$ circuits, we have always assumed them to be homogeneous (or in general, of low formal degree). All the arguments for lower bounds crucially rely on the fact that the formal degree of the circuit is not too large compared to the degree of the polynomial. Hence, it is a natural question to try and understand the problem of proving lower bounds for non-homogeneous depth-$4$ circuits. 
+
+From the depth reduction results, one can show that over any field of characteristic zero (or sufficiently large) any homogeneous polynomial $P$ of degree $d$ in $n$ variables $(d = n^{O(1)})$, which can be computed by a $\poly(n)$ size arithmetic circuits can in fact be computed by a (non-homogeneous) depth-$4$ arithmetic circuit of size $n^{O(\sqrt[3]{d})}$. Moreover,  we also know that if we insist on the depth-$4$ circuit to be homogeneous, we would need a circuit of size at least $n^{\Omega(\sqrt{d})}$ for this depth reduction. In this sense, the non-homogeneous depth-$4$ circuits are strictly more powerful than their homogeneous counterparts. 
+
+The best known lower bound for non-homogeneous depth-$4$ circuits right now is a superlinear lower bound due to Raz~\cite{Raz10elusive}. Hence, even obtaining a quadratic lower bound for this model would be an interesting start. 
+
+In two recent results, Kumar and Saraf~\cite{KS16lowrank} and Pandey, Saxena and Sinhababu~\cite{PSS16} study a special case of non-homogeneous depth-$4$ circuits, and prove exponential lower bounds for them. In particular, these bounds subsume the exponential lower bounds known for homogeneous depth-$4$ circuits. In the rest of the chapter, we precisely define the model and sketch the proof. In the exposition here, we follow the outline in~\cite{KS16lowrank} where the lower bounds were shown for fields of characteristic zero. Pandey et al~\cite{PSS16} show that the same result hold over all fields. 
+
+
+\paragraph{Model of computation}
+We start with the definition of algebraic independence and algebraic rank. For the rest of the chapter, we will work over fields of characteristic zero. 
+\begin{definition}
+Let $\F$ be any field. A set of polynomials 
+${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\} \subseteq \F[\vecx]$ is said to be algebraically independent over $\F$ if there is no nonzero polynomial $R \in \F[y_1, y_2, \ldots, y_t]$ such that $R(Q_1, Q_2, \ldots, Q_t)$ is identically zero. 
+
+A maximal subset of $\cal Q$ which is algebraically independent is said to be a transcendence basis of $\cal Q$ and the size of such a set is said to be the algebraic rank of $\cal Q$.
+\end{definition}
+
+If a set of $t$ polynomials is algebraically dependent, then the above definition says that there is a non-zero polynomial in $t$ variables over the underlying field, which vanishes when composed with this set. Such a polynomial is called an annihilating polynomial of this set. It is naturaly question to ask if one can show good upper bounds on the lowest degree of an annihilating polynomial of a given set of polynomials. The following lemma of Kayal shows such a bound which would be useful to us later on. 
+\begin{lemma}[Kayal~\cite{Kayal09}]~\label{lem:degree upper bound for annihilating poly}
+Let $\F$ be a field and let ${\cal Q} = (Q_1, Q_2, \ldots, Q_t)$ be a set of polynomials of degree $d$ in $n$ variables over the field $\F$ having algebraic rank $k$. Then there exists a $\cal Q$-annihilating polynomial
+of degree at most $(k+1)\cdot d^k$.
+\end{lemma}  
+
+
+
+
+We are now ready to define the model of computation. 
+
+\begin{definition}~\label{def:lb model}
+Let $\F$ be any field. A $\spnew$ circuit $C$ in $n$ variables over $\F$ is a representation of an $n$ variate polynomial as 
+\[C =  \sum_{i = 1}^T  Q_{i1}\cdot  Q_{i2}\cdot  \cdots, Q_{it} \]  
+such that for each $i \in [T]$, the algebraic rank of the set of polynomials $\{Q_{ij} : j \in [t]\}$ is at most $k$. 
+%Additionally, if for every $i \in [T]$ and $j \in [t]$, the degree of $Q_{ij}$ is at most $d$, we say that $C$ is a $\spnewbounded$ circuit. 
+\end{definition}
+
+For the proof, it would be helpful to think of a slightly more general model of computation, defined below.  
+\begin{definition}~\label{def:lb modelnew}
+Let $\F$ be any field. A $\spgeneral$ circuit $C$ in $n$ variables over $\F$ is a representation of an $n$ variate polynmial as 
+\[C =  \sum_{i = 1}^T  \Gamma_i(Q_{i1}, Q_{i2},  \ldots, Q_{it}) \]  
+such that $\Gamma_i$ is an arbitrary polynomial in $t$ variables, and for each $i \in [T]$, the algebraic rank of the set of polynomials $\{Q_{ij} : j \in [t]\}$ is at most $k$. 
+%Additionally, if for every $i \in [T]$ and $j \in [t]$, the degree of $Q_{ij}$ is at most $d$, we say that $C$ is a $\spgeneral^{[d]}$ circuit. 
+\end{definition}
+
+%{\color{red} [I changed $\Gamma$ to $\Gamma_i$ in the above defn. Make sure ths is ok and also consistent with the rest of the paper]}.  
+
+The {\it size} of  a $\spnew$ or a $\spgeneral$ circuit $C$ is defined as the maximum of $T$ and the number of monomials in the set of polynomials $\{Q_{ij} : i \in [T], j \in [t]\}$. 
+
+A $\spnew$ circuit $C$ for which the polynomials $\{Q_{ij} : i \in [T], j \in [t]\}$ are homogeneous polynomials such that for every $i \in [T]$, \[\sum_{j \in [t]} \text{Degree}(Q_{ij}) = \text{Degree}(P)\] (where $P$ is the polynomial being computed) and $k = \text{Degree}(P)$ is precisely the class of homogeneous depth-4 circuits. If we drop the condition of homogeneity, then in general the value of $t$ could be much larger than $\text{Degree}(P)$ as well as the degrees of the $Q_{ij}$ could also be arbitrarily large. Thus the class of $\spnew$ circuits with $k$ equalling the degree of the polynomial being computed is potentially a much larger class than that of homogenous depth-4 circuits. 
+
+Also note that in the definition of $\spnew$ circuits, the bound on the algebraic rank is local for each $i \in [T]$, and in general, the algebraic rank of the entire set $\{Q_{ij} : i \in [T], j \in [t]\}$ can be as large as $n$. Therefore, this is a much restricted model of computation as compared to general depth-$4$ circuits. 
+
+We are now ready to state the main theorem of interest for this chapter. 
+
+\paragraph{Main result}
+\begin{theorem}~\label{thm:lower bound}\cite{KS16lowrank, PSS16}
+Let $\F$ be any field of characteristic zero. There exists a family $\{P_d\}$ of polynomials in $\VNP$, such that $P_d$ is a polynomial of degree $d$ in $n = d^{O(1)}$ variables with $0,1$ coefficients, and for any $\spnew$ circuit $C$, if $k \leq d$ and if $C$ computes $P_d$ over $\F$, then $$ \text{Size}(C) \geq n^{\Omega(\sqrt{d})}$$
+\end{theorem} 
+
+\begin{remark}
+In fact, it will be clear from the proofs that the lower bound holds for the more general class of $\spgeneral$ circuits. 
+\end{remark}
+
+
+
+
+
+\paragraph{Intuition:}
+The proof of~\autoref{thm:lower bound} is again via an application of projected shifted partial derivatives. To get an intuition into why one expect the projected shifted partial derivative complexity of an $\spnew$ circuit to be non-trivially small, let us first consider some toy cases.
+
+\begin{enumerate}
+\item The bottom fan-in of the $\spnew$ circuit is at most $1$ : observe that in this case, the depht-$4$ circuit is in fact a depth-$3$ circuit such that for every product gate the \emph{linear rank} of the linear forms feeding into it is at most $d$. Let $Q = \ell_1\cdot \ell_2\cdots \ell_t$ be such a product gate and let $\{\ell_1, \ell_2, \ldots, \ell_d\}$ be a basis for $\{\ell_1, \ell_2, \ldots, \ell_t\}$. Observe that even though $t >> d$, the polynomial $Q$ is really a function of $\{\ell_1, \ell_2, \ldots, \ell_d\}$, since every other linear form can be written as a linear combination of $\{\ell_1, \ell_2, \ldots, \ell_d\}$. From this, it follows by an easy application of the chain rule for partial derivatives that the partial derivative span of $Q$ is at most $2^d$. In particular, the good old partial derivative method of Nisan-Wigderson would suffice to prove an exponential lower bound for such depth-$3$ circuits. 
+
+\item Algebraic rank is replaced by linear rank : The above  immediately generalizes to he case of $\spnew$  circuits where instead of the algebraic rank of the inputs to the second level product gates, it was their linear rank which was at most $d$. The only difference would be that instead of the partial derivative measure, we would have to rely on projected shifted partials for the proof of our lower bound.  
+\end{enumerate}
+
+The key underlying idea in both the above examples is that once we knew that a product gate in the circuits had a bounded linear rank, we were able to argue that it is in fact a polynomial in a \emph{few} variables in the basis (here variables are either linear forms, or sparse polynomials.). If we had such a result for algebraic dependence, and not just linear dependence, we would be in good shape. 
+The key to the proof of~\autoref{thm:lower bound} is the following lemma, which shows that some weaker version of such a statement in indeed true. 
+
+\begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:using algebraic dependence-intro}
+Let $\F$ be any  field of characteristic zero or sufficiently large characteristic. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca$ in $\F^n$ and a polynomial $F_{k+1}$  in $k$ variables such that 
+$$Q_{k+1}(\vecx + \veca) = \h^{\leq d_{k+1}}\left[F_{k+1}(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
+\end{lemma}
+Here, for any  polynomial $P$, we use $\h^{\leq i}[P]$ to refer to homogeneous components of $P$ of degree less than or equal to $i$. In fact, as it will turn out, a random choice of the translation $\veca$ from a sufficiently large grid in $\F^n$ would suffice for the above lemma. 
+Moreover, as we will see, in this form, a converse of the lemma is also true. Assuming this lemma, we now outline the proof. 
+
+Instead of proving the result directly for $\spnew$ circuits, it will be  useful for us to think of  the slightly strengthened class of $\spgeneral$ circuits and prove the result for that class. Thus we think of our circuit $C$ as being expressed as
+$$C = \sum_{i = 1}^T  C_{i}(Q_{i1}, Q_{i2}, \ldots, Q_{it})$$  where the $C_i$ can be arbitrary polynomial functions of the inputs feeding into them. We know that for each $i \in [T]$, the algebraic rank of $\{Q_{i1}, Q_{i2}, \ldots, Q_{it}\}$ is at most $k$. Now, by applying~\autoref{lem:using algebraic dependence-intro} to each $C_i$, we get that there exists an $\veca \in \F^{n}$ such that $C(\vecx+\veca)$ can be expressed as  
+
+
+\begin{multline}
+C(\vecx + \veca) = \sum_{i = 1}^T  C_i'(\h[Q_{i1}(\vecx + \veca)], \h[Q_{i2}(\vecx + \veca)], \ldots, \h[Q_{ik}(\vecx + \veca)])
+\end{multline}
+
+where for a degree $d$ polynomial $F$, $\h[F]$ denotes the $d+1$-tuple of homogeneous components of $F$. 
+
+The crucial gain in the above transformation is that  the arity of each of the polynomials  $C_i'$ is $(d+1) \times k$ and not $t$ (where $d$ is an upper bound on the degrees of the $Q_{ij}$). Now by assumption $k \leq d$, and moreover WLOG we can assume that the degree of each $Q_{ij}$ is at most $d$ since homogeneous components of $Q_{ij}$ of degree larger than $n$ can essentially be dropped since they do not contribute to the computation of a degree $d$ polynomial. Thus we have essentially\footnote{One has to be careful while doing this, since the degree of $C_i'$ might be really really large, and hence the standard technique of interpolation is not immediately applicable here.} reduced to the case where each $C_i'$ depends on at most $d^2$ polynomials of degree at most $d$.  
+
+One loss by this transformation is that the polynomials $\{C_i'\}$ might be much more complex and with much higher degrees than the original polynomials $\{C_i\}$. However, this will not affect the computation of the complexity measure. Another loss is that we have to deal with the translated polynomial $C(\vecx + \veca)$. This introduces some subtleties into our computation as it could be that $Q_{ij}(\vecx)$ is a sparse polynomial but $Q_{ij}(\vecx+ \veca)$ is far from being sparse. Neither of these issues is very difficult to deal with, and we are able to get strong bounds for the projected shifted partial derivative based measure for such circuits. 
+
+In the next section, we first see a proof of~\autoref{lem:using algebraic dependence-intro} and then use it to sketch a proof of~\autoref{thm:lower bound}. 
+
+\section{Using algebraic dependencies}
+%\section{Proof of{~\autoref{lem:using algebraic dependence-intro}}}
+Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables and degree at most $d$ such that the algebraic rank of ${\cal Q}$ equals $k$. Without loss of generality, let us assume that ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ are an algebraically independent subset of $\cal C$ of maximal size. We now show that, in some sense, this implies that all the polynomials in ${\cal Q}$ can be represented as functions of  polynomials in the set ${\cal B}$. We make this notion formal in the following lemma. We will also crucially rely on the following beautiful lemma of Dvir, Shpilka and Yehudayoff for the proof. 
+
+\begin{lemma}[Dvir, Shpilka, Yehudayoff~\cite{DSY09}]~\label{lem:DSY main}
+For a field $\F$, let $P \in \F[\vecx, y]$ be a non-zero polynomial of degree at most $k$ in $y$. Let $f \in \F[\vecx]$ be a polynomial such that $P(\vecx, f) = 0$ and $\frac{\partial P}{\partial y} (0, 0, \ldots, 0, f(0, 0, \ldots, 0))\neq 0$. Let $$P = \sum_{i = 0}^k C_i(\vecx)\cdot Y^i$$ Then, for every $t \geq 0$, there exists a polynomial $R_t \in \F[\vecz]$ of degree at most $t$ in $k+1$ variables such that $$\h^{\leq t}[f(\vecx)] = \h^{\leq t}[R_t(C_0, C_1, \ldots, C_k)] $$
+\end{lemma} 
+
+
+
+%We are now ready to state our main technical lemma. 
+\begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:using algebraic dependence}
+Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca$ in $\F^n$ and polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in $k$ variables such that $\forall i \in \{k+1, k+2, \ldots, t\}$
+$$Q_i(\vecx + \veca) = \h^{\leq d_i}\left[F_i(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
+\end{lemma}
+\begin{proof}
+We will prove the lemma for $t = k+1$ and for brevity, we drop the index of $Q_{k+1}$ and denote is simply by $Q$. Larger $t$ can be handled in an identical way. Let $d$ be defined as $max_i\{d_i\}$. From the statement of the lemma, 
+it follows that the set of polynomials in the set ${\cal B} \cup \{Q\}$ are algebraically dependent. Therefore, there exists a nonzero polynomial $A$ in $k+1$ variables such that $A(Q_1, Q_2, \ldots, Q_k, Q) \equiv 0$. Without loss of generality, we choose such a polynomial with the smallest total degree. From the upper bound on the degree of the annihilating polynomial from Lemma~\ref{lem:degree upper bound for annihilating poly}, we can assume that the degree of $A$ is at most $(k+1)d^k$. Consider the polynomial $A'(\vecx, y)$ defined by $$A'(\vecx, y) = A_i(Q_1(\vecx), Q_2(\vecx), \ldots, Q_k(\vecx), y)$$
+We have the following observation about properties of $A'$.
+\begin{observation}~\label{obs:internal1}
+$A'$ satisfies the following properties:
+\begin{itemize}
+\item $A'$ is not identically zero
+\item The $y$ degree of $A'$ is at least one. 
+\item $Q(\vecx)$ is a root of the polynomial $A'$, when viewing it as a polynomial in the $y$ variable with coefficients coming from $\F(\vecx)$. 
+\end{itemize}
+\end{observation}
+\begin{proof}
+We prove the items in sequence:
+\begin{itemize}
+\item If $A'$ is identically zero, then it follows that $Q_1, Q_2, \ldots, Q_k$ are algebraically dependent, which is a contradiction. 
+\item If $A'(\vecx , y)$ does not depend on the variable $y$, then by definition, it follows that $A(Q_1, Q_2, \ldots, Q_k, y)$ does not depend on $y$. Hence, $A(Q_1, Q_2, \ldots, Q_k, Q)$ does not depend on $Q$ but is identically zero. This contradicts the algebraic independence of $Q_1, Q_2, \ldots, Q_k$.
+\item This item follows from the fact that the polynomial obtained by substituting $y$ by $Q$ in $A'$ equals $A(Q_1, Q_2, \ldots, Q_k, Q)$, which is identically zero. 
+\end{itemize}
+\end{proof}
+
+Our aim now is to invoke Lemma~\ref{lem:DSY main} for the polynomial $A'$, but first, we need to verify that the conditions in the hypothesis of Lemma~\ref{lem:DSY main} are satisfied. Let the polynomial $A''$ be defined as the first order derivative of $A'$ with respect to $y$. Formally, 
+$$A'' = \frac{\partial{A'}}{\partial y}$$
+We proceed with the following claim, the proof of which we defer to the end. 
+\begin{claim}~\label{clm:derivative nonzero}
+The polynomial $A''$ is not an identically zero polynomial and ${A''|}_{y = Q}$ is not identically zero. 
+\end{claim}
+For the ease of notation, we define 
+\[
+{L}(\vecx) = {A''|}_{y = Q}
+\]
+
+Observe that $L$ is a polynomial in the variables $\vecx$ which is not identically zero and is of degree at most $(k+1)d^{k+1}$. Let $H$ be a subset of $\F$ of size $2(k+1)d^{k+1}$.  Then, for a uniformly random point $\veca$ picked from $H^n$, the probability that $L$ vanishes at $\veca$ is at most $1/2$. Let $\veca \in \F^n$ be a point where $L$ does not vanish. 
+We can replace the variable $x_j$ by $x_j + a_{j}$ in $L$ and then for the resulting polynomial $L(\vecx + \veca)$, the point $(0, 0, \ldots, 0)$ is not bad. 
+
+We are now ready to apply Lemma~\ref{lem:DSY main}. Let 
+$$A'(\vecx , Y) = \sum_{j = 0}^{(k+1)d^k} C_j(\vecx)\cdot y^j$$ 
+
+Here, for every $j$, $C_j(\vecx) = C_j'\left(Q_1(\vecx),Q_2(\vecx), \ldots, Q_k(\vecx )\right)$ is a polynomial in the $\vecx$ variables and is the coefficient of $y^j$ in  $A'(\vecx, y)$  when viewed as an element of $\F[\vecx][y]$. 
+From the discussion above, we know that the following are true. 
+\begin{enumerate}
+\item The polynomial $A'(\vecx + \veca, Q(\vecx + \veca))$ is identically zero. 
+\item The first derivative of $A'(\vecx + \veca, y)$ with respect to $y$ does not vanish at  $(0, 0, \ldots, 0, Q_i(0, 0, \ldots, 0))$. 
+\end{enumerate}
+Therefore, by Lemma~\ref{lem:DSY main}, it follows that there is a polynomial $G$ such that 
+$$Q(\vecx + \veca) = \h^{\leq d}\left[G(C_0(\vecx + \veca), C_1(\vecx + \veca), \ldots, C_{(k+1)d^k}(\vecx + \veca)) \right] $$
+We also know that for every $j \in \{0, 1, \ldots, (k+1)d^k\}$, $C_j(\vecx + \veca)$ is a polynomial in the polynomials $Q_1(\vecx + \veca),Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)$. In other words, 
+$$Q(\vecx + \veca) = \h^{\leq d}\left[F(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right] $$
+for  a polynomial $F$. 
+
+%In order to prove the lemma for all values of $i \in \{k+1, k+2, \ldots, t\}$, we observe that we can pick a single value of the translation $\veca$, which works for every $i\in \{k+1, k+2, \ldots, t\}$. Such an $\veca$ exists because the probability that a uniformly random $p \in H^N$ is bad for some $i$ is at most $t\cdot 1/2t = 1/2$ and the translation corresponding to any such element $\veca$ in $H^N$ which is not bad for every $i$ will work. The statement of the lemma then immediately follows. 
+\end{proof}
+
+We now prove Claim~\ref{clm:derivative nonzero}.
+\begin{proof}[Proof of Claim~\ref{clm:derivative nonzero}]
+We observed from the second item in Observation~\ref{obs:internal1} that the degree of $y$ in $A'$ is at least $1$. Hence, $A''$ is not identically zero.  
+If $A''|_{y = Q}$ is identically zero, then it follows that $\{Q_1, Q_2, \ldots, Q_k, Q\}$ have an annihilating polynomial of degree smaller than the degree of $A$, which is a contradiction to the choice of $A$, as a minimum degree annihilating polynomial. 
+\end{proof}
+
+Lemma~\ref{lem:using algebraic dependence} lets us express all polynomials in a set of polynomials as a function of the polynomials in the transcendence basis. However, the functional form obtained is slightly cumbersome for us to use in the applications. The following corollary would be more convenient. 
+
+\begin{corollary}~\label{cor:using algebraic independence new}
+Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i < d$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca $ in $\F^n$ and polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in at most $k(d+1)$ variables such that $\forall i \in \{k+1, k+2, \ldots, t\}$
+$$Q_i(\vecx + \veca) = \left[F_i(\h[Q_1(\vecx + \veca)], \h[Q_2(\vecx + \veca)], \ldots, \h[Q_k(\vecx + \veca)]) \right] $$
+\end{corollary}
+\begin{proof}
+Let $i$ be such that $ i \in \{k+1, k+2, \ldots, t\}$. From Lemma~\ref{lem:using algebraic dependence}, we know that there exists an $\veca \in \F^N$ and a polynomial $W_{i}$ such that 
+\[
+Q_{i}(\vecx + \veca) = \h^{\leq d_{i}}\left[W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right] 
+\]
+
+We will now show that $\h^{\leq d_{i}}\left[W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right]$ is actually a polynomial in the homogeneous components of the various $Q_{j}(\vecx + \veca)$ by the following procedure, which is essentially univariate polynomial interpolation. 
+\begin{itemize}
+\item Let $R(\vecx) = W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca))$. We replace every variable $x_j$ in $R$ by $z\cdot x_j$ for a new variable $z$. We view the resulting polynomial $R'$ as an element of $\F(\vecx)[z]$, i.e a univariate polynomial in $z$ with coefficients coming from the field of rational functions in the $\vecx$ variables. 
+\item Now, observe that for any $\ell$, the homogeneous component of degree $\ell$ of  $R$ is precisely the coefficient of $z^{\ell}$ in $R'$. Hence, we can evaluate $R'$ for sufficiently many distinct values of $z$ in $\F(\vecx)$, and then take an $\F(\vecx)$ linear combination of these evaluations to express the homogeneous components. Moreover, since $\F$ is an infinite field, without loss of generality, we can pick the values of $z$ to be scalars in $\F$, and in this case, we will just be taking an $\F$ linear combination. 
+\end{itemize}
+The catch here is that after replacing $x_j$ by $z\cdot x_j$ and substituting different values of $z \in \F$, the polynomials $Q_{i'}(\vecx + \veca)$ could possibly lead to distinct polynomials. In general, this is bad, since our goal is to show that every polynomial in a set of algebraically dependent polynomials in a function of \emph{few} polynomials. However, the following observation comes to our rescue. Let $P$ be any polynomial in $\F[\vecx]$ of degree $\Delta$ and let $P'$ be the polynomial obtained from $P$ by replacing $x_j$ by $z\cdot x_j$. Then, 
+\[
+P'(\vecx + \veca) = \sum_{\ell = 0}^{\Delta} z^{\ell}.\h^{\ell}[P(\vecx)]
+\]
+In particular, the set of polynomials obtained from $P'$ for different values of $z$ are all in the linear span of homogeneous components of $P$. 
+
+Therefore, any homogeneous component of $R$ can be expressed as a function of the set of polynomials $\cup_{i = 1}^k \h\left[Q_i(\vecx + \veca) \right]$. This completes the proof of the corollary. 
+
+\end{proof}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Observe that the corollary immediately implies the following lemma,  which will be directly useful in proving an upper bound on the dimension of projected shifted partial derivatives of an $\spnew$ circuit.  
+\begin{lemma}~\label{lem:expressing as functions of the basis}
+Let $\F$ be any  field of characteristic zero or sufficiently large. Let $P \in \F[\vecx]$ be a polynomial in $N$ variables, of degree equal to $n$, such that  $P$ can be represented as $$P = \sum_{i = 1}^T  F_{i}(Q_{i1}, Q_{i2}, \ldots, Q_{it})    $$
+and such that the following are true
+\begin{itemize}
+\item For each $i \in[T]$, $F_i$ is a polynomial in $t$ variables. 
+\item For each $i \in [T]$ and $j \in [t]$, $Q_{ij}$ is a polynomial in $N$ variables of degree at most $d$. 
+\item For each $i \in [T]$, the algebraic rank of the set of polynomials $\{Q_{ij} : j \in [t]\}$ is at most $k$ and  ${\cal B}_i = \{Q_{i1}, Q_{i2}, \ldots, Q_{ik}\}$ is a maximal algebraically independent subset of $\{Q_{ij} : j \in [t]\}$. 
+\end{itemize}
+Then, there exists an $\veca \in \F^{n}$ and polynomials $F_i'$ in at most $k(d+1)$ variables such that 
+
+\begin{multline}
+P(\vecx + \veca) = \sum_{i = 1}^T  F_i'(\h[Q_{i1}(\vecx + \veca)], \h[Q_{i2}(\vecx + \veca)], \ldots, \h[Q_{ik}(\vecx + \veca)])
+\end{multline}
+\end{lemma}
+
+\iffalse
+\begin{proof}
+The proof would essentially follow from the application of Corollary~\ref{cor:using algebraic independence new} to each of the summands on the right hand side. The only catch is that the transalations $\veca$ could be different for each one of them. Since we are working over infinite fields, without loss of generality, we can assume that there is a good translation $\veca$ which works for all the summands. 
+\end{proof}
+\fi
+
+\section{Projected shifted partials of $\spnew$ circuits}
+
+In this section, we show a non-trivial upper bound on the complexity of the projected shifted partials of $\spnew$ circuits under random restrictions. 
+\begin{lemma}[Upper bound on complexity of circuits]~\label{lem: circuit complexity bound}
+Let $\ell, r$ be parameters such that $\ell + r\sqrt{d} \leq n/2$. . Let $C $ be an $\spnew$ circuit with size at most $n^{\frac{\delta \sqrt{d}}{2}}$ for a constant $\delta \in (0,1)$ and top fan-in $T$. 
+
+Let $C'$ be the circuit obtained from $C$ under random restrictions in which every variable is kept alive with a probability at most $n^{-\delta}$. Then, with a probability at least $1-o(1)$, 
+$$\Gamma_{r, \ell}^{PSD}(C') \leq T\cdot {k(d+1) + r \choose r}{n \choose \ell + r\sqrt{d}} $$
+\end{lemma}
+\begin{proof}
+The proof is standard for a statement of this kind. So, we just sketch the argument. 
+We prove the lemma by first using random restrictions to simplify the circuit into one with bounded bottom support, and then utilizing algebraic dependence within the inputs of each product gate to conclude that the dimension of the space of projected shifted partial derivatives of the resulting circuit is small.
+
+\paragraph{Step 1 - Random restrictions :}
+From the definition of random restrictions, every variable is kept alive independently with a probability $p = N^{-\delta}$. So, by a straightforward union bound over all monomials in the circuit, and by Markov's inequality, 
+So, by Markov's inequality, the probability that at least one monomial of support at least $s$ in $\bigcup_{i \in [T], j \in [t]} S_{ij} $ survives the random restrictions is $o(1)$. Let $C'$ be such a good circuit. 
+
+\paragraph{Step 2 - Using low algebraic rank :}
+Let 
+$$C' = \sum_{i = 1}^T  C_{i}'(Q_{i1}', Q_{i2}', \ldots, Q_{it}') $$
+where for every $i \in [T], j \in [t]$, all monomials of $Q_{ij}'$ have support at most $s$. Observe that random restrictions cannot increase the algebraic rank of a set of polynomials. Therefore, for every $i \in [T]$, the algebraic rank of the set of polynomials $\{Q'_{ij} : j \in [t]\}$ is at most $k$. For ease of notation, let us assume that the algebraic rank is equal to $k$. Without loss of generality, let the set ${\cal B}_i = \{Q'_{i1}, Q'_{i2}, \ldots, Q'_{ik}\}$ be the set guaranteed by  Lemma~\ref{lem:expressing as functions of the basis}. We know that there exists an $\veca\in \F^{N}$ and polynomials $\{F_i : i \in [T]\}$ such that 
+ $$C'(\vecx + \veca) = \sum_{i = 1}^T  F_{i}'(\h\left[ Q_{i1}'(\vecx + \veca)\right], \h\left[ Q_{i2}'(\vecx + \veca)\right], \ldots, \h\left[ Q_{ik}'(\vecx + \veca)\right]) $$
+
+Moreover, since $C(\vecx)$ (and hence $C'(\vecx)$) is a homogeneous polynomial of degree $d$, the following is true: 
+
+\begin{equation}\label{eqn: 1 in lower bound}
+C'(\vecx) = \h^{d} \left[\sum_{i = 1}^T  F_{i}'(\h\left[ Q_{i1}'(\vecx + \veca)\right], \h\left[ Q_{i2}'(\vecx + \veca)\right], \ldots, \h\left[ Q_{ik}'(\vecx + \veca)\right])\right]
+\end{equation}
+
+An important observation here is that for the rest of the argument, we can assume that the degree of every polynomial $Q_{ij}'(\vecx + \veca)$ is at most $d$. If not, we can simply replace any such high degree $Q_{ij}'(\vecx + \veca)$ by 
+$\h^{\leq d}\left[Q_{ij}'(\vecx + \veca)\right]$. We claim that the equality~\ref{eqn: 1 in lower bound} continues to hold. 
+This is because the higher degree monomials of $Q_{ij}$ do not participate in the computation of the lower degree monomials. The only monomials which could potentially change by this substitution are the ones with degree strictly larger than  $d$. 
+\paragraph{Step 3 - Upper bound on $\Gamma_{r,\ell}^{\text{PSD}}(C'(\vecx))$ :}
+Let $R$ be defined the polynomial 
+
+\[
+R = \left[\sum_{i = 1}^T  F_{i}'(\h\left[ Q_{i1}'(\vecx + \veca)\right], \h\left[ Q_{i2}'(\vecx + \veca)\right], \ldots, \h\left[ Q_{ik}'(\vecx + \veca)\right])\right]
+\]
+
+Observe that the support of every monomial in each $Q_{ij}'(\vecx+\veca)$ is at most $\sqrt{d}$. So, by a standard calculation, 
+
+$$\Gamma_{r, \ell}^{\text{PSD}}(R) \leq T{k(n+1) + r \choose r}{N \choose \ell + r\sqrt{d}}$$
+
+Now, observe that if every polynomial in the space of projected shifted partial derivatives of $R$ is projected onto the monomials of degree equal to $\ell + d-r$, then the dimension of this space does not increase. But, this is exactly the space of projected shifted partials of $C'$. 
+Hence,
+
+\[
+\Gamma_{r, \ell}^{\text{PSD}}(C') \leq T{k(n+1) + r \choose r}{N \choose \ell + r\sqrt{d}}
+\]
+
+Observe that steps 2 and 3 of the proof are always successful if the restriction in step 1 is good, which happens with a probability at least $1-o(1)$. So, the lemma follows. 
+\end{proof}
+
+Together with the fact that the know explicit polynomials for which this measure is very close to the largest possible (\autoref{chap_d4hom}), this would complete the proof of~\autoref{thm:lower bound}. 
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End:
