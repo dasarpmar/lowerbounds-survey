@@ -1,0 +1,41 @@
+\chapter{Depth three circuits of low bottom fan-in}
+
+Kayal and Saha~\cite{KayalSaha14} show that the technique of projected shifted partial derivatives can also be used to prove lower bounds for subclasses of non-homogeneous depth three circuits, namely depth three circuits with \emph{bounded bottom fan-in}.
+We shall denote the class of depth three circuits of bottom fan-in bounded by $r$ as $\SPS^{[r]}$ circuits.
+The ideas involved have also been useful in addressing depth-$4$ circuits with ``low-arity'' \cite{KumarSaraf15,KayalSaha15} that we shall see later. 
+
+\section{$\SPS$ circuits with bottom fan-in $O(\sqrt{d})$}
+
+Now let us focus on $\SPS^{[r]}$ circuits, where all linear polynomials in the circuit depend on at most $r$ variables.
+The following is the key observation of Kayal and Saha \cite{KayalSaha14} and can be verified easily from the proof of \autoref{lem:d3-d5}.
+
+\begin{observation}[\cite{KayalSaha14}]
+  Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\mywedge\Sigma$ circuit $C'$ obtained from \autoref{lem:d3-d5} is in fact a $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit of size $s' = \poly(s) \cdot 2^{O(\sqrt{d})}$.
+
+  Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot d^r$
+\end{observation}
+
+This observation in combination with \autoref{thm:KLSS-lowsupp} immediately yields the main theorem of \cite{KayalSaha14}.
+
+\begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
+  Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
+  $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen
+  parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
+  n^{\Omega(d/r)}$. 
+\end{theorem}
+
+
+\section{$\SPS$ circuits with bottom fan-in $n^{1-\epsilon}$}
+
+Kayal and Saha \cite{KayalSaha14} also prove lower bounds for depth three circuits
+where the bottom fan-in is bounded away from $n$ by any polynomial factor. \\
+
+
+\todo[inline]{Complete this}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End:
