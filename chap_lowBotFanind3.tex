@@ -9,7 +9,7 @@ The ideas involved have also been useful in addressing depth-$4$ circuits with `
 Now let us focus on $\SPS^{[r]}$ circuits, where all linear polynomials in the circuit depend on at most $r$ variables.
 The following is the key observation of Kayal and Saha \cite{KayalSaha14} and can be verified easily from the proof of \autoref{lem:d3-d5}.
 
-\begin{observation}[\cite{KayalSaha14}]
+\begin{observation}[\cite{KayalSaha14}]\label{obs:d3-d5-fanin}
   Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\mywedge\Sigma$ circuit $C'$ obtained from \autoref{lem:d3-d5} is in fact a $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit of size $s' = \poly(s) \cdot 2^{O(\sqrt{d})}$.
 
   Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot d^r$
@@ -28,10 +28,106 @@ This observation in combination with \autoref{thm:KLSS-lowsupp} immediately yiel
 \section{$\SPS$ circuits with bottom fan-in $n^{1-\epsilon}$}
 
 Kayal and Saha \cite{KayalSaha14} also prove lower bounds for depth three circuits
-where the bottom fan-in is bounded away from $n$ by any polynomial factor. \\
+where the bottom fan-in is bounded away from $n$ by any polynomial factor. 
+
+\begin{theorem}[\cite{KayalSaha14}] Let $\epsilon > 0$ be any
+  constant.
+Then over any characteristic zero field, there exists an explicit polynomial $P$ such that any $\SPS^{[n^{1 - \epsilon}]}$ circuit computing $P$ must have size $n^{\Omega_\epsilon(\sqrt{d})}$.
+\end{theorem}
+
+We shall work with $\epsilon = 0.1$ to save on some variables. All the ideas here can be made to work for any $\epsilon > 0$. 
+
+As a first step, we shall start with a $\SPS^{[n^{0.9}]}$ circuit and use \autoref{obs:d3-d5-fanin} to convert it to a homogeneous $\Sigma\Pi\Sigma\mywedge\Sigma^{[n^{0.9}]}$ circuit computing the same polynomial.
+As we have just seen, if the fan-in of all the linear polynomials at the bottom were instead $O(\sqrt{d})$, then we can directly apply \autoref{obs:d3-d5-fanin} and use \autoref{thm:KLSS-lowsupp} to prove the lower bound via projected shifted partial derivatives.
+What we would like to do is reduce to this case somehow, and a natural approach is to use random restrictions.
+
+\subsection*{Attempt 1}
 
 
-\todo[inline]{Complete this}
+Assume that the size $s$ of the circuit is at most $n^{0.1\sqrt{d}}$.
+Thus there are at most $n^{0.1 \sqrt{d}}$ linear polynomials computed by the homogeneous depth-$5$ circuit as the bottom layer, each of which is a linear polynomial on just $n^{0.9}$ variables.
+Let us apply a random restriction of setting each variable independently to zero with probability $1 - \alpha = 1 - \frac{\sqrt{d}}{n^{0.9}}$, so that the expected size of a linear form is now $\sqrt{d}$.
+
+What would Chernoff's bound give us?
+We have $n^{0.9}$ independent variables that takes value $1$ with probability $\alpha$ indicating whether that variable is kept alive or not.
+Therefore the expected number of variables kept alive in that linear form is $\mu = \sqrt{d}$.
+Chernoff's bound states that the probability that more than $\mu (1 + \delta)$ of them are kept alive is at most $\exp(-\delta^2 \mu) = \exp(-O(\sqrt{d}))$ if $\delta$ is a constant.
+This is not enough for a union bound over $s = n^{0.1\sqrt{d}}$ gates.
+
+Nevertheless, let us do what we can and use a random restriction that sets variables to zero with probability $1 - \alpha = 1 - \frac{d}{n^{0.9}}$.
+Now we can indeed use Chernoff's bound to show that with very high probability, all linear polynomials are now over at most $2d$ variables as the expected size of the linear form is $d$.
+
+The number of total variables that are alive $n'$ is still about $n^{0.1}$ which is hopefully enough.
+We shall get to this point later, and for now hope that we can make $n' \gg d$. 
+
+Thus we now need to deal with a $\Sigma\Pi\Sigma\mywedge\Sigma^{d}$ homogeneous circuit (dropping the constant factor for brevity).
+The question now is, have we made any progress at all?
+
+
+\subsection*{Attempt 2}
+
+Since the top gate is a $+$ gate, it suffices to understand one term 
+\[
+T \spaced{=} \prod_{i} \inparen{\sum_j \ell_{ij}^{d_i}}
+\]
+Some of the $d_i$s could be large specifically $d_i > 2\sqrt{d}$ and others smaller. We shall split the above product as
+\begin{eqnarray*}
+T &=& \prod_{\substack{i\\d_i \leq 2\sqrt{d}}} \inparen{\sum_j \ell_{ij}^{d_i}} \; \cdot \; \prod_{\substack{i\\d_i > 2\sqrt{d}}} \inparen{\sum_j \ell_{ij}^{d_i}}\\
+  & = & T_{\text{low}} \; \cdot \; T_{\text{high}}
+\end{eqnarray*}
+We already have some experience with handling low degree factors so we only need to address the high degree factors.
+It would be great if we could just expand out the high-degree factors and show that they do not contribute anything but at first sight it seems like there were would too many monomials for this to work.
+But Kayal and Saha \cite{KayalSaha14} show a way to handle this delicately. 
+
+To get a sense of this, let us just take one power of a linear form $\ell^{d_i}$. All we know right now is that $\ell$ depends on $d$ variables, and $2\sqrt{d} < d_i \leq d$. Expanding this na\"ively would yield about $d^d$ monomials but let us count this a little differently. Let us write this as $\ell^{2\sqrt{d}} \cdot \ell^{d_i - 2\sqrt{d}}$ and expand only the $\ell^{2\sqrt{d}}$ part. This gives an expression of the form
+\[
+\ell^{d_i} = \sum_{i=1}^t m_i \cdot \ell^{d_i - 2\sqrt{d}}
+\]
+with $t \leq d^{2\sqrt{d}}$. Some of the $m_i$s could be non-multiquadratic so they would not contribute anything to the projected shifted partial derivatives. But the $m_i$s that are multiquadratic must therefore have support size at least $\sqrt{d}$. Since these are all monomials over just $d$ variables, the number of distinct multiquadratic monomials is at most $d^{\sqrt{d}}$. If we can eliminate all these monomials, we would be done. Let $\mathcal{B}$ be the set of all multiquadratic monomials of $\ell_i^{2\sqrt{d}}$ when we run over all the $\ell_i$s in the circuit. After the random restriction from the previous step, we have $n' \approx n^{0.1}$ variables alive. Therefore, we have that $\abs{\mathcal{B}} \leq (n')^{0.1\sqrt{d}} \cdot d^{\sqrt{d}} \leq (n')^{0.51 \sqrt{d}}$ since we will definitely have $n' \geq d^2$. 
+
+To eliminate all monomials in $\mathcal{B}$, we use a random restriction $\rho_\beta$ and set each variable to zero with probability $1 - \beta$ where $\beta = \frac{1}{(n')^{0.6}}$. For such a restriction, the probability that a fixed $\sqrt{d}$ support monomial survives is at most $(n')^{-0.6\sqrt{d}}$ and thus even after a union bound, with overwhelming probability all monomials in $\mathcal{B}$ are now set to zero. What this means is that the only monomials in $T_{\text{high}}$ are non-multiquadratic monomials and hence will not contribute to the projected shifted partials. 
+\[
+\rho_\beta(\SPS\mywedge\Sigma^{d}) \spaced{=} \SPSP^{[2\sqrt{d}]} \;+\; (\text{non-multiquadratic monomials})
+\]
+
+Combining it all together, if $f$ is a polynomial computed by a $\SPS^{[n^{0.9}]}$ circuit, then $\rho_\beta \circ \rho_\alpha (f)$ satisfies
+\[
+\CM{PSD}_{k,\ell}\inparen{\rho_\beta \circ \rho_\alpha(f)} \spaced{\leq} \binom{2\sqrt{d}}{k} \cdot \binom{n'}{\ell + 2k\sqrt{d}}
+\]
+where $n'$ is the variables alive in $\rho_\beta \circ \rho_\alpha(f)$. 
+
+\subsection*{Constructing the hard polynomial}
+
+What do the two restrictions together look like? The first restriction keeps a variable alive with probability $\alpha = \frac{d}{n^{0.9}}$ which leaves about $n' = \frac{n^{0.1}}{d}$ variables alive. The second restrictions keeps a variable alive with probability $\beta = (n')^{-0.6}$. Hence together, this can be viewed as a single random restriction that keeps a variable alive with probability about
+\[
+\alpha \cdot \beta \spaced{=} \frac{d}{n^{0.9}} \cdot \frac{1}{\inparen{\frac{n^{0.1}}{d}}^{0.6}} \spaced{=} \frac{d^{1.6}}{n^{0.96}}.
+\]
+We'll build our hard polynomial so that $n \geq d^{1000}$ so we can think of the two random restrictions as a single restriction $\rho_\epsilon$ where $\epsilon = \frac{1}{n^{0.99}}$.\\
+
+The question now is, can we build a hard polynomial $P$ on $n$ variables with degree $d$ satisfying $n > d^{1000}$ such that \emph{even after} a random restriction $\rho_\epsilon$ for $\epsilon = n^{-0.99}$, the polynomial $\rho_\epsilon(P)$ has a large dimension of projected shifted partial derivatives? The answer is indeed `Yes' and the $\NW$ polynomial family can be made robust using the linear blow-up trick (\autoref{lem:lin-transform-trick}). 
+
+Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$ variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
+
+Now suppose this polynomial is computed by a $\SPS^{[n^{0.9}]}$ circuit. Applying $\rho_\epsilon$, we get that $\rho_\epsilon(\NW_{d,m,e} \circ \mathrm{Lin})$ is computed by a circuit of the form 
+\[
+\SPSP^{[2\sqrt{d}]} + (\text{non-multiquadratic}).
+\]
+Since $\rho_\epsilon(\NW_{d,m,e})$ has a copy of $\NW_{d,m,e}$ sitting inside, by setting additional variables to zero, we now have a circuit of the same form as above computing $\NW_{d,m,e}$ and we have our lower bound from \autoref{lem:upper-bound-low-supp} and \autoref{lem:d4hom-goldilocks-LB}:
+\[
+\CM{PSD}_{k,\ell}\inparen{\SPSP^{[2\sqrt{d}]} + \text{non-multiquadratic}} =  \CM{PSD}_{k,\ell}\inparen{\SPSP^{[2\sqrt{d}]}} \ll \CM{PSD}_{k,\ell}(\NW_{d,m,e}). 
+\]
+
+This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that we can run the whole argument with $\IMM$ instead of $\NW$). \qed\\
+
+\begin{exercise}
+Use the techniques to prove a similar $n^{\Omega(\sqrt{d})}$ lower bound for homogeneous $\SPSP\Sigma^{[n^{0.99}]}$ circuits. Find out where the above proof breaks and see if there are different sets of parameters to fix the issue. 
+\end{exercise}
+
+
+
+
+
+
 
 
 
