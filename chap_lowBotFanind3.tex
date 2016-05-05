@@ -92,9 +92,9 @@ To eliminate all monomials in $\mathcal{B}$, we use a random restriction $\rho_\
 
 Combining it all together, if $f$ is a polynomial computed by a $\SPS^{[n^{0.9}]}$ circuit, then $\rho_\beta \circ \rho_\alpha (f)$ satisfies
 \[
-\CM{PSD}_{k,\ell}\inparen{\rho_\beta \circ \rho_\alpha(f)} \spaced{\leq} \binom{2\sqrt{d}}{k} \cdot \binom{n'}{\ell + 2k\sqrt{d}}
+\CM{PSD}_{k,\ell}\inparen{\rho_\beta \circ \rho_\alpha(f)} \spaced{\leq} \binom{2\sqrt{d}}{k} \cdot \binom{n''}{\ell + 2k\sqrt{d}}
 \]
-where $n'$ is the variables alive in $\rho_\beta \circ \rho_\alpha(f)$. 
+where $n'$' is the variables alive in $\rho_\beta \circ \rho_\alpha(f)$. 
 
 \subsection*{Constructing the hard polynomial}
 
@@ -106,7 +106,7 @@ We'll build our hard polynomial so that $n \geq d^{1000}$ so we can think of the
 
 The question now is, can we build a hard polynomial $P$ on $n$ variables with degree $d$ satisfying $n > d^{1000}$ such that \emph{even after} a random restriction $\rho_\epsilon$ for $\epsilon = n^{-0.99}$, the polynomial $\rho_\epsilon(P)$ has a large dimension of projected shifted partial derivatives? The answer is indeed `Yes' and the $\NW$ polynomial family can be made robust using the linear blow-up trick (\autoref{lem:lin-transform-trick}). 
 
-Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$ variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
+Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$-variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
 
 Now suppose this polynomial is computed by a $\SPS^{[n^{0.9}]}$ circuit. Applying $\rho_\epsilon$, we get that $\rho_\epsilon(\NW_{d,m,e} \circ \mathrm{Lin})$ is computed by a circuit of the form 
 \[
@@ -123,6 +123,100 @@ This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that 
 Use the techniques to prove a similar $n^{\Omega(\sqrt{d})}$ lower bound for homogeneous $\SPSP\Sigma^{[n^{0.99}]}$ circuits. Find out where the above proof breaks and see if there are different sets of parameters to fix the issue. 
 \end{exercise}
 
+\section{Directly analysing a single random restriction}
+
+The above proof is a little counter-intuitive in the sense that we seem to obtain a random restriction where all linear polynomials essentially become size $\sqrt{d}$ but somehow we seem to need a two-step process.
+Shouldn't there be a direct way to analysing this random process in a single step? \\
+
+Let's retrace our steps.
+We have linear forms of size $n' = n^{0.9}$ and we want to use a random restriction to reduce keep only $d' = \sqrt{d}$ of the the $n'$ variables alive.
+The natural attempt was to keep a variable alive with probability $p < \frac{d'}{n'}$ and use Chernoff's bound
+
+\begin{lemma}[Chernoff's Bound]\label{lem:chernoff-traditional}
+Let $X_1,\cdots, X_m$ be independent $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ for all $i$. Then, if $X = \sum X_i$ and $\mu = \E[X]$, for any $\delta > 0$, we have the following bounds:
+\[
+\Pr[ X > (1 + \delta) \mu ] \spaced{\leq} \begin{cases}
+e^{-\delta^2 \mu/3} & \text{if }\delta < 1\\
+e^{-\delta \mu/3} & \text{if }\delta > 1
+\end{cases}
+\]
+\end{lemma}
+Hence, in the regime we are interested in, we would like $(1+\delta)\mu = d'$ where $\mu = p n'$ if $p$ is the probability with which we keep a variable alive. If $\delta < 1$, or in other words $p \approx \frac{d'}{n'}$, then this error term cannot be better than $\exp(-d') = \exp(-\sqrt{d})$ and this is not sufficient for the union bound over all gates. 
+
+The other possibility is that we choose $p \ll \frac{d'}{n'}$ but choose $\delta$ large enough so that $(1+ \delta)\mu = d'$.
+However in this regime, $\delta > 1$ and hence $\delta\mu = O(d')$.
+Once again \autoref{lem:chernoff-traditional} only gives an error of $\exp(-O(d'))$.
+
+But this intuitively seems weird.
+The idea was to choose a $p$ small enough so that the $\Pr[X > \sqrt{d}]$ becomes $\exp(-\Omega(d' \log n))$.
+Certainly as we decrease $p$, the error must go down but this is somehow not seen from \autoref{lem:chernoff-traditional} as the error seems stuck at $\exp(-O(d'))$.
+What this shows is that the bounds provided by \autoref{lem:chernoff-traditional} are not tight enough to work in the regime when $\mu$ is very small. Fortunately, there are better bounds known and we shall use that. 
+
+\subsection{Stronger Chernoff Bounds}
+
+The following statement is the tightest bound we know for the Chernoff bounds.
+We are interested in understanding a sum of $m$ independent, identically distributed $\set{0,1}$ random variables, and say $\Pr[X_i = 1] = p$.
+Suppose we are interested in the event that $X = \sum X_i > (p + \epsilon)m$.
+Intuitively, such an event makes it seem like $\Pr[X_i = 1] = p+\epsilon$ rather than $p$.
+Thus one should expect that the probability of this event happening should be related to the \emph{distance between} the distributions $\Pr[X_i=1]= p$ and $\Pr[X_i = 1] = p+\epsilon$. Indeed, the following bound formalizes this by using the \emph{relative entropy} or \emph{KL-divergence} as the distance measure. 
+
+\begin{lemma}[Chernoff's bound via relative entropy]\label{lem:chernoff-stronger}
+Let $X_1,\cdots, X_m$ be independent, identically distributed $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ and let $X = \sum X_i$. For any $p' > p$, we have
+\[
+\Pr[X >p' m] \spaced{\leq} e^{-m \cdot \mathbb{D}(p' \Vert p)}
+\]
+where $\mathbb{D}(\alpha \Vert \beta)$ is the \emph{relative entropy} or \emph{KL-divergence} between the distributions $\Pr[X_i=1] = \alpha$ and $\Pr[X_i=1]=\beta$ defined as
+\[
+\mathbb{D}(\alpha \Vert \beta) \spaced{:=} \alpha \cdot \log \pfrac{\alpha}{\beta} \;+\; (1 - \alpha) \log \pfrac{1-\alpha}{1- \beta}.
+\]
+\end{lemma}
+
+All the usual bounds for Chernoff are essentially obtained by approximating the relative entropy term in some way. We shall use this formulation to analyze the random restriction process in a single shot. A few simplifications are in order. 
+
+\begin{claim}\label{stronger-chernoff-secondterm}
+For any $0 < \beta < \alpha < 1/2$, 
+\[
+0 \geq (1 - \alpha) \log\pfrac{1 - \alpha}{1 - \beta} \geq -2\alpha. 
+\]
+\end{claim}
+\begin{proof}
+First note that since $\beta < \alpha$, we have $1 \geq \frac{(1-\alpha)}{(1-\beta)}$ and hence its logarithm is negative. 
+\begin{eqnarray*}
+(1 - \alpha) \log\pfrac{1 - \alpha}{1 - \beta} & \geq & \log\pfrac{1 - \alpha}{1 - \beta}\\
+& = & \log(1 - \alpha) - \log (1-\beta)\\
+& \geq & \log(1 - \alpha)\qquad(\text{ $\because \beta < 1$})\\
+& = & - \alpha - \frac{\alpha^2}{2} - \frac{\alpha^3}{3} \cdots \\
+& \geq & - \alpha - \alpha^2 - \alpha^3 \cdots\\
+& \geq & -2\alpha\qedhere
+\end{eqnarray*}
+\end{proof}
+Thus effectively, in the definition of $\mathbb{D}(\alpha \Vert \beta)$, the dominant term is the first term when $\beta \ll \alpha$. 
+
+\begin{corollary}
+For any $0 < \beta < \alpha < 1/2$, then
+\[
+\mathbb{D}(\alpha\Vert \beta)  \spaced{\geq}  \alpha \inparen{\log\pfrac{\alpha}{\beta} - 2}.
+\]
+\end{corollary}
+
+\noindent In particular, if $\beta \ll \alpha$, the negative $2$ above is not relevant as it is dominated by the growing function $\log(\alpha/\beta)$ so we shall drop that for simplicity.\\
+
+Let's get back to the setting we were interested in.
+We have $n' = n^{0.9}$ variables, each kept alive with some probability $p$.
+The goal was to find a suitable $p$ so that the probability more than $d' = \sqrt{d}$ among the $n'$ are kept alive is at most $\exp(-\Omega(\sqrt{d} \log n))$. If $p'n' =  d'$, then
+\begin{eqnarray*}
+\Pr[X > d'] & \geq & \exp\inparen{-n' \inparen{p'\log\pfrac{p'}{p}}}\\
+ & = & \exp\inparen{-d'\inparen{\log(p'/p)}}
+\end{eqnarray*}
+Therefore, all we need to do is to choose $p$ so that $\log(p'/p) = \Omega(\log n)$ and we would are done!
+We summarize this as a lemma, since we'd use this in the next chapter as well.
+
+\begin{lemma}\label{lem:single-step-fanin-reduction}
+Let $S_1,\cdots, S_r$ be subsets of $[n]$ of size at most $n^{0.9}$ each and suppose $r \leq n^{0.01 \sqrt{d}}$. If we pick a set $R \subseteq [n]$ by choose every element independently with probability $\frac{\sqrt{d}}{n^{0.92}}$, then
+\[
+\Pr[\text{For all $i$, } \abs{S_i \intersection R} \leq \sqrt{d}] \spaced{=} 1 - o(1).
+\]
+\end{lemma}
 
 
 
@@ -131,7 +225,10 @@ Use the techniques to prove a similar $n^{\Omega(\sqrt{d})}$ lower bound for hom
 
 
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "fancymain"
+
+
+
+%%% Local Variables: 
+%%% mode: latex 
+%%% TeX-master: "fancymain" 
 %%% End:
