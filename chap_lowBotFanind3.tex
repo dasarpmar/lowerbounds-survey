@@ -15,7 +15,13 @@ The following is the key observation of Kayal and Saha \cite{KayalSaha14} and ca
   Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot d^r$
 \end{observation}
 
-This observation in combination with \autoref{thm:KLSS-lowsupp} immediately yields the main theorem of \cite{KayalSaha14}.
+We would like to combine this with \autoref{lem:d4hom-goldilocks-LB} but the only catch is the additional $d^r = d^{\sqrt{d}}$ cost we incur.
+Had that been $2^{O(\sqrt{d})}$, we would have been fine as we are hoping to prove something like a $n^{\sqrt{d}/1000}$ lower bound.
+And so far, we were dealing with $\NW_{d,m,e}$ with $n \approx d^3$ and in this regime $d^{\sqrt{d}} = n^{(1/3)\sqrt{d}}$.
+But if we look back at the constraints for $\NW_{d,m,e}$, we only needed to ensure that $m^e \approx 2^d$, where the total number of variables $n = md$.
+Fortunately, there is enough freedom to make $d$ much much smaller than $m$ but still ensure that $m^e = 2^d$ by reducing $e$ appropriately. Hence for any $\epsilon > 0$, with a suitable trade-off between $d$ and $n$, we can always make sure that $d^{\sqrt{d}}$ is much smaller than $n^{\epsilon \sqrt{d}}$. 
+
+The same trade-off also works for $\IMM$ and hence this immediately  the main theorem of \cite{KayalSaha14}.
 
 \begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
   Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
@@ -23,7 +29,6 @@ This observation in combination with \autoref{thm:KLSS-lowsupp} immediately yiel
   parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
   n^{\Omega(d/r)}$. 
 \end{theorem}
-
 
 \section{$\SPS$ circuits with bottom fan-in $n^{1-\epsilon}$}
 
@@ -43,94 +48,8 @@ What we would like to do is reduce to this case somehow, and a natural approach 
 
 \subsection*{Attempt 1}
 
-
-Assume that the size $s$ of the circuit is at most $n^{0.1\sqrt{d}}$.
-Thus there are at most $n^{0.1 \sqrt{d}}$ linear polynomials computed by the homogeneous depth-$5$ circuit as the bottom layer, each of which is a linear polynomial on just $n^{0.9}$ variables.
-Let us apply a random restriction of setting each variable independently to zero with probability $1 - \alpha = 1 - \frac{\sqrt{d}}{n^{0.9}}$, so that the expected size of a linear form is now $\sqrt{d}$.
-
-What would Chernoff's bound give us?
-We have $n^{0.9}$ independent variables that takes value $1$ with probability $\alpha$ indicating whether that variable is kept alive or not.
-Therefore the expected number of variables kept alive in that linear form is $\mu = \sqrt{d}$.
-Chernoff's bound states that the probability that more than $\mu (1 + \delta)$ of them are kept alive is at most $\exp(-\delta^2 \mu) = \exp(-O(\sqrt{d}))$ if $\delta$ is a constant.
-This is not enough for a union bound over $s = n^{0.1\sqrt{d}}$ gates.
-
-Nevertheless, let us do what we can and use a random restriction that sets variables to zero with probability $1 - \alpha = 1 - \frac{d}{n^{0.9}}$.
-Now we can indeed use Chernoff's bound to show that with very high probability, all linear polynomials are now over at most $2d$ variables as the expected size of the linear form is $d$.
-
-The number of total variables that are alive $n'$ is still about $n^{0.1}$ which is hopefully enough.
-We shall get to this point later, and for now hope that we can make $n' \gg d$. 
-
-Thus we now need to deal with a $\Sigma\Pi\Sigma\mywedge\Sigma^{d}$ homogeneous circuit (dropping the constant factor for brevity).
-The question now is, have we made any progress at all?
-
-
-\subsection*{Attempt 2}
-
-Since the top gate is a $+$ gate, it suffices to understand one term 
-\[
-T \spaced{=} \prod_{i} \inparen{\sum_j \ell_{ij}^{d_i}}
-\]
-Some of the $d_i$s could be large specifically $d_i > 2\sqrt{d}$ and others smaller. We shall split the above product as
-\begin{eqnarray*}
-T &=& \prod_{\substack{i\\d_i \leq 2\sqrt{d}}} \inparen{\sum_j \ell_{ij}^{d_i}} \; \cdot \; \prod_{\substack{i\\d_i > 2\sqrt{d}}} \inparen{\sum_j \ell_{ij}^{d_i}}\\
-  & = & T_{\text{low}} \; \cdot \; T_{\text{high}}
-\end{eqnarray*}
-We already have some experience with handling low degree factors so we only need to address the high degree factors.
-It would be great if we could just expand out the high-degree factors and show that they do not contribute anything but at first sight it seems like there were would too many monomials for this to work.
-But Kayal and Saha \cite{KayalSaha14} show a way to handle this delicately. 
-
-To get a sense of this, let us just take one power of a linear form $\ell^{d_i}$. All we know right now is that $\ell$ depends on $d$ variables, and $2\sqrt{d} < d_i \leq d$. Expanding this na\"ively would yield about $d^d$ monomials but let us count this a little differently. Let us write this as $\ell^{2\sqrt{d}} \cdot \ell^{d_i - 2\sqrt{d}}$ and expand only the $\ell^{2\sqrt{d}}$ part. This gives an expression of the form
-\[
-\ell^{d_i} = \sum_{i=1}^t m_i \cdot \ell^{d_i - 2\sqrt{d}}
-\]
-with $t \leq d^{2\sqrt{d}}$. Some of the $m_i$s could be non-multiquadratic so they would not contribute anything to the projected shifted partial derivatives. But the $m_i$s that are multiquadratic must therefore have support size at least $\sqrt{d}$. Since these are all monomials over just $d$ variables, the number of distinct multiquadratic monomials is at most $d^{\sqrt{d}}$. If we can eliminate all these monomials, we would be done. Let $\mathcal{B}$ be the set of all multiquadratic monomials of $\ell_i^{2\sqrt{d}}$ when we run over all the $\ell_i$s in the circuit. After the random restriction from the previous step, we have $n' \approx n^{0.1}$ variables alive. Therefore, we have that $\abs{\mathcal{B}} \leq (n')^{0.1\sqrt{d}} \cdot d^{\sqrt{d}} \leq (n')^{0.51 \sqrt{d}}$ since we will definitely have $n' \geq d^2$. 
-
-To eliminate all monomials in $\mathcal{B}$, we use a random restriction $\rho_\beta$ and set each variable to zero with probability $1 - \beta$ where $\beta = \frac{1}{(n')^{0.6}}$. For such a restriction, the probability that a fixed $\sqrt{d}$ support monomial survives is at most $(n')^{-0.6\sqrt{d}}$ and thus even after a union bound, with overwhelming probability all monomials in $\mathcal{B}$ are now set to zero. What this means is that the only monomials in $T_{\text{high}}$ are non-multiquadratic monomials and hence will not contribute to the projected shifted partials. 
-\[
-\rho_\beta(\SPS\mywedge\Sigma^{d}) \spaced{=} \SPSP^{[2\sqrt{d}]} \;+\; (\text{non-multiquadratic monomials})
-\]
-
-Combining it all together, if $f$ is a polynomial computed by a $\SPS^{[n^{0.9}]}$ circuit, then $\rho_\beta \circ \rho_\alpha (f)$ satisfies
-\[
-\CM{PSD}_{k,\ell}\inparen{\rho_\beta \circ \rho_\alpha(f)} \spaced{\leq} \binom{2\sqrt{d}}{k} \cdot \binom{n''}{\ell + 2k\sqrt{d}}
-\]
-where $n'$' is the variables alive in $\rho_\beta \circ \rho_\alpha(f)$. 
-
-\subsection*{Constructing the hard polynomial}
-
-What do the two restrictions together look like? The first restriction keeps a variable alive with probability $\alpha = \frac{d}{n^{0.9}}$ which leaves about $n' = \frac{n^{0.1}}{d}$ variables alive. The second restrictions keeps a variable alive with probability $\beta = (n')^{-0.6}$. Hence together, this can be viewed as a single random restriction that keeps a variable alive with probability about
-\[
-\alpha \cdot \beta \spaced{=} \frac{d}{n^{0.9}} \cdot \frac{1}{\inparen{\frac{n^{0.1}}{d}}^{0.6}} \spaced{=} \frac{d^{1.6}}{n^{0.96}}.
-\]
-We'll build our hard polynomial so that $n \geq d^{1000}$ so we can think of the two random restrictions as a single restriction $\rho_\epsilon$ where $\epsilon = \frac{1}{n^{0.99}}$.\\
-
-The question now is, can we build a hard polynomial $P$ on $n$ variables with degree $d$ satisfying $n > d^{1000}$ such that \emph{even after} a random restriction $\rho_\epsilon$ for $\epsilon = n^{-0.99}$, the polynomial $\rho_\epsilon(P)$ has a large dimension of projected shifted partial derivatives? The answer is indeed `Yes' and the $\NW$ polynomial family can be made robust using the linear blow-up trick (\autoref{lem:lin-transform-trick}). 
-
-Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$-variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
-
-Now suppose this polynomial is computed by a $\SPS^{[n^{0.9}]}$ circuit. Applying $\rho_\epsilon$, we get that $\rho_\epsilon(\NW_{d,m,e} \circ \mathrm{Lin})$ is computed by a circuit of the form 
-\[
-\SPSP^{[2\sqrt{d}]} + (\text{non-multiquadratic}).
-\]
-Since $\rho_\epsilon(\NW_{d,m,e})$ has a copy of $\NW_{d,m,e}$ sitting inside, by setting additional variables to zero, we now have a circuit of the same form as above computing $\NW_{d,m,e}$ and we have our lower bound from \autoref{lem:upper-bound-low-supp} and \autoref{lem:d4hom-goldilocks-LB}:
-\[
-\CM{PSD}_{k,\ell}\inparen{\SPSP^{[2\sqrt{d}]} + \text{non-multiquadratic}} =  \CM{PSD}_{k,\ell}\inparen{\SPSP^{[2\sqrt{d}]}} \ll \CM{PSD}_{k,\ell}(\NW_{d,m,e}). 
-\]
-
-This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that we can run the whole argument with $\IMM$ instead of $\NW$). \qed\\
-
-\begin{exercise}
-Use the techniques to prove a similar $n^{\Omega(\sqrt{d})}$ lower bound for homogeneous $\SPSP\Sigma^{[n^{0.99}]}$ circuits. Find out where the above proof breaks and see if there are different sets of parameters to fix the issue. 
-\end{exercise}
-
-\section{Directly analysing a single random restriction}
-
-The above proof is a little counter-intuitive in the sense that we seem to obtain a random restriction where all linear polynomials essentially become size $\sqrt{d}$ but somehow we seem to need a two-step process.
-Shouldn't there be a direct way to analysing this random process in a single step? \\
-
-Let's retrace our steps.
-We have linear forms of size $n' = n^{0.9}$ and we want to use a random restriction to reduce keep only $d' = \sqrt{d}$ of the the $n'$ variables alive.
-The natural attempt was to keep a variable alive with probability $p < \frac{d'}{n'}$ and use Chernoff's bound
+We have linear forms of size $n' = n^{0.9}$ and we want to use a random restriction to reduce keep only $d' = \sqrt{d}$ of the the $n'$ variables alive and set the rest to zero.
+The natural choice is to keep a variable alive with probability $p < \frac{d'}{n'}$ and use Chernoff's bound. Hopefully the error probability is low enough and we can union bound over all linear forms in the circuit. 
 
 \begin{lemma}[Chernoff's Bound]\label{lem:chernoff-traditional}
 Let $X_1,\cdots, X_m$ be independent $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ for all $i$. Then, if $X = \sum X_i$ and $\mu = \E[X]$, for any $\delta > 0$, we have the following bounds:
@@ -141,16 +60,16 @@ e^{-\delta \mu/3} & \text{if }\delta > 1
 \end{cases}
 \]
 \end{lemma}
-Hence, in the regime we are interested in, we would like $(1+\delta)\mu = d'$ where $\mu = p n'$ if $p$ is the probability with which we keep a variable alive. If $\delta < 1$, or in other words $p \approx \frac{d'}{n'}$, then this error term cannot be better than $\exp(-d') = \exp(-\sqrt{d})$ and this is not sufficient for the union bound over all gates. 
+Hence, in the regime we are interested in, we would like $(1+\delta)\mu = d'$ where $\mu = p n'$ if $p$ is the probability with which we keep a variable alive. If $\delta < 1$, or in other words $p \approx \frac{d'}{n'}$, then this error term cannot be better than $\exp(-d') = \exp(-\sqrt{d})$ and this is not sufficient for the union bound over all gates as we have $\exp(\Omega(\sqrt{d}\log n))$ of them. 
 
 The other possibility is that we choose $p \ll \frac{d'}{n'}$ but choose $\delta$ large enough so that $(1+ \delta)\mu = d'$.
 However in this regime, $\delta > 1$ and hence $\delta\mu = O(d')$.
-Once again \autoref{lem:chernoff-traditional} only gives an error of $\exp(-O(d'))$.
+Once again \autoref{lem:chernoff-traditional} only gives an error of $\exp(-O(d'))$. Seems like we are unable to use Chernoff's bound to reduce to the case when the bottom fan-in is $\sqrt{d}$. Kayal and Saha \cite{KayalSaha14} do a two-step random restriction process to make handle this differently, but let us spend a moment thinking about this as this should be intuitively weird. 
 
-But this intuitively seems weird.
-The idea was to choose a $p$ small enough so that the $\Pr[X > \sqrt{d}]$ becomes $\exp(-\Omega(d' \log n))$.
-Certainly as we decrease $p$, the error must go down but this is somehow not seen from \autoref{lem:chernoff-traditional} as the error seems stuck at $\exp(-O(d'))$.
-What this shows is that the bounds provided by \autoref{lem:chernoff-traditional} are not tight enough to work in the regime when $\mu$ is very small. Fortunately, there are better bounds known and we shall use that. 
+
+The plan was to set $p$ small enough so that the $\Pr[X > \sqrt{d}]$ becomes $\exp(-\Omega(\sqrt{d} \log n))$.
+Certainly as we decrease $p$, this probability must go down but this is somehow not seen from \autoref{lem:chernoff-traditional} as the error seems stuck at $\exp(-O(d'))$.
+What this shows is that the bounds provided by \autoref{lem:chernoff-traditional} are not tight enough to work in the regime when $\mu$ is very small. Fortunately, there are better bounds known and we shall use that. (This is different from the original analysis of Kayal and Saha~\cite{KayalSaha14}.) 
 
 \subsection{Stronger Chernoff Bounds}
 
@@ -218,15 +137,38 @@ Let $S_1,\cdots, S_r$ be subsets of $[n]$ of size at most $n^{0.9}$ each and sup
 \]
 \end{lemma}
 
+Therefore, as long as the size of the $\SPS^{[n^{0.9}]}$ circuit is not too large, we can apply a random restriction with probability $p = \frac{\sqrt{d}}{n^{0.92}}$ and reduce to the case of $\SPS^{[\sqrt{d}]}$ circuits. 
+
+\subsection{Building the hard polynomial}
+
+The task now is to build a hard polynomial $P$ with a suitable trade-off between the number of variables and its degree so that  \emph{even after} a random restriction $\rho_\epsilon$ for say $\epsilon = n^{-0.99}$, the polynomial $\rho_\epsilon(P)$ has a large dimension of projected shifted partial derivatives. We can once again use the $\NW$ polynomial family and make it robust to such projections using the linear blow-up trick (\autoref{lem:lin-transform-trick}). 
+
+Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$-variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
+
+Now suppose this polynomial is computed by a $\SPS^{[n^{0.9}]}$ circuit. Applying $\rho_\epsilon$, we get that $\rho_\epsilon(\NW_{d,m,e} \circ \mathrm{Lin})$ is computed by a $\SPS^{[\sqrt{d}]}$ circuit.  
+\[
+\SPSP^{[2\sqrt{d}]} + (\text{non-multiquadratic}).
+\]
+Since $\rho_\epsilon(\NW_{d,m,e})$ has a copy of $\NW_{d,m,e}$ sitting inside, by setting additional variables to zero, we now have a circuit of the same form as above computing $\NW_{d,m,e}$ and we have our lower bound from \autoref{lem:upper-bound-low-supp} and \autoref{lem:d4hom-goldilocks-LB}:
+\begin{eqnarray*}
+\CM{PSD}_{k,\ell}\inparen{\SPS^{[\sqrt{d}]}} & \leq& \CM{PSD}_{k,\ell}\inparen{\SPSP^{[\sqrt{d}]}} + \CM{PSD}_{k,\ell}\inparen{\text{non-multiquadratic}} \\
+& = & \CM{PSD}_{k,\ell}\inparen{\SPSP^{[\sqrt{d}]}}\\
+&\ll &\CM{PSD}_{k,\ell}(\NW_{d,m,e}). 
+\end{eqnarray*}
+
+This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that we can run the whole argument with $\IMM$ instead of $\NW$). \qed
+
+\begin{exercise}
+Use these techniques to prove a similar lower bound for hom. $\SPSP\Sigma^{[n^{0.9}]}$ circuits. 
+\end{exercise}
 
 
+\begin{remark*}
+In the paper of Kayal and Saha~\cite{KayalSaha14}, the focus was on the $\NW$ polynomial as their proof used the calculations seen in \autoref{thm:KLSS-lowsupp} which are tailored to $\NW$. 
+Bera and Chakrabarti~\cite{BC15} instead gave a lower bound for $\IMM$ but for hom. $\SPSP\Sigma^{[n^{0.5 - \epsilon}]}$ circuits and showed an $n^{\Omega(\sqrt{d})}$.
 
-
-
-
-
-
-
+But with the linear blow-up trick described in \autoref{lem:lin-transform-trick}, it is now clear that the techniques of \cite{KayalSaha14} also yield the lower bound for $\IMM$. 
+\end{remark*}
 
 %%% Local Variables: 
 %%% mode: latex 
