@@ -17,7 +17,7 @@ Clearly, $\SPS^{[r]}$ circuits are a special case of $\SPA^{[r]}$ circuits. In t
 
 The main theorem of Kumar and Saraf~\cite{KumarSaraf15} and Kayal and Saha~\cite{KayalSaha15} is the following.
 
-\begin{theorem}[\cite{KumarSaraf15, KayalSaha15}]\label{thm:low-arity-lb} For every $\epsilon > 0$, there is an explicit $n$-variate degree $d$ homogeneous polynomial $P \in \VP$ such that any $\SPA^{[n^{1-\epsilon}]}$ circuit computing it must have size at least $n^{\Omega_\epsilon(\sqrt{d})}$. 
+\begin{theorem}[\cite{KumarSaraf15, KayalSaha15}]\label{thm:low-arity-lb} Assume that the characteristic of the base field is $0$ (or large enough). For every $\epsilon > 0$, there is an explicit $n$-variate degree $d$ homogeneous polynomial $P \in \VP$ such that any $\SPA^{[n^{1-\epsilon}]}$ circuit computing it must have size at least $n^{\Omega_\epsilon(\sqrt{d})}$. 
 \end{theorem}
 
 The rest of the chapter, we shall see a proof of this but we shall work with $\NW$ instead of $\IMM$. It would be clear from the proof that it should carry over to $\IMM$ immediately. Once again, we shall work with $n^{0.9}$ instead of $n^{1-\epsilon}$ as that would have all the ideas and save us some notation. 
@@ -60,7 +60,7 @@ It is useful to keep the $\SPS^{[r]}$ case at the back of our minds.
 How were we able to control the $\Pi$-fanin there?
 There, we use $\ESym$ to \emph{extract} the $d$-th homogeneous part from the $\SPS$ circuit and expressed that as a homogeneous $\SPS\mywedge\Sigma$ circuit. 
 We shall do something similar here.
-For any polynomial $P$ and positive integer $i$, let $\Hom_i(P)$ refer to the $i$-th homogeneous component of $P$ and let $\Hom_{\leq i}(P)$ refer to the sum of the  homogeneous parts of degree up to $i$ of $P$. 
+For any polynomial $P$ and positive integer $i$, recall that $\Hom_i(P)$ refers to the $i$-th homogeneous component of $P$ and let $\Hom_{\leq i}(P)$ refer to the sum of the  homogeneous parts of degree up to $i$ of $P$. 
 
 Let's focus on one term $T = Q_1 \cdots Q_t$. Say the first $a$ of the $Q_i$s have a zero constant term. As for the rest, we may assume that the constant term is one by scaling $T$ appropriately. Hence, we have an expression of the form 
 \[
@@ -85,7 +85,7 @@ Therefore if $T$ is a $\Pi\circast^{[\sqrt{d}]}$ circuit, since each $\ESym_i(y_
 
 As we are only interested in the degree $d$ homogeneous part, we might as well assume that each of the $\circast^{[\sqrt{d}]}$ computations are polynomials of degree at most $d$, as the higher degree monomials cannot contribute to $\Hom_d(T)$. Thus, we have that $\Hom_d(T)$ is the homogeneous degree $d$ part of a  $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit of formal degree at most $d^2$. 
 
-We have already seen earlier that the homogeneous parts of any low-degree circuit can be computed via interpolation\todo{Finish this}.
+We have already seen earlier that the homogeneous parts of any low-degree circuit can be computed via interpolation (\autoref{lem:computing-hom-components})
 Therefore, there is a $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit of size at most $2^{O(\sqrt{d})} \cdot \poly(d,t)$ computing $\Hom_d(T)$. Therefore, if $f$ is a homogeneous degree $d$ polynomial computed by a $\SPA^{[\sqrt{d}]}$ circuit of size $s$, then by extracting the homogeneous parts of degree $d$ from each summand we have 
 \[
 f \spaced{=} \sum_{i=1}^s \Hom_d(T_i) \spaced{\in} \Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]},\text{ size $2^{O(\sqrt{d})} \poly(d,t)$}.
