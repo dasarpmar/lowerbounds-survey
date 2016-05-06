@@ -89,7 +89,7 @@ The key underlying idea in both the above examples is that once we knew that a p
 The key to the proof of~\autoref{thm:lower bound} is the following lemma, which shows that some weaker version of such a statement in indeed true. 
 
 \begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:using algebraic dependence-intro}
-Let $\F$ be any  field of characteristic zero or sufficiently large characteristic. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca$ in $\F^n$ and a polynomial $F_{k+1}$  in $k$ variables such that 
+Let $\F$ be any  field of characteristic zero or sufficiently large characteristic. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists a polynomial $F_{k+1}$  in $k$ variables such that for a random~\footnote{Here random $\veca$ means an $\veca$ chosen from a large enough grid in $\F^n$. The size of this grid depends on the degree of $F_{k+1}$ and the degree of $Q_i$s. } $\veca \in \F^{n}$,  
 $$Q_{k+1}(\vecx + \veca) = \h^{\leq d_{k+1}}\left[F_{k+1}(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
 \end{lemma}
 Here, for any  polynomial $P$, we use $\h^{\leq i}[P]$ to refer to homogeneous components of $P$ of degree less than or equal to $i$. In fact, as it will turn out, a random choice of the translation $\veca$ from a sufficiently large grid in $\F^n$ would suffice for the above lemma. 
@@ -107,7 +107,34 @@ where for a degree $d$ polynomial $F$, $\h[F]$ denotes the $d+1$-tuple of homoge
 
 The crucial gain in the above transformation is that  the arity of each of the polynomials  $C_i'$ is $(d+1) \times k$ and not $t$ (where $d$ is an upper bound on the degrees of the $Q_{ij}$). Now by assumption $k \leq d$, and moreover WLOG we can assume that the degree of each $Q_{ij}$ is at most $d$ since homogeneous components of $Q_{ij}$ of degree larger than $n$ can essentially be dropped since they do not contribute to the computation of a degree $d$ polynomial. Thus we have essentially\footnote{One has to be careful while doing this, since the degree of $C_i'$ might be really really large, and hence the standard technique of interpolation is not immediately applicable here.} reduced to the case where each $C_i'$ depends on at most $d^2$ polynomials of degree at most $d$.  
 
-One loss by this transformation is that the polynomials $\{C_i'\}$ might be much more complex and with much higher degrees than the original polynomials $\{C_i\}$. However, this will not affect the computation of the complexity measure. Another loss is that we have to deal with the translated polynomial $C(\vecx + \veca)$. This introduces some subtleties into our computation as it could be that $Q_{ij}(\vecx)$ is a sparse polynomial but $Q_{ij}(\vecx+ \veca)$ is far from being sparse. Neither of these issues is very difficult to deal with, and we are able to get strong bounds for the projected shifted partial derivative based measure for such circuits. 
+One loss by this transformation is that the polynomials $\{C_i'\}$ might be much more complex and with much higher degrees than the original polynomials $\{C_i\}$. However, this will not affect the computation of the complexity measure. Another loss is that we have to deal with the translated polynomial $C(\vecx + \veca)$. This introduces some subtleties into the computation as it could be that $Q_{ij}(\vecx)$ is a sparse polynomial but $Q_{ij}(\vecx+ \veca)$ is far from being sparse. Neither of these issues is very difficult to deal with, and we are able to get strong bounds for the projected shifted partial derivative based measure for such circuits. 
+
+It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:using algebraic dependence-intro} is also true. Next we outline a simple proof of this fact over fields of characteristic zero due to Saptharishi. 
+
+\begin{lemma}[Functional dependence to algebraic dependence]~\label{lem:using algebraic dependence-converse}
+Let $\F$ be any  field of characteristic zero or sufficiently large characteristic. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$. 
+If there exists a polynomial $F_{k+1}$  in $k$ variables such that for a random~\footnote{Here random $\veca$ means an $\veca$ chosen from a large enough grid in $\F^n$. The size of this grid depends on the degree of $F_{k+1}$ and the degree of $Q_i$s. } $\veca \in \F^{n}$,  
+$$Q_{k+1}(\vecx + \veca) = \h^{\leq d_{k+1}}\left[F_{k+1}(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
+then, $\{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ are algebraically dependent. 
+\end{lemma}
+\begin{proof}
+For this proof, we assume without loss of generality that $Q_{k+1}$ depends on all $n$ variables. Consider $\vecz$ be a new set of $n$ variables. Let us now collect the terms of degree exactly one in the $x$ variables in $Q_{j}(\vecx + \vecz)$. By Taylor's expansion, this is equal to $\sum_{i = 1}^n x_i\cdot Q^i_j(\vecz)$, where $ Q^i_j(\vecz) = \frac{\partial Q_{j}(\vecy)}{\partial y_i}\left(\vecz \right)$. 
+Now, let us consider the monomials  in  $F_{k+1}(Q_1(\vecx + \vecz), Q_2(\vecx + \vecz), \ldots, Q_k(\vecx + \vecz))$ which have degree equal to $1$ in the $x$ variables. It is easy to observe that this is equal to monomials of degree exactly one in $x$ variables in  $F_{k+1}(\sum_{i = 1}^n x_iQ^i_1(\vecz), \sum_{i = 1}^n x_iQ^i_2(\vecz), \ldots, \sum_{i = 1}^n x_iQ^i_k(\vecz))$. This in turn is just equal to 
+\[
+\sum_{i = 1}^n x_i\left( \sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz) \right)
+\]
+Here, $\alpha_{ij}$ is a constant in $\F$ for every $i$ and $j$. From the hypothesis of the lemma, it follows that for a random instantiation of $\vecz \in \F^n$, say $\vecz = \veca$, it holds that for every $i\in [n]$,
+\[
+\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\veca) = Q^i_{k+1}(\veca)
+\]
+Observe that $Q^{i}_j(\vecz)$ is a polynomial of some degree $d$ in $n$ variables. From our assumption, we know that $Q^{i}_{k+1}(\vecz)$ is not the zero polynomial for every value of $i \in [n]$, since otherwise, $Q_{k+1}$ does not depend on $x_i$. Therefore, it follows that $\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz)$ is in fact a non-zero polynomial in $\vecz$ and the polynomial identity 
+\[
+\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz) = Q^i_{k+1}(\vecz)
+\]
+is true. But then, this means that the vector $[Q^1_{k+1}(\vecz), Q^2_{k+1}(\vecz), \ldots, Q^n_{k+1}(\vecz)]$ is in the $\F$-linear span of the vectors $\{[Q^1_{1}(\vecz), Q^2_{1}(\vecz), \ldots, Q^n_{1}(\vecz)], [Q^1_{2}(\vecz), Q^2_{2}(\vecz), \ldots, Q^n_{2}(\vecz)], \ldots, [Q^1_{k}(\vecz), Q^2_{k}(\vecz), \ldots, Q^n_{k}(\vecz)]\}$. But this implies that the Jacobian matrix of the $Q_i$s is singular, implying that $Q_i$s are algebraically dependent. 
+
+\end{proof}
+
 
 In the next section, we first see a proof of~\autoref{lem:using algebraic dependence-intro} and then use it to sketch a proof of~\autoref{thm:lower bound}. 
 
@@ -123,7 +150,7 @@ For a field $\F$, let $P \in \F[\vecx, y]$ be a non-zero polynomial of degree at
 
 %We are now ready to state our main technical lemma. 
 \begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:using algebraic dependence}
-Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca$ in $\F^n$ and polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in $k$ variables such that $\forall i \in \{k+1, k+2, \ldots, t\}$
+Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exist polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in $k$ variables such that 	for a random\footnote{Again, by a random $\veca$, we mean a point chosen from a large enough grid in $\F^n$. The details of this will be clear from the proof.} $\veca \in \F^n$, and $\forall i \in \{k+1, k+2, \ldots, t\}$, 
 $$Q_i(\vecx + \veca) = \h^{\leq d_i}\left[F_i(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
 \end{lemma}
 \begin{proof}
@@ -185,33 +212,12 @@ We observed from the second item in Observation~\ref{obs:internal1} that the deg
 If $A''|_{y = Q}$ is identically zero, then it follows that $\{Q_1, Q_2, \ldots, Q_k, Q\}$ have an annihilating polynomial of degree smaller than the degree of $A$, which is a contradiction to the choice of $A$, as a minimum degree annihilating polynomial. 
 \end{proof}
 
-Lemma~\ref{lem:using algebraic dependence} lets us express all polynomials in a set of polynomials as a function of the polynomials in the transcendence basis. However, the functional form obtained is slightly cumbersome for us to use in the applications. The following corollary would be more convenient. 
+Lemma~\ref{lem:using algebraic dependence} lets us express all polynomials in a set of polynomials as a function of the polynomials in the transcendence basis. However, the functional form obtained is slightly cumbersome for us to use in the applications. The following corollary would be more convenient. The proof is fairly easy to see, and the details are left as an exercise. 
 
 \begin{corollary}~\label{cor:using algebraic independence new}
-Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i < d$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exists an $\veca $ in $\F^n$ and polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in at most $k(d+1)$ variables such that $\forall i \in \{k+1, k+2, \ldots, t\}$
+Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i < d$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exist polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in at most $k(d+1)$  variables and an $\veca \in \F^n$, such that $\forall i \in \{k+1, k+2, \ldots, t\}$
 $$Q_i(\vecx + \veca) = \left[F_i(\h[Q_1(\vecx + \veca)], \h[Q_2(\vecx + \veca)], \ldots, \h[Q_k(\vecx + \veca)]) \right] $$
 \end{corollary}
-\begin{proof}
-Let $i$ be such that $ i \in \{k+1, k+2, \ldots, t\}$. From Lemma~\ref{lem:using algebraic dependence}, we know that there exists an $\veca \in \F^N$ and a polynomial $W_{i}$ such that 
-\[
-Q_{i}(\vecx + \veca) = \h^{\leq d_{i}}\left[W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right] 
-\]
-
-We will now show that $\h^{\leq d_{i}}\left[W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right]$ is actually a polynomial in the homogeneous components of the various $Q_{j}(\vecx + \veca)$ by the following procedure, which is essentially univariate polynomial interpolation. 
-\begin{itemize}
-\item Let $R(\vecx) = W_{i}(Q_{1}(\vecx + \veca), Q_{2}(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca))$. We replace every variable $x_j$ in $R$ by $z\cdot x_j$ for a new variable $z$. We view the resulting polynomial $R'$ as an element of $\F(\vecx)[z]$, i.e a univariate polynomial in $z$ with coefficients coming from the field of rational functions in the $\vecx$ variables. 
-\item Now, observe that for any $\ell$, the homogeneous component of degree $\ell$ of  $R$ is precisely the coefficient of $z^{\ell}$ in $R'$. Hence, we can evaluate $R'$ for sufficiently many distinct values of $z$ in $\F(\vecx)$, and then take an $\F(\vecx)$ linear combination of these evaluations to express the homogeneous components. Moreover, since $\F$ is an infinite field, without loss of generality, we can pick the values of $z$ to be scalars in $\F$, and in this case, we will just be taking an $\F$ linear combination. 
-\end{itemize}
-The catch here is that after replacing $x_j$ by $z\cdot x_j$ and substituting different values of $z \in \F$, the polynomials $Q_{i'}(\vecx + \veca)$ could possibly lead to distinct polynomials. In general, this is bad, since our goal is to show that every polynomial in a set of algebraically dependent polynomials in a function of \emph{few} polynomials. However, the following observation comes to our rescue. Let $P$ be any polynomial in $\F[\vecx]$ of degree $\Delta$ and let $P'$ be the polynomial obtained from $P$ by replacing $x_j$ by $z\cdot x_j$. Then, 
-\[
-P'(\vecx + \veca) = \sum_{\ell = 0}^{\Delta} z^{\ell}.\h^{\ell}[P(\vecx)]
-\]
-In particular, the set of polynomials obtained from $P'$ for different values of $z$ are all in the linear span of homogeneous components of $P$. 
-
-Therefore, any homogeneous component of $R$ can be expressed as a function of the set of polynomials $\cup_{i = 1}^k \h\left[Q_i(\vecx + \veca) \right]$. This completes the proof of the corollary. 
-
-\end{proof}
-
 
 
 
@@ -250,7 +256,7 @@ and such that the following are true
 \item For each $i \in [T]$ and $j \in [t]$, $Q_{ij}$ is a polynomial in $N$ variables of degree at most $d$. 
 \item For each $i \in [T]$, the algebraic rank of the set of polynomials $\{Q_{ij} : j \in [t]\}$ is at most $k$ and  ${\cal B}_i = \{Q_{i1}, Q_{i2}, \ldots, Q_{ik}\}$ is a maximal algebraically independent subset of $\{Q_{ij} : j \in [t]\}$. 
 \end{itemize}
-Then, there exists an $\veca \in \F^{n}$ and polynomials $F_i'$ in at most $k(d+1)$ variables such that 
+Then, there exist polynomials $F_i'$ in at most $k(d+1)$ variables and an $\veca \in \F^n$ such that 
 
 \begin{multline}
 P(\vecx + \veca) = \sum_{i = 1}^T  F_i'(\h[Q_{i1}(\vecx + \veca)], \h[Q_{i2}(\vecx + \veca)], \ldots, \h[Q_{ik}(\vecx + \veca)])
@@ -304,19 +310,19 @@ R = \left[\sum_{i = 1}^T  F_{i}'(\h\left[ Q_{i1}'(\vecx + \veca)\right], \h\left
 
 Observe that the support of every monomial in each $Q_{ij}'(\vecx+\veca)$ is at most $\sqrt{d}$. So, by a standard calculation, 
 
-$$\Gamma_{r, \ell}^{\text{PSD}}(R) \leq T{k(n+1) + r \choose r}{N \choose \ell + r\sqrt{d}}$$
+$$\Gamma_{r, \ell}^{\text{PSD}}(R) \leq T{k(d+1) + r \choose r}{n \choose \ell + r\sqrt{d}}$$
 
 Now, observe that if every polynomial in the space of projected shifted partial derivatives of $R$ is projected onto the monomials of degree equal to $\ell + d-r$, then the dimension of this space does not increase. But, this is exactly the space of projected shifted partials of $C'$. 
 Hence,
 
 \[
-\Gamma_{r, \ell}^{\text{PSD}}(C') \leq T{k(n+1) + r \choose r}{N \choose \ell + r\sqrt{d}}
+\Gamma_{r, \ell}^{\text{PSD}}(C') \leq T{k(d+1) + r \choose r}{n \choose \ell + r\sqrt{d}}
 \]
 
 Observe that steps 2 and 3 of the proof are always successful if the restriction in step 1 is good, which happens with a probability at least $1-o(1)$. So, the lemma follows. 
 \end{proof}
 
-Together with the fact that the know explicit polynomials for which this measure is very close to the largest possible (\autoref{chap_d4hom}), this would complete the proof of~\autoref{thm:lower bound}. 
+Combining this upper bound on $\Gamma_{r, \ell}(C)$ with a lower bound on $\Gamma_{r, \ell}$ of an appropriate hard polynomial, for instance that of the Nisan-Wigderson polynomial, as shown in~\autoref{chap:d4hom} would complete the proof of~\autoref{thm:lower bound}. We leave these details for the reader to verify. However, we would like to point out that for $r = \epsilon\sqrt{d}$ the bound on $\Gamma_{r, \ell}(C)$ in~\autoref{lem: circuit complexity bound} is asymptotically of the form $T\cdot d^{2\epsilon\sqrt{d}}\cdot {n \choose \ell + \epsilon d}$. Recall that the upper bound on $\Gamma_{\epsilon\sqrt{d}, \ell}(C')$, where $C'$ is a homogeneous depth-$4$ circuit is asymptotically of the form   $T\cdot d^{2\epsilon\sqrt{d}}\cdot {n \choose \ell + \epsilon d}$ (\autoref{chap:d4hom}). So, there is a loss of a factor $d^{\Omega(\sqrt{d})}$ here. This might be a bit suspicious since the final lower bound for homogeneous depth-$4$ circuits is also of the order $n^{\Omega(\sqrt{d})}$ which is $d^{\Omega(\sqrt{d})}$, when $n = d^{O(1)}$. Intuitively, the catch is that the $d^{O(\sqrt{d})}$ term in the bound in~\autoref{lem: circuit complexity bound} is compared to the number of derivatives of order $\epsilon\sqrt{d}$ of the hard polynomial in the final polynomial. As long as these quantities differ by a factor of $n^{\Omega(\sqrt{d})}$, the calculations would go through. Now, if the number of columns in the variable matrix of the Nisan-Wigderson polynomial is $m$, the number of distinct derivatives of order $\epsilon\sqrt{d}$ of the polynomial is at least $m^{\epsilon\sqrt{d}}$. Hence, if $m$ is a sufficiently large polynomial in $d$, the asymptotics of the calculations continue to hold, and we would get an $n^{\Omega(\sqrt{d})}$ lower bound. 
 
 
 
