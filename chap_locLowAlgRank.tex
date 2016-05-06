@@ -118,20 +118,20 @@ $$Q_{k+1}(\vecx + \veca) = \h^{\leq d_{k+1}}\left[F_{k+1}(Q_1(\vecx + \veca), Q_
 then, $\{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ are algebraically dependent. 
 \end{lemma}
 \begin{proof}
-For this proof, we assume without loss of generality that $Q_{k+1}$ depends on all $n$ variables. Consider $\vecz$ be a new set of $n$ variables. Let us now collect the terms of degree exactly one in the $x$ variables in $Q_{j}(\vecx + \vecz)$. By Taylor's expansion, this is equal to $\sum_{i = 1}^n x_i\cdot Q^i_j(\vecz)$, where $ Q^i_j(\vecz) = \frac{\partial Q_{j}(\vecy)}{\partial y_i}\left(\vecz \right)$. 
-Now, let us consider the monomials  in  $F_{k+1}(Q_1(\vecx + \vecz), Q_2(\vecx + \vecz), \ldots, Q_k(\vecx + \vecz))$ which have degree equal to $1$ in the $x$ variables. It is easy to observe that this is equal to monomials of degree exactly one in $x$ variables in  $F_{k+1}(\sum_{i = 1}^n x_iQ^i_1(\vecz), \sum_{i = 1}^n x_iQ^i_2(\vecz), \ldots, \sum_{i = 1}^n x_iQ^i_k(\vecz))$. This in turn is just equal to 
+For this proof, we assume without loss of generality that $Q_{k+1}$ depends on all $n$ variables. Consider $\vecz$ be a new set of $n$ variables. Let us now collect the terms of degree at most one in the $x$ variables in $Q_{j}(\vecx + \vecz)$. By Taylor's expansion, this is equal to $Q_j(\vecz) + \sum_{i = 1}^n x_i\cdot Q^i_j(\vecz)$, where $ Q^i_j(\vecz) = \frac{\partial Q_{j}(\vecy)}{\partial y_i}\left(\vecz \right)$. 
+Now, let us consider the monomials  in  $F_{k+1}(Q_1(\vecx + \vecz), Q_2(\vecx + \vecz), \ldots, Q_k(\vecx + \vecz))$ which have degree equal to $1$ in the $x$ variables. It is easy to observe that this is equal to monomials of degree exactly one in $x$ variables in  $F_{k+1}(Q_1(\vecz)+\sum_{i = 1}^n x_iQ^i_1(\vecz) ,Q_2(\vecz) + \sum_{i = 1}^n x_iQ^i_2(\vecz), \ldots, Q_k(\vecz) + \sum_{i = 1}^n x_iQ^i_k(\vecz))$. This in turn is just equal to 
 \[
-\sum_{i = 1}^n x_i\left( \sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz) \right)
+\sum_{i = 1}^n x_i\left( \sum_{j = 1}^k \alpha_{ij}(\vecz) \cdot Q^i_j(\vecz) \right)
 \]
-Here, $\alpha_{ij}$ is a constant in $\F$ for every $i$ and $j$. From the hypothesis of the lemma, it follows that for a random instantiation of $\vecz \in \F^n$, say $\vecz = \veca$, it holds that for every $i\in [n]$,
+Here, $\alpha_{ij}(\vecz)$ is a polynomial in $\{Q_1(\vecz), Q_2(\vecz), \ldots, Q_k(\vecz)\}$ for every $i$ and $j$. From the hypothesis of the lemma, it follows that for a random instantiation of $\vecz \in \F^n$, say $\vecz = \veca$, it holds that for every $i\in [n]$,
 \[
-\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\veca) = Q^i_{k+1}(\veca)
+\sum_{j = 1}^k \alpha_{ij}(\veca)\cdot Q^i_j(\veca) = Q^i_{k+1}(\veca)
 \]
-Observe that $Q^{i}_j(\vecz)$ is a polynomial of some degree $d$ in $n$ variables. From our assumption, we know that $Q^{i}_{k+1}(\vecz)$ is not the zero polynomial for every value of $i \in [n]$, since otherwise, $Q_{k+1}$ does not depend on $x_i$. Therefore, it follows that $\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz)$ is in fact a non-zero polynomial in $\vecz$ and the polynomial identity 
+Observe that $Q^{i}_j(\vecz)$ is a polynomial of some degree $d$ in $n$ variables. From our assumption, we know that $Q^{i}_{k+1}(\vecz)$ is not the zero polynomial for every value of $i \in [n]$, since otherwise, $Q_{k+1}$ does not depend on $x_i$. Therefore, it follows that $\sum_{j = 1}^k \alpha_{ij}(\vecz)\cdot Q^i_j(\vecz)$ is in fact a non-zero polynomial in $\vecz$ and the polynomial identity 
 \[
-\sum_{j = 1}^k \alpha_{ij}\cdot Q^i_j(\vecz) = Q^i_{k+1}(\vecz)
+\sum_{j = 1}^k \alpha_{ij}(\vecz)\cdot Q^i_j(\vecz) = Q^i_{k+1}(\vecz)
 \]
-is true. But then, this means that the vector $[Q^1_{k+1}(\vecz), Q^2_{k+1}(\vecz), \ldots, Q^n_{k+1}(\vecz)]$ is in the $\F$-linear span of the vectors $\{[Q^1_{1}(\vecz), Q^2_{1}(\vecz), \ldots, Q^n_{1}(\vecz)], [Q^1_{2}(\vecz), Q^2_{2}(\vecz), \ldots, Q^n_{2}(\vecz)], \ldots, [Q^1_{k}(\vecz), Q^2_{k}(\vecz), \ldots, Q^n_{k}(\vecz)]\}$. But this implies that the Jacobian matrix of the $Q_i$s is singular, implying that $Q_i$s are algebraically dependent. 
+is true. But then, this means that the vector $[Q^1_{k+1}(\vecz), Q^2_{k+1}(\vecz), \ldots, Q^n_{k+1}(\vecz)]$ is in the $\F(\vecz)$-linear span of the vectors $[Q^1_{1}(\vecz), Q^2_{1}(\vecz), \ldots, Q^n_{1}(\vecz)]$, $[Q^1_{2}(\vecz), Q^2_{2}(\vecz), \ldots, Q^n_{2}(\vecz)]$, ... , $[Q^1_{k}(\vecz), Q^2_{k}(\vecz), \ldots, Q^n_{k}(\vecz)]$. But this implies that the Jacobian matrix of  ${\cal Q}$ is not full rank over the field $\F(\vecz)$, implying that $Q_i$s are algebraically dependent. 
 
 \end{proof}
 
