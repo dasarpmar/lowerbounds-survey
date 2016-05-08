@@ -1,18 +1,6 @@
 \chapter{Arithmetic circuits with locally low algebraic rank}
 \label{chap:lowAlgRank}
 
-%%%%local definitions-mrinal
-\newcommand{\spnew}{\Sigma\circast^{\set{\!\!\set{k}\!\!}}\Sigma\Pi}
-\newcommand{\SASP}[1]{\Sigma\circast^{\set{\!\!\set{#1}\!\!}}\Sigma\Pi}
-\newcommand{\spnewn}{\Sigma{\Pi^{(n)}}\Sigma\Pi}
-\newcommand{\spnewbounded}{\Sigma{\Pi^{(k)}}\Sigma\Pi^{[d]}}
-\newcommand{\spgeneral}{\Sigma{\Gamma^{(k)}}\Sigma\Pi}
-\newcommand{\algRank}{\operatorname{\mathrm{algRank}}}
-
-
-
-\def\h{\mathsf{Hom}}
-
 We have been studying depth four circuits over the last few chapters. One of the goals has been to handle some amount of non-homogeneity while assuming other structure on the circuit. The main reason for this quest is that proving a lower bound of $n^{\omega(d^{1/3})}$ for \emph{non-homogeneous} depth four circuit would suffice to separate $\VP$ and $\VNP$. \\
 
 In the last chapter, we looked at $\Sigma\Pi\Sigma\Pi$ circuits that were non-homogeneous while we imposed the restriction that the $\Sigma\Pi$ layer closer to the leaves computed a polynomial on few variables. We use $\circast^{[n^{0.9}]}$ to refer to such polynomials and proved lower bounds for such $\SPA^{[n^{0.9}]}$ circuits. 
