@@ -127,8 +127,6 @@ The first thing to note is that if we look at the class of $\SASP{d}$ circuits, 
 Let $\F$ be any field of characteristic zero. There exists a family $\{P_d\}$ of polynomials in $\VNP$, such that $P_d$ is a polynomial of degree $d$ in $n = d^{O(1)}$ variables, and for any $\SASP{d}$ circuit $C$ that computes computes $P_d$ over $\F$ must have size $n^{\Omega(\sqrt{d})}$.
 \end{theorem} 
 
-\todo[inline]{Also IMM?}
-
 \section{Lower bounds for locally low algebraic rank circuits}
 
 We begin with some intuition for why we can expect to prove lower bounds for this model via projected shifted partial derivatives.
@@ -236,118 +234,119 @@ unless of course the size of $C$ is $n^{\Omega(\sqrt{d})}$ giving us the lower b
 
 We only need to finish the proof of \autoref{lem:alg-dep-to-func-dep-tail} and we shall do that in the rest of this chapter. 
 
-\section{Proof of Lemma~\ref{lem:alg-dep-to-func-dep-tail}}
+\subsection{Proof of Lemma~\ref{lem:alg-dep-to-func-dep-tail}}
 
-
-\todo[inline]{RP: need to proof-read from here on}
-
-
-\newpage
-
-
-It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:using algebraic dependence-intro} is also true. Next we outline a simple proof of this fact over fields of characteristic zero due to Saptharishi. 
-
-\begin{lemma}[Functional dependence to algebraic dependence]~\label{lem:using algebraic dependence-converse}
-Let $\F$ be any  field of characteristic zero or sufficiently large characteristic. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ be a set of polynomials in $n$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$. 
-If there exists a polynomial $F_{k+1}$  in $k$ variables such that for a random~\footnote{Here random $\veca$ means an $\veca$ chosen from a large enough grid in $\F^n$. The size of this grid depends on the degree of $F_{k+1}$ and the degree of $Q_i$s. } $\veca \in \F^{n}$,  
-$$Q_{k+1}(\vecx + \veca) = \h^{\leq d_{k+1}}\left[F_{k+1}(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
-then, $\{Q_1, Q_2, \ldots, Q_k, Q_{k+1}\}$ are algebraically dependent. 
-\end{lemma}
-\begin{proof}
-For this proof, we assume without loss of generality that $Q_{k+1}$ depends on all $n$ variables. Consider $\vecz$ be a new set of $n$ variables. Let us now collect the terms of degree at most one in the $x$ variables in $Q_{j}(\vecx + \vecz)$. By Taylor's expansion, this is equal to $Q_j(\vecz) + \sum_{i = 1}^n x_i\cdot Q^i_j(\vecz)$, where $ Q^i_j(\vecz) = \frac{\partial Q_{j}(\vecy)}{\partial y_i}\left(\vecz \right)$. 
-Now, let us consider the monomials  in  $F_{k+1}(Q_1(\vecx + \vecz), Q_2(\vecx + \vecz), \ldots, Q_k(\vecx + \vecz))$ which have degree equal to $1$ in the $x$ variables. It is easy to observe that this is equal to monomials of degree exactly one in $x$ variables in  $F_{k+1}(Q_1(\vecz)+\sum_{i = 1}^n x_iQ^i_1(\vecz) ,Q_2(\vecz) + \sum_{i = 1}^n x_iQ^i_2(\vecz), \ldots, Q_k(\vecz) + \sum_{i = 1}^n x_iQ^i_k(\vecz))$. This in turn is just equal to 
+We have an algebraically independent set of polynomials $\mathbf{Q} = \set{Q_1,\ldots, Q_r}$ and a polynomial $Q$ of degree at most $d$ that is algebraically dependent on it.
+In other words, there is a non-zero \emph{annihilator} $A(y_1,\ldots, y_r,z)$ such that
 \[
-\sum_{i = 1}^n x_i\left( \sum_{j = 1}^k \alpha_{ij}(\vecz) \cdot Q^i_j(\vecz) \right)
+A(Q_1,\ldots, Q_r, Q) \spaced{=}0. 
 \]
-Here, $\alpha_{ij}(\vecz)$ is a polynomial in $\{Q_1(\vecz), Q_2(\vecz), \ldots, Q_k(\vecz)\}$ for every $i$ and $j$. From the hypothesis of the lemma, it follows that for a random instantiation of $\vecz \in \F^n$, say $\vecz = \veca$, it holds that for every $i\in [n]$,
+Let us assume that $A$ is the smallest degree annihilator.
+We can say a few things about the polynomial $A'(\vecx,z) := A(Q_1,\cdots, Q_r, z)$.
 \[
-\sum_{j = 1}^k \alpha_{ij}(\veca)\cdot Q^i_j(\veca) = Q^i_{k+1}(\veca)
+A(Q_1,\ldots, Q_r,z) \spaced{=:} A'(\vecx, z) \spaced{=} A_0(\mathbf{Q}) + A_1(\mathbf{Q}) z + \cdots + A_D(\mathbf{Q}) z^D
 \]
-Observe that $Q^{i}_j(\vecz)$ is a polynomial of some degree $d$ in $n$ variables. From our assumption, we know that $Q^{i}_{k+1}(\vecz)$ is not the zero polynomial for every value of $i \in [n]$, since otherwise, $Q_{k+1}$ does not depend on $x_i$. Therefore, it follows that $\sum_{j = 1}^k \alpha_{ij}(\vecz)\cdot Q^i_j(\vecz)$ is in fact a non-zero polynomial in $\vecz$ and the polynomial identity 
-\[
-\sum_{j = 1}^k \alpha_{ij}(\vecz)\cdot Q^i_j(\vecz) = Q^i_{k+1}(\vecz)
-\]
-is true. But then, this means that the vector $[Q^1_{k+1}(\vecz), Q^2_{k+1}(\vecz), \ldots, Q^n_{k+1}(\vecz)]$ is in the $\F(\vecz)$-linear span of the vectors $[Q^1_{1}(\vecz), Q^2_{1}(\vecz), \ldots, Q^n_{1}(\vecz)]$, $[Q^1_{2}(\vecz), Q^2_{2}(\vecz), \ldots, Q^n_{2}(\vecz)]$, ... , $[Q^1_{k}(\vecz), Q^2_{k}(\vecz), \ldots, Q^n_{k}(\vecz)]$. But this implies that the Jacobian matrix of  ${\cal Q}$ is not full rank over the field $\F(\vecz)$, implying that $Q_i$s are algebraically dependent. 
+Firstly, it must depend on $z$ since otherwise $A(Q_1,\ldots, Q_r,0) = 0$ contradicts the assumption that $\mathbf{Q}$ was algebraically independent.
+Therefore, $A'(\vecx, z) = A(Q_1,\ldots, Q_r,z)$ is a non-zero polynomial with $A'(\vecx, Q) = 0$.
+Hence, $(z - Q)$ must divide the polynomial $A'(\vecx,z)$.
 
-\end{proof}
-
-
-In the next section, we first see a proof of~\autoref{lem:using algebraic dependence-intro} and then use it to sketch a proof of~\autoref{thm:lower bound}. 
-
-\section{Using algebraic dependencies}
-%\section{Proof of{~\autoref{lem:using algebraic dependence-intro}}}
-Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables and degree at most $d$ such that the algebraic rank of ${\cal Q}$ equals $k$. Without loss of generality, let us assume that ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ are an algebraically independent subset of $\cal C$ of maximal size. We now show that, in some sense, this implies that all the polynomials in ${\cal Q}$ can be represented as functions of  polynomials in the set ${\cal B}$. We make this notion formal in the following lemma. We will also crucially rely on the following beautiful lemma of Dvir, Shpilka and Yehudayoff for the proof. 
+Given that $Q$ is a \emph{root} of $A'(\vecx, z)$, can we express $Q$ as a polynomials in the coefficients of $A'$ (which are in turn polynomials in $\mathbf{Q}$)? The following beautiful lemma of Dvir, Shpilka and Yehudayoff~\cite{DSY09} shows that we indeed can, under some mild non-degeneracy condition. 
 
 \begin{lemma}[Dvir, Shpilka, Yehudayoff~\cite{DSY09}]~\label{lem:DSY main}
-For a field $\F$, let $P \in \F[\vecx, y]$ be a non-zero polynomial of degree at most $k$ in $y$. Let $f \in \F[\vecx]$ be a polynomial such that $P(\vecx, f) = 0$ and $\frac{\partial P}{\partial y} (0, 0, \ldots, 0, f(0, 0, \ldots, 0))\neq 0$. Let $$P = \sum_{i = 0}^k C_i(\vecx)\cdot Y^i$$ Then, for every $t \geq 0$, there exists a polynomial $R_t \in \F[\vecz]$ of degree at most $t$ in $k+1$ variables such that $$\h^{\leq t}[f(\vecx)] = \h^{\leq t}[R_t(C_0, C_1, \ldots, C_k)] $$
+For a field $\F$, let $P \in \F[\vecx, z]$ be a non-zero polynomial of degree at most $D$ in $z$. Let $f \in \F[\vecx]$ be a polynomial such that $P(\vecx, f) = 0$ and $\partial_zP(\mathbf{0}, f(\mathbf{0}))\neq 0$. If 
+\[
+P(\vecx, z) \spaced{=} \sum_{i = 0}^D P_i(\vecx)\cdot z^i.
+\] 
+Then, for every $t \geq 0$, there exists a polynomial $G$ such that 
+\[
+\Hom_{\leq t}[f(\vecx)] \spaced{=} \Hom_{\leq t}[G_t(P_0, P_1, \ldots, P_D)].
+\]
 \end{lemma} 
 
+\noindent
+For now, let us assume this lemma and finish the proof of \autoref{lem:alg-dep-to-func-dep-tail}. We would like to use \autoref{lem:DSY main} on the polynomial $A'(\vecx, z)$. The only thing to be checked is that the non-degeneracy condition $\partial_zA' (\mathbf{0}, Q(\mathbf{0})) \neq 0$. 
 
+There are a couple of reasons why this may fail in general.
+One of them is if it so happens that $(z-Q)^2$ divides $A'(\vecx, z)$, that is $Q$ is a \emph{repeated root} of $A'(\vecx, z)$. In this particular instance, $\partial_z A'(\vecx, Q)$ is identically zero. Can this happen in our setting? 
 
-%We are now ready to state our main technical lemma. 
-\begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:using algebraic dependence}
-Let $\F$ be any  field of characteristic zero or sufficiently large. Let ${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\}$ be a set of polynomials in $N$ variables such that the for every $i \in [t]$, the degree of  $Q_i$ is equal to $d_i$ and  the algebraic rank of ${\cal Q}$ equals $k$. Let  ${\cal B} = \{Q_1, Q_2, \ldots, Q_k\}$ be a maximal algebraically independent subset of ${\cal Q}$. Then, there exist polynomials $F_{k+1}, F_{k+2}, \ldots, F_{t}$  in $k$ variables such that 	for a random\footnote{Again, by a random $\veca$, we mean a point chosen from a large enough grid in $\F^n$. The details of this will be clear from the proof.} $\veca \in \F^n$, and $\forall i \in \{k+1, k+2, \ldots, t\}$, 
-$$Q_i(\vecx + \veca) = \h^{\leq d_i}\left[F_i(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)) \right] $$
+First, observe that $A''(\vecx, z) := \partial_z A'(\vecx, z) = \partial_z A(Q_1,\ldots, Q_r,z)$ is not identically zero, as we knew that $A(Q_1,\ldots, Q_r,z)$ must depend on the variable $z$. But then if $A''(\vecx, Q) \equiv 0$, then $\partial_z A(y_1,\cdots, y_r, z)$ is a smaller degree polynomial such that exhibits an algebraic dependency among $\set{Q_1,\ldots, Q_r, Q}$ contradicting our choice of $A$. 
+
+Thus we can assume that $A''(\vecx, Q) \not\equiv 0$. However, $A''(\mathbf{0}, Q(\mathbf{0}))$ could now become zero despite $A''(\vecx, Q)$ being a non-zero polynomial\footnote{This would happen for example if $(z - Q)(z - Q')$ divides $A'(\vecx, z)$ with $Q \neq Q'$ but $Q(\mathbf{0}) = Q'(\mathbf{0})$}. This is where the shifts come in. If for most random $\veca \in \F^n$, we know that $A''(\veca, Q(\veca)) \neq 0$. We can now shift everything by the point $\veca$. 
+
+Let $\tilde{Q_i}(\vecx) := Q_i(\vecx + \veca)$ and $\tilde{Q} = Q(\vecx + \veca)$. Therefore, we also have
+\[
+A(\tilde{Q_1}, \ldots, \tilde{Q_r}, \tilde{Q}) = 0.
+\]
+Thus if $\tilde{A}'(\vecx, z) = A(\tilde{Q_1},\ldots, \tilde{Q_r}, z)$, we know that $(z - \tilde{Q})$ divides $\tilde{A}'$. Furthermore, $\partial_z\tilde{A}'(\mathbf{0}, \tilde{Q}(\mathbf{0})) = \partial_zA'(\mathbf{\veca}, Q(\mathbf{\veca})) \neq 0$. Thus, all the conditions of \autoref{lem:DSY main} are met and we have the proof of \autoref{lem:alg-dep-to-func-dep-tail}. \qed\raisebox{0.2ex}{\scriptsize (\autoref{lem:alg-dep-to-func-dep-tail})}\\
+
+\begin{proof}[Proof of \autoref{lem:DSY main}]
+Let $\partial_zP(\mathbf{0}, f(\mathbf{0})) = \epsilon_0 \neq 0$. 
+The proof would be an induction on $t$. For the case of $t = 0$, we can just set $G_0(P_0,\ldots, P_D)$ to be the constant $f(\mathbf{0})$ and hence the base case is done. 
+
+\noindent
+Let's assume that we have found a polynomial $g = G_t(P_0, \ldots, P_D)$ such that 
+\[
+\Hom_{\leq t}\insquare{f} \spaced{=} \Hom_{\leq t} \insquare{g}. 
+\]
+If $\Hom_{\leq t+1}\insquare{f}= \Hom_{\leq t+1} \insquare{g}$, then we already have our inductive step and there is nothing to be done.  Hence let's assume that $\Hom_{t+1}\insquare{f} \neq \Hom_{t+1}\insquare{g}$ and therefore every monomial in $f-g$ has degree at least $t+1$. 
+\begin{eqnarray*}
+0  & = &  P(\vecx, f) \spaced{=} \sum_i P_i \cdot f^i\\
+   & = & \sum_i P_i \cdot (g + (f-g))^i\\
+   & = & \sum_i P_i \cdot g^i \spaced{+} \inparen{\sum_i P_i \cdot (i g^{i-1})} \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})\\
+   & = & P(\vecx, g) \spaced{+} \inparen{\partial_z P(\vecx, g)} \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})\\
+   & = & P(\vecx, g) \spaced{+} \epsilon_0 \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})
+\end{eqnarray*}
+where the last equation is because every monomial of $f-g$ has degree at least $t+1$ and the constant term of $\partial_zP(\vecx, g) = \partial_zP(\mathbf{0}, g(\mathbf{0})) =  \partial_zP(\mathbf{0}, f(\mathbf{0})) = \epsilon_0$. Hence, by rearranging terms, 
+\[
+\Hom_{\leq t+1}[f] \spaced{=} g \spaced{-} \frac{P(\vecx, g)}{\epsilon_0}.
+\]
+And of course, if $g$ can be expressed as a polynomial combination of $P_0,\cdots, P_D$, then so can $g - \frac{P(\vecx, g)}{\epsilon_0}$ and that completes the inductive step and hence the proof of \autoref{lem:DSY main}. 
+\end{proof}
+
+\section{Functional dependence to algebraic dependence}
+
+In \autoref{lem:alg-dep-to-func-dep-tail}, we saw that we can covert an algebraic dependence between polynomials to some sort of a functional dependence. It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:alg-dep-to-func-dep-tail} is also true. Next we outline a simple proof of this over fields of characteristic zero using the Jacobian described in \autoref{lem:jacobian-criterion}. 
+
+\begin{lemma}[Functional dependence to algebraic
+  dependence]~\label{lem:using algebraic dependence-converse} Let $\F$ be any field of characteristic zero.
+Let $\mathbf{Q} = \set{Q_1, Q_2, \ldots, Q_r,Q_{r+1}}$ be a set of algebraically independent polynomials.
+Then for almost all $\veca$,
+\[
+\not\exists \; F \spaced{\text{such that}} \Hom_{\leq 1}\insquare{Q_{r+1}(\vecx + \veca)} \spaced{=} \Hom_{\leq 1}\insquare{F(Q_1(\vecx + \veca), \ldots, Q_r(\vecx + \veca))}.
+\]
 \end{lemma}
 \begin{proof}
-We will prove the lemma for $t = k+1$ and for brevity, we drop the index of $Q_{k+1}$ and denote is simply by $Q$. Larger $t$ can be handled in an identical way. Let $d$ be defined as $max_i\{d_i\}$. From the statement of the lemma, 
-it follows that the set of polynomials in the set ${\cal B} \cup \{Q\}$ are algebraically dependent. Therefore, there exists a nonzero polynomial $A$ in $k+1$ variables such that $A(Q_1, Q_2, \ldots, Q_k, Q) \equiv 0$. Without loss of generality, we choose such a polynomial with the smallest total degree. From the upper bound on the degree of the annihilating polynomial from Lemma~\ref{lem:degree upper bound for annihilating poly}, we can assume that the degree of $A$ is at most $(k+1)d^k$. Consider the polynomial $A'(\vecx, y)$ defined by $$A'(\vecx, y) = A_i(Q_1(\vecx), Q_2(\vecx), \ldots, Q_k(\vecx), y)$$
-We have the following observation about properties of $A'$.
-\begin{observation}~\label{obs:internal1}
-$A'$ satisfies the following properties:
-\begin{itemize}
-\item $A'$ is not identically zero
-\item The $y$ degree of $A'$ is at least one. 
-\item $Q(\vecx)$ is a root of the polynomial $A'$, when viewing it as a polynomial in the $y$ variable with coefficients coming from $\F(\vecx)$. 
-\end{itemize}
-\end{observation}
-\begin{proof}
-We prove the items in sequence:
-\begin{itemize}
-\item If $A'$ is identically zero, then it follows that $Q_1, Q_2, \ldots, Q_k$ are algebraically dependent, which is a contradiction. 
-\item If $A'(\vecx , y)$ does not depend on the variable $y$, then by definition, it follows that $A(Q_1, Q_2, \ldots, Q_k, y)$ does not depend on $y$. Hence, $A(Q_1, Q_2, \ldots, Q_k, Q)$ does not depend on $Q$ but is identically zero. This contradicts the algebraic independence of $Q_1, Q_2, \ldots, Q_k$.
-\item This item follows from the fact that the polynomial obtained by substituting $y$ by $Q$ in $A'$ equals $A(Q_1, Q_2, \ldots, Q_k, Q)$, which is identically zero. 
-\end{itemize}
-\end{proof}
-
-Our aim now is to invoke Lemma~\ref{lem:DSY main} for the polynomial $A'$, but first, we need to verify that the conditions in the hypothesis of Lemma~\ref{lem:DSY main} are satisfied. Let the polynomial $A''$ be defined as the first order derivative of $A'$ with respect to $y$. Formally, 
-$$A'' = \frac{\partial{A'}}{\partial y}$$
-We proceed with the following claim, the proof of which we defer to the end. 
-\begin{claim}~\label{clm:derivative nonzero}
-The polynomial $A''$ is not an identically zero polynomial and ${A''|}_{y = Q}$ is not identically zero. 
-\end{claim}
-For the ease of notation, we define 
+By the Jacobian criterion of \autoref{lem:jacobian-criterion}, the Jacobian $\mathcal{J}(Q_1,\cdots, Q_{r+1})$ has rank $r+1$ over the function field $\F(\vecx)$. 
 \[
-{L}(\vecx) = {A''|}_{y = Q}
+\mathcal{J}(Q_1,\ldots, Q_{r+1}) \spaced{:=} \insquare{\begin{array}{cccc}
+\partial_1(Q_1) & \partial_2(Q_1) & \cdots & \partial_n(Q_1)\\
+\partial_1(Q_2) & \partial_2(Q_2) & \cdots & \partial_n(Q_2)\\
+\vdots & \vdots & \ddots & \vdots\\
+\partial_1(Q_{r+1}) & \partial_2(Q_{r+1}) & \cdots & \partial_n(Q_{r+1})
+                                          \end{array}}                                          
 \]
+By the Schwartz-Zippel lemma, for almost all $\veca \in \F^n$, the above matrix evaluated at $\veca$ continues to be full rank. Fix any such $\veca$. Now consider the polynomial $Q_{r+1}(\vecx + \veca)$ and collect all the degree one terms. The coefficient of $x_i$ in $Q_{r+1}(\vecx + \veca)$ is precisely $\partial_i Q_{r+1}(\veca)$. 
 
-Observe that $L$ is a polynomial in the variables $\vecx$ which is not identically zero and is of degree at most $(k+1)d^{k+1}$. Let $H$ be a subset of $\F$ of size $2(k+1)d^{k+1}$.  Then, for a uniformly random point $\veca$ picked from $H^n$, the probability that $L$ vanishes at $\veca$ is at most $1/2$. Let $\veca \in \F^n$ be a point where $L$ does not vanish. 
-We can replace the variable $x_j$ by $x_j + a_{j}$ in $L$ and then for the resulting polynomial $L(\vecx + \veca)$, the point $(0, 0, \ldots, 0)$ is not bad. 
-
-We are now ready to apply Lemma~\ref{lem:DSY main}. Let 
-$$A'(\vecx , Y) = \sum_{j = 0}^{(k+1)d^k} C_j(\vecx)\cdot y^j$$ 
-
-Here, for every $j$, $C_j(\vecx) = C_j'\left(Q_1(\vecx),Q_2(\vecx), \ldots, Q_k(\vecx )\right)$ is a polynomial in the $\vecx$ variables and is the coefficient of $y^j$ in  $A'(\vecx, y)$  when viewed as an element of $\F[\vecx][y]$. 
-From the discussion above, we know that the following are true. 
-\begin{enumerate}
-\item The polynomial $A'(\vecx + \veca, Q(\vecx + \veca))$ is identically zero. 
-\item The first derivative of $A'(\vecx + \veca, y)$ with respect to $y$ does not vanish at  $(0, 0, \ldots, 0, Q_i(0, 0, \ldots, 0))$. 
-\end{enumerate}
-Therefore, by Lemma~\ref{lem:DSY main}, it follows that there is a polynomial $G$ such that 
-$$Q(\vecx + \veca) = \h^{\leq d}\left[G(C_0(\vecx + \veca), C_1(\vecx + \veca), \ldots, C_{(k+1)d^k}(\vecx + \veca)) \right] $$
-We also know that for every $j \in \{0, 1, \ldots, (k+1)d^k\}$, $C_j(\vecx + \veca)$ is a polynomial in the polynomials $Q_1(\vecx + \veca),Q_2(\vecx + \veca), \ldots, Q_k(\vecx + \veca)$. In other words, 
-$$Q(\vecx + \veca) = \h^{\leq d}\left[F(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_{k}(\vecx + \veca)) \right] $$
-for  a polynomial $F$. 
-
-%In order to prove the lemma for all values of $i \in \{k+1, k+2, \ldots, t\}$, we observe that we can pick a single value of the translation $\veca$, which works for every $i\in \{k+1, k+2, \ldots, t\}$. Such an $\veca$ exists because the probability that a uniformly random $p \in H^N$ is bad for some $i$ is at most $t\cdot 1/2t = 1/2$ and the translation corresponding to any such element $\veca$ in $H^N$ which is not bad for every $i$ will work. The statement of the lemma then immediately follows. 
+Similarly, let us collect the degree one terms in any composition $F(Q_1(\vecx + \veca),\ldots, Q_r(\vecx + \veca))$. The coefficient of $x_i$ is precisely
+\[
+\sum_{j=1}^r (\partial_jF)(Q_1(\veca),\ldots,Q_r(\veca)) \cdot  \partial_i Q_j(\veca). 
+\]
+If $\Hom_{\leq 1}\insquare{Q_{r+1}(\vecx + \veca)} = \Hom_{\leq 1}\insquare{Q_1(\vecx + \veca), \ldots, Q_r(\vecx + \veca)}$, then we would have the following matrix identity
+\[
+\insquare{\begin{array}{ccc}
+\partial_1 Q_{r+1}(\veca) & \cdots & \partial_n Q_{r+1}(\veca)
+          \end{array}} \spaced{=} \insquare{\begin{array}{ccc}F_1 & \cdots & F_r\end{array}} \cdot 
+\insquare{\begin{array}{ccc}
+\partial_1Q_1(\veca) & \cdots & \partial_nQ_1(\veca)\\
+\partial_1Q_2(\veca) & \cdots & \partial_nQ_2(\veca)\\
+\vdots &  \ddots & \vdots\\
+\partial_1Q_{r}(\veca) &  \cdots & \partial_nQ_{r}(\veca)
+                                          \end{array}}                                          
+                                          \]
+where $F_i := (\partial_jF)(Q_1(\veca),\ldots,Q_r(\veca))$. But the above equation yields a contradiction as we know that the $r+1$ rows of the Jacobian of $\set{Q_1,\ldots, Q_{r+1}}$ are linearly independent and hence the LHS in the above matrix equation cannot be written as a linear combination of rows of $\mathcal{J}(Q_1,\ldots, Q_r)$.
 \end{proof}
 
-We now prove Claim~\ref{clm:derivative nonzero}.
-\begin{proof}[Proof of Claim~\ref{clm:derivative nonzero}]
-We observed from the second item in Observation~\ref{obs:internal1} that the degree of $y$ in $A'$ is at least $1$. Hence, $A''$ is not identically zero.  
-If $A''|_{y = Q}$ is identically zero, then it follows that $\{Q_1, Q_2, \ldots, Q_k, Q\}$ have an annihilating polynomial of degree smaller than the degree of $A$, which is a contradiction to the choice of $A$, as a minimum degree annihilating polynomial. 
-\end{proof}
-
+Over fields of low characteristic, Pandey, Saxena and Sinhababu \cite{PSS16} use the modified Jacobian criterion to obtain a similar converse but the exact statement is a bit technical to describe here.
 
 
 %%% Local Variables:
