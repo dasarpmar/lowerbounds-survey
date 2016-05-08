@@ -6,32 +6,119 @@
 \newcommand{\spnewn}{\Sigma{\Pi^{(n)}}\Sigma\Pi}
 \newcommand{\spnewbounded}{\Sigma{\Pi^{(k)}}\Sigma\Pi^{[d]}}
 \newcommand{\spgeneral}{\Sigma{\Gamma^{(k)}}\Sigma\Pi}
+\newcommand{\algRank}{\operatorname{\mathrm{algRank}}}
+
 \def\h{\mathsf{Hom}}
 
+We have been studying depth four circuits over the last few chapters. One of the goals has been to handle some amount of non-homogeneity while assuming other structure on the circuit. The main reason for this quest is that proving a lower bound of $n^{\omega(d^{1/3})}$ for \emph{non-homogeneous} depth four circuit would suffice to separate $\VP$ and $\VNP$. \\
 
-So far, when studying depth-$4$ circuits, we have always assumed them to be homogeneous (or in general, of low formal degree). All the arguments for lower bounds crucially rely on the fact that the formal degree of the circuit is not too large compared to the degree of the polynomial. Hence, it is a natural question to try and understand the problem of proving lower bounds for non-homogeneous depth-$4$ circuits. 
+In the last chapter, we looked at $\Sigma\Pi\Sigma\Pi$ circuits that were non-homogeneous while we imposed the restriction that the $\Sigma\Pi$ layer closer to the leaves computed a polynomial on few variables. We use $\circast^{[n^{0.9}]}$ to refer to such polynomials and proved lower bounds for such $\SPA^{[n^{0.9}]}$ circuits. 
 
-From the depth reduction results, one can show that over any field of characteristic zero (or sufficiently large) any homogeneous polynomial $P$ of degree $d$ in $n$ variables $(d = n^{O(1)})$, which can be computed by a $\poly(n)$ size arithmetic circuits can in fact be computed by a (non-homogeneous) depth-$4$ arithmetic circuit of size $n^{O(\sqrt[3]{d})}$. Moreover,  we also know that if we insist on the depth-$4$ circuit to be homogeneous, we would need a circuit of size at least $n^{\Omega(\sqrt{d})}$ for this depth reduction. In this sense, the non-homogeneous depth-$4$ circuits are strictly more powerful than their homogeneous counterparts. 
+In this chapter we shall study restrictions on the $\Pi$ layer closer to the root. Until now, we were somehow reducing to the case of $\Sigma\Pi^{[d]}\Sigma\Pi$, where the top layer of $\Pi$ gates multiply \emph{at most} $d$ polynomials together. As a warm-up to the more general models that we shall study in this chapter, let us spend a few moments studying $\Sigma\circast^{[d]}\Sigma\Pi$ circuits. 
 
-The best known lower bound for non-homogeneous depth-$4$ circuits right now is a superlinear lower bound due to Raz~\cite{Raz10elusive}. Hence, even obtaining a quadratic lower bound for this model would be an interesting start. 
+\section{Preliminaries}
 
-In two recent results, Kumar and Saraf~\cite{KS16lowrank} and Pandey, Saxena and Sinhababu~\cite{PSS16} study a special case of non-homogeneous depth-$4$ circuits, and prove exponential lower bounds for them. In particular, these bounds subsume the exponential lower bounds known for homogeneous depth-$4$ circuits. In the rest of the chapter, we precisely define the model and sketch the proof. In the exposition here, we follow the outline in~\cite{KS16lowrank} where the lower bounds were shown for fields of characteristic zero. Pandey et al~\cite{PSS16} show that the same result hold over all fields. 
+\subsection{Warm-up: Compositions of sparse polynomials}
+
+\begin{definition}[$\Sigma\circast^{[d]}\Sigma\Pi$ circuits]
+We shall say a polynomial $f$ is computed by a $\Sigma\circast^{[d]}\Sigma\Pi$ circuit of size $s$ it can be expressed as
+\[
+f \spaced{=} \sum_i H_i(Q_{i1},\cdots, Q_{id}),
+\]
+where each $H_i(y_1,\cdots, y_d)$ is an arbitrary polynomial, and the sum of the sparsity of the $Q_{ij}s$ is at most $s$. 
+\end{definition}
+
+Can projected shifted partial derivatives be used to prove lower bounds for this model? Yes, indeed. The first step, as before, would be to use a random restriction to ensure that each $Q_{ij}$ is a sparse polynomial of \emph{low support size}. But for simplicity, let us assume for now that $\deg(Q_{ij})\leq \sqrt{d}$ and see how the upper bound calculations work. 
+
+Consider a single term $H(Q_1,\cdots, Q_d)$. What can we say about any $k$-th order partial derivative of this? By the chain-rule of differentiation,
+\[
+\partial_{x} H(Q_1,\cdots, Q_d) \spaced{=}  \sum_{i=1}^d \inparen{\partial_{y_i}(H)}(Q_1,\cdots, Q_d) \cdot \partial_x(Q_i). 
+\]
+Hence repeating this, it is easy to see that 
+\begin{eqnarray*}
+\partial^{=k} H(\mathbf{Q}) &\subseteq& \fspan \setdef{(\partial^{=k}H)(\mathbf{Q}) \cdot \partial_{m_1}(Q_{i_1}) \cdots \partial_{m_k}(Q_{i_k})}{\deg(m) = k}\\
+& \subseteq & \fspan\set{(\partial^{=k}H)(\mathbf{Q}) \cdot \vecx^{\leq k(\sqrt{d}-1)}}\\
+\implies \vecx^{=\ell}\partial^{=k} H(\mathbf{Q}) & \subseteq & \fspan\set{(\partial^{=k}H)(\mathbf{Q}) \cdot \vecx^{\leq \ell + k(\sqrt{d}-1)}}
+\end{eqnarray*}
+The key point is that, irrespective of how high the degree of $H$ is, there are at most $\binom{d+\sqrt{d}}{d}$ distinct partial derivatives of $H$.
+Hence, the upper bound is effectively the same value as seen earlier for homogeneous depth-$4$ circuits such as in \autoref{lem:upper-bound-low-supp}.
+Thus it is pretty clear that projected shifted partials would give an $n^{\Omega(\sqrt{d})}$ lower bound here. 
+
+\begin{observation}
+Assume we are working over a characteristic zero field. There exists an explicit polynomial in $\VP$ (namely $\IMM$ with appropriate parameters) such that any $\Sigma\circast^{[d]}\Sigma\Pi$ circuit computing it requires size $n^{\Omega(\sqrt{d})}$. 
+\end{observation}
+
+Kumar and Saraf~\cite{KS16lowrank} studied a generalization of this model by looking at what they called `locally low algebraic rank' depth four circuits and showed an $n^{\Omega(\sqrt{d})}$ lower bound for such circuits over fields of characteristic zero. Subsequently, Pandey, Saxena and Sinhababu~\cite{PSS16} extended it to arbitrary fields. We will need a bit of background on algebraic rank to describe the model and we do that first. 
+
+\subsection{Algebraic Rank}
+
+We are familiar with the notion of linear dependence between polynomials, which is to say that there is a linear combination of the polynomials that is zero. A natural extension of this notion is algebraic independence. 
+
+\begin{definition}[Algebraic rank]
+A set of polynomials $\mathbf{Q} = \{Q_1, Q_2, \ldots, Q_t\} \subseteq \F[\vecx]$ is said to be algebraically independent over $\F$ if there is no nonzero polynomial $R \in \F[y_1,\ldots, y_t]$ such that $R(Q_1, \ldots, Q_t)$ is identically zero. 
+
+A maximal subset of $\mathbf{Q}$ which is algebraically independent is said to be a transcendence basis of $\cal Q$ and the size of such a set is said to be the algebraic rank of $\mathbf{Q}$, denoted by $\algRank(\mathbf{Q})$. 
+\end{definition}
+
+It is a non-trivial observation that all maximal algebraically independent sets have the same size and hence the notion of \emph{algebraic rank} is indeed well-defined. 
+
+\medskip
+
+If a set of $t$ polynomials is algebraically dependent, then the above definition says that there is a non-zero polynomial in $t$ variables over the underlying field, which vanishes when composed with this set. Such a polynomial is called an annihilating polynomial of this set. The first basic property of algebraic rank is that it is upper bounded the number of variables. We leave this as an exercise with a hint. \\
+
+\begin{exercise}[Upper bound on algebraic rank]
+Show that any set of $n+1$ polynomials over $n$ variables have some algebraic dependency. In other words, the algebraic rank of any set of polynomials is upper bounded by the number of variables.
+
+\textcolor{Gray}{Hint: $(D+1)^{n+1} > \binom{nD+n}{n}$ if $D$ is large enough.}
+\end{exercise}
+
+It is natural question to ask if one can show good upper bounds on the lowest degree of an annihilating polynomial of a given set of polynomials. The following lemma of Kayal shows such a bound which would be useful to us later on. 
+
+\begin{lemma}[Kayal~\cite{Kayal09}]~\label{lem:degree upper bound for annihilating poly}
+Let $\F$ be a field and let $\mathbf{Q} = (Q_1, Q_2, \ldots, Q_t)$ be a set of polynomials of degree $d$ in $n$ variables over the field $\F$ having algebraic rank $k$. Then there exists a $\mathbf{Q}$-annihilating polynomial
+of degree at most $(k+1)\cdot d^k$.
+\end{lemma}  
+
+Given a set of polynomials, can its algebraic rank be computed efficiently? A natural approach is to search for an annihilating polynomial but as seen in the lemma above, the degree could be very large making this infeasible. In fact, Kayal~\cite{Kayal09} showed that computing even the constant term of the annihilator is $\#\P$-hard. However, there is a fantastic result of Jacobi from the 1800s that gives a criterion to check if a set of polynomials is algebraically dependent, over fields of characteristic zero. 
+
+\begin{lemma}[Jacobian Criterion]\label{lem:jacobian-criterion}
+Let $Q_1,\cdots, Q_t \in \F[x_1,\cdots, x_n]$ be polynomials over a field $\F$ of characteristic zero. Then, the algebraic rank of the set $\set{Q_1,\cdots, Q_t}$ is equal to the rank of the following matrix, called \emph{the Jacobian of $\mathbf{Q}$}, interpreted over the function field $\F(x)$:
+\[
+\mathcal{J}(Q_1,\cdots, Q_t) \spaced{:=} \insquare{\begin{array}{cccc}
+\partial_1(Q_1) & \partial_2(Q_1) & \cdots & \partial_n(Q_1)\\
+\partial_1(Q_2) & \partial_2(Q_2) & \cdots & \partial_n(Q_2)\\
+\vdots & \vdots & \ddots & \vdots\\
+\partial_1(Q_t) & \partial_2(Q_t) & \cdots & \partial_n(Q_t)
+                                          \end{array}}                                          
+\]
+\end{lemma}
+
+Hence, we have the following randomized algorithm to compute the algebraic rank of a given set of polynomials --- compute the Jacobian of the given set of polynomials, evaluate it at a random point of $\F^n$ and find its rank.
+It is a simple exercise to see that by the Schwartz-Zippel lemma, the rank of the Jacobian evaluated at a random point on $\F^n$ is equal to the rank of the matrix over the function field.
+
+Although the above lemma is only over characteristic zero fields, Pandey, Saxena and Sinhababu~\cite{PSS16} modified the criterion to work over any field. The statement is a little technical to explain here and for simplicity we shall work only over characteristic zero fields here. 
+\\
+
+We are now ready to describe the model of computation studied by Kumar and Saraf~\cite{KS16lowrank}. 
+
+\subsection{Locally low algebraic rank circuits}
+
+
+Intuitively, if we have a set of polynomials $\set{Q_1,\cdots, Q_t}$ with algebraic rank at most $r$, then morally this set \emph{behaves} like a set of just $r$ polynomials. In the case of linear independence, any composition on a set of polynomials of rank at most $r$ can be interpreted as a composition on just $r$ polynomials. 
+
+\newpage
+
 
 
 \paragraph{Model of computation}
 We start with the definition of algebraic independence and algebraic rank. For the rest of the chapter, we will work over fields of characteristic zero. 
 \begin{definition}
 Let $\F$ be any field. A set of polynomials 
-${\cal Q} = \{Q_1, Q_2, \ldots, Q_t\} \subseteq \F[\vecx]$ is said to be algebraically independent over $\F$ if there is no nonzero polynomial $R \in \F[y_1, y_2, \ldots, y_t]$ such that $R(Q_1, Q_2, \ldots, Q_t)$ is identically zero. 
+$\mathbf{Q} = \{Q_1, Q_2, \ldots, Q_t\} \subseteq \F[\vecx]$ is said to be algebraically independent over $\F$ if there is no nonzero polynomial $R \in \F[y_1, y_2, \ldots, y_t]$ such that $R(Q_1, Q_2, \ldots, Q_t)$ is identically zero. 
 
 A maximal subset of $\cal Q$ which is algebraically independent is said to be a transcendence basis of $\cal Q$ and the size of such a set is said to be the algebraic rank of $\cal Q$.
 \end{definition}
 
-If a set of $t$ polynomials is algebraically dependent, then the above definition says that there is a non-zero polynomial in $t$ variables over the underlying field, which vanishes when composed with this set. Such a polynomial is called an annihilating polynomial of this set. It is naturaly question to ask if one can show good upper bounds on the lowest degree of an annihilating polynomial of a given set of polynomials. The following lemma of Kayal shows such a bound which would be useful to us later on. 
-\begin{lemma}[Kayal~\cite{Kayal09}]~\label{lem:degree upper bound for annihilating poly}
-Let $\F$ be a field and let ${\cal Q} = (Q_1, Q_2, \ldots, Q_t)$ be a set of polynomials of degree $d$ in $n$ variables over the field $\F$ having algebraic rank $k$. Then there exists a $\cal Q$-annihilating polynomial
-of degree at most $(k+1)\cdot d^k$.
-\end{lemma}  
 
 
 
