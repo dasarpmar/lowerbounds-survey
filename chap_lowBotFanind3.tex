@@ -21,11 +21,11 @@ And so far, we were dealing with $\NW_{d,m,e}$ with $n \approx d^3$ and in this 
 But if we look back at the constraints for $\NW_{d,m,e}$, we only needed to ensure that $m^e \approx 2^d$, where the total number of variables $n = md$.
 Fortunately, there is enough freedom to make $d$ much much smaller than $m$ but still ensure that $m^e = 2^d$ by reducing $e$ appropriately. Hence for any $\epsilon > 0$, with a suitable trade-off between $d$ and $n$, we can always make sure that $d^{\sqrt{d}}$ is much smaller than $n^{\epsilon \sqrt{d}}$. 
 
-The same trade-off also works for $\IMM$ and hence this immediately  the main theorem of \cite{KayalSaha14}.
+This immediately  the main theorem of \cite{KayalSaha14}.
 
 \begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
   Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
-  $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen
+  $C$ computing the polynomial $\NW_{d,m,e}$, for suitably chosen
   parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
   n^{\Omega(d/r)}$. 
 \end{theorem}
@@ -156,7 +156,7 @@ Since $\rho_\epsilon(\NW_{d,m,e})$ has a copy of $\NW_{d,m,e}$ sitting inside, b
 &\ll &\CM{PSD}_{k,\ell}(\NW_{d,m,e}). 
 \end{eqnarray*}
 
-This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that we can run the whole argument with $\IMM$ instead of $\NW$). \qed
+This completes the proof of \autoref{thm:kaysaha-main}. \qed
 
 \begin{exercise}
 Use these techniques to prove a similar lower bound for hom. $\SPSP\Sigma^{[n^{0.9}]}$ circuits. 
@@ -166,8 +166,6 @@ Use these techniques to prove a similar lower bound for hom. $\SPSP\Sigma^{[n^{0
 \begin{remark*}
 In the paper of Kayal and Saha~\cite{KayalSaha14}, the focus was on the $\NW$ polynomial as their proof used the calculations seen in \autoref{thm:KLSS-lowsupp} which are tailored to $\NW$. 
 Bera and Chakrabarti~\cite{BC15} instead gave a lower bound for $\IMM$ but for hom. $\SPSP\Sigma^{[n^{0.5 - \epsilon}]}$ circuits and showed an $n^{\Omega(\sqrt{d})}$.
-
-But with the linear blow-up trick described in \autoref{lem:lin-transform-trick}, it is now clear that the techniques of \cite{KayalSaha14} also yield the lower bound for $\IMM$. 
 \end{remark*}
 
 %%% Local Variables: 
