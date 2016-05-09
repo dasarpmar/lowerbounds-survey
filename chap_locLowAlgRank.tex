@@ -100,7 +100,7 @@ Intuitively, if we have a set of polynomials $\set{Q_1,\ldots, Q_t}$ with algebr
 
 \begin{definition}~\label{def:lb model}
 Let $\F$ be any field. A $\SASP{r}$ circuit $C$ in $n$ variables over $\F$ is a representation of an $n$ variate polynomial as 
-\[C =  \sum_{i = 1}^T  H_i(Q_{i1},  Q_{i2},  \cdots, Q_{it}) \]  
+\[C =  \sum_{i = 1}^T  H_i(Q_{i1},  Q_{i2},  \ldots, Q_{it}) \]  
 where $H_i$ is an arbitrary polynomial and for each $i\in [T]$, $\algRank\setdef{Q_{ij}}{j\in [t]} \leq r$. 
 
 The size of such a circuit will denote the sum of the number of monomials of each $Q_{ij}$ (the complexity of the composition $H_i$ is irrelevant to the size). 
@@ -230,7 +230,7 @@ In other words, there is a non-zero \emph{annihilator} $A(y_1,\ldots, y_r,z)$ su
 A(Q_1,\ldots, Q_r, Q) \spaced{=}0. 
 \]
 Let us assume that $A$ is the smallest degree annihilator.
-We can say a few things about the polynomial $A'(\vecx,z) := A(Q_1,\cdots, Q_r, z)$.
+We can say a few things about the polynomial $A'(\vecx,z) := A(Q_1,\ldots, Q_r, z)$.
 \[
 A(Q_1,\ldots, Q_r,z) \spaced{=:} A'(\vecx, z) \spaced{=} A_0(\mathbf{Q}) + A_1(\mathbf{Q}) z + \cdots + A_D(\mathbf{Q}) z^D
 \]
@@ -257,7 +257,7 @@ For now, let us assume this lemma and finish the proof of \autoref{lem:alg-dep-t
 There are a couple of reasons why this may fail in general.
 One of them is if it so happens that $(z-Q)^2$ divides $A'(\vecx, z)$, that is $Q$ is a \emph{repeated root} of $A'(\vecx, z)$. In this particular instance, $\partial_z A'(\vecx, Q)$ is identically zero. Can this happen in our setting? 
 
-First, observe that $A''(\vecx, z) := \partial_z A'(\vecx, z) = \partial_z A(Q_1,\ldots, Q_r,z)$ is not identically zero, as we knew that $A(Q_1,\ldots, Q_r,z)$ must depend on the variable $z$. But then if $A''(\vecx, Q) \equiv 0$, then $\partial_z A(y_1,\cdots, y_r, z)$ is a smaller degree polynomial such that exhibits an algebraic dependency among $\set{Q_1,\ldots, Q_r, Q}$ contradicting our choice of $A$. 
+First, observe that $A''(\vecx, z) := \partial_z A'(\vecx, z) = \partial_z A(Q_1,\ldots, Q_r,z)$ is not identically zero, as we knew that $A(Q_1,\ldots, Q_r,z)$ must depend on the variable $z$. But then if $A''(\vecx, Q) \equiv 0$, then $\partial_z A(y_1,\ldots, y_r, z)$ is a smaller degree polynomial such that exhibits an algebraic dependency among $\set{Q_1,\ldots, Q_r, Q}$ contradicting our choice of $A$. 
 
 Thus we can assume that $A''(\vecx, Q) \not\equiv 0$. However, $A''(\mathbf{0}, Q(\mathbf{0}))$ could now become zero despite $A''(\vecx, Q)$ being a non-zero polynomial\footnote{This would happen for example if $(z - Q)(z - Q')$ divides $A'(\vecx, z)$ with $Q \neq Q'$ but $Q(\mathbf{0}) = Q'(\mathbf{0})$}. This is where the shifts come in. If for most random $\veca \in \F^n$, we know that $A''(\veca, Q(\veca)) \neq 0$. We can now shift everything by the point $\veca$. 
 
@@ -304,7 +304,7 @@ Then for almost all $\veca$,
 \]
 \end{lemma}
 \begin{proof}
-By the Jacobian criterion of \autoref{lem:jacobian-criterion}, the Jacobian $\mathcal{J}(Q_1,\cdots, Q_{r+1})$ has rank $r+1$ over the function field $\F(\vecx)$. 
+By the Jacobian criterion of \autoref{lem:jacobian-criterion}, the Jacobian $\mathcal{J}(Q_1,\ldots, Q_{r+1})$ has rank $r+1$ over the function field $\F(\vecx)$. 
 \[
 \mathcal{J}(Q_1,\ldots, Q_{r+1}) \spaced{:=} \insquare{\begin{array}{cccc}
 \partial_1(Q_1) & \partial_2(Q_1) & \cdots & \partial_n(Q_1)\\

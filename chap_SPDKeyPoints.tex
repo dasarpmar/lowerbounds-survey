@@ -62,9 +62,9 @@ One should note that the first binomial coefficient $\binom{a}{k}$ is at most $2
 Thus if the goal is to prove a lower bound of $n^{\Omega(d/t)} = n^{\Omega(a)}$, then the first term is not too relevant. \\
 
 \begin{exercise}
-Let $H(Q_1,\cdots, Q_a)$ be an arbitrary polynomial function applied to $Q_1,\cdots, Q_a$. Suppose $\deg(Q_i) \leq t$ for all $i$. Show that
+Let $H(Q_1,\ldots, Q_a)$ be an arbitrary polynomial function applied to $Q_1,\ldots, Q_a$. Suppose $\deg(Q_i) \leq t$ for all $i$. Show that
 \[
-\CM{SPD}_{k,\ell}(H(Q_1,\cdots, Q_a)) \spaced{\leq} \binom{a+k}{a} \cdot \binom{n + \ell + k(t-1)}{n}.
+\CM{SPD}_{k,\ell}(H(Q_1,\ldots, Q_a)) \spaced{\leq} \binom{a+k}{a} \cdot \binom{n + \ell + k(t-1)}{n}.
 \]
 \end{exercise}
 
@@ -180,7 +180,7 @@ This however complicates the other side of the argument where we now need to fin
 Let $\rho$ be a random restriction that sets each variable to zero independently with probability $1 - \alpha$. 
 For any polynomial $P(x_1,\dots x_n)$, define $P \circ \mathrm{Lin}_\alpha$ as
 \[
-P \circ \mathrm{Lin}_\alpha \spaced{=} P\inparen{\sum_{i=1}^t y_{1i}, \cdots, \sum_{i=1}^t y_{nt}}\quad \text{where $t = \inparen{\frac{1}{\alpha}} n \log n$}
+P \circ \mathrm{Lin}_\alpha \spaced{=} P\inparen{\sum_{i=1}^t y_{1i}, \ldots, \sum_{i=1}^t y_{nt}}\quad \text{where $t = \inparen{\frac{1}{\alpha}} n \log n$}
 \]
 Then, $\rho(f \circ \mathrm{Lin}_\alpha)$ has $f$ as a projection with probability $1 - 1/2^{n}$. 
 \end{lemma*}

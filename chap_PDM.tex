@@ -5,14 +5,14 @@ Nisan~\cite{nis91} introduced the notion of the partial derivative matrix in the
 
 \section{Non-commutative models of computation}
 
-A non-commutative polynomials over many variables, denoted by $\F\inbrace{x_1,\cdots, x_n}$, are formal polynomials over the variables wherein the variables do not commute.
-Hence, a polynomial $x_1x_2 - x_2x_1$ in $\F\set{x_1,\cdots, x_n}$ is a non-zero polynomial.
+A non-commutative polynomials over many variables, denoted by $\F\inbrace{x_1,\ldots, x_n}$, are formal polynomials over the variables wherein the variables do not commute.
+Hence, a polynomial $x_1x_2 - x_2x_1$ in $\F\set{x_1,\ldots, x_n}$ is a non-zero polynomial.
 They naturally can be added or multiplied but the order in which the variables are multiplied become important.
 Hence,
 \[
 (x_1 + x_2)(x_1 + x_2) \spaced{=} x_1^2 + x_2x_1 + x_1x_2 + x_2^2 \spaced{\neq} x_1^2 + 2x_1x_2 + x_2^2
 \]
-Each monomial is no longer identifiable by just an exponent vector but is rather a \emph{word} on the set $\set{x_1,\cdots, x_n}$. 
+Each monomial is no longer identifiable by just an exponent vector but is rather a \emph{word} on the set $\set{x_1,\ldots, x_n}$. 
 
 In this space, we can continue to talk about arithmetic circuits or algebraic branching programs where we always keep track of the order of variables multiplied.
 In arithmetic circuits or formulas, every $\times$ gate has labelled left and right children.
@@ -45,7 +45,7 @@ We shall prove part of the proof to show that the sum of the ranks is a lower bo
 \begin{proof}
 Let $C$ be the smallest non-commutative ABP computing the polynomial $f$. We shall show that number of vertices in layer $i$ is at least the rank of $M_i(f)$. 
 
-Suppose $v_1,\cdots, v_r$ are the vertices in the $i$-th layer, and let $s$ be the unique source node and let $t$ be the unique sink node.
+Suppose $v_1,\ldots, v_r$ are the vertices in the $i$-th layer, and let $s$ be the unique source node and let $t$ be the unique sink node.
 For each $i \in [r]$, let $g_i$ be the non-commutative polynomial computed by the restricted ABP if we consider $s$ as the source and $v_i$ as the sink.
 Similarly, let $h_i$ be the non-commutative polynomial computed by the restricted ABP with $v_i$ as source and $t$ as the sink.
 Then, $f = g_1 h_1 + \cdots + g_r h_r$.
@@ -69,11 +69,11 @@ To complete the proof, we just need to construct an explicit polynomial for whic
 A natural attempt is to make $M_{d/2}$ to be full-rank by making it something like the identity matrix.
 Indeed, if we choose the polynomial to be the \emph{double polynomial} $\mathrm{Doub}_d$ defined as
 \[
-\mathrm{Doub}_d \spaced{:=} \sum_{w\in \set{x_1, \cdots, x_n}^{d/2}} \vecx_{w} \vecx_w
+\mathrm{Doub}_d \spaced{:=} \sum_{w\in \set{x_1, \ldots, x_n}^{d/2}} \vecx_{w} \vecx_w
 \]
 or the \emph{Palindrome polynomial} $\mathrm{Pal}_d$ defined as
 \[
-\mathrm{Pal}_d \spaced{:=} \sum_{w\in \set{x_1, \cdots, x_n}^{d/2}} \vecx_{w} \vecx_{\mathrm{reverse}(w)},
+\mathrm{Pal}_d \spaced{:=} \sum_{w\in \set{x_1, \ldots, x_n}^{d/2}} \vecx_{w} \vecx_{\mathrm{reverse}(w)},
 \]
 then clearly $\rank(M_{d/2})$ is $n^{d/2}$ giving the required lower bound. 
 
@@ -92,7 +92,7 @@ An example of this is the class of what are called \emph{read-once oblivious alg
 
 
 \begin{definition}[Read-once oblivious algebraic branching programs (ROABP) \cite{FS13}]
-An ABP (over commuting variables) is said to be an \emph{read-once oblivious algebraic branching program (ROABP) in the order $(x_1,\cdots, x_n)$} if it has the property that all edge weights between layer $i$ and layer $i+1$ are \emph{univariate polynomials} in $x_i$.
+An ABP (over commuting variables) is said to be an \emph{read-once oblivious algebraic branching program (ROABP) in the order $(x_1,\ldots, x_n)$} if it has the property that all edge weights between layer $i$ and layer $i+1$ are \emph{univariate polynomials} in $x_i$.
 \end{definition}
 
 
@@ -141,7 +141,7 @@ edge[<-,bend left] (1.25,2);
 The following observation is a an easy exercise. 
 
 \begin{lemma}
-Suppose a polynomial $f$ is can be computed as an entry in a product of $w\times w$ univariates matrices in the order $(x_1,\cdots, x_n)$, that is
+Suppose a polynomial $f$ is can be computed as an entry in a product of $w\times w$ univariates matrices in the order $(x_1,\ldots, x_n)$, that is
 \[
 f \spaced{=} \inparen{A_1(x_1) \cdots A_n(x_n) }_{(1,1)}.
 \]
@@ -158,8 +158,8 @@ What is the rank of the partial derivative matrices for the following polynomial
 \item The elementary symmetric polynomials $\ESym_d$, under any partition.
 \item Any $\SES$ circuit of size $s$, under any partition.
 \item $\Det_n$ and $\Perm_n$ under the partition $X = Y \sqcup Z$ where $Y$ the variables from the first $n/2$ rows. 
-\item The polynomial $(x_1 + x_2) \cdots (x_{2n-1} + x_{2n})$ under the partition $X = Y \sqcup Z$ with $Y = \set{x_1,\cdots, x_n}$. 
-\item The polynomial $(x_1 + x_2) \cdots (x_{2n-1} + x_{2n})$ under the partition $X = Y \sqcup Z$ with $Y = \set{x_1,x_3,x_5,\cdots, x_{2n-1}}$. 
+\item The polynomial $(x_1 + x_2) \cdots (x_{2n-1} + x_{2n})$ under the partition $X = Y \sqcup Z$ with $Y = \set{x_1,\ldots, x_n}$. 
+\item The polynomial $(x_1 + x_2) \cdots (x_{2n-1} + x_{2n})$ under the partition $X = Y \sqcup Z$ with $Y = \set{x_1,x_3,x_5,\ldots, x_{2n-1}}$. 
 \end{itemize}
 \end{exercise}
 
@@ -199,7 +199,7 @@ For any partition $X = Y \sqcup Z$, let $\ell_Y = \sum_{i\in Y} a_i x_i$ and $\e
 \]
 And as we change the evaluation, the only change in the above equation is the value of $\alpha$. Hence it is clear that the rank of this space of polynomials is no more than $(d+1)$ as it is spanned by 
 \[
-\set{1, \ell_Z, \cdots, \ell_Z^d}.\qedhere
+\set{1, \ell_Z, \ldots, \ell_Z^d}.\qedhere
 \]
 \end{proof}
 

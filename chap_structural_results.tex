@@ -48,21 +48,21 @@ Prove a similar homogenization lemma for algebraic branching programs.
 
 \section{Interpolation}
 
-A very useful technique in arithmetic complexity is interpolation. Suppose we have a circuit $C$ that computes a polynomial $P(x_1,\cdots, x_n, y)$ and say $\deg_y P = d$. We can interpret the polynomial $P$ as an element of $(\F[\vecx])[y]$, that is we can think of $P$ as a univariate polynomial in $y$ with coefficients being elements of $\F[\vecx]$. 
+A very useful technique in arithmetic complexity is interpolation. Suppose we have a circuit $C$ that computes a polynomial $P(x_1,\ldots, x_n, y)$ and say $\deg_y P = d$. We can interpret the polynomial $P$ as an element of $(\F[\vecx])[y]$, that is we can think of $P$ as a univariate polynomial in $y$ with coefficients being elements of $\F[\vecx]$. 
 \[
-P(x_1,\cdots, x_n, y) \spaced{=} P_0(x_1,\cdots, x_n) + P_1(x_1,\cdots, x_n) y + \cdots + P_d(x_1,\cdots, x_n) y^d
+P(x_1,\ldots, x_n, y) \spaced{=} P_0(x_1,\ldots, x_n) + P_1(x_1,\ldots, x_n) y + \cdots + P_d(x_1,\ldots, x_n) y^d
 \]
-Given that we can compute $P$ by a circuit $C$, can we also compute one of the coefficients $P_i(x_1,\cdots, x_n)$ by a small circuit? The answer is `Yes' as long as we are working over a large enough field. 
+Given that we can compute $P$ by a circuit $C$, can we also compute one of the coefficients $P_i(x_1,\ldots, x_n)$ by a small circuit? The answer is `Yes' as long as we are working over a large enough field. 
 
 \begin{lemma}[Interpolation]\label{lem:interpolation}
-Let $P(x_1,\cdots, x_n, y)$ be a polynomial with $\deg_y P \leq d$. For any set of distinct scalars $\alpha_0, \cdots, \alpha_{d} \in \F$ and for every $i \in \set{0,\cdots, d}$,  each of the coefficient polynomials $P_i(x_1,\cdots, x_n)$ defined above can be expressed as a linear combination of 
+Let $P(x_1,\ldots, x_n, y)$ be a polynomial with $\deg_y P \leq d$. For any set of distinct scalars $\alpha_0, \ldots, \alpha_{d} \in \F$ and for every $i \in \set{0,\ldots, d}$,  each of the coefficient polynomials $P_i(x_1,\ldots, x_n)$ defined above can be expressed as a linear combination of 
 \[
-\set{P(x_1,\cdots, x_n, \alpha_0), \cdots, P(x_1,\cdots, x_n,\alpha_d)}.
+\set{P(x_1,\ldots, x_n, \alpha_0), \ldots, P(x_1,\ldots, x_n,\alpha_d)}.
 \]
 Thus in particular, if $P$ is computed by a size $s$ circuit, then each $P_i$ is computable  by a size $s(d+1)$ circuit. Furthermore, if $P$ is computable by a size $s$ circuit from some class $\mathcal{C}$, then each $P_i$ is computable by a size $s(d+1)$ circuit from the class $\Sigma \mathcal{C}$ (which are circuits with a $+$ gate as a root with $\mathcal{C}$-circuits as its children).
 \end{lemma}
 \begin{proof}
-For this proof we shall use $P(\alpha_i)$ as a short-hand for $P(x_1,\cdots, x_n, \alpha_i)$. Then we have the following matrix identity
+For this proof we shall use $P(\alpha_i)$ as a short-hand for $P(x_1,\ldots, x_n, \alpha_i)$. Then we have the following matrix identity
 \[
 \insquare{\begin{array}{cccc}
 1 & \alpha_0 & \cdots & \alpha_0^d\\
@@ -103,9 +103,9 @@ P(\alpha_1) \\
 P(\alpha_d)
 \end{array}}
 \]
-In particular, for each $i \in \set{0,\cdots, d}$,
+In particular, for each $i \in \set{0,\ldots, d}$,
 \[
-P_i(x_1,\cdots, x_n) \spaced{=} \beta_0 P(x_1,\cdots, x_n, \alpha_0) + \cdots + \beta_d P(x_1,\cdots, x_n, \alpha_d). 
+P_i(x_1,\ldots, x_n) \spaced{=} \beta_0 P(x_1,\ldots, x_n, \alpha_0) + \cdots + \beta_d P(x_1,\ldots, x_n, \alpha_d). 
 \]
 The size bounds and structure claimed is clear from the above expression.
 \end{proof}
@@ -113,7 +113,7 @@ The size bounds and structure claimed is clear from the above expression.
 The use of interpolation is one of the most important methods when dealing with arithmetic circuits. We would many applications of it later in this article. We just give a couple of concrete applications for now. The first is the computation of partial derivatives in a single variable. We leave this as an easy exercise. 
 
 \begin{exercise}[Computing partial derivatives]
-Suppose $P(x_1,\cdots, x_n,y)$ be a polynomial computed by a size $s$ circuit with $\deg_y P \leq d$. Show that for any $i$, the partial derivative
+Suppose $P(x_1,\ldots, x_n,y)$ be a polynomial computed by a size $s$ circuit with $\deg_y P \leq d$. Show that for any $i$, the partial derivative
 $\frac{\partial^i P}{\partial y^i}$ can be computed by a circuit of size at most $s(d+1)$. 
 
 What about computing mixed partials such as $\frac{\partial^n P}{\partial x_1 \cdots \partial x_n}$?
@@ -132,20 +132,20 @@ However, the construction in \autoref{lem:homogenization} not just computes the 
 
 Let us use $\Hom_i(P)$ to denote the homogeneous part of degree $i$, and let $d = \deg(P)$.
 \[
-P(x_1,\cdots, x_n) \spaced{=} \Hom_0(P) + \cdots + \Hom_d(P)
+P(x_1,\ldots, x_n) \spaced{=} \Hom_0(P) + \cdots + \Hom_d(P)
 \]
-Let $y$ be a new variable and consider the polynomial $P'(x_1,\cdots, x_n, y) := P(yx_1, \cdots, y x_n)$. Then observe that
+Let $y$ be a new variable and consider the polynomial $P'(x_1,\ldots, x_n, y) := P(yx_1, \ldots, y x_n)$. Then observe that
 \[
-P'(x_1,\cdots, x_n) \spaced{=} \Hom_0(P) + y\Hom_1(P) + \cdots + y^d \Hom_d(P).
+P'(x_1,\ldots, x_n) \spaced{=} \Hom_0(P) + y\Hom_1(P) + \cdots + y^d \Hom_d(P).
 \]
-In other words, each homogeneous component of $P$ is a coefficient of some $y^i$ of $P'(x_1,\cdots, x_n,y)$. Thus, \autoref{lem:interpolation} tells us that we can use a linear combination of evaluations of $P'$ to compute these coefficients. 
+In other words, each homogeneous component of $P$ is a coefficient of some $y^i$ of $P'(x_1,\ldots, x_n,y)$. Thus, \autoref{lem:interpolation} tells us that we can use a linear combination of evaluations of $P'$ to compute these coefficients. 
 
 We summarize this as a lemma. 
 
 \begin{lemma}[Homogeneous component computations]\label{lem:computing-hom-components}
-Let $P(x_1,\cdots, x_n)$ be a polynomial with $\deg P = d$. For any set of distinct scalars $\alpha_0, \cdots, \alpha_{d} \in \F$ and for every $i \in \set{0,\cdots, d}$,  each of the homogeneous components $\Hom_i(P)$ defined above can be expressed as a linear combination of 
+Let $P(x_1,\ldots, x_n)$ be a polynomial with $\deg P = d$. For any set of distinct scalars $\alpha_0, \ldots, \alpha_{d} \in \F$ and for every $i \in \set{0,\ldots, d}$,  each of the homogeneous components $\Hom_i(P)$ defined above can be expressed as a linear combination of 
 \[
-\set{P(\alpha_0x_1,\cdots, \alpha_0x_n), \cdots, P(\alpha_dx_1,\cdots, \alpha_dx_n)}.
+\set{P(\alpha_0x_1,\ldots, \alpha_0x_n), \ldots, P(\alpha_dx_1,\ldots, \alpha_dx_n)}.
 \]
 Thus in particular, if $P$ is computed by a size $s$ circuit, then each $\Hom_i(P)$ is computable  by a size $s(d+1)$ circuit. Furthermore, if $P$ is computable by a size $s$ circuit from some class $\mathcal{C}$, then each $\Hom_i(P)$ is computable by a size $s(d+1)$ circuit from the class $\Sigma \mathcal{C}$ (which are circuits with a $+$ gate as a root with $\mathcal{C}$-circuits as its children).
 \end{lemma}
@@ -155,14 +155,14 @@ It is important to note that for interpolation, we need to be able to find suffi
 \begin{exercise}
 Assume the underlying field is large enough. Find a polynomial sized constant depth circuit that computes $\ESym_d$, the elementary symmetric polynomial of degree $d$, defined as
 \[
-\ESym_{d}(x_1,\cdots, x_n) \spaced{=} \sum_{1\leq i_1 < i_2 < \cdots < i_d \leq n} x_{i_1} \cdots x_{i_d}.
+\ESym_{d}(x_1,\ldots, x_n) \spaced{=} \sum_{1\leq i_1 < i_2 < \cdots < i_d \leq n} x_{i_1} \cdots x_{i_d}.
 \]
 \end{exercise}
 
 \begin{exercise}
 Assume the underlying field is large enough. Find a polynomial sized constant depth circuit that computes \emph{complete homogeneous symmetric polynomial} defined as
 \[
-\sigma_d(x_1,\cdots, x_n) \spaced{=} \sum_{m \in \set{\text{deg. $d$ monomials}}} m.
+\sigma_d(x_1,\ldots, x_n) \spaced{=} \sum_{m \in \set{\text{deg. $d$ monomials}}} m.
 \]
 \textcolor{gray}{For example, $\sigma_2(x_1,x_2,x_3) = x_1^2 + x_2^2 + x_3^2 + x_1x_2 + x_2x_3 + x_1x_3$.}
 \end{exercise}

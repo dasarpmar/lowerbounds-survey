@@ -31,7 +31,7 @@ So a tensor can indeed be thought of as filling up a $d$-dimensional array of sh
 Indeed, a matrix is nothing but an order-$2$ tensor.
 
 It would sometimes be useful to switch between the two notions of thinking of a tensor as a multilinear map from $V_1 \times \cdots \times V_d$ to $\F$ and thinking a tensor as just a map from $[m_1] \times \cdots \times [m_d]$.
-So throughout this chapter, we shall fix a basis $\set{\vece_{i1},\cdots, \vece_{im_i}}$ for $V_i$ and when we shall use $T[j_1,\cdots, j_d]$ to really denote $T(\vece_{1j_1},\cdots, \vece_{dj_d})$.
+So throughout this chapter, we shall fix a basis $\set{\vece_{i1},\ldots, \vece_{im_i}}$ for $V_i$ and when we shall use $T[j_1,\ldots, j_d]$ to really denote $T(\vece_{1j_1},\ldots, \vece_{dj_d})$.
 
 \subsection{Tensors as polynomials}
 
@@ -44,16 +44,16 @@ A polynomial $f(\vecx)$ is said to be \emph{set-multilinear} with respect to the
 In other words, each monomial in $f$ picks up at most one variable from each part in the partition. It is easy to see that many natural polynomials such as $\Det$ or $\Perm$ or $\NW$ are all set-multilinear for an appropriate partition of variables. 
 
 \begin{observation}\label{obs:tensor-to-sml}
-  For any tensor $T$ of shape $[m_1] \times \cdots \times [m_d]$, we can associate a set-multilinear polynomial $f(\vecx)$ with $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ and $\vecx_i = \set{x_{i1}, \cdots, x_{im_i}}$ as
+  For any tensor $T$ of shape $[m_1] \times \cdots \times [m_d]$, we can associate a set-multilinear polynomial $f(\vecx)$ with $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ and $\vecx_i = \set{x_{i1}, \ldots, x_{im_i}}$ as
 \begin{equation}\label{eqn:tensor-sml}
-f(\vecx) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\cdots, i_d) \cdot x_{1i_1}\cdots x_{di_d}.
+f(\vecx) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\ldots, i_d) \cdot x_{1i_1}\cdots x_{di_d}.
 \end{equation}
 \end{observation}
 
 Another representation is to just use a single variable $x_j$ for a part $\vecx_j$ and use higher powers.
 That way, we can associate the following polynomial with a tensor $T$:
 \begin{equation}\label{eqn:tensor-to-prod-univariates}
-f(x_1,\cdots, x_d) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\cdots, i_d) \cdot x_{1}^{i_1}\cdots x_{d}^{i_d}.
+f(x_1,\ldots, x_d) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\ldots, i_d) \cdot x_{1}^{i_1}\cdots x_{d}^{i_d}.
 \end{equation}
 The same also holds in the other direction where we can interpret any set-multilinear polynomial as an appropriate tensor. 
 
@@ -68,9 +68,9 @@ notation and use $\vecu \otimes \vecv$ to denote the order-$2$ tensor $T$ where 
 This naturally generalizes to higher order as well.
 
 \begin{definition}[Elementary tensors, and tensor rank]
-  For $\vecv_1\in V_1, \cdots, \vecv_d \in V_d$, define the tensor $\vecv_1 \otimes \cdots \otimes \vecv_d$ to be the tensor $E$ given by
+  For $\vecv_1\in V_1, \ldots, \vecv_d \in V_d$, define the tensor $\vecv_1 \otimes \cdots \otimes \vecv_d$ to be the tensor $E$ given by
 \[
-E[j_1,\cdots, j_d] = (\vecv_1)_{j_1} \cdots (\vecv_d)_{j_d}.
+E[j_1,\ldots, j_d] = (\vecv_1)_{j_1} \cdots (\vecv_d)_{j_d}.
 \]
 We shall call such tensors as \emph{elementary tensors} or \emph{rank-$1$ tensors}. 
 
@@ -116,7 +116,7 @@ Then, if $T = T_1 + T_2$, then $\rank(T) \leq \rank(T_1) + \rank(T_2)$.
   Let $T_1: V_1 \times \cdots \times V_{d_1} \rightarrow \F$ and $T_2: W_1 \times \cdots \times W_{d_2} \rightarrow \F$ be two tensors.
 Then if $T = T_1 \otimes T_2$ given by
 \[
-T[i_1,\cdots, i_{d_1},j_1,\cdots, j_{d_2}] = T_1[i_1,\cdots, i_{d_1}] \cdot T_2[j_1,\cdots, j_{d_2}],
+T[i_1,\ldots, i_{d_1},j_1,\ldots, j_{d_2}] = T_1[i_1,\ldots, i_{d_1}] \cdot T_2[j_1,\ldots, j_{d_2}],
 \]
 then $\rank(T) \leq \rank(T_1) \cdot \rank(T_2)$. 
 \end{lemma}
@@ -149,10 +149,10 @@ Interpreting this statement via \eqref{eqn:tensor-to-prod-univariates}, this imp
 \[
 q(x_1,x_2) = \sum_{i=1}^n g_i(x_1) h_i(x_2).
 \]
-Therefore, if $f(x_1,\cdots, x_d)$ is a polynomial with degree in each variable bounded by $n$, then we can write $f$ as
+Therefore, if $f(x_1,\ldots, x_d)$ is a polynomial with degree in each variable bounded by $n$, then we can write $f$ as
 \begin{align*}
-f(x_1,\cdots, x_d) &= \sum_{m \in \mathrm{Mon}\set{x_3,\cdots, x_d}} m \cdot q_m(x_1,x_2)\\
-& = \sum_{m \in \mathrm{Mon}\set{x_3,\cdots, x_d}} m \cdot \inparen{\sum_{i=1}^n g_{m,i}(x_1) \cdot h_{m,i}(x_2)}
+f(x_1,\ldots, x_d) &= \sum_{m \in \mathrm{Mon}\set{x_3,\ldots, x_d}} m \cdot q_m(x_1,x_2)\\
+& = \sum_{m \in \mathrm{Mon}\set{x_3,\ldots, x_d}} m \cdot \inparen{\sum_{i=1}^n g_{m,i}(x_1) \cdot h_{m,i}(x_2)}
 \end{align*}
 which is a sum of product of univariates of top fan-in $n \cdot n^{d-2} = n^{d-1}$. 
 \end{proof}
@@ -203,7 +203,7 @@ An easier question to the one above would be the following:
 In the rest of this chapter, we shall prove the following result of Raz \cite{raz10}. 
 
 \begin{theorem}[\cite{raz10}] \label{thm:raz-tensorrank-sml} Let
-  $\Phi$ be a set-multilinear formula of size $s \leq n^c$ computing a polynomial $f(\vecx_1,\cdots, \vecx_d)$.
+  $\Phi$ be a set-multilinear formula of size $s \leq n^c$ computing a polynomial $f(\vecx_1,\ldots, \vecx_d)$.
 Then,
 \[
 \rank(f) \spaced{\leq} \frac{n^d}{n^{d/\exp(c)}}. 
@@ -214,13 +214,13 @@ In the setting when $d$ is small, Raz \cite{raz10} also showed that formulas can
 
 \begin{theorem}[\cite{raz10}]\label{thm:form-to-smlform}
   Suppose $d = O\pfrac{\log n}{\log\log n}$.
-If $\Phi$ is a formula of size $s = \poly(n)$ that computes a set-multilinear polynomial $f(\vecx_1,\cdots, \vecx_d)$, then there is a \emph{set-multilinear} formula of $\poly(s)$ size that computes $f$ as well.
+If $\Phi$ is a formula of size $s = \poly(n)$ that computes a set-multilinear polynomial $f(\vecx_1,\ldots, \vecx_d)$, then there is a \emph{set-multilinear} formula of $\poly(s)$ size that computes $f$ as well.
 \end{theorem}
 
 As a corollary, finding explicit tensors of almost full rank would imply super-polynomial formula lower bounds in the low-degree regime.
 
 \begin{corollary}[\cite{raz10}]
-  If $f(\vecx_1,\cdots, \vecx_d)$ is an explicit tensor of rank $n^{d(1- o(1))}$ with $\omega(1) = d = O\pfrac{\log n}{\log\log n}$, then any formula computing $f$ must be of super-polynomial size.
+  If $f(\vecx_1,\ldots, \vecx_d)$ is an explicit tensor of rank $n^{d(1- o(1))}$ with $\omega(1) = d = O\pfrac{\log n}{\log\log n}$, then any formula computing $f$ must be of super-polynomial size.
 \end{corollary}
 
 The above two theorems are of very different flavours and should really be thought of as two independent surprising results.
@@ -243,7 +243,7 @@ Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\
 a \geq \frac{1}{10}\pfrac{d}{t} \log t.
 \]
 \end{theorem*}
-It is a fairly straightforward observation to see that the above theorem preserves multilinearity and set-multilinearity as well. We shall start with the set-multilinear formula $\Phi$ of size $s = n^c$ that computes the polynomial $f(\vecx_1,\cdots, \vecx_d)$ and apply \autoref{thm:av-formulas} for a suitable choice of $t$ (that shall be set shortly). 
+It is a fairly straightforward observation to see that the above theorem preserves multilinearity and set-multilinearity as well. We shall start with the set-multilinear formula $\Phi$ of size $s = n^c$ that computes the polynomial $f(\vecx_1,\ldots, \vecx_d)$ and apply \autoref{thm:av-formulas} for a suitable choice of $t$ (that shall be set shortly). 
 Therefore we now have a set-multilinear expression of the form
 \[
 f \spaced{=} T_1 + \cdots + T_{s'}
@@ -313,7 +313,7 @@ Let $v\rightarrow v_1 \rightarrow \cdots \rightarrow v_r$ be the path from $v$ t
 (v,i) \rightarrow (v_1,i_1) \rightarrow \cdots \rightarrow (v_r,i_r)
 \]
 where $i \leq i_1 \leq \cdots \leq i_r = d$.
-But the number of such choices for $(i_1,\cdots, i_r)$ the same as the number of non-negative integer solutions to $b_1 + \cdots + b_r = d-i$ which is at most $\binom{r + d}{d}$.
+But the number of such choices for $(i_1,\ldots, i_r)$ the same as the number of non-negative integer solutions to $b_1 + \cdots + b_r = d-i$ which is at most $\binom{r + d}{d}$.
 We know that the circuit has depth at most $O(\log s)$ and hence $r \leq O(\log s)$.
 Therefore, the number of paths from any $(v,i)$ to the root is at most $\binom{d + O(\log s)}{d}$.
 Hence, if $\Phi'$ is the formula obtained by unravelling $C$, we have
@@ -335,7 +335,7 @@ In particular, if $d = O\pfrac{\log n}{\log \log n}$ and $s = \poly(n)$ then the
 \begin{proof}
 To start with, without loss of generality, let us assume that the formula $\Phi$ is fan-in $2$, homogeneous and has depth $O(\log s)$.
 In the first step, we set multilinearize $\Phi$ in the obvious way to obtain a circuit $C$.
-To this end, for every gate $v$ in $\Phi$, and vector $\veca = (a_1,\cdots, a_d) \in \{0,1\}^d$, there is a gate $(v, \veca)$ in $C$.
+To this end, for every gate $v$ in $\Phi$, and vector $\veca = (a_1,\ldots, a_d) \in \{0,1\}^d$, there is a gate $(v, \veca)$ in $C$.
 Semantically, the the polynomial at $(v,\veca)$ consists of the monomials in the polynomial computed at $v$ (in $\Phi$) which contain exactly one variable from the set $\vecx_i$ for every $i$ such that $a_i = 1$.
 The edges in $C$ are connected in a natural way, namely for a gate $v$ with children $u$ and $w$, we have the following edges:
 \begin{eqnarray*}

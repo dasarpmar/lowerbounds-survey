@@ -71,14 +71,14 @@ Firstly, note that if $a > d$, then $\Hom_d(T) = 0$ as all monomials in the RHS 
 \begin{claim}
 If $T = Q_1 \cdots Q_a \cdot (1 + Q_{1}') \cdots (1 + Q_t')$, then 
 \[
-\Hom_d(T) \spaced{=} \Hom_d\inparen{Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \cdots,  Q_t')}.
+\Hom_d(T) \spaced{=} \Hom_d\inparen{Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \ldots,  Q_t')}.
 \]
 \end{claim}
 \begin{proof}
-The only monomials present in $T$ that are not in $Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \cdots,  Q_t')$ are monomials that are obtained by multiplying more than $d$ of the $Q_i'$s. But such monomials must have degree more than $d$ and hence cannot contribute to $\Hom_d(T)$. 
+The only monomials present in $T$ that are not in $Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \ldots,  Q_t')$ are monomials that are obtained by multiplying more than $d$ of the $Q_i'$s. But such monomials must have degree more than $d$ and hence cannot contribute to $\Hom_d(T)$. 
 \end{proof}
 
-Therefore if $T$ is a $\Pi\circast^{[\sqrt{d}]}$ circuit, since each $\ESym_i(y_1,\cdots, y_t)$ can be expressed as a $\Sigma\Pi^{[d]}\Sigma\mywedge$ circuit of size at most $2^{O(\sqrt{d})} \poly(t,d)$ (\autoref{lem:d3-d5}), we have that $\Hom_d(T)$ can be expressed as the $d$-th homogeneous part of a  $\Sigma\Pi^{[d]}\Sigma\mywedge\circast^{[\sqrt{d}]}$ of size at most $2^{O(\sqrt{d})} \poly(t,d)$, which is of course also a $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit (by absorbing the powering gate). The factor of $2^{O(\sqrt{d})}$ is affordable as we are hoping to prove a $n^{\Omega(\sqrt{d})}$ lower bound. 
+Therefore if $T$ is a $\Pi\circast^{[\sqrt{d}]}$ circuit, since each $\ESym_i(y_1,\ldots, y_t)$ can be expressed as a $\Sigma\Pi^{[d]}\Sigma\mywedge$ circuit of size at most $2^{O(\sqrt{d})} \poly(t,d)$ (\autoref{lem:d3-d5}), we have that $\Hom_d(T)$ can be expressed as the $d$-th homogeneous part of a  $\Sigma\Pi^{[d]}\Sigma\mywedge\circast^{[\sqrt{d}]}$ of size at most $2^{O(\sqrt{d})} \poly(t,d)$, which is of course also a $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit (by absorbing the powering gate). The factor of $2^{O(\sqrt{d})}$ is affordable as we are hoping to prove a $n^{\Omega(\sqrt{d})}$ lower bound. 
 \[
 \Hom_d(T) \spaced{=} \Hom_d\inparen{\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}}.
 \]

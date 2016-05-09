@@ -141,7 +141,7 @@ $\mathcal{I} = \inangle{x_i^2 \;:\; i\in [n]}$ but working modulo other ideals i
 In fact, there is a fairly large class of ideals $\mathcal{I}$ for which $f \bmod \mathcal{I}$ has a unique multilinear representative. But to make it applicable for lower bounds for homogeneous depth-$4$ circuits, we will need a mechanism to transform a ``low support polynomial'' to a ``low degree polynomial''. 
 
 \begin{definition}[Support-to-degree ideals]\label{defn:supp-to-degree-ideal}
-An ideal $\mathcal{I}$ is said to be a \emph{support-to-degree} ideal if there exist linear polynomials $\ell_1, \cdots, \ell_n$ such that
+An ideal $\mathcal{I}$ is said to be a \emph{support-to-degree} ideal if there exist linear polynomials $\ell_1, \ldots, \ell_n$ such that
 \[
 \mathcal{I} \spaced{=} \inangle{x_i^2 - \ell_i(x_i) \;:\; i\in [n]}. \qedhere
 \]
@@ -187,7 +187,7 @@ We now want to show that if $C$ is a homogeneous depth-$4$ circuit with bottom s
 \end{lemma}
 \begin{proof}
   Let us consider a single summand $T = Q_1 \cdots Q_m$ of $C$.
-We shall partition this set into those polynomials $Q_1,\cdots, Q_a$ of degree at most $r$, and polynomials $Q_1',\cdots, Q_b'$ of degree more than $r$. By homogeneity of $C$, we know that $b \leq d/r$. Since some of the $Q_i$s could have very small degree, $a$ could potentially be as large as $d$. To handle this, if we find any $Q_i$ and $Q_j$ both of degree at most $r/2$, we shall replace them by their product. This ensures that all $Q_i$s have degree more than $r/2$ except perhaps one. Hence, (reusing some symbols) we can write $T$ as
+We shall partition this set into those polynomials $Q_1,\ldots, Q_a$ of degree at most $r$, and polynomials $Q_1',\ldots, Q_b'$ of degree more than $r$. By homogeneity of $C$, we know that $b \leq d/r$. Since some of the $Q_i$s could have very small degree, $a$ could potentially be as large as $d$. To handle this, if we find any $Q_i$ and $Q_j$ both of degree at most $r/2$, we shall replace them by their product. This ensures that all $Q_i$s have degree more than $r/2$ except perhaps one. Hence, (reusing some symbols) we can write $T$ as
 \[
 T \spaced{=} \tilde{Q}_1 \cdots \tilde{Q}_a \;\cdot\; Q_1' \cdots Q_b'
 \]

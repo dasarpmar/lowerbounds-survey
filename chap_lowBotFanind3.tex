@@ -52,7 +52,7 @@ We have linear forms of size $n' = n^{0.9}$ and we want to use a random restrict
 The natural choice is to keep a variable alive with probability $p < \frac{d'}{n'}$ and use Chernoff's bound. Hopefully the error probability is low enough and we can union bound over all linear forms in the circuit. 
 
 \begin{lemma}[Chernoff's Bound]\label{lem:chernoff-traditional}
-Let $X_1,\cdots, X_m$ be independent $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ for all $i$. Then, if $X = \sum X_i$ and $\mu = \E[X]$, for any $\delta > 0$, we have the following bounds:
+Let $X_1,\ldots, X_m$ be independent $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ for all $i$. Then, if $X = \sum X_i$ and $\mu = \E[X]$, for any $\delta > 0$, we have the following bounds:
 \[
 \Pr[ X > (1 + \delta) \mu ] \spaced{\leq} \begin{cases}
 e^{-\delta^2 \mu/3} & \text{if }\delta < 1\\
@@ -80,7 +80,7 @@ Intuitively, such an event makes it seem like $\Pr[X_i = 1] = p+\epsilon$ rather
 Thus one should expect that the probability of this event happening should be related to the \emph{distance between} the distributions $\Pr[X_i=1]= p$ and $\Pr[X_i = 1] = p+\epsilon$. Indeed, the following bound formalizes this by using the \emph{relative entropy} or \emph{KL-divergence} as the distance measure. 
 
 \begin{lemma}[Chernoff's bound via relative entropy]\label{lem:chernoff-stronger}
-Let $X_1,\cdots, X_m$ be independent, identically distributed $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ and let $X = \sum X_i$. For any $p' > p$, we have
+Let $X_1,\ldots, X_m$ be independent, identically distributed $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ and let $X = \sum X_i$. For any $p' > p$, we have
 \[
 \Pr[X >p' m] \spaced{\leq} e^{-m \cdot \mathbb{D}(p' \Vert p)}
 \]
@@ -131,7 +131,7 @@ Therefore, all we need to do is to choose $p$ so that $\log(p'/p) = \Omega(\log 
 We summarize this as a lemma, since we'd use this in the next chapter as well.
 
 \begin{lemma}\label{lem:single-step-fanin-reduction}
-Let $S_1,\cdots, S_r$ be subsets of $[n]$ of size at most $n^{0.9}$ each and suppose $r \leq n^{0.01 \sqrt{d}}$. If we pick a set $R \subseteq [n]$ by choose every element independently with probability $\frac{\sqrt{d}}{n^{0.92}}$, then
+Let $S_1,\ldots, S_r$ be subsets of $[n]$ of size at most $n^{0.9}$ each and suppose $r \leq n^{0.01 \sqrt{d}}$. If we pick a set $R \subseteq [n]$ by choose every element independently with probability $\frac{\sqrt{d}}{n^{0.92}}$, then
 \[
 \Pr[\text{For all $i$, } \abs{S_i \intersection R} \leq \sqrt{d}] \spaced{=} 1 - o(1).
 \]

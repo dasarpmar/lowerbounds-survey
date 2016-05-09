@@ -135,7 +135,7 @@ Without loss of generality, we may assume that $n_i \geq 2d_i$ for all $i$. We a
 \begin{quote}
   If we pick $d$ elements out of $n$ elements, what's the probability that we pick $d_1$ elements from the first $n_1$, and $d_2$ from the next $n_2$ ... etc. 
 \end{quote}
-The first step is to ask, for fixed values of $n_1, \cdots, n_\ell$, what values of $d_1, \cdots, d_\ell$ maximize this probability. Intuitively, each $d_i$ ought to be proportional to $n_i$ as that is what we would get in expectation. In the perfect regime where $n = \alpha \cdot  d$ and  $n_i = \alpha \cdot d_i$ for each $i \in [\ell]$, we can now use the approximation from \autoref{lem:stirling-binom} to get
+The first step is to ask, for fixed values of $n_1, \ldots, n_\ell$, what values of $d_1, \ldots, d_\ell$ maximize this probability. Intuitively, each $d_i$ ought to be proportional to $n_i$ as that is what we would get in expectation. In the perfect regime where $n = \alpha \cdot  d$ and  $n_i = \alpha \cdot d_i$ for each $i \in [\ell]$, we can now use the approximation from \autoref{lem:stirling-binom} to get
 \begin{eqnarray*}
 \binom{n}{d} & \geq  &  \pfrac{1}{3\sqrt{d}} \cdot \pfrac{n^n}{d^d \cdot (n-d)^{n-d}}\\
  & = & \pfrac{1}{3\sqrt{d}} \cdot \pfrac{d^n \cdot \alpha^n}{d^d \cdot d^{n-d} \cdot (\alpha - 1)^{n-d}}\\

@@ -78,7 +78,7 @@ We shall now set $x_{12} = \ell$ in $C$ and this eliminates the gate $T_i$ altog
 
 Now move on to $x_{13}$. It is possible now that after eliminating $T_i$ in the previous step, we may now have $x_{13}$ to be $d$-good. Then we reduce to Case 1 and we are done. Otherwise, there is some $T_j$ of degree more than $d$ with a factor of the form $(x_{13} - \ell')$. Once again, we set $x_{13} = \ell'$ to eliminate $T_j$ and thereby reduce the size of the circuit by $d$. \\
 
-Repeating this process for $\set{x_{12}, \cdots, x_{1n}}$, we either reach Case 1 (in which case we are done), or we have thereby reduced the circuit by at least $d(n-1)$ wires. So far, we have only messed with the variables $\set{x_{12},\cdots, x_{1n}}$ but this is not an issue because we can further set $x_{11} = 1$ and $x_{21} = x_{31} = \cdots = x_{n1} = 0$. Therefore, the polynomial thus computed has to be the minor with respect to $x_{11}$ which is just $\Det_{n-1}$ up to renaming variables. But then,
+Repeating this process for $\set{x_{12}, \ldots, x_{1n}}$, we either reach Case 1 (in which case we are done), or we have thereby reduced the circuit by at least $d(n-1)$ wires. So far, we have only messed with the variables $\set{x_{12},\ldots, x_{1n}}$ but this is not an issue because we can further set $x_{11} = 1$ and $x_{21} = x_{31} = \cdots = x_{n1} = 0$. Therefore, the polynomial thus computed has to be the minor with respect to $x_{11}$ which is just $\Det_{n-1}$ up to renaming variables. But then,
 \[
 \mathrm{size}(C) \spaced{\geq} \mathrm{size}(C') \;+\; \pfrac{(n-1)^2 n^2}{20\log n}
 \]

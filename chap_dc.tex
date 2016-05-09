@@ -50,7 +50,7 @@ Let us attempt to formalize this intuition.
 For an arbitrary $n$-variate function $f$, let us look at the \emph{zero surface} of all points with $f(X) = 0$ and let $X_0$ be one such point on the surface.
 The tangent of the surface at the point $X_0$ is a hyperplane whose normal is specified by the \emph{gradient} of $f$ defined as
 \[
-\nabla f (X_0) \spaced{=} \inparen{\partial_{1}(f), \cdots, \partial_{n}(f)} (X_0)
+\nabla f (X_0) \spaced{=} \inparen{\partial_{1}(f), \ldots, \partial_{n}(f)} (X_0)
 \]
 If it so turns out that, $f(\lambda V + X_0) = 0$ for all $\lambda \in \F$, and hence $V$ must also lie on the tangent plane.
 This therefore also implies that $V$ must be perpendicular to $\nabla f (X_0)$ as well.
@@ -80,9 +80,9 @@ Let $f$ be an $n$-variate polynomial and let $f(X_0) = 0$ for some $X_0 \in \F^n
 \begin{proof}
 Consider the $\mathcal{H}:\mathcal{V} \rightarrow \F^n$ that maps $M \in \mathcal{V}$ to $\partial_M(\nabla f) (X_0)$, the coordinate-wise directional derivative of $\nabla f$ in the direction $M$ evaluated at $X_0$. That is, 
 \[
-\partial_M(\nabla f) (X_0) \spaced{=} \inparen{\pfrac{\partial G_1}{\partial M} (X_0) , \cdots, \pfrac{\partial G_n}{\partial M} (X_0)} \in \F^n
+\partial_M(\nabla f) (X_0) \spaced{=} \inparen{\pfrac{\partial G_1}{\partial M} (X_0) , \ldots, \pfrac{\partial G_n}{\partial M} (X_0)} \in \F^n
 \]
-where $G = (G_1, \cdots, G_n) = \nabla f$. 
+where $G = (G_1, \ldots, G_n) = \nabla f$. 
 
 We know that $(\nabla f)(X_0)$ is perpendicular to $\mathcal{V}$ but we claim that $\partial_M(\nabla f) (X_0)$ is also perpendicular to $\mathcal{V}$. This is because $(\nabla f)( X_0 + \epsilon M) - (\nabla f)(X_0) \in \mathcal{V}^\perp$ for every $\epsilon \in \F$, and therefore we must have $\partial_M(\nabla f)(X_0) \in \mathcal{V}^{\perp}$. 
 

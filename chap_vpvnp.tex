@@ -566,14 +566,14 @@ Let $(u,v)$ and $(u',v')$ be two edges of a graph $G$, and let $G'$ be the graph
 Then $\mathrm{perm}(G')$ equals the sum of all weighted cycle covers of $G$ that either include both $(u,v)$ and $(u',v')$ in it or neither. 
 \end{claim}
 \begin{proof}
-If both edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, this is realized in $G'$ as ${(\cdots u,p_1, p_2, v \cdots) (\cdots u', p_3, v' \cdots)}$, which has the same weight.  
+If both edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, this is realized in $G'$ as ${(\ldots u,p_1, p_2, v \ldots) (\ldots u', p_3, v' \ldots)}$, which has the same weight.  
 
 If neither of the edges $(u,v)$ and $(u',v')$ are taken in the cycle cover, then the total contribution of all cycle covers of $p_1$, $p_2$ and $p_3$ is $\mathrm{perm}(A) = 1$. 
 
-If the edge $(u,v)$ is taken but $(u',v')$ is not, then the edge $(u,v)$ can be realized in $G'$ as either $\inbrace{(\cdots u,p_1,p_2,v \cdots) (p_3)}$ or $\inbrace{(\cdots u,p_1,p_3,p_2,v \cdots )}$. 
+If the edge $(u,v)$ is taken but $(u',v')$ is not, then the edge $(u,v)$ can be realized in $G'$ as either $\inbrace{(\ldots u,p_1,p_2,v \ldots) (p_3)}$ or $\inbrace{(\ldots u,p_1,p_3,p_2,v \ldots )}$. 
 The total contribution is therefore zero. 
 
-Similarly, if the edge $(u',v')$ is taken but not $(u,v)$, then this can be realized in $G'$ as $\inbrace{(\cdots u',p_3,v' \cdots),(p_1,p_2)}$ and $\inbrace{(\cdots u',p_3, v' \cdots) (p_1) (p_2)}$. 
+Similarly, if the edge $(u',v')$ is taken but not $(u,v)$, then this can be realized in $G'$ as $\inbrace{(\ldots u',p_3,v' \ldots),(p_1,p_2)}$ and $\inbrace{(\ldots u',p_3, v' \ldots) (p_1) (p_2)}$. 
 Again, the net contribution is zero.  
 \end{proof}
 
