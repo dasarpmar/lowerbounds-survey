@@ -1,0 +1,371 @@
+\chapter{Tensor rank and formula lower bounds}\label{chap:tensorrk}
+
+In this chapter, we will establish an apriori surprising connection between lower bounds for homogeneous arithmetic formula and constructing explicit tensors of full rank.
+The chapter is based on a result of Raz~\cite{raz10}.
+
+\section{Tensors}
+
+Tensors are natural \emph{higher dimensional} analogues of matrices.
+A matrices is nothing but a two dimensional array filled in with numbers from some underlying field.
+A tensor is a higher dimensional version of this, where we have an $d$-dimensional cuboid filled with numbers.
+A tensor $T$ is a map of the form
+\[
+T: [m_1] \times \cdots \times [m_d] \longrightarrow \F
+\]
+the same way an $m\times n$ matrix a map from $[m] \times [n] \rightarrow \F$.
+However, if one wants to understand a tensor more functionally (similarly to how it is useful to think of matrices as linear transformations on vector spaces), it is more natural to extend this definition linearly as follows.
+
+\begin{definition}[Tensor]\label{defn:tensor}
+A tensor $T$ is a map of the form 
+\[
+T: V_1 \times \cdots \times V_d \longrightarrow \F
+\]
+where each $V_i$ is a vector space over $\F$, of say dimension $m_i$, which is linear in every coordinate i.e.
+\[
+T(\vecv_1, \ldots,\alpha\vecv_i + \beta\vecv_i', \ldots, \vecv_d) = \alpha T(\vecv_1, \ldots,\vecv_i, \ldots, \vecv_d) + \beta T(\vecv_1, \ldots,\vecv_i', \ldots, \vecv_d).
+\]
+The parameter $r$ is called the \emph{order} of the tensor, and we say that the \emph{shape of $T$} is $m_1 \times \cdots \times m_d$. 
+\end{definition}
+Since a tensor is linear in every coordinate, it suffices to specify the image of $T$ at the basis of $V_1 \times \cdots \times V_d$ and extend it linearly.
+So a tensor can indeed be thought of as filling up a $d$-dimensional array of shape $[m_1]\times \cdots \times [m_d]$ by field elements, the same way an $m\times n$ matrix is specified by an $m\times n$ array filled up with field elements.
+Indeed, a matrix is nothing but an order-$2$ tensor.
+
+It would sometimes be useful to switch between the two notions of thinking of a tensor as a multilinear map from $V_1 \times \cdots \times V_d$ to $\F$ and thinking a tensor as just a map from $[m_1] \times \cdots \times [m_d]$.
+So throughout this chapter, we shall fix a basis $\set{\vece_{i1},\cdots, \vece_{im_i}}$ for $V_i$ and when we shall use $T[j_1,\cdots, j_d]$ to really denote $T(\vece_{1j_1},\cdots, \vece_{dj_d})$.
+
+\subsection{Tensors as polynomials}
+
+In our setting, it would be useful to think of tensors as a restricted form of multilinear polynomials that are called \emph{set-multilinear polynomials}.
+
+\begin{definition}[Set-multilinear polynomials]\label{defn:set-multilinear}
+  Let $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ be a partition of variables and let $|\vecx_i| = m_i$.
+A polynomial $f(\vecx)$ is said to be \emph{set-multilinear} with respect to the above partition if every monomial $m$ in $f$ satisfies $\abs{m \intersection X_i} = 1$ for all $i \in [d]$.
+\end{definition}
+In other words, each monomial in $f$ picks up at most one variable from each part in the partition. It is easy to see that many natural polynomials such as $\Det$ or $\Perm$ or $\NW$ are all set-multilinear for an appropriate partition of variables. 
+
+\begin{observation}\label{obs:tensor-to-sml}
+  For any tensor $T$ of shape $[m_1] \times \cdots \times [m_d]$, we can associate a set-multilinear polynomial $f(\vecx)$ with $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ and $\vecx_i = \set{x_{i1}, \cdots, x_{im_i}}$ as
+\begin{equation}\label{eqn:tensor-sml}
+f(\vecx) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\cdots, i_d) \cdot x_{1i_1}\cdots x_{di_d}.
+\end{equation}
+\end{observation}
+
+Another representation is to just use a single variable $x_j$ for a part $\vecx_j$ and use higher powers.
+That way, we can associate the following polynomial with a tensor $T$:
+\begin{equation}\label{eqn:tensor-to-prod-univariates}
+f(x_1,\cdots, x_d) \spaced{=} \sum_{\substack{1 \leq i_j \leq m_j\\ \forall j \in [d]}}  T(i_1,\cdots, i_d) \cdot x_{1}^{i_1}\cdots x_{d}^{i_d}.
+\end{equation}
+The same also holds in the other direction where we can interpret any set-multilinear polynomial as an appropriate tensor. 
+
+
+\subsection{Rank of a tensor}
+
+Just like any matrix has a natural definition of \emph{rank}, there is an analogue for tensors as well.
+The rank of a matrix $M$ can be defined as the smallest $r$ for which $M$ can be written as a sum of $r$ matrices of rank $1$.
+A rank-$1$ matrix is just a matrix of the form $\vecu \vecv^T$ where the $(i,j)$-th entry is $u_iv_j$.
+We shall abuse\footnote{it is abuse because it is really a tensor product of $\vecu$ and $\vecv^T$.}
+notation and use $\vecu \otimes \vecv$ to denote the order-$2$ tensor $T$ where $T[i,j] = u_i v_j$.
+This naturally generalizes to higher order as well.
+
+\begin{definition}[Elementary tensors, and tensor rank]
+  For $\vecv_1\in V_1, \cdots, \vecv_d \in V_d$, define the tensor $\vecv_1 \otimes \cdots \otimes \vecv_d$ to be the tensor $E$ given by
+\[
+E[j_1,\cdots, j_d] = (\vecv_1)_{j_1} \cdots (\vecv_d)_{j_d}.
+\]
+We shall call such tensors as \emph{elementary tensors} or \emph{rank-$1$ tensors}. 
+
+For an arbitrary tensor $T$, the \emph{tensor rank of $T$}, denoted by $\rank(T)$, is the smallest $r$ such that $T$ can be expressed as a sum of $r$ elementary tensors. 
+\end{definition}
+
+\noindent 
+What do elementary tensors look like as polynomials?
+Let us consider the \emph{set-multilinear} polynomial setting as in \eqref{eqn:tensor-sml}.
+It is easy to see that a rank-$1$ tensor is precisely a \emph{set-multilinear} product of linear forms such as
+\[
+f(\vecx) \spaced{=} \ell_1(\vecx_1) \cdots \ell_d(\vecx_d)
+\]
+where each $\ell_i(\vecx_i)$ is a linear form in the variables in $\vecx_i$. \\
+
+In the setting of \eqref{eqn:tensor-to-prod-univariates}, it is easy to see that a rank-$1$ tensor is precisely a \emph{product of univariates} such as
+\[
+f(\vecx) \spaced{=} f_1(x_1)\cdots f_d(x_d).
+\]
+\noindent
+Hence the following three questions are equivalent:
+\begin{itemize}
+\setlength\itemsep{0em}
+\item Given a tensor $T$, find its rank. 
+\item Given a set-multilinear polynomial $f$, find the smallest set-multilinear $\SPS$ circuit computing it. 
+\item Given a polynomial $f$, find the smallest expression as a sum of product of univariates.
+\end{itemize}
+
+However, unlike matrices, computing the rank of even an order-$3$ tensor is $\NP$-hard \cite{h90}.
+But one could still ask if we can prove good upper or lower bounds for some specific tensors, or try to find a tensor with large rank.
+But before that, let us look at some basic properties that tensor rank satisfies.
+
+\subsection*{Properties of  tensor rank}
+
+The following are a couple of basic properties that follows almost immediately from the definitions.
+
+\begin{lemma}[Sub-additivity of tensor rank]\label{lem:tensor-subadditivity}
+  Let $T_1$ and $T_2$ be two tensors of the same shape and order.
+Then, if $T = T_1 + T_2$, then $\rank(T) \leq \rank(T_1) + \rank(T_2)$.
+\end{lemma}
+
+\begin{lemma}[Sub-multiplicativity of tensor rank]\label{lem:tensor-submultiplicativity}
+  Let $T_1: V_1 \times \cdots \times V_{d_1} \rightarrow \F$ and $T_2: W_1 \times \cdots \times W_{d_2} \rightarrow \F$ be two tensors.
+Then if $T = T_1 \otimes T_2$ given by
+\[
+T[i_1,\cdots, i_{d_1},j_1,\cdots, j_{d_2}] = T_1[i_1,\cdots, i_{d_1}] \cdot T_2[j_1,\cdots, j_{d_2}],
+\]
+then $\rank(T) \leq \rank(T_1) \cdot \rank(T_2)$. 
+\end{lemma}
+
+\begin{exercise}
+  Show that in fact $\rank(T_1 \otimes T_2) = \rank(T_1) \cdot \rank(T_2)$.
+\end{exercise}
+
+\subsection{Upper bounds on tensor rank}
+
+Let us consider an order-$d$ tensor $T$ of shape $n \times \cdots \times n$.
+How large can $\rank(T)$ be?
+One possible upper bound we could say is $n^d$.
+Surely, the tensor is an $d$-dimensional array with just $n^d$ entries.
+We can certainly write it as a sum of $n^d$ elementary tensors of the form $\vece_{j_1} \otimes \cdots \otimes \vece_{j_d}$.
+So clearly $\rank(T) \leq n^d$.
+But we can do a little better.
+Consider the case when $d=2$, and we have an $n\times n$ matrix.
+The bound on the rank is not $n^2$ but rather $n$.
+This indicates that one should be able to do a bit better than $n^d$ for the general case.
+Indeed we can.
+
+\begin{lemma}\label{lem:tensor-rank-trivial-upperbound}
+  Let $T$ be an order-$d$ tensor of shape $n\times \cdots \times n$.
+Then, $\rank(T) \leq n^{d-1}$.
+\end{lemma}
+\begin{proof}
+  Let us revisit the case when $d=2$, where we know an $n\times n$ matrix has rank at most $n$.
+Interpreting this statement via \eqref{eqn:tensor-to-prod-univariates}, this implies that of $q(x_1,x_2)$ is a bi-variate with degree in each variable bounded by $n$, then $q$ can be written as
+\[
+q(x_1,x_2) = \sum_{i=1}^n g_i(x_1) h_i(x_2).
+\]
+Therefore, if $f(x_1,\cdots, x_d)$ is a polynomial with degree in each variable bounded by $n$, then we can write $f$ as
+\begin{align*}
+f(x_1,\cdots, x_d) &= \sum_{m \in \mathrm{Mon}\set{x_3,\cdots, x_d}} m \cdot q_m(x_1,x_2)\\
+& = \sum_{m \in \mathrm{Mon}\set{x_3,\cdots, x_d}} m \cdot \inparen{\sum_{i=1}^n g_{m,i}(x_1) \cdot h_{m,i}(x_2)}
+\end{align*}
+which is a sum of product of univariates of top fan-in $n \cdot n^{d-2} = n^{d-1}$. 
+\end{proof}
+
+A counting argument would say that there do exist tensors of rank at least $n^{d-1}/d$ as each elementary tensor has $nd$ \emph{degrees of freedom} and an arbitrary tensor has $n^d$ \emph{degrees of freedom}.
+One might think that the above upper bound of $n^{d-1}$ should be tight.
+Bizarrely, it is not!
+For example (cf.
+\cite{p85}), the maximum rank of any tensor of shape $2\times 2 \times 2$ is $3$ and not $4$ as one might expect!
+Tensor rank also behaves in some strange ways under \emph{limits} unlike the usual matrix rank.
+But a big open question is to find explicit tensors of such large rank.
+
+\begin{openproblem}
+Can we find an explicit tensor $T: [n]^d \rightarrow \F$ of rank $n^{d(1 - o(1))}$?
+\end{openproblem}
+
+Raz's \cite{raz10} showed that in certain regimes, an answer to the above question would yield arithmetic formula lower bounds. 
+
+\section{Tensor rank of small formulas}
+
+From this section onwards, we shall assume the \emph{set-multilinear polynomial} interpretation of a tensor $T:[n]^d \rightarrow \F$ as described in~\eqref{eqn:tensor-sml}.
+Hence our variables $\vecx$ is partitioned as $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ with $\abs{\vecx_i} = n$ for all $i\in [d]$.
+The main motivating question would be the following:
+\begin{quote}
+If $f$ is a set-multilinear polynomial that is computed by a small formula, what can one say about its tensor rank?
+\end{quote}
+
+To begin with, let us restrict ourselves to certain structured formulas that in a sense \emph{respects} the partition defined. 
+
+\begin{definition}[Set-multilinear formulas] A formula $\Phi$ is said
+  to be a \emph{set-multilinear formula} if for every gate in the formula computes a set-multilinear polynomial.
+\end{definition}
+
+From the above definition, note that the set-multilinear formulas are a subclass of homogeneous formulas.
+As in the multilinear setting, it is easy to see that set-multilinearity for formulas can be made a \emph{syntactic} restriction where each gate computes a tensor, with addition gates only adding ``alike'' tensors and multiplication gates multiplying disjoint tensors.
+
+\begin{exercise}
+  Show that set-multilinear formulas can, without loss of generality, be assumed to be syntactically set-multilinear formulas.
+\end{exercise}
+
+\noindent
+An easier question to the one above would be the following:
+
+\begin{quote}
+  If $f$ is a set-multilinear polynomial that is computed by a small \emph{set-multilinear} formula, what can one say about its tensor rank?
+\end{quote}
+
+In the rest of this chapter, we shall prove the following result of Raz \cite{raz10}. 
+
+\begin{theorem}[\cite{raz10}] \label{thm:raz-tensorrank-sml} Let
+  $\Phi$ be a set-multilinear formula of size $s \leq n^c$ computing a polynomial $f(\vecx_1,\cdots, \vecx_d)$.
+Then,
+\[
+\rank(f) \spaced{\leq} \frac{n^d}{n^{d/\exp(c)}}. 
+\] 
+\end{theorem}
+
+In the setting when $d$ is small, Raz \cite{raz10} also showed that formulas can be converted to set-multilinear formulas with a modest cost. 
+
+\begin{theorem}[\cite{raz10}]\label{thm:form-to-smlform}
+  Suppose $d = O\pfrac{\log n}{\log\log n}$.
+If $\Phi$ is a formula of size $s = \poly(n)$ that computes a set-multilinear polynomial $f(\vecx_1,\cdots, \vecx_d)$, then there is a \emph{set-multilinear} formula of $\poly(s)$ size that computes $f$ as well.
+\end{theorem}
+
+As a corollary, finding explicit tensors of almost full rank would imply super-polynomial formula lower bounds in the low-degree regime.
+
+\begin{corollary}[\cite{raz10}]
+  If $f(\vecx_1,\cdots, \vecx_d)$ is an explicit tensor of rank $n^{d(1- o(1))}$ with $\omega(1) = d = O\pfrac{\log n}{\log\log n}$, then any formula computing $f$ must be of super-polynomial size.
+\end{corollary}
+
+The above two theorems are of very different flavours and should really be thought of as two independent surprising results.
+\autoref{thm:raz-tensorrank-sml} is a tensor-rank upper bound and \autoref{thm:form-to-smlform} is a structural result.
+We shall first address \autoref{thm:raz-tensorrank-sml} in the next section and address \autoref{thm:form-to-smlform} after that.
+
+\subsection{The tensor-rank upper-bound}
+
+We shall now prove \autoref{thm:raz-tensorrank-sml}. The proof described here is not the original proof in \cite{raz10} but is an alternate proof by Suryajith Chillara, Mrinal Kumar and Ramprasad Saptharishi. 
+
+\begin{proof}[Proof of \autoref{thm:raz-tensorrank-sml}]
+
+
+
+For this we would need the slightly better depth reduction for homogeneous formulas (\autoref{thm:av-formulas}) of Saptharishi and Vinay \cite{saptharishivinay14}. We recall the statement here.
+\begin{theorem*}[\autoref{thm:av-formulas}]
+Let $f$ be a homogeneous $n$-variate degree $d$ polynomial computed by a size $s$ homogeneous formula. 
+Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\Sigma\Pi^{[a]}\Sigma\Pi^{[t]}$ formula of top fan-in $s^{10(d/t)}$ where 
+\[
+a \geq \frac{1}{10}\pfrac{d}{t} \log t.
+\]
+\end{theorem*}
+It is a fairly straightforward observation to see that the above theorem preserves multilinearity and set-multilinearity as well. We shall start with the set-multilinear formula $\Phi$ of size $s = n^c$ that computes the polynomial $f(\vecx_1,\cdots, \vecx_d)$ and apply \autoref{thm:av-formulas} for a suitable choice of $t$ (that shall be set shortly). 
+Therefore we now have a set-multilinear expression of the form
+\[
+f \spaced{=} T_1 + \cdots + T_{s'}
+\]
+where $s' \leq s^{10(d/t)} = n^{10c(d/t)}$ and each $T_i = Q_{i1} \cdots Q_{ia_i}$ is a set-multilinear product. Let us fix one such term $T = Q_{1} \cdots Q_a$ and we know that this is a set-multilinear product with $a \geq \pfrac{d\log t}{10 t}$. Let $d_i = \deg(Q_i)$. By the sub-multiplicativity of tensor rank (\autoref{lem:tensor-submultiplicativity}) and the trivial upper bound (\autoref{lem:tensor-rank-trivial-upperbound}) we have
+\begin{align*}
+\rank(T) & \leq n^{d_1 - 1} \cdots n^{d_a - 1}\\
+ & =  n^{d - a}\\
+\implies \rank(f) & \leq s' \cdot n^{d-a} & \text{(~\autoref{lem:tensor-subadditivity})}\\
+ & =  \pfrac{n^d}{n^{a - 10c(d/t)}}
+\end{align*}
+Let us focus on the exponent of $n$ in the denominator. Using the lower bound on $a$ from \autoref{thm:av-formulas}, we get
+\begin{align*}
+a - 10c(d/t) & \geq \frac{d\log t}{10t} - 10c\pfrac{d}{t}\\
+& = \pfrac{d}{t} \inparen{\frac{\log t}{10} - 10c}\\
+& = \pfrac{d}{2^{O(c)}}& \text{if we set $\frac{\log t}{10} = 11c$}\\
+\implies \rank(f) & \leq \frac{n^d}{n^{d/\exp(c)}}
+\end{align*}
+which is what we set out to prove. 
+\end{proof}
+
+\subsection{Making formulas set-multilinear}
+
+In this section we shall prove \autoref{thm:form-to-smlform}.
+The proof would proceed in two steps, both of which are quite interested in their own right.
+\begin{itemize}
+\setlength\itemsep{0em}
+\item {\bf Homogenization :} In the first step, we shall convert a
+  formula that compute a homogeneous polynomial of degree $d$ in $n$ variables to a n homogeneous formula computing the same polynomial.
+It would turn out that if $d = O(\log n)$, then this transformation only incurs a $\poly(n)$ blow-up in the size.
+\item {\bf Set multilinearization :} In the second step, we show that
+  for any homogeneous arithmetic formula that computes a set multilinear polynomial of degree $d$ in $n$ variables can be converted to a set-multilinear formula computing the same polynomial.
+In this setting, if $d \leq O(\log n/\log \log n)$, the blow-up in the size of the formula will only be $\poly(n)$.
+\end{itemize}
+
+\subsubsection*{Homogenization of low-degree formulas}
+
+\begin{lemma}[\cite{raz10}]\label{lem:formula-homogenization} Let $\Phi$ be a formula of size $s$ computing an $n$-variate homogeneous polynomial $f$ of degree $d$. Then, there is a \emph{homogeneous formula} $\Phi'$ computing $f$ of size at most $\poly\inparen{s,\binom{d+\log s}{d}}$. 
+
+In particular, if $d = O(\log n)$ and $n = \poly(n)$ then we have $\mathrm{size}(\Phi') = \poly(n)$ as well. 
+\end{lemma}
+\begin{proof}
+Recall that due to the depth reduction result of Brent and Spira (\autoref{lem:formula-depth-reduction}), we can assume without loss of generality that the fan-in of every gate in $\Phi$ at most $2$ and the depth of $\Phi$ is $O(\log s)$.
+The construction of the new formula $\Phi'$ would have no surprises -- homogenize the formula $\Phi$ to obtain a circuit $C$ using the standard homogenization (\autoref{lem:homogenization}), and unravel the circuit to make it a formula in the most natural way. It is the analysis of the size that would give the lemma. 
+
+\medskip
+
+For every gate $v$ in $\Phi$, we have $d+1$ gates $(v, 0), (v, 2), \ldots, (v, d)$ in $C$.
+Semantically, the polynomial computed at such a gate $(v, i)$ is the degree-$i$ homogeneous component of the polynomial computed at $v$ in $\Phi$. As in \autoref{lem:homogenization}, we shall connect these edges as follows:
+\begin{eqnarray*}
+v = u+w\quad\implies\quad (v, i) &=& (u, i) \spaced{+} (w,i)\quad\text{for all $i$}\\
+v = u\times w\quad\implies\quad (v, i) &=& \sum_{j=0}^i (u,j)\cdot (w, {i-j}) \quad\text{for all $i$}
+\end{eqnarray*}
+Hence, we now have a homogeneous circuit $C$ that computes $f$ and has size at most $s' = O(sd^2)$. Furthermore, the depth of this circuit is at most twice the depth of the formula $\Phi$ which was $O(\log s)$. Hence $C$ is a homogeneous circuit of depth $O(\log s)$ and size $O(sd^2)$ computing $f$. 
+
+To convert $C$ into a formula, we will do the natural operation of \emph{recomputing} a node whenever we need to reuse the computation. This is equivalent to duplicating every gate $(v,i)$ of $C$ as many times are there are paths from this gate to the root fo $C$.
+Thus, in order to upper bound the size of the resulting formula, we will require an upper bound on the number of distinct paths from every gate $(v,i)$ of $C$ to its root.
+
+\medskip
+
+Currently, $C$ is a circuit because if $v$ is a product gate of $\Phi$ with children $u$ and $w$, then the out degree of $(u, j)$ and $(w, j)$ in $C$ could be more than $1$ as it \emph{contributes} to $(v,j')$ for all $j \leq j' \leq d$.
+Hence, the resulting structure is a circuit and not a formula.
+However, at sum gates, the out degree of the children continue to be $1$.
+But this gives us a good understanding of the many paths from $(v,i)$ to the root in $C$.
+Let $v\rightarrow v_1 \rightarrow \cdots \rightarrow v_r$ be the path from $v$ to the root ($=v_r$) in $\Phi$. Then, the paths from $(v,i)$ to $(v_r,d)$ will be of the form
+\[
+(v,i) \rightarrow (v_1,i_1) \rightarrow \cdots \rightarrow (v_r,i_r)
+\]
+where $i \leq i_1 \leq \cdots \leq i_r = d$.
+But the number of such choices for $(i_1,\cdots, i_r)$ the same as the number of non-negative integer solutions to $b_1 + \cdots + b_r = d-i$ which is at most $\binom{r + d}{d}$.
+We know that the circuit has depth at most $O(\log s)$ and hence $r \leq O(\log s)$.
+Therefore, the number of paths from any $(v,i)$ to the root is at most $\binom{d + O(\log s)}{d}$.
+Hence, if $\Phi'$ is the formula obtained by unravelling $C$, we have
+\[
+\mathrm{size}(\Phi') = \poly\inparen{s,\binom{d+\log s}{d}}\qedhere
+\]
+\end{proof}
+
+\subsubsection*{Set-multilinearization of low-degree formulas}
+
+We shall now show that a homogeneous formula can be converted to a set-multilinear formula with a cost that is affordable if $d$ is small. 
+
+\begin{lemma}[Formula Set-multilinearization]\label{lem:formula set-multilinearization}
+  Let $f(\vecx)$ be an $n$-variate degree set-multilinear polynomial with respect to the partition $\vecx = \vecx_1\sqcup \cdots \sqcup \vecx_d$ that is computed by a homogeneous formula $\Phi$ of size $s$.
+Then, there exists a set-multilinear formula $\Phi'$ of size at most $2^{O(d\log s)}$ which computes $f$.
+
+In particular, if $d = O\pfrac{\log n}{\log \log n}$ and $s = \poly(n)$ then the $\mathrm{size}(\Phi') = \poly(n)$.  
+\end{lemma}
+\begin{proof}
+To start with, without loss of generality, let us assume that the formula $\Phi$ is fan-in $2$, homogeneous and has depth $O(\log s)$.
+In the first step, we set multilinearize $\Phi$ in the obvious way to obtain a circuit $C$.
+To this end, for every gate $v$ in $\Phi$, and vector $\veca = (a_1,\cdots, a_d) \in \{0,1\}^d$, there is a gate $(v, \veca)$ in $C$.
+Semantically, the the polynomial at $(v,\veca)$ consists of the monomials in the polynomial computed at $v$ (in $\Phi$) which contain exactly one variable from the set $\vecx_i$ for every $i$ such that $a_i = 1$.
+The edges in $C$ are connected in a natural way, namely for a gate $v$ with children $u$ and $w$, we have the following edges:
+\begin{eqnarray*}
+\text{$v = u + w$}\quad\implies\quad (v, \veca) &=& (u, \veca) \spaced{+} (w, \veca)\quad\text{for all $\veca$}\\
+\text{$v = u \times w$}\quad\implies\quad (v, \veca) &=& \sum_{\vecb + \vecc = \veca} (u, \vecb)\cdot (w, \vecc) \quad\text{for all $\veca$}.
+\end{eqnarray*}
+ 
+Clearly, the size of $C$ is at most $2^d\cdot s$.
+Moreover, the gates in $C$ which have out degree more than one are of the form $(u,\veca)$ where $u$ is a child of some multiplication gates at $\Phi$. 
+The root of $C$ would now be $(\text{root},\mathbf{1})$. 
+
+Like in the proof of \autoref{lem:formula-homogenization}, we now convert the circuit $C$ to a formula by replicating nodes whenever we need to reuse computations.
+Hence, we would require as many copies of a gate $(v, \veca)$ as there are paths from $(v,\veca)$ to the root of $C$.
+In order to bound the blow up in size in the process, we will prove an upper bound on the number of such paths.
+Once again, let $v \rightarrow v_1 \rightarrow \cdots \rightarrow v_r$ be the path from $v$ to the root $(=v_r)$.
+Then any path from $(v,\veca)$ to $(v_r,\mathbf{1})$ is of the form
+\[
+(v,\veca) \rightarrow (v_1,\veca_1) \rightarrow \cdots \rightarrow (v_r,\mathbf{1})
+\]
+with $\veca \leq \veca_1 \leq \cdots \leq \mathbf{1}$ in the point-wise sense.
+Therefore, the number of paths from $(v,\veca)$ to the root is at most the number of sequences of vectors in $2^{dr} = 2^{O(d\log s)}$.
+Hence the size of the resulting formula $\Phi'$ is at most $s \cdot 2^{O(d \log s)}$. 
+\end{proof}
+
+\autoref{lem:formula-homogenization} and \autoref{lem:formula set-multilinearization} complete the proof of \autoref{thm:form-to-smlform}. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
+
+

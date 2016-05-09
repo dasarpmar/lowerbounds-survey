@@ -46,6 +46,128 @@ We leave this as an exercise.
 Prove a similar homogenization lemma for algebraic branching programs. 
 \end{exercise}
 
+\section{Interpolation}
+
+A very useful technique in arithmetic complexity is interpolation. Suppose we have a circuit $C$ that computes a polynomial $P(x_1,\cdots, x_n, y)$ and say $\deg_y P = d$. We can interpret the polynomial $P$ as an element of $(\F[\vecx])[y]$, that is we can think of $P$ as a univariate polynomial in $y$ with coefficients being elements of $\F[\vecx]$. 
+\[
+P(x_1,\cdots, x_n, y) \spaced{=} P_0(x_1,\cdots, x_n) + P_1(x_1,\cdots, x_n) y + \cdots + P_d(x_1,\cdots, x_n) y^d
+\]
+Given that we can compute $P$ by a circuit $C$, can we also compute one of the coefficients $P_i(x_1,\cdots, x_n)$ by a small circuit? The answer is `Yes' as long as we are working over a large enough field. 
+
+\begin{lemma}[Interpolation]\label{lem:interpolation}
+Let $P(x_1,\cdots, x_n, y)$ be a polynomial with $\deg_y P \leq d$. For any set of distinct scalars $\alpha_0, \cdots, \alpha_{d} \in \F$ and for every $i \in \set{0,\cdots, d}$,  each of the coefficient polynomials $P_i(x_1,\cdots, x_n)$ defined above can be expressed as a linear combination of 
+\[
+\set{P(x_1,\cdots, x_n, \alpha_0), \cdots, P(x_1,\cdots, x_n,\alpha_d)}.
+\]
+Thus in particular, if $P$ is computed by a size $s$ circuit, then each $P_i$ is computable  by a size $s(d+1)$ circuit. Furthermore, if $P$ is computable by a size $s$ circuit from some class $\mathcal{C}$, then each $P_i$ is computable by a size $s(d+1)$ circuit from the class $\Sigma \mathcal{C}$ (which are circuits with a $+$ gate as a root with $\mathcal{C}$-circuits as its children).
+\end{lemma}
+\begin{proof}
+For this proof we shall use $P(\alpha_i)$ as a short-hand for $P(x_1,\cdots, x_n, \alpha_i)$. Then we have the following matrix identity
+\[
+\insquare{\begin{array}{cccc}
+1 & \alpha_0 & \cdots & \alpha_0^d\\
+1 & \alpha_1 & \cdots & \alpha_1^d\\
+\vdots & \vdots & \ddots & \vdots\\
+1 & \alpha_d & \cdots & \alpha_d^d
+\end{array}} \insquare{\begin{array}{c}
+P_0\\
+P_1 \\
+\vdots\\
+P_d
+\end{array}} \spaced{=}
+\insquare{\begin{array}{c}
+P(\alpha_0)\\
+P(\alpha_1) \\
+\vdots\\
+P(\alpha_d)
+\end{array}}
+\]
+Observe that the matrix on the left is a Vandermonde matrix, and hence is invertible. This implies that there is some matrix $\inparen{\!\inparen{\beta_{ij}}\!}$, its inverse, such that
+\[
+\insquare{\begin{array}{c}
+P_0\\
+P_1 \\
+\vdots\\
+P_d
+\end{array}} \spaced{=}
+\insquare{\begin{array}{cccc}
+\beta_{00} & \beta_{01} & \cdots & \beta_{0d}\\
+\beta_{10} & \beta_{11} & \cdots & \beta_{1d}\\
+\vdots & \vdots & \ddots & \vdots\\
+\beta_{d0} & \beta_{d1} & \cdots & \beta_{dd}
+\end{array}} 
+\insquare{\begin{array}{c}
+P(\alpha_0)\\
+P(\alpha_1) \\
+\vdots\\
+P(\alpha_d)
+\end{array}}
+\]
+In particular, for each $i \in \set{0,\cdots, d}$,
+\[
+P_i(x_1,\cdots, x_n) \spaced{=} \beta_0 P(x_1,\cdots, x_n, \alpha_0) + \cdots + \beta_d P(x_1,\cdots, x_n, \alpha_d). 
+\]
+The size bounds and structure claimed is clear from the above expression.
+\end{proof}
+
+The use of interpolation is one of the most important methods when dealing with arithmetic circuits. We would many applications of it later in this article. We just give a couple of concrete applications for now. The first is the computation of partial derivatives in a single variable. We leave this as an easy exercise. 
+
+\begin{exercise}[Computing partial derivatives]
+Suppose $P(x_1,\cdots, x_n,y)$ be a polynomial computed by a size $s$ circuit with $\deg_y P \leq d$. Show that for any $i$, the partial derivative
+$\frac{\partial^i P}{\partial y^i}$ can be computed by a circuit of size at most $s(d+1)$. 
+
+What about computing mixed partials such as $\frac{\partial^n P}{\partial x_1 \cdots \partial x_n}$?
+\end{exercise}
+
+\noindent 
+Another important application is the task of computing homogeneous components. 
+
+\subsection{Computing homogeneous components}
+
+Suppose we have a size $s$ circuit $C$ that is computing a polynomial $P$ of degree $d$.
+We have already seen in \autoref{lem:homogenization} that we can construct each of the homogeneous components of $P$ by a circuit $C'$ of size at most $sd^2$.
+Unfortunately, the construction described in \autoref{sec:homogenization} results in a circuit $C'$ even if we started off with a formula computing $P$.
+Furthermore, if $P$ was computable by a constant depth circuit, the construction results in an non-constant depth circuit.
+However, the construction in \autoref{lem:homogenization} not just computes the homogeneous components of $P$ but it computes them via a \emph{homogeneous} circuit. If the goal is to just compute the homogeneous components (by a possibly non-homogeneous circuit), one can use interpolation. Furthermore, this method would preserve constant depth as well.
+
+Let us use $\Hom_i(P)$ to denote the homogeneous part of degree $i$, and let $d = \deg(P)$.
+\[
+P(x_1,\cdots, x_n) \spaced{=} \Hom_0(P) + \cdots + \Hom_d(P)
+\]
+Let $y$ be a new variable and consider the polynomial $P'(x_1,\cdots, x_n, y) := P(yx_1, \cdots, y x_n)$. Then observe that
+\[
+P'(x_1,\cdots, x_n) \spaced{=} \Hom_0(P) + y\Hom_1(P) + \cdots + y^d \Hom_d(P).
+\]
+In other words, each homogeneous component of $P$ is a coefficient of some $y^i$ of $P'(x_1,\cdots, x_n,y)$. Thus, \autoref{lem:interpolation} tells us that we can use a linear combination of evaluations of $P'$ to compute these coefficients. 
+
+We summarize this as a lemma. 
+
+\begin{lemma}[Homogeneous component computations]\label{lem:computing-hom-components}
+Let $P(x_1,\cdots, x_n)$ be a polynomial with $\deg P = d$. For any set of distinct scalars $\alpha_0, \cdots, \alpha_{d} \in \F$ and for every $i \in \set{0,\cdots, d}$,  each of the homogeneous components $\Hom_i(P)$ defined above can be expressed as a linear combination of 
+\[
+\set{P(\alpha_0x_1,\cdots, \alpha_0x_n), \cdots, P(\alpha_dx_1,\cdots, \alpha_dx_n)}.
+\]
+Thus in particular, if $P$ is computed by a size $s$ circuit, then each $\Hom_i(P)$ is computable  by a size $s(d+1)$ circuit. Furthermore, if $P$ is computable by a size $s$ circuit from some class $\mathcal{C}$, then each $\Hom_i(P)$ is computable by a size $s(d+1)$ circuit from the class $\Sigma \mathcal{C}$ (which are circuits with a $+$ gate as a root with $\mathcal{C}$-circuits as its children).
+\end{lemma}
+
+It is important to note that for interpolation, we need to be able to find sufficiently many distinct elements in the base field, and this is possible only if the base field is large enough. 
+
+\begin{exercise}
+Assume the underlying field is large enough. Find a polynomial sized constant depth circuit that computes $\ESym_d$, the elementary symmetric polynomial of degree $d$, defined as
+\[
+\ESym_{d}(x_1,\cdots, x_n) \spaced{=} \sum_{1\leq i_1 < i_2 < \cdots < i_d \leq n} x_{i_1} \cdots x_{i_d}.
+\]
+\end{exercise}
+
+\begin{exercise}
+Assume the underlying field is large enough. Find a polynomial sized constant depth circuit that computes \emph{complete homogeneous symmetric polynomial} defined as
+\[
+\sigma_d(x_1,\cdots, x_n) \spaced{=} \sum_{m \in \set{\text{deg. $d$ monomials}}} m.
+\]
+\textcolor{gray}{For example, $\sigma_2(x_1,x_2,x_3) = x_1^2 + x_2^2 + x_3^2 + x_1x_2 + x_2x_3 + x_1x_3$.}
+\end{exercise}
+
+
 \section{Depth reduction}
 
 The phenomenon of simulating an arbitrary arithmetic circuit by a \emph{shallow} arithmetic circuit is called \emph{depth reduction}. 
@@ -523,7 +645,7 @@ Define the product-depth of any circuit to be the maximum number of multiplicati
 Show that for any polynomial $n$-variate degree $d$ polynomial $f$ that can be computed by a size $s$ arithmetic circuit, there is a circuit $\Phi'$ of size $s^{O(d^{1/\Delta})}$ and product depth $\Delta$ computing $f$. 
 \end{exercise}
 
-\subsection*{Further depth reductions}
+\subsection*{Reduction to depth three}
 
 There have been some further depth reductions results. 
 
@@ -535,9 +657,60 @@ They would be better placed after we have seen a few of the recent lower bounds 
 We now proceed to see some lower bounds. 
 
 
+\subsection{Depth reduction for formulas, again}
 
+In this section we shall revisit \autoref{thm:av} when it is applied to formulas.
+Do the resulting depth four circuits have any additional structure when we start from a homogeneous formula?
+The alternate proof of Saptharishi and Vinay~\cite{saptharishivinay14} provides some insight into this. 
+
+We would need the following lemma that was present in the survey of Shpilka and Yehudayoff \cite{sy} and also in the result of Hrube\v{s} and Yehudayoff \cite{HY11a} that we shall see a proof of in \autoref{chap:multilinear} as \autoref{lem:mult-logproduct} and \autoref{lem:hom-logproduct}.
+
+
+\begin{lemma}[\autoref{lem:hom-logproduct} stated without proof]\label{lem:hom-logproduct-restated}
+  Let $\Phi$ be a homogeneous formula of size $s$ computing a polynomial $p$ of degree $d$.
+Then $p$ can be written as a sum of $(s+1)$ \emph{log-product} polynomials, that is,
+\begin{equation}\label{eqn:dred-formula-logproduct}
+p \spaced{=} f_1 + \cdots + f_{r}\quad\quad \text{with $r \leq s+1$}
+\end{equation}
+where for each $i \in [r]$, we have $f_i = f_{i1} \cdots f_{i\ell}$ satisfying
+\begin{itemize}
+\item each $f_{ij}$ is homogeneous, and $\sum_j \deg(f_{ij}) = d$,
+\item $(1 / 3)^j \cdot d \leq \deg(f_{ij}) \leq (2/ 3)^j \cdot d$,
+\item $f_{i\ell} = 1$.
+\end{itemize}
+In particular, each $f_i$ factors into $\Omega(\log d)$ non-trivial factors of geometrically decreasing degrees. 
+\end{lemma}
+
+Furthermore, if $\Phi$ was a multilinear formula to begin with, then so is the expression on the RHS.
+And if $\Phi$ was set-multilinear, then so is the expression on the RHS.
+In other words, it says that a homogeneous formula has a homogeneous depth-$4$ formula of the form $\Sigma^{[s+1]}\Pi^{[\log d]}\Sigma\Pi^{[2d/3]}$.
+We can now describe the mild extension of \autoref{thm:av} applied for homogeneous formulas. 
+
+\begin{theorem}[\autoref{thm:av} for homogeneous formulas]\label{thm:av-formulas}
+Let $f$ be a homogeneous $n$-variate degree $d$ polynomial computed by a size $s$ homogeneous formula. 
+Then for any $0< t \leq d$, $f$ can be equivalently computed by a homogeneous $\Sigma\Pi^{[a]}\Sigma\Pi^{[t]}$ formula of top fan-in $s^{10(d/t)}$ where 
+\[
+a \geq \frac{1}{10}\pfrac{d}{t} \log t.
+\]
+\end{theorem}
+What this means is that even though the degree of all polynomials computed by the bottom two levels of the $\SPSP$ circuit have degree bounded by $t$, each summand is a product of much more than $d/t$ factors. Another way to view this is that \autoref{thm:av} gives a $\SPSP$ circuit of size $s^{O(d/t)}$ where the maximum bottom degree and \emph{average bottom degree} are both bounded by $O(t)$. Whereas in the above theorem we have maximum bottom degree bounded by $t$ but \emph{average bottom degree} bounded by $(t / \log t)$. 
+
+\begin{proof}The proof is exactly along the lines of \autoref{thm:av}
+  but instead of using the $5$-product expression in \eqref{eqn:vsbr-expansion}, we shall use the log-product expression of \eqref{eqn:dred-formula-logproduct}.
+The key point again is that in every such summand, there are two factors of degree at least $d/9$.
+Therefore, the proof of \autoref{thm:av} proceeds verbatim and the number of iterations is bounded by $9(d/t)$.
+This gives the $\SPSP^{[t]}$ formula of size at most $(s+1)^{9(d/t)} \leq s^{10(d/t)}$.
+The only thing left to check is that we do indeed have $\Omega((d\log t) / t)$ non-trivial factors in each summand. We leave this as an exercise with a hint. 
+\end{proof}
+
+\begin{exercise} Complete the proof of \autoref{thm:av-formulas} by showing that the number of non-trivial factors in any summand of the resulting $\SPSP^{[t]}$ circuit has $\Omega((d\log t)/t)$ non-trivial factors. 
+
+{\bf Hint:} Show that in \eqref{eqn:dred-formula-logproduct}, in any summand, if we only consider the factors of degree at most $t$, the sum of their degrees is at most $2t$. Use that to say each term must involve $\Omega(d/t)$ expansions via \eqref{eqn:dred-formula-logproduct} thus yielding $\Omega((d\log t)/t)$ factors. 
+\end{exercise}
+
+This additional structure may be useful in the quest for proving homogeneous formula lower bounds but at the moment it seems unclear. We shall however see one application of this additional structure later in \autoref{chap:tensorrk}. 
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 

@@ -1,21 +1,5 @@
-\chapter{Lower bounds for non-homogeneous depth three circuits, and beyond}
+\chapter{The power of non-homogeneous depth three circuits}
 
-In a very recent result, Kayal and Saha~\cite{KayalSaha14} show that
-similar techniques can also be used to prove lower bounds for
-subclasses of non-homogeneous depth three circuits, namely depth three
-circuits with \emph{bounded bottom fan-in}. 
-We shall denote the class of depth three circuits of bottom fan-in
-bounded by $r$ as $\SPS^{[r]}$ circuits. 
-The ideas involved have also been useful in addressing depth-$4$
-circuits with ``low-arity'' \cite{KumarSaraf15,KayalSaha15}.
-
-But before we see this lower bound, let us first understand the
-computational power of depth three circuits, and the depth reduction
-of \cite{gkks13b} as the ideas there are central for these lower
-bounds.\\
-
-
-\noindent
 A $\Sigma\Pi\Sigma$ circuit computes a polynomial of the form
 \[
 f\quad=\quad \sum_{i=1}^s \ell_{i1}\dots \ell_{iD}.
@@ -68,13 +52,8 @@ There is a $\SPS$ circuit over $\Q$, the field of rational numbers, of size $n^{
 \end{corollary}
 
 
-The proof is quite short and comprises of two steps using known
-reductions, and going through a bizarre intermediate model of
-\emph{depth $5$ powering circuits}.
-But before we see this, let us first see how non-homogeneous depth-$3$
-circuits can be dealt with, and also see the lower bound of Kayal and
-Saha~\cite{KayalSaha14}. 
-
+The proof is quite short and comprises of two steps using known reductions, and going through a bizarre intermediate model of \emph{depth $5$ powering circuits}.
+We present a longer route towards this result that perhaps sheds more light on the reduction.
 
 \section{Handling non-homogeneous depth-$3$ circuits}\label{sec:non-hom-d3}
 
@@ -157,66 +136,10 @@ single variable to a higher power.
 Let us summarizing this as a lemma. 
 
 \begin{lemma}[\cite{sw2001}]\label{lem:d3-d5} For every $d \leq n$, the elementary
-  symmetric polynomial $\ESym_d$ can be computed by a homogeneous
-  $\SPSE$ circuit of size $2^{O(\sqrt{d})} \cdot \poly(n)$ over any
-  field $\F$ of characteristic zero. 
+  symmetric polynomial $\ESym_d$ can be computed by a homogeneous $\SPSE$ circuit of size $2^{O(\sqrt{d})} \cdot \poly(n)$ over any field $\F$ of characteristic zero.
 
-  Thus, if $f$ is a homogeneous degree $d$ polynomial computed by a (possibly
-  non-homogeneous) depth-$3$ circuit $C$ of size $s$ over a field $\F$ of
-  characteristic zero, then $f$ can be equivalently computed by a
-  $\Sigma\Pi\SES$ of size at most $2^{O(\sqrt{d})} \cdot \poly(s)$.
+  Thus, if $f$ is a homogeneous degree $d$ polynomial computed by a (possibly non-homogeneous) depth-$3$ circuit $C$ of size $s$ over a field $\F$ of characteristic zero, then $f$ can be equivalently computed by a $\Sigma\Pi\SES$ of size at most $2^{O(\sqrt{d})} \cdot \poly(s)$.
 \end{lemma}
-
-\subsection{Lower bounds for $\SPS$ circuits with small bottom fan-in}
-
-Now let us focus on $\SPS^{[r]}$ circuits, where all linear
-polynomials in the circuit depend on at most $r$ variables.
-The following is the key observation of Kayal and Saha
-\cite{KayalSaha14} and can be verified easily from the proof of
-Lemma~\autoref{lem:d3-d5}. 
-
-\begin{observation}[\cite{KayalSaha14}]
-  Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a
-  homogeneous $n$-variate polynomial of degree $d$, the resulting
-  $\Sigma\Pi\Sigma\mywedge\Sigma$ circuit $C'$ obtained from
-  \autoref{lem:d3-d5} is in fact a
-  $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit of size $s' =
-  \poly(s) \cdot 2^{O(\sqrt{d})}$. 
-
-  Thus, by expanding the all powers of linear polynomials computed in
-  the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit
-  $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$
-  circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot
-  d^r$
-\end{observation}
-
-This observation in combination with \autoref{thm:KLSS-lowsupp}
-immediately yields the main theorem of \cite{KayalSaha14}. 
-
-\begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
-  Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
-  $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen
-  parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
-  n^{\Omega(d/r)}$. 
-\end{theorem}
-
-Kayal and Saha \cite{KayalSaha14} also prove lower bounds for depth $5$ circuits
-where the bottom fan-in is bounded.
-The result proceeds by analysing the random restriction process
-carefully to decompose any $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$ circuit
-into a $\Sigma\Pi\Sigma\Pi^{[\sqrt{d}]}$ circuit and another circuit
-$C'$ such that $\Gamma_{k,\ell}^{[\mathrm{PSD}]}(C') = 0$.
-We just state their theorem here without proof.
-
-\begin{theorem}\label{thm:kaysaha-d5}
-  Let $\F$ be a field of characteristic zero, and let $0\leq \mu < 1$.
-  If $\alpha = \frac{2\mu + 1}{1 - \mu}$ and $\tau = O(N^\mu)$, then
-  there is a family of $n$-variate degree $d$ polynomials
-  $\inbrace{f_n}$ in $\VNP$ with $n\in [d^{2+\alpha}, 2d^{2+\alpha}]$
-  such that any homogeneous $\Sigma\Pi\Sigma\Pi\Sigma^{[\tau]}$
-  circuit computing this polynomial requires size
-  $n^{\Omega(\sqrt{d})}$.
-\end{theorem}
 
 \section{Depth reduction to depth three circuits}\label{sec:depth-3-red}
 
@@ -452,11 +375,6 @@ Hence, the each of the linear polynomials that appear in the final
 $\SPS$ circuit depend on at most $\sqrt{d}$ variables.
 In other words, the above Theorem yields a reduction to
 $\SPS^{[\sqrt{d}]}$ circuits.
-Note that Kayal and Saha \cite{KayalSaha14} gave a
-$n^{\Omega(\sqrt{d})}$ for $\SPS^{[\sqrt{d}]}$ circuits.
-Thus, one could separate $\VP$ and $\VNP$ (for characteristic zero
-fields) also by improving this bound to $n^{\omega(\sqrt{d})}$. 
-
 
 \section{Revisiting the depth-five powering circuit for $\ESym_d$ }
 
@@ -464,9 +382,8 @@ As mentioned earlier, the conversion of a non-homogeneous depth-$3$
 circuit to a homogeneous depth-$5$ circuit proceeds via the
 construction of Shpilka and Wigderson~\cite{sw2001} for the elementary
 symmetric polynomial.
-A slightly more careful study of the resulting depth-$5$ circuit of
-this construction would be useful for the lower bounds of Kumar and
-Saraf~\cite{KumarSaraf15}, and Kayal and Saha~\cite{KayalSaha15}.
+We present a slightly more careful study of the resulting depth-$5$ circuit of
+this construction.
 
 The first step in building the circuit for $\ESym_d$ was \eqref{eqn:esym}, to express it as
 \[
@@ -544,5 +461,5 @@ Show a lower bound on the size of an $\SESE$ circuit computing the monomial $x_1
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 

@@ -1,0 +1,343 @@
+\chapter{Arithmetic circuits with locally low algebraic rank}
+\label{chap:lowAlgRank}
+
+We have been studying depth four circuits over the last few chapters. One of the goals has been to handle some amount of non-homogeneity while assuming other structure on the circuit. The main reason for this quest is that proving a lower bound of $n^{\omega(d^{1/3})}$ for \emph{non-homogeneous} depth four circuit would suffice to separate $\VP$ and $\VNP$. \\
+
+In the last chapter, we looked at $\Sigma\Pi\Sigma\Pi$ circuits that were non-homogeneous while we imposed the restriction that the $\Sigma\Pi$ layer closer to the leaves computed a polynomial on few variables. We use $\circast^{[n^{0.9}]}$ to refer to such polynomials and proved lower bounds for such $\SPA^{[n^{0.9}]}$ circuits. 
+
+In this chapter we shall study restrictions on the $\Pi$ layer closer to the root. Until now, we were somehow reducing to the case of $\Sigma\Pi^{[d]}\Sigma\Pi$, where the top layer of $\Pi$ gates multiply \emph{at most} $d$ polynomials together. As a warm-up to the more general models that we shall study in this chapter, let us spend a few moments studying $\Sigma\circast^{[d]}\Sigma\Pi$ circuits. 
+
+\section{Preliminaries}
+
+\subsection{Warm-up: Compositions of sparse polynomials}\label{sec:low-algrank-warmup}
+
+\begin{definition}[$\Sigma\circast^{[d]}\Sigma\Pi$ circuits]
+We shall say a polynomial $f$ is computed by a $\Sigma\circast^{[d]}\Sigma\Pi$ circuit of size $s$ it can be expressed as
+\[
+f \spaced{=} \sum_i H_i(Q_{i1},\ldots, Q_{id}),
+\]
+where each $H_i(y_1,\ldots, y_d)$ is an arbitrary polynomial, and the sum of the sparsity of the $Q_{ij}s$ is at most $s$. 
+\end{definition}
+
+Can projected shifted partial derivatives be used to prove lower bounds for this model? Yes, indeed. The first step, as before, would be to use a random restriction to ensure that each $Q_{ij}$ is a sparse polynomial of \emph{low support size}. But for simplicity, let us assume for now that $\deg(Q_{ij})\leq \sqrt{d}$ and see how the upper bound calculations work. 
+
+Consider a single term $H(Q_1,\ldots, Q_d)$. What can we say about any $k$-th order partial derivative of this? By the chain-rule of differentiation,
+\[
+\partial_{x} H(Q_1,\ldots, Q_d) \spaced{=}  \sum_{i=1}^d \inparen{\partial_{y_i}(H)}(Q_1,\ldots, Q_d) \cdot \partial_x(Q_i). 
+\]
+Hence repeating this, it is easy to see that 
+\begin{eqnarray*}
+\partial^{=k} H(\mathbf{Q}) &\subseteq& \fspan \setdef{(\partial^{=k}H)(\mathbf{Q}) \cdot \partial_{m_1}(Q_{i_1}) \cdots \partial_{m_k}(Q_{i_k})}{\deg(m) = k}\\
+& \subseteq & \fspan\set{(\partial^{=k}H)(\mathbf{Q}) \cdot \vecx^{\leq k(\sqrt{d}-1)}}\\
+\implies \vecx^{=\ell}\partial^{=k} H(\mathbf{Q}) & \subseteq & \fspan\set{(\partial^{=k}H)(\mathbf{Q}) \cdot \vecx^{\leq \ell + k(\sqrt{d}-1)}}
+\end{eqnarray*}
+The key point is that, irrespective of how high the degree of $H$ is, there are at most $\binom{d+\sqrt{d}}{d}$ distinct partial derivatives of $H$.
+Hence, the upper bound is effectively the same value as seen earlier for homogeneous depth-$4$ circuits such as in \autoref{lem:upper-bound-low-supp}.
+Thus it is pretty clear that projected shifted partials would give an $n^{\Omega(\sqrt{d})}$ lower bound here. 
+
+\begin{observation}\label{obs:locally-low-algRank-warmup}
+Assume we are working over a characteristic zero field. There exists an explicit polynomial in $\VP$ (namely $\IMM$ with appropriate parameters) such that any $\Sigma\circast^{[d]}\Sigma\Pi$ circuit computing it requires size $n^{\Omega(\sqrt{d})}$. 
+\end{observation}
+
+Kumar and Saraf~\cite{KS16lowrank} studied a generalization of this model by looking at what they called `locally low algebraic rank' depth four circuits and showed an $n^{\Omega(\sqrt{d})}$ lower bound for such circuits over fields of characteristic zero. Subsequently, Pandey, Saxena and Sinhababu~\cite{PSS16} extended it to arbitrary fields. We will need a bit of background on algebraic rank to describe the model and we do that first. 
+
+\subsection{Algebraic Rank}
+
+We are familiar with the notion of linear dependence between polynomials, which is to say that there is a linear combination of the polynomials that is zero. A natural extension of this notion is algebraic independence. 
+
+\begin{definition}[Algebraic rank]
+A set of polynomials $\mathbf{Q} = \{Q_1, Q_2, \ldots, Q_t\} \subseteq \F[\vecx]$ is said to be algebraically independent over $\F$ if there is no nonzero polynomial $R \in \F[y_1,\ldots, y_t]$ such that $R(Q_1, \ldots, Q_t)$ is identically zero. 
+
+A maximal subset of $\mathbf{Q}$ which is algebraically independent is said to be a transcendence basis of $\cal Q$ and the size of such a set is said to be the algebraic rank of $\mathbf{Q}$, denoted by $\algRank(\mathbf{Q})$. 
+\end{definition}
+
+It is a non-trivial observation that all maximal algebraically independent sets have the same size and hence the notion of \emph{algebraic rank} is indeed well-defined. 
+
+\medskip
+
+If a set of $t$ polynomials is algebraically dependent, then the above definition says that there is a non-zero polynomial in $t$ variables over the underlying field, which vanishes when composed with this set. Such a polynomial is called an annihilating polynomial of this set. The first basic property of algebraic rank is that it is upper bounded the number of variables. We leave this as an exercise with a hint. \\
+
+\begin{exercise}[Upper bound on algebraic rank]
+Show that any set of $n+1$ polynomials over $n$ variables have some algebraic dependency. In other words, the algebraic rank of any set of polynomials is upper bounded by the number of variables.
+
+\textcolor{Gray}{Hint: $(D+1)^{n+1} > \binom{nD+n}{n}$ if $D$ is large enough.}
+\end{exercise}
+
+It is natural question to ask if one can show good upper bounds on the lowest degree of an annihilating polynomial of a given set of polynomials. The following lemma of Kayal shows such a bound which would be useful to us later on. 
+
+\begin{lemma}[Kayal~\cite{Kayal09}]~\label{lem:degree upper bound for annihilating poly}
+Let $\F$ be a field and let $\mathbf{Q} = (Q_1, Q_2, \ldots, Q_t)$ be a set of polynomials of degree $d$ in $n$ variables over the field $\F$ having algebraic rank $k$. Then there exists a $\mathbf{Q}$-annihilating polynomial
+of degree at most $(k+1)\cdot d^k$.
+\end{lemma}  
+
+Given a set of polynomials, can its algebraic rank be computed efficiently? A natural approach is to search for an annihilating polynomial but as seen in the lemma above, the degree could be very large making this infeasible. In fact, Kayal~\cite{Kayal09} showed that computing even the constant term of the annihilator is $\#\P$-hard. However, there is a fantastic result of Jacobi from the 1800s that gives a criterion to check if a set of polynomials is algebraically dependent, over fields of characteristic zero. 
+
+\begin{lemma}[Jacobian Criterion]\label{lem:jacobian-criterion}
+Let $Q_1,\ldots, Q_t \in \F[x_1,\ldots, x_n]$ be polynomials over a field $\F$ of characteristic zero. Then, the algebraic rank of the set $\set{Q_1,\ldots, Q_t}$ is equal to the rank of the following matrix, called \emph{the Jacobian of $\mathbf{Q}$}, interpreted over the function field $\F(x)$:
+\[
+\mathcal{J}(Q_1,\ldots, Q_t) \spaced{:=} \insquare{\begin{array}{cccc}
+\partial_1(Q_1) & \partial_2(Q_1) & \cdots & \partial_n(Q_1)\\
+\partial_1(Q_2) & \partial_2(Q_2) & \cdots & \partial_n(Q_2)\\
+\vdots & \vdots & \ddots & \vdots\\
+\partial_1(Q_t) & \partial_2(Q_t) & \cdots & \partial_n(Q_t)
+                                          \end{array}}                                          
+\]
+\end{lemma}
+
+Hence, we have the following randomized algorithm to compute the algebraic rank of a given set of polynomials --- compute the Jacobian of the given set of polynomials, evaluate it at a random point of $\F^n$ and find its rank.
+It is a simple exercise to see that by the Schwartz-Zippel lemma, the rank of the Jacobian evaluated at a random point on $\F^n$ is equal to the rank of the matrix over the function field.
+
+Although the above lemma is only over characteristic zero fields, Pandey, Saxena and Sinhababu~\cite{PSS16} modified the criterion to work over any field. The statement is a little technical to explain here and for simplicity we shall work only over characteristic zero fields here. 
+\\
+
+\noindent
+We are now ready to describe the model of computation studied by Kumar and Saraf~\cite{KS16lowrank}. 
+
+\subsection{Locally low algebraic rank circuits}
+
+
+Intuitively, if we have a set of polynomials $\set{Q_1,\ldots, Q_t}$ with algebraic rank at most $r$, then morally this set \emph{behaves} like a set of just $r$ polynomials. In the case of linear independence, any composition on a set of polynomials of rank at most $r$ can be interpreted as a composition on just $r$ polynomials. Motivated by this, Kumar and Saraf~\cite{KS16lowrank} study the following class of circuits. 
+
+\begin{definition}~\label{def:lb model}
+Let $\F$ be any field. A $\SASP{r}$ circuit $C$ in $n$ variables over $\F$ is a representation of an $n$ variate polynomial as 
+\[C =  \sum_{i = 1}^T  H_i(Q_{i1},  Q_{i2},  \cdots, Q_{it}) \]  
+where $H_i$ is an arbitrary polynomial and for each $i\in [T]$, $\algRank\setdef{Q_{ij}}{j\in [t]} \leq r$. 
+
+The size of such a circuit will denote the sum of the number of monomials of each $Q_{ij}$ (the complexity of the composition $H_i$ is irrelevant to the size). 
+\end{definition}
+
+The symbol $\circast^{\set{\!\!\set{r}\!\!}}$ is to denote that we have an arbitrary composition of polynomials with algebraic rank bounded by $r$.
+In the paper of Kumar and Saraf \cite{KS16lowrank}, they use the notation $\Sigma\Gamma^{(r)}\Sigma\Pi$ to denote such circuits but we shall use the above notation just to maintain consistency with the previous chapters. \\
+
+The first thing to note is that if we look at the class of $\SASP{d}$ circuits, then clearly includes the class of homogeneous $\SPSP$ circuits is a subclass of them where each $H_i$ is just a product of at most $d$ polynomials. Thus the above model is a vast generalization of the class of homogeneous depth-$4$ circuits. Kumar and Saraf~\cite{KS16lowrank} show that even for this more general model, projected shifted partial derivatives can prove an $n^{\Omega(\sqrt{d})}$ lower bound. 
+
+\begin{theorem}[\cite{KS16lowrank, PSS16}] \label{thm:locally-lowalgrank}
+Let $\F$ be any field of characteristic zero. There exists a family $\{P_d\}$ of polynomials in $\VNP$, such that $P_d$ is a polynomial of degree $d$ in $n = d^{O(1)}$ variables, and for any $\SASP{d}$ circuit $C$ that computes computes $P_d$ over $\F$ must have size $n^{\Omega(\sqrt{d})}$.
+\end{theorem} 
+
+\section{Lower bounds for locally low algebraic rank circuits}
+
+We begin with some intuition for why we can expect to prove lower bounds for this model via projected shifted partial derivatives.
+We have already seen in \autoref{sec:low-algrank-warmup} that projected shifted partial derivatives can be used to give lower bounds for $\Sigma\circast^{[d]}\Sigma\Pi$ circuits.
+So the question is if we can somehow go from a $\SASP{d}$ circuit to a $\Sigma\circast^{[d]}\Sigma\Pi$ circuit.
+Let us look at the case of linear rank to get some intuition.
+
+Suppose we have a polynomial $H(Q_1,\ldots, Q_t)$ with $\dim \set{Q_1,\ldots, Q_t} \leq r$.
+Then, there exists some $r$ of the $Q_i$s such that every other $Q_i$ can be written as a linear combination of these $r$.
+Therefore, $H(Q_1,\ldots, Q_t)$ can be re-written as some $H'(Q_{i_1}, \ldots, Q_{i_r}) \in \circast^{[r]}\Sigma\Pi$.
+
+The main point is that for linear dependence, any polynomial $Q$ that is linearly dependent on $Q_1,\ldots, Q_t$ can be expressed as a linear combination of them.
+Can we do the same thing for algebraic independence?
+Unfortunately no, for a silly reason.
+Consider the set $\set{x,x^2}$.
+Clearly, the polynomial $x$ is algebraically dependent on $x^2$.
+However, any $x \neq H(x^2)$ for any polynomial $H$.
+
+Nevertheless, Kumar and Saraf~\cite{KS16lowrank} that such a $Q$ can infact be ``expressed'' as a polynomial combination of the $Q_i$s under a looser sense.
+The following lemma is key to their lower bound.
+
+\begin{lemma}[Algebraic dependence to functional dependence]~\label{lem:alg-dep-to-func-dep-tail} Let $\F$ be any field of characteristic zero or sufficiently large characteristic.
+Let $\mathbf{Q} = \set{Q_1, Q_2, \ldots, Q_r}$ be a set of algebraically independent polynomials in $n$.
+Let $Q$ be a polynomial of degree at most $d$ such that $Q$ is algebraically dependent on $\mathbf{Q}$.
+Then, for most random\footnote{Here random $\veca$ means an $\veca$ chosen from a large enough grid in $\F^n$.
+The size of this grid depends on the degrees of the polynomials} $\veca \in \F^{n}$, there exists a polynomial $F$ on $r$ variables such that
+\[
+Q(\vecx + \veca) \spaced{=} \Hom_{\leq d}\inparen{F(Q_1(\vecx + \veca), Q_2(\vecx + \veca), \ldots, Q_r(\vecx + \veca))}.
+\]
+\end{lemma}
+
+\noindent
+Revisiting the earlier example of $\set{x,x^2}$, while it is true that $x \neq F(x^2)$ for any polynomial $F$, we nevertheless have
+\[
+(x+a) \spaced{=} \Hom_{\leq 1}\inparen{\frac{(x+a)^2}{2a} + \frac{a}{2}}
+\]
+as a valid equality for all $a\neq 0$. 
+
+\medskip 
+
+We shall defer the proof of this theorem to the end of the chapter and see how this can be used.
+Recall that since we are working with a $\SASP{d}$ circuit, we would always have $r \leq d$ in the above lemma. 
+Let's try to see if we can remove the $\Hom_{\leq d}$ operation at a small cost.
+Since $Q(\vecx + \veca)$ is a polynomial of degree at most $d$, we would like to collect all terms from the RHS of degree at most $d$.
+This seems difficult as written as each of $Q_i(\vecx + \veca)$ is non-homogeneous and the even very high degree monomials of $F$ when evaluated on these non-homogeneous polynomials could yield lower degree terms.
+But we shall keep in mind that we do not really care about the complexity of the composition $F$ as long as we can show that it is a composition of \emph{few} polynomials.
+
+\begin{lemma}\label{lem:alg-dep-to-func-dep-exact}
+Let $\mathbf{Q} = \set{Q_1, Q_2, \ldots, Q_r}$ be a set of algebraically independent polynomials in $n$.
+Let $Q$ be a polynomial of degree at most $d$ such that $Q$ is algebraically dependent on $\mathbf{Q}$.
+Then, for a random $\veca \in \F^n$, there exists a polynomial $\tilde{F}$ in $r(d+1)$ variables
+\[
+Q(\vecx + \veca) \spaced{=} \tilde{F}\inparen{Q_1^{(0)}, \ldots, Q_{1}^{(d)}, \ldots, Q_r^{(0)}, \ldots, Q_r^{(d)}}
+\]
+where each $Q_i^{(j)} = \Hom_j(Q_i(\vecx + \veca))$.
+\end{lemma}
+\begin{proof}
+From \autoref{lem:alg-dep-to-func-dep-tail}, we have a we have a polynomial $F$ so that
+\begin{equation}\label{eqn:loc-alg-dep-with-tail}
+Q(\vecx + \veca) \spaced{=} \Hom_{\leq d}\inparen{F(Q_1(\vecx + \veca),\ldots, Q_r(\vecx + \veca))}. 
+\end{equation}
+Define a polynomial $F'(y_1^{(0)}, \ldots, y_1^{(d)}, \ldots, y_r^{(0)}, \ldots, y_r^{(d)})$ by
+\[
+F'(y_1^{(0)}, \ldots, y_1^{(d)}, \ldots, y_r^{(0)}, \ldots, y_r^{(d)}) \spaced{:=} F(y_1^{(0)} + \cdots + y_1^{(d)}, \ldots, y_r^{(0)} + \cdots + y_r^{(d)})
+\]
+It is trivial to observe that
+\begin{equation}\label{eqn:loc-alg-dep-with-tail-hom}
+Q(\vecx + \veca) \spaced{=}  \Hom_{\leq d}\inparen{F'(Q_1^{(0)}, \ldots, Q_1^{(d)}, \ldots, Q_r^{(0)}, \ldots, Q_r^{(d)})}
+\end{equation}
+replacing $Q_i(\vecx + \veca)$ by $\Hom_{\leq d}(Q_i(\vecx + \veca))$ does not affect any monomial of degree at most $d$ in \eqref{eqn:loc-alg-dep-with-tail}.
+Seems like we haven't done much but the advantage is that all the inputs to $F'$ in the above equation are homogeneous polynomials. A monomial $(y_1^{0})^{e_{1,0}} \cdots (y_{r}^{(d)})^{e_{r,d}}$ of $F'$ can contribute a term of degree at most $d$ in \eqref{eqn:loc-alg-dep-with-tail-hom} if and only if 
+\[
+\sum_{\substack{1\leq i \leq r\\0\leq j \leq d}} (j \cdot e_{i,j}) \spaced{\leq} d.
+\]
+Therefore, if $\tilde{F}$ is the sum of all monomials of $F'$ satisfying $\sum_{i,j} (j \cdot e_{i,j}) \leq d$, then
+\begin{eqnarray*}
+\tilde{F}(Q_1^{(0)}, \ldots,Q_1^{(d)}, \ldots, Q_r^{(0)}, \ldots, Q_r^{(d)}) & = &   \Hom_{\leq d}\inparen{F'(Q_1^{(0)}, \ldots, Q_1^{(d)}, \ldots, Q_r^{(0)}, \ldots, Q_r^{(d)})}\\
+& = & Q(\vecx + \veca)\qedhere
+\end{eqnarray*}
+\end{proof}
+
+
+\begin{corollarywp}\label{cor:alg-dep-to-func-dep}
+Let $\mathbf{Q} = \set{Q_1,\ldots, Q_t}$ be a set of polynomials of degree at most $d$ satisfying $\algRank(\mathbf{Q})= r$ and let $\set{Q_1,\ldots, Q_r}$ be a transcendence basis. For any arbitrary composition $H(Q_1,\ldots, Q_t)$, for almost all $\veca \in \F^n$, we have
+\[
+H(Q_1(\vecx + \veca),\ldots, Q_t(\vecx + \veca)) \spaced{=} H'\inparen{Q_1^{(0)},\ldots,Q_1^{(d)}, \ldots, Q_r^{(0)}, \ldots, Q_{r}^{(d)}}
+\]
+for some polynomial $H' \in \F[y_{1}^{(0)},\ldots, y_{r}^{(d)}]$ with each $Q_i^{(j)} = \Hom_{j}(Q_i(\vecx + \veca))$. 
+\end{corollarywp}
+
+With this corollary we are almost done.
+The only catch is that we need to look at $Q_i(\vecx + \veca)$ and unfortunately translates of sparse polynomials are not sparse.
+But on the other hand, if we knew something more on the structure of the $Q_i$s, say a bound on its degree or a bound on the support size of all monomials, then we get the same bound for $Q_i(\vecx + \veca)$ as well.
+Once again, using a random restriction to set each variable independently to zero, we can assume that all monomials computed at the lowest level of a $\SASP{d}$ circuit have support size at most $\sqrt{d}$. Hence the overall structure would be the following:
+\begin{eqnarray*}
+C \in \SASP{d} & \stackrel{\text{random restr.}}{\Longrightarrow} &  C \in \begin{array}{c}\SASP{d}\text{, with}\\\text{$\sqrt{d}$-bottom support size}\end{array}
+  \\
+\implies C(\vecx + \veca) \in \begin{array}{c}\SASP{d}\text{, with}\\\text{$\sqrt{d}$-bottom support size}\end{array}& \stackrel{\text{\autoref{cor:alg-dep-to-func-dep}}}{\subseteq} & \begin{array}{c}\Sigma\circast^{[d(d+1)]}\Sigma\Pi\text{, with}\\\text{$\sqrt{d}$-bottom support size}\end{array}
+\end{eqnarray*}
+Therefore by \autoref{obs:locally-low-algRank-warmup}, 
+\[
+\CM{PSD}_{k,\ell}\inparen{C(\vecx + \veca)} \spaced{\leq}\CM{PSD}_{k,\ell}\inparen{C(\vecx)} \spaced{\ll} \CM{PSD}_{k,\ell}(\NW_{d,m,e})
+\]
+unless of course the size of $C$ is $n^{\Omega(\sqrt{d})}$ giving us the lower bound. (Once again, we would have to use \autoref{lem:lin-transform-trick} to make $\NW_{d,m,e}$ robust to random restrictions). This completes the proof of \autoref{thm:locally-lowalgrank}, assuming \autoref{lem:alg-dep-to-func-dep-tail}. \qed\raisebox{0.2ex}{\scriptsize (\autoref{thm:locally-lowalgrank})}\\
+
+We only need to finish the proof of \autoref{lem:alg-dep-to-func-dep-tail} and we shall do that in the rest of this chapter. 
+
+\subsection{Proof of Lemma~\ref{lem:alg-dep-to-func-dep-tail}}
+
+We have an algebraically independent set of polynomials $\mathbf{Q} = \set{Q_1,\ldots, Q_r}$ and a polynomial $Q$ of degree at most $d$ that is algebraically dependent on it.
+In other words, there is a non-zero \emph{annihilator} $A(y_1,\ldots, y_r,z)$ such that
+\[
+A(Q_1,\ldots, Q_r, Q) \spaced{=}0. 
+\]
+Let us assume that $A$ is the smallest degree annihilator.
+We can say a few things about the polynomial $A'(\vecx,z) := A(Q_1,\cdots, Q_r, z)$.
+\[
+A(Q_1,\ldots, Q_r,z) \spaced{=:} A'(\vecx, z) \spaced{=} A_0(\mathbf{Q}) + A_1(\mathbf{Q}) z + \cdots + A_D(\mathbf{Q}) z^D
+\]
+Firstly, it must depend on $z$ since otherwise $A(Q_1,\ldots, Q_r,0) = 0$ contradicts the assumption that $\mathbf{Q}$ was algebraically independent.
+Therefore, $A'(\vecx, z) = A(Q_1,\ldots, Q_r,z)$ is a non-zero polynomial with $A'(\vecx, Q) = 0$.
+Hence, $(z - Q)$ must divide the polynomial $A'(\vecx,z)$.
+
+Given that $Q$ is a \emph{root} of $A'(\vecx, z)$, can we express $Q$ as a polynomials in the coefficients of $A'$ (which are in turn polynomials in $\mathbf{Q}$)? The following beautiful lemma of Dvir, Shpilka and Yehudayoff~\cite{DSY09} shows that we indeed can, under some mild non-degeneracy condition. 
+
+\begin{lemma}[Dvir, Shpilka, Yehudayoff~\cite{DSY09}]~\label{lem:DSY main}
+For a field $\F$, let $P \in \F[\vecx, z]$ be a non-zero polynomial of degree at most $D$ in $z$. Let $f \in \F[\vecx]$ be a polynomial such that $P(\vecx, f) = 0$ and $\partial_zP(\mathbf{0}, f(\mathbf{0}))\neq 0$. If 
+\[
+P(\vecx, z) \spaced{=} \sum_{i = 0}^D P_i(\vecx)\cdot z^i.
+\] 
+Then, for every $t \geq 0$, there exists a polynomial $G$ such that 
+\[
+\Hom_{\leq t}[f(\vecx)] \spaced{=} \Hom_{\leq t}[G_t(P_0, P_1, \ldots, P_D)].
+\]
+\end{lemma} 
+
+\noindent
+For now, let us assume this lemma and finish the proof of \autoref{lem:alg-dep-to-func-dep-tail}. We would like to use \autoref{lem:DSY main} on the polynomial $A'(\vecx, z)$. The only thing to be checked is that the non-degeneracy condition $\partial_zA' (\mathbf{0}, Q(\mathbf{0})) \neq 0$. 
+
+There are a couple of reasons why this may fail in general.
+One of them is if it so happens that $(z-Q)^2$ divides $A'(\vecx, z)$, that is $Q$ is a \emph{repeated root} of $A'(\vecx, z)$. In this particular instance, $\partial_z A'(\vecx, Q)$ is identically zero. Can this happen in our setting? 
+
+First, observe that $A''(\vecx, z) := \partial_z A'(\vecx, z) = \partial_z A(Q_1,\ldots, Q_r,z)$ is not identically zero, as we knew that $A(Q_1,\ldots, Q_r,z)$ must depend on the variable $z$. But then if $A''(\vecx, Q) \equiv 0$, then $\partial_z A(y_1,\cdots, y_r, z)$ is a smaller degree polynomial such that exhibits an algebraic dependency among $\set{Q_1,\ldots, Q_r, Q}$ contradicting our choice of $A$. 
+
+Thus we can assume that $A''(\vecx, Q) \not\equiv 0$. However, $A''(\mathbf{0}, Q(\mathbf{0}))$ could now become zero despite $A''(\vecx, Q)$ being a non-zero polynomial\footnote{This would happen for example if $(z - Q)(z - Q')$ divides $A'(\vecx, z)$ with $Q \neq Q'$ but $Q(\mathbf{0}) = Q'(\mathbf{0})$}. This is where the shifts come in. If for most random $\veca \in \F^n$, we know that $A''(\veca, Q(\veca)) \neq 0$. We can now shift everything by the point $\veca$. 
+
+Let $\tilde{Q_i}(\vecx) := Q_i(\vecx + \veca)$ and $\tilde{Q} = Q(\vecx + \veca)$. Therefore, we also have
+\[
+A(\tilde{Q_1}, \ldots, \tilde{Q_r}, \tilde{Q}) = 0.
+\]
+Thus if $\tilde{A}'(\vecx, z) = A(\tilde{Q_1},\ldots, \tilde{Q_r}, z)$, we know that $(z - \tilde{Q})$ divides $\tilde{A}'$. Furthermore, $\partial_z\tilde{A}'(\mathbf{0}, \tilde{Q}(\mathbf{0})) = \partial_zA'(\mathbf{\veca}, Q(\mathbf{\veca})) \neq 0$. Thus, all the conditions of \autoref{lem:DSY main} are met and we have the proof of \autoref{lem:alg-dep-to-func-dep-tail}. \qed\raisebox{0.2ex}{\scriptsize (\autoref{lem:alg-dep-to-func-dep-tail})}\\
+
+\begin{proof}[Proof of \autoref{lem:DSY main}]
+Let $\partial_zP(\mathbf{0}, f(\mathbf{0})) = \epsilon_0 \neq 0$. 
+The proof would be an induction on $t$. For the case of $t = 0$, we can just set $G_0(P_0,\ldots, P_D)$ to be the constant $f(\mathbf{0})$ and hence the base case is done. 
+
+\noindent
+Let's assume that we have found a polynomial $g = G_t(P_0, \ldots, P_D)$ such that 
+\[
+\Hom_{\leq t}\insquare{f} \spaced{=} \Hom_{\leq t} \insquare{g}. 
+\]
+If $\Hom_{\leq t+1}\insquare{f}= \Hom_{\leq t+1} \insquare{g}$, then we already have our inductive step and there is nothing to be done.  Hence let's assume that $\Hom_{t+1}\insquare{f} \neq \Hom_{t+1}\insquare{g}$ and therefore every monomial in $f-g$ has degree at least $t+1$. 
+\begin{eqnarray*}
+0  & = &  P(\vecx, f) \spaced{=} \sum_i P_i \cdot f^i\\
+   & = & \sum_i P_i \cdot (g + (f-g))^i\\
+   & = & \sum_i P_i \cdot g^i \spaced{+} \inparen{\sum_i P_i \cdot (i g^{i-1})} \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})\\
+   & = & P(\vecx, g) \spaced{+} \inparen{\partial_z P(\vecx, g)} \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})\\
+   & = & P(\vecx, g) \spaced{+} \epsilon_0 \cdot (f-g) \spaced{+} (\text{$\deg > (t+1)$ terms})
+\end{eqnarray*}
+where the last equation is because every monomial of $f-g$ has degree at least $t+1$ and the constant term of $\partial_zP(\vecx, g) = \partial_zP(\mathbf{0}, g(\mathbf{0})) =  \partial_zP(\mathbf{0}, f(\mathbf{0})) = \epsilon_0$. Hence, by rearranging terms, 
+\[
+\Hom_{\leq t+1}[f] \spaced{=} \Hom_{\leq t+1}\insquare{g \spaced{-} \frac{P(\vecx, g)}{\epsilon_0}}.
+\]
+And of course, if $g$ can be expressed as a polynomial combination of $P_0,\ldots, P_D$, then so can $g - \frac{P(\vecx, g)}{\epsilon_0}$ and that completes the inductive step and hence the proof of \autoref{lem:DSY main}. 
+\end{proof}
+
+\section{Functional dependence to algebraic dependence}
+
+In \autoref{lem:alg-dep-to-func-dep-tail}, we saw that we can convert an algebraic dependence between polynomials to some sort of a functional dependence. It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:alg-dep-to-func-dep-tail} is also true. Next we outline a simple proof of this over fields of characteristic zero using the Jacobian described in \autoref{lem:jacobian-criterion}. 
+
+\begin{lemma}[Functional dependence to algebraic
+  dependence]~\label{lem:using algebraic dependence-converse} Let $\F$ be any field of characteristic zero.
+Let $\mathbf{Q} = \set{Q_1, Q_2, \ldots, Q_r,Q_{r+1}}$ be a set of algebraically independent polynomials.
+Then for almost all $\veca$,
+\[
+\not\exists \; F \spaced{\text{such that}} \Hom_{\leq 1}\insquare{Q_{r+1}(\vecx + \veca)} \spaced{=} \Hom_{\leq 1}\insquare{F(Q_1(\vecx + \veca), \ldots, Q_r(\vecx + \veca))}.
+\]
+\end{lemma}
+\begin{proof}
+By the Jacobian criterion of \autoref{lem:jacobian-criterion}, the Jacobian $\mathcal{J}(Q_1,\cdots, Q_{r+1})$ has rank $r+1$ over the function field $\F(\vecx)$. 
+\[
+\mathcal{J}(Q_1,\ldots, Q_{r+1}) \spaced{:=} \insquare{\begin{array}{cccc}
+\partial_1(Q_1) & \partial_2(Q_1) & \cdots & \partial_n(Q_1)\\
+\partial_1(Q_2) & \partial_2(Q_2) & \cdots & \partial_n(Q_2)\\
+\vdots & \vdots & \ddots & \vdots\\
+\partial_1(Q_{r+1}) & \partial_2(Q_{r+1}) & \cdots & \partial_n(Q_{r+1})
+                                          \end{array}}                                          
+\]
+By the Schwartz-Zippel lemma, for almost all $\veca \in \F^n$, the above matrix evaluated at $\veca$ continues to be full rank. Fix any such $\veca$. Now consider the polynomial $Q_{r+1}(\vecx + \veca)$ and collect all the degree one terms. The coefficient of $x_i$ in $Q_{r+1}(\vecx + \veca)$ is precisely $\partial_i Q_{r+1}(\veca)$. 
+
+Similarly, let us collect the degree one terms in any composition $F(Q_1(\vecx + \veca),\ldots, Q_r(\vecx + \veca))$. The coefficient of $x_i$ is precisely
+\[
+\sum_{j=1}^r (\partial_jF)(Q_1(\veca),\ldots,Q_r(\veca)) \cdot  \partial_i Q_j(\veca). 
+\]
+If $\Hom_{\leq 1}\insquare{Q_{r+1}(\vecx + \veca)} = \Hom_{\leq 1}\insquare{Q_1(\vecx + \veca), \ldots, Q_r(\vecx + \veca)}$, then we would have the following matrix identity
+\[
+\insquare{\begin{array}{ccc}
+\partial_1 Q_{r+1}(\veca) & \cdots & \partial_n Q_{r+1}(\veca)
+          \end{array}} \spaced{=} \insquare{\begin{array}{ccc}F_1 & \cdots & F_r\end{array}} \cdot 
+\insquare{\begin{array}{ccc}
+\partial_1Q_1(\veca) & \cdots & \partial_nQ_1(\veca)\\
+\partial_1Q_2(\veca) & \cdots & \partial_nQ_2(\veca)\\
+\vdots &  \ddots & \vdots\\
+\partial_1Q_{r}(\veca) &  \cdots & \partial_nQ_{r}(\veca)
+                                          \end{array}}                                          
+                                          \]
+where $F_i := (\partial_jF)(Q_1(\veca),\ldots,Q_r(\veca))$. But the above equation yields a contradiction as we know that the $r+1$ rows of the Jacobian of $\set{Q_1,\ldots, Q_{r+1}}$ are linearly independent and hence the LHS in the above matrix equation cannot be written as a linear combination of rows of $\mathcal{J}(Q_1,\ldots, Q_r)$.
+\end{proof}
+
+Over fields of low characteristic, Pandey, Saxena and Sinhababu \cite{PSS16} use the modified Jacobian criterion to obtain a similar converse but the exact statement is a bit technical to describe here.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End:

@@ -1,0 +1,113 @@
+\chapter{Depth four circuits of low arity}
+
+Subsequent to the Kayal and Saha~\cite{KayalSaha14} lower bound for non-homogeneous depth $\SPS^{[n^{0.9}]}$ with small bottom fan-in, this was almost simultaneously generalized by two independent works of Kumar and Saraf~\cite{KumarSaraf15} and Kayal and Saha~\cite{KayalSaha15}.
+
+\section{The model of computation}
+
+\begin{definition}[Low arity depth-$4$ circuits] We say that a polynomial $f$ can be computed by an \emph{arity-$r$ depth-4 circuit} of size $S$ if it can be written as
+\[
+f \spaced{=} \sum_{i=1}^s \prod_{j=1}^t Q_{ij}
+\]
+where $S \leq s \cdot t$ and each $Q_{ij}$ is an arbitrary polynomial on just $r$ variables. 
+
+We shall use $\SPA^{[r]}$ to refer to such computations, where the $\circast^{[r]}$ stands for an arbitrary polynomial on $r$ variables. 
+\end{definition}
+
+Clearly, $\SPS^{[r]}$ circuits are a special case of $\SPA^{[r]}$ circuits. In the above definition, we stress that the $Q_{ij}$s are \emph{any} polynomials and can even be of exponential degree. The only constraint the model imposes is that they depend on only $r$ variables. 
+
+The main theorem of Kumar and Saraf~\cite{KumarSaraf15} and Kayal and Saha~\cite{KayalSaha15} is the following.
+
+\begin{theorem}[\cite{KumarSaraf15, KayalSaha15}]\label{thm:low-arity-lb} Assume that the characteristic of the base field is $0$ (or large enough). For every $\epsilon > 0$, there is an explicit $n$-variate degree $d$ homogeneous polynomial $P \in \VP$ such that any $\SPA^{[n^{1-\epsilon}]}$ circuit computing it must have size at least $n^{\Omega_\epsilon(\sqrt{d})}$. 
+\end{theorem}
+
+The rest of the chapter, we shall see a proof of this but we shall work with $\NW$ instead of $\IMM$. It would be clear from the proof that it should carry over to $\IMM$ immediately. Once again, we shall work with $n^{0.9}$ instead of $n^{1-\epsilon}$ as that would have all the ideas and save us some notation. 
+
+\subsection*{Reducing to $\sqrt{d}$-arity circuits}
+
+Let us assume that the circuit is at most $n^{0.01\sqrt{d}}$. As seen in the previous chapter, we can always use a random restriction by setting each variable independently to zero with probability $1 - \frac{\sqrt{d}}{n^{0.92}}$ to reduce the arity of such a circuit to $\sqrt{d}$ via \autoref{lem:single-step-fanin-reduction}. Hence, it suffices to work with just the case of $\sqrt{d}$-arity circuits. 
+
+
+
+\section{Warm-up: Small product fan-in case}
+
+As a first step, let us consider a simpler setting where the fan-in of the $\Pi$ layer is bounded by $d$, the degree of the polynomial. That is, we have an expression of the form
+\[
+f \spaced{=} \sum_{i=1}^s Q_{i1} \cdots Q_{id}
+\]
+where each $Q_{ij}$ is an arbitrary polynomial on $\sqrt{d}$ variables. (If the $Q_{ij}$s were linear, then we are looking at the case of \emph{homogeneous} $\SPS$ circuits as a warm-up). We would like to show that for an explicit polynomial $f$ any expression such as the one above must have $s = n^{\Omega(\sqrt{d})}$. Let us expand each $Q_{ij}$ as a sum of monomials, and let $Q_{ij}'$ be the multiquadratic part of $Q_{ij}$. Hence,
+\[
+f  \spaced{=}  \sum_{i=1}^s Q_{i1}' \cdots Q_{id}' \spaced{+} (\text{non-multiquadratic})
+\]
+However, since $Q_{ij}'$ depends on just $\sqrt{d}$ variables and is multiquadratic, its degree can be at most $2\sqrt{d}$. Thus the first term above is a $\Sigma\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]}$ circuit. Therefore,
+\[
+\CM{PSD}_{k,\ell}(f) \spaced{\leq} \CM{PSD}_{k,\ell}\inparen{\Sigma\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]}}
+\]
+If we can show that the RHS is not too large, we would be done. Repeating the standard calculations from \autoref{lem:upper-bound-low-supp}, it can be seen that
+\[
+\CM{PSD}_{k,\ell}(f) \spaced{\leq} s \cdot \binom{d}{k} \cdot \binom{n}{\ell + k\sqrt{d}}
+\]
+The only difference from the expression in \autoref{lem:upper-bound-low-supp} is the first $\binom{d}{k}$ term which was $\binom{O(\sqrt{d})}{k}$ earlier. But nevertheless we would be choosing $k \leq \sqrt{d}$, we know that $\binom{d}{k} = d^{\sqrt{d}}$. Since we are hoping for a lower bound something like $n^{0.01\sqrt{d}}$, we can always make $n \gg d$ in order to ensure that $d^{\sqrt{d}} \ll n^{0.01\sqrt{d}}$. Therefore, this first term is a lower order term that won't really affect the calculations. 
+
+Since the second term is essentially the same as in \autoref{lem:upper-bound-low-supp}, we can use \autoref{lem:d4hom-goldilocks-LB} to get
+\[
+\CM{PSD}_{k,\ell}\inparen{\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]}} \ll \CM{PSD}_{k,\ell}(\NW_{d,m,e})
+\]
+giving us the lower bound on $s$. 
+
+\section{Taming the product fan-in}
+
+It is useful to keep the $\SPS^{[r]}$ case at the back of our minds.
+How were we able to control the $\Pi$-fanin there?
+There, we use $\ESym$ to \emph{extract} the $d$-th homogeneous part from the $\SPS$ circuit and expressed that as a homogeneous $\SPS\mywedge\Sigma$ circuit. 
+We shall do something similar here.
+For any polynomial $P$ and positive integer $i$, recall that $\Hom_i(P)$ refers to the $i$-th homogeneous component of $P$ and let $\Hom_{\leq i}(P)$ refer to the sum of the  homogeneous parts of degree up to $i$ of $P$. 
+
+Let's focus on one term $T = Q_1 \cdots Q_t$. Say the first $a$ of the $Q_i$s have a zero constant term. As for the rest, we may assume that the constant term is one by scaling $T$ appropriately. Hence, we have an expression of the form 
+\[
+T \spaced{=} Q_1 \cdots Q_a \cdot (1 + Q_{1}') \cdots (1 + Q_t')
+\]
+Firstly, note that if $a > d$, then $\Hom_d(T) = 0$ as all monomials in the RHS have degree more than $d$. Hence we can assume that $a\leq d$. 
+
+\begin{claim}
+If $T = Q_1 \cdots Q_a \cdot (1 + Q_{1}') \cdots (1 + Q_t')$, then 
+\[
+\Hom_d(T) \spaced{=} \Hom_d\inparen{Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \cdots,  Q_t')}.
+\]
+\end{claim}
+\begin{proof}
+The only monomials present in $T$ that are not in $Q_1 \cdots Q_a \cdot \sum_{i=0}^d \ESym_i(Q_{1}', \cdots,  Q_t')$ are monomials that are obtained by multiplying more than $d$ of the $Q_i'$s. But such monomials must have degree more than $d$ and hence cannot contribute to $\Hom_d(T)$. 
+\end{proof}
+
+Therefore if $T$ is a $\Pi\circast^{[\sqrt{d}]}$ circuit, since each $\ESym_i(y_1,\cdots, y_t)$ can be expressed as a $\Sigma\Pi^{[d]}\Sigma\mywedge$ circuit of size at most $2^{O(\sqrt{d})} \poly(t,d)$ (\autoref{lem:d3-d5}), we have that $\Hom_d(T)$ can be expressed as the $d$-th homogeneous part of a  $\Sigma\Pi^{[d]}\Sigma\mywedge\circast^{[\sqrt{d}]}$ of size at most $2^{O(\sqrt{d})} \poly(t,d)$, which is of course also a $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit (by absorbing the powering gate). The factor of $2^{O(\sqrt{d})}$ is affordable as we are hoping to prove a $n^{\Omega(\sqrt{d})}$ lower bound. 
+\[
+\Hom_d(T) \spaced{=} \Hom_d\inparen{\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}}.
+\]
+
+As we are only interested in the degree $d$ homogeneous part, we might as well assume that each of the $\circast^{[\sqrt{d}]}$ computations are polynomials of degree at most $d$, as the higher degree monomials cannot contribute to $\Hom_d(T)$. Thus, we have that $\Hom_d(T)$ is the homogeneous degree $d$ part of a  $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit of formal degree at most $d^2$. 
+
+We have already seen earlier that the homogeneous parts of any low-degree circuit can be computed via interpolation (\autoref{lem:computing-hom-components})
+Therefore, there is a $\Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]}$ circuit of size at most $2^{O(\sqrt{d})} \cdot \poly(d,t)$ computing $\Hom_d(T)$. Therefore, if $f$ is a homogeneous degree $d$ polynomial computed by a $\SPA^{[\sqrt{d}]}$ circuit of size $s$, then by extracting the homogeneous parts of degree $d$ from each summand we have 
+\[
+f \spaced{=} \sum_{i=1}^s \Hom_d(T_i) \spaced{\in} \Sigma\Pi^{[d]}\Sigma\circast^{[\sqrt{d}]},\text{ size $2^{O(\sqrt{d})} \poly(d,t)$}.
+\]
+Just as we did in the warm-up case, we can now split each $\circast^{[\sqrt{d}]}$ computation as its multiquadratic part and the non-multiquadratic part to get an expression of the form
+\[
+f \spaced{=} \Sigma\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]}  \spaced{+} (\text{non-multiquadratic}).
+\]
+Hence using \autoref{lem:d4hom-goldilocks-LB} and \autoref{lem:upper-bound-low-supp}, 
+\begin{eqnarray*}
+\CM{PSD}_{k,\ell}\inparen{\Sigma\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]} + \text{non-multiquadratic}} &\leq & s\cdot 2^{O(\sqrt{d})} \cdot \poly(d,t)\\
+& & \quad \cdot \quad \CM{PSD}_{k,\ell}{\Pi^{[d]}\Sigma\Pi^{[2\sqrt{d}]}}\\
+& \ll & \CM{PSD}_{k,\ell}(\NW_{d,m,e})
+\end{eqnarray*}
+unless $s \cdot t = n^{\Omega(\sqrt{d})}$. Therefore any $\SPA^{[\sqrt{d}]}$ circuit computing $\NW_{d,m,e}$ must have size at least $n^{\Omega(\sqrt{d})}$.
+
+Furthermore, using \autoref{lem:lin-transform-trick}, any $\SPA^{[n^{0.9}]}$ circuit computing $\NW_{d,m,e} \circ \mathrm{Lin}$ must have size at least $n^{\Omega(\sqrt{d})}$, and that completes the proof of \autoref{thm:low-arity-lb}. \qed
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End:

@@ -1,0 +1,176 @@
+\chapter{Depth three circuits of low bottom fan-in}
+
+Kayal and Saha~\cite{KayalSaha14} show that the technique of projected shifted partial derivatives can also be used to prove lower bounds for subclasses of non-homogeneous depth three circuits, namely depth three circuits with \emph{bounded bottom fan-in}.
+We shall denote the class of depth three circuits of bottom fan-in bounded by $r$ as $\SPS^{[r]}$ circuits.
+The ideas involved have also been useful in addressing depth-$4$ circuits with ``low-arity'' \cite{KumarSaraf15,KayalSaha15} that we shall see later. 
+
+\section{$\SPS$ circuits with bottom fan-in $O(\sqrt{d})$}
+
+Now let us focus on $\SPS^{[r]}$ circuits, where all linear polynomials in the circuit depend on at most $r$ variables.
+The following is the key observation of Kayal and Saha \cite{KayalSaha14} and can be verified easily from the proof of \autoref{lem:d3-d5}.
+
+\begin{observation}[\cite{KayalSaha14}]\label{obs:d3-d5-fanin}
+  Starting with a $\SPS^{[r]}$ circuit $C$ of size $s$ computing a homogeneous $n$-variate polynomial of degree $d$, the resulting $\Sigma\Pi\Sigma\mywedge\Sigma$ circuit $C'$ obtained from \autoref{lem:d3-d5} is in fact a $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit of size $s' = \poly(s) \cdot 2^{O(\sqrt{d})}$.
+
+  Thus, by expanding the all powers of linear polynomials computed in the bottom two layers of the $\Sigma\Pi\Sigma\mywedge\Sigma^{[r]}$ circuit $C'$, the circuit $C'$ can be rewritten as a homogeneous depth $4$ circuit of bottom support bounded by $r$ and size $s'' \leq s' \cdot d^r$
+\end{observation}
+
+We would like to combine this with \autoref{lem:d4hom-goldilocks-LB} but the only catch is the additional $d^r = d^{\sqrt{d}}$ cost we incur.
+Had that been $2^{O(\sqrt{d})}$, we would have been fine as we are hoping to prove something like a $n^{\sqrt{d}/1000}$ lower bound.
+And so far, we were dealing with $\NW_{d,m,e}$ with $n \approx d^3$ and in this regime $d^{\sqrt{d}} = n^{(1/3)\sqrt{d}}$.
+But if we look back at the constraints for $\NW_{d,m,e}$, we only needed to ensure that $m^e \approx 2^d$, where the total number of variables $n = md$.
+Fortunately, there is enough freedom to make $d$ much much smaller than $m$ but still ensure that $m^e = 2^d$ by reducing $e$ appropriately. Hence for any $\epsilon > 0$, with a suitable trade-off between $d$ and $n$, we can always make sure that $d^{\sqrt{d}}$ is much smaller than $n^{\epsilon \sqrt{d}}$. 
+
+The same trade-off also works for $\IMM$ and hence this immediately  the main theorem of \cite{KayalSaha14}.
+
+\begin{theorem}[\cite{KayalSaha14}]\label{thm:kaysaha-main}
+  Over any characteristic zero field $\F$, any $\SPS^{[r]}$ circuit
+  $C$ computing the polynomial $\IMM_{n,d}$, for suitably chosen
+  parameters $n$ and $d$ with $n = d^{O(1)}$, must have size $s =
+  n^{\Omega(d/r)}$. 
+\end{theorem}
+
+\section{$\SPS$ circuits with bottom fan-in $n^{1-\epsilon}$}
+
+Kayal and Saha \cite{KayalSaha14} also prove lower bounds for depth three circuits
+where the bottom fan-in is bounded away from $n$ by any polynomial factor. 
+
+\begin{theorem}[\cite{KayalSaha14}] Let $\epsilon > 0$ be any
+  constant.
+Then over any characteristic zero field, there exists an explicit polynomial $P$ such that any $\SPS^{[n^{1 - \epsilon}]}$ circuit computing $P$ must have size $n^{\Omega_\epsilon(\sqrt{d})}$.
+\end{theorem}
+
+We shall work with $\epsilon = 0.1$ to save on some variables. All the ideas here can be made to work for any $\epsilon > 0$. 
+
+As a first step, we shall start with a $\SPS^{[n^{0.9}]}$ circuit and use \autoref{obs:d3-d5-fanin} to convert it to a homogeneous $\Sigma\Pi\Sigma\mywedge\Sigma^{[n^{0.9}]}$ circuit computing the same polynomial.
+As we have just seen, if the fan-in of all the linear polynomials at the bottom were instead $O(\sqrt{d})$, then we can directly apply \autoref{obs:d3-d5-fanin} and use \autoref{thm:KLSS-lowsupp} to prove the lower bound via projected shifted partial derivatives.
+What we would like to do is reduce to this case somehow, and a natural approach is to use random restrictions.
+
+\subsection*{Attempt 1}
+
+We have linear forms of size $n' = n^{0.9}$ and we want to use a random restriction to reduce keep only $d' = \sqrt{d}$ of the the $n'$ variables alive and set the rest to zero.
+The natural choice is to keep a variable alive with probability $p < \frac{d'}{n'}$ and use Chernoff's bound. Hopefully the error probability is low enough and we can union bound over all linear forms in the circuit. 
+
+\begin{lemma}[Chernoff's Bound]\label{lem:chernoff-traditional}
+Let $X_1,\cdots, X_m$ be independent $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ for all $i$. Then, if $X = \sum X_i$ and $\mu = \E[X]$, for any $\delta > 0$, we have the following bounds:
+\[
+\Pr[ X > (1 + \delta) \mu ] \spaced{\leq} \begin{cases}
+e^{-\delta^2 \mu/3} & \text{if }\delta < 1\\
+e^{-\delta \mu/3} & \text{if }\delta > 1
+\end{cases}
+\]
+\end{lemma}
+Hence, in the regime we are interested in, we would like $(1+\delta)\mu = d'$ where $\mu = p n'$ if $p$ is the probability with which we keep a variable alive. If $\delta < 1$, or in other words $p \approx \frac{d'}{n'}$, then this error term cannot be better than $\exp(-d') = \exp(-\sqrt{d})$ and this is not sufficient for the union bound over all gates as we have $\exp(\Omega(\sqrt{d}\log n))$ of them. 
+
+The other possibility is that we choose $p \ll \frac{d'}{n'}$ but choose $\delta$ large enough so that $(1+ \delta)\mu = d'$.
+However in this regime, $\delta > 1$ and hence $\delta\mu = O(d')$.
+Once again \autoref{lem:chernoff-traditional} only gives an error of $\exp(-O(d'))$. Seems like we are unable to use Chernoff's bound to reduce to the case when the bottom fan-in is $\sqrt{d}$. Kayal and Saha \cite{KayalSaha14} do a two-step random restriction process to make handle this differently, but let us spend a moment thinking about this as this should be intuitively weird. 
+
+
+The plan was to set $p$ small enough so that the $\Pr[X > \sqrt{d}]$ becomes $\exp(-\Omega(\sqrt{d} \log n))$.
+Certainly as we decrease $p$, this probability must go down but this is somehow not seen from \autoref{lem:chernoff-traditional} as the error seems stuck at $\exp(-O(d'))$.
+What this shows is that the bounds provided by \autoref{lem:chernoff-traditional} are not tight enough to work in the regime when $\mu$ is very small. Fortunately, there are better bounds known and we shall use that. (This is different from the original analysis of Kayal and Saha~\cite{KayalSaha14}.) 
+
+\subsection{Stronger Chernoff Bounds}
+
+The following statement is the tightest bound we know for the Chernoff bounds.
+We are interested in understanding a sum of $m$ independent, identically distributed $\set{0,1}$ random variables, and say $\Pr[X_i = 1] = p$.
+Suppose we are interested in the event that $X = \sum X_i > (p + \epsilon)m$.
+Intuitively, such an event makes it seem like $\Pr[X_i = 1] = p+\epsilon$ rather than $p$.
+Thus one should expect that the probability of this event happening should be related to the \emph{distance between} the distributions $\Pr[X_i=1]= p$ and $\Pr[X_i = 1] = p+\epsilon$. Indeed, the following bound formalizes this by using the \emph{relative entropy} or \emph{KL-divergence} as the distance measure. 
+
+\begin{lemma}[Chernoff's bound via relative entropy]\label{lem:chernoff-stronger}
+Let $X_1,\cdots, X_m$ be independent, identically distributed $\set{0,1}$ random variables with $\Pr[X_i = 1] = p$ and let $X = \sum X_i$. For any $p' > p$, we have
+\[
+\Pr[X >p' m] \spaced{\leq} e^{-m \cdot \mathbb{D}(p' \Vert p)}
+\]
+where $\mathbb{D}(\alpha \Vert \beta)$ is the \emph{relative entropy} or \emph{KL-divergence} between the distributions $\Pr[X_i=1] = \alpha$ and $\Pr[X_i=1]=\beta$ defined as
+\[
+\mathbb{D}(\alpha \Vert \beta) \spaced{:=} \alpha \cdot \log \pfrac{\alpha}{\beta} \;+\; (1 - \alpha) \log \pfrac{1-\alpha}{1- \beta}.
+\]
+\end{lemma}
+
+All the usual bounds for Chernoff are essentially obtained by approximating the relative entropy term in some way. We shall use this formulation to analyze the random restriction process in a single shot. A few simplifications are in order. 
+
+\begin{claim}\label{stronger-chernoff-secondterm}
+For any $0 < \beta < \alpha < 1/2$, 
+\[
+0 \geq (1 - \alpha) \log\pfrac{1 - \alpha}{1 - \beta} \geq -2\alpha. 
+\]
+\end{claim}
+\begin{proof}
+First note that since $\beta < \alpha$, we have $1 \geq \frac{(1-\alpha)}{(1-\beta)}$ and hence its logarithm is negative. 
+\begin{eqnarray*}
+(1 - \alpha) \log\pfrac{1 - \alpha}{1 - \beta} & \geq & \log\pfrac{1 - \alpha}{1 - \beta}\\
+& = & \log(1 - \alpha) - \log (1-\beta)\\
+& \geq & \log(1 - \alpha)\qquad(\text{ $\because \beta < 1$})\\
+& = & - \alpha - \frac{\alpha^2}{2} - \frac{\alpha^3}{3} \cdots \\
+& \geq & - \alpha - \alpha^2 - \alpha^3 \cdots\\
+& \geq & -2\alpha\qedhere
+\end{eqnarray*}
+\end{proof}
+Thus effectively, in the definition of $\mathbb{D}(\alpha \Vert \beta)$, the dominant term is the first term when $\beta \ll \alpha$. 
+
+\begin{corollary}
+For any $0 < \beta < \alpha < 1/2$, then
+\[
+\mathbb{D}(\alpha\Vert \beta)  \spaced{\geq}  \alpha \inparen{\log\pfrac{\alpha}{\beta} - 2}.
+\]
+\end{corollary}
+
+\noindent In particular, if $\beta \ll \alpha$, the negative $2$ above is not relevant as it is dominated by the growing function $\log(\alpha/\beta)$ so we shall drop that for simplicity.\\
+
+Let's get back to the setting we were interested in.
+We have $n' = n^{0.9}$ variables, each kept alive with some probability $p$.
+The goal was to find a suitable $p$ so that the probability more than $d' = \sqrt{d}$ among the $n'$ are kept alive is at most $\exp(-\Omega(\sqrt{d} \log n))$. If $p'n' =  d'$, then
+\begin{eqnarray*}
+\Pr[X > d'] & \geq & \exp\inparen{-n' \inparen{p'\log\pfrac{p'}{p}}}\\
+ & = & \exp\inparen{-d'\inparen{\log(p'/p)}}
+\end{eqnarray*}
+Therefore, all we need to do is to choose $p$ so that $\log(p'/p) = \Omega(\log n)$ and we would are done!
+We summarize this as a lemma, since we'd use this in the next chapter as well.
+
+\begin{lemma}\label{lem:single-step-fanin-reduction}
+Let $S_1,\cdots, S_r$ be subsets of $[n]$ of size at most $n^{0.9}$ each and suppose $r \leq n^{0.01 \sqrt{d}}$. If we pick a set $R \subseteq [n]$ by choose every element independently with probability $\frac{\sqrt{d}}{n^{0.92}}$, then
+\[
+\Pr[\text{For all $i$, } \abs{S_i \intersection R} \leq \sqrt{d}] \spaced{=} 1 - o(1).
+\]
+\end{lemma}
+
+Therefore, as long as the size of the $\SPS^{[n^{0.9}]}$ circuit is not too large, we can apply a random restriction with probability $p = \frac{\sqrt{d}}{n^{0.92}}$ and reduce to the case of $\SPS^{[\sqrt{d}]}$ circuits. 
+
+\subsection{Building the hard polynomial}
+
+The task now is to build a hard polynomial $P$ with a suitable trade-off between the number of variables and its degree so that  \emph{even after} a random restriction $\rho_\epsilon$ for say $\epsilon = n^{-0.99}$, the polynomial $\rho_\epsilon(P)$ has a large dimension of projected shifted partial derivatives. We can once again use the $\NW$ polynomial family and make it robust to such projections using the linear blow-up trick (\autoref{lem:lin-transform-trick}). 
+
+Fix some parameter $d$ and choose $m,e$ as in \autoref{lem:d4hom-goldilocks-LB} so that $\NW_{d,m,e}$ has nearly maximal dimension of projected shifted partial derivatives. Now consider the hard polynomial to be $\NW_{d,m,e} \circ \mathrm{Lin}$ obtained by replacing each variable of $\NW_{d,m,e}$ by a sum of $d^{1000}$ fresh variables. Hence we are now in a setting where we have an $n$-variate polynomial of degree $d$ with $n \geq d^{1000}$. \\
+
+Now suppose this polynomial is computed by a $\SPS^{[n^{0.9}]}$ circuit. Applying $\rho_\epsilon$, we get that $\rho_\epsilon(\NW_{d,m,e} \circ \mathrm{Lin})$ is computed by a $\SPS^{[\sqrt{d}]}$ circuit.  
+\[
+\SPSP^{[2\sqrt{d}]} + (\text{non-multiquadratic}).
+\]
+Since $\rho_\epsilon(\NW_{d,m,e})$ has a copy of $\NW_{d,m,e}$ sitting inside, by setting additional variables to zero, we now have a circuit of the same form as above computing $\NW_{d,m,e}$ and we have our lower bound from \autoref{lem:upper-bound-low-supp} and \autoref{lem:d4hom-goldilocks-LB}:
+\begin{eqnarray*}
+\CM{PSD}_{k,\ell}\inparen{\SPS^{[\sqrt{d}]}} & \leq& \CM{PSD}_{k,\ell}\inparen{\SPSP^{[\sqrt{d}]}} + \CM{PSD}_{k,\ell}\inparen{\text{non-multiquadratic}} \\
+& = & \CM{PSD}_{k,\ell}\inparen{\SPSP^{[\sqrt{d}]}}\\
+&\ll &\CM{PSD}_{k,\ell}(\NW_{d,m,e}). 
+\end{eqnarray*}
+
+This completes the proof of \autoref{thm:kaysaha-main} (it should be clear that we can run the whole argument with $\IMM$ instead of $\NW$). \qed
+
+\begin{exercise}
+Use these techniques to prove a similar lower bound for hom. $\SPSP\Sigma^{[n^{0.9}]}$ circuits. 
+\end{exercise}
+
+
+\begin{remark*}
+In the paper of Kayal and Saha~\cite{KayalSaha14}, the focus was on the $\NW$ polynomial as their proof used the calculations seen in \autoref{thm:KLSS-lowsupp} which are tailored to $\NW$. 
+Bera and Chakrabarti~\cite{BC15} instead gave a lower bound for $\IMM$ but for hom. $\SPSP\Sigma^{[n^{0.5 - \epsilon}]}$ circuits and showed an $n^{\Omega(\sqrt{d})}$.
+
+But with the linear blow-up trick described in \autoref{lem:lin-transform-trick}, it is now clear that the techniques of \cite{KayalSaha14} also yield the lower bound for $\IMM$. 
+\end{remark*}
+
+%%% Local Variables: 
+%%% mode: latex 
+%%% TeX-master: "fancymain" 
+%%% End:
