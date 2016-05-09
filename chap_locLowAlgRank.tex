@@ -107,7 +107,7 @@ The size of such a circuit will denote the sum of the number of monomials of eac
 \end{definition}
 
 The symbol $\circast^{\set{\!\!\set{r}\!\!}}$ is to denote that we have an arbitrary composition of polynomials with algebraic rank bounded by $r$.
-In the paper of Kumar and Saraf \cite{KS16lowrank}, they use the notation $\Sigma\Gamma^{(k)}\Sigma\Pi$ to denote such circuits but we shall use the above notation just to maintain consistency with the previous chapters. \\
+In the paper of Kumar and Saraf \cite{KS16lowrank}, they use the notation $\Sigma\Gamma^{(r)}\Sigma\Pi$ to denote such circuits but we shall use the above notation just to maintain consistency with the previous chapters. \\
 
 The first thing to note is that if we look at the class of $\SASP{d}$ circuits, then clearly includes the class of homogeneous $\SPSP$ circuits is a subclass of them where each $H_i$ is just a product of at most $d$ polynomials. Thus the above model is a vast generalization of the class of homogeneous depth-$4$ circuits. Kumar and Saraf~\cite{KS16lowrank} show that even for this more general model, projected shifted partial derivatives can prove an $n^{\Omega(\sqrt{d})}$ lower bound. 
 
@@ -286,14 +286,14 @@ If $\Hom_{\leq t+1}\insquare{f}= \Hom_{\leq t+1} \insquare{g}$, then we already 
 \end{eqnarray*}
 where the last equation is because every monomial of $f-g$ has degree at least $t+1$ and the constant term of $\partial_zP(\vecx, g) = \partial_zP(\mathbf{0}, g(\mathbf{0})) =  \partial_zP(\mathbf{0}, f(\mathbf{0})) = \epsilon_0$. Hence, by rearranging terms, 
 \[
-\Hom_{\leq t+1}[f] \spaced{=} g \spaced{-} \frac{P(\vecx, g)}{\epsilon_0}.
+\Hom_{\leq t+1}[f] \spaced{=} \Hom_{\leq t+1}\insquare{g \spaced{-} \frac{P(\vecx, g)}{\epsilon_0}}.
 \]
-And of course, if $g$ can be expressed as a polynomial combination of $P_0,\cdots, P_D$, then so can $g - \frac{P(\vecx, g)}{\epsilon_0}$ and that completes the inductive step and hence the proof of \autoref{lem:DSY main}. 
+And of course, if $g$ can be expressed as a polynomial combination of $P_0,\ldots, P_D$, then so can $g - \frac{P(\vecx, g)}{\epsilon_0}$ and that completes the inductive step and hence the proof of \autoref{lem:DSY main}. 
 \end{proof}
 
 \section{Functional dependence to algebraic dependence}
 
-In \autoref{lem:alg-dep-to-func-dep-tail}, we saw that we can covert an algebraic dependence between polynomials to some sort of a functional dependence. It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:alg-dep-to-func-dep-tail} is also true. Next we outline a simple proof of this over fields of characteristic zero using the Jacobian described in \autoref{lem:jacobian-criterion}. 
+In \autoref{lem:alg-dep-to-func-dep-tail}, we saw that we can convert an algebraic dependence between polynomials to some sort of a functional dependence. It was observed by Pandey, Saxena and Sinhababu~\cite{PSS16} that a converse of \autoref{lem:alg-dep-to-func-dep-tail} is also true. Next we outline a simple proof of this over fields of characteristic zero using the Jacobian described in \autoref{lem:jacobian-criterion}. 
 
 \begin{lemma}[Functional dependence to algebraic
   dependence]~\label{lem:using algebraic dependence-converse} Let $\F$ be any field of characteristic zero.
