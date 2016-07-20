@@ -134,8 +134,8 @@ In fact, all matrices that we shall be building this way will have the following
 \node at (0.25,0.25) {1};
 \node at (2.75,0.25) {0};
 \node at (0.25,2.75) {0};
-\node[text=red] at (0.75,2.25) {$\ast$};
-\node[text=red] at (2.25,0.75) {$\ast$};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=red] at (2.1,2.1) {$\ast$};
@@ -145,8 +145,8 @@ In fact, all matrices that we shall be building this way will have the following
 \node at (0.25,0.25) {1};
 \node at (2.75,0.25) {0};
 \node at (0.25,2.75) {0};
-\node[text=blue] at (0.75,2.25) {$\ast$};
-\node[text=blue] at (2.25,0.75) {$\ast$};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=blue] at (2.1,2.1) {$\ast$};
@@ -160,19 +160,19 @@ In fact, all matrices that we shall be building this way will have the following
 \begin{tikzpicture}
 \draw (0,-3) rectangle (6,3);
 \draw (0,0) rectangle (3,3);
-\node at (2.75,0.25) {0};
+\node at (2.75,0.25) {1};
 \node at (0.25,2.75) {0};
-\node[text=red] at (0.75,2.25) {$\ast$};
-\node[text=red] at (2.25,0.75) {$\ast$};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=red] at (2.1,2.1) {$\ast$};
 \begin{scope}[shift={(3,-3)}]
 \draw (0,0) rectangle (3,3);
 \node at (2.75,0.25) {0};
-\node at (0.25,2.75) {0};
-\node[text=blue] at (0.75,2.25) {$\ast$};
-\node[text=blue] at (2.25,0.75) {$\ast$};
+\node at (0.25,2.75) {1};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=blue] at (2.1,2.1) {$\ast$};
@@ -194,19 +194,19 @@ In fact, all matrices that we shall be building this way will have the following
 
 \draw (-0.5,-3) rectangle (6.5,3);
 \draw (0,0) rectangle (3,3);
-\node at (2.75,0.25) {0};
-\node at (0.25,2.75) {0};
-\node[text=red] at (0.75,2.25) {$\ast$};
-\node[text=red] at (2.25,0.75) {$\ast$};
+\node at (2.75,0.25) {1};
+\node at (0.25,2.75) {1};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=red] at (2.1,2.1) {$\ast$};
 \begin{scope}[shift={(3,-3)}]
 \draw (0,0) rectangle (3,3);
-\node at (2.75,0.25) {0};
-\node at (0.25,2.75) {0};
-\node[text=blue] at (0.75,2.25) {$\ast$};
-\node[text=blue] at (2.25,0.75) {$\ast$};
+\node at (2.75,0.25) {1};
+\node at (0.25,2.75) {1};
+\node at (0.75,2.25) {1};
+\node at (2.25,0.75) {1};
 \draw[dotted] (2,1) -- (1,2);
 \draw (0.75,2.75) -- (2.75,2.75) -- (2.75,0.75) -- cycle;
 \node[text=blue] at (2.1,2.1) {$\ast$};
@@ -501,7 +501,11 @@ edge [loop below] (l1)
 (v4) edge (l4)
 (l4) edge [loop left] (l4)
 (l4) edge (v1) 
-(v1) edge (l1);
+(v1) edge (l1)
+(v1) edge [out=240,in=210,looseness=12] (v1)
+(v2) edge [out=330,in=300,looseness=12] (v2)
+(v3) edge [out=60 ,in=30 ,looseness=12] (v3)
+(v4) edge [out=150,in=120,looseness=12] (v4);
 \end{tikzpicture}
 \end{center}
 The thick edges in the above picture shall be called \emph{connector edges} (these shall play the role of the $y$-edges). 
