@@ -269,7 +269,7 @@ matrix continues to have full column-rank.
   minors of the matrix $X = (\!(x_{ij})\!)$. 
 Then, 
   $$
-  \Pr_{A\in \F_q^{d^2}}[p(A) \neq 0] \quad \geq \quad \frac{1}{4}.
+  \Pr_{A\in \F_q^{d^2}}[p(A) \neq 0] \quad \geq \quad \frac{q-2}{q-1}.
   $$
 \end{lemma}
 
@@ -293,7 +293,7 @@ matrices.
   If $A$ is a random $d\times d$ matrix with entries from a fixed
   finite field $\F_q$, 
 $$
-\Pr[\det(A) \neq 0] \quad\geq\quad \frac{1}{4}.
+\Pr[\det(A) \neq 0] \quad\geq\quad \frac{q-2}{q-1}.
 $$
 \end{proposition}
 
@@ -351,7 +351,7 @@ Repeating this process for other
 rows/columns until only  one minor remains, we have
 $$
 \Pr_{A}[p(A) \neq 0] \quad \geq \quad \Pr_{A}[\det(A) \neq 0] \quad = \quad
-\frac{1}{4}\quad(\text{by \autoref{prop:random-det-nonzero}}).\qedhere
+\frac{q-2}{q-1}\quad(\text{by \autoref{prop:random-det-nonzero}}).\qedhere
 $$
 \end{proof}
 
@@ -367,6 +367,15 @@ Show that
   \inparen{1 - \frac{1}{q}}\cdots \inparen{1 - \frac{1}{q^{n}}},
   \]
   is at least $1/4$. 
+\end{exercise}
+
+\begin{exercise}[Proving \autoref{prop:random-det-nonzero} for $\Perm_n$]
+  Show that
+  \begin{eqnarray*}
+    \Pr_{A \in \F_q^{n\times n}}[\Perm(A) = 0] & \leq &  \frac{1}{q^n} + \frac{1}{q^{n-1}} + \cdots + \frac{1}{q}\\
+    & = & \frac{1}{q-1}.
+  \end{eqnarray*}
+  \textcolor{gray}{Hint: Use Koutis' trick (\autoref{lem:random-lc-det-nonzero}).}
 \end{exercise}
 
 \section{Lower bound for $\ESym_{\leq d}$}
@@ -426,5 +435,5 @@ Thus, any linear combination of partial derivatives must be non-zero on at least
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "fancymain"
 %%% End: 
