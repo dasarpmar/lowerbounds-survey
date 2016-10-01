@@ -4,86 +4,235 @@ In this chapter, we shall see the lower bound of Shpilka and Wigderson~\cite{sw2
 The main theorem of this section would be the following \emph{quadratic} lower bound. 
 
 \begin{theorem}[\cite{sw2001}]\label{thm:SW-SPS-main-thm}
-Any $\SPS$ circuit that computes the polynomial $\Det_n$ (or $\Perm_n$) must have at least $\Omega\pfrac{n^4}{\log n}$ wires. 
+Any $\SPS$ circuit that computes the polynomial $\ESym_d$, for $d = n/100$ must have at least $\Omega(n^2)$ wires. 
 \end{theorem}
 
-Note that the number of variables in $\Det_n$ is $n^2$ and hence the above lower bound is a quadratic lower bound in the number of variables.
+In fact, $\ESym_d$ can indeed be computed by a $O(n^2)$-sized  $\SPS$ circuit over a characteristic zero field (\autoref{ex:ben-or-trick}) and hence the above result is tight for $\ESym_d$. 
 Until recently, this was the best lower bound we knew for the class of general $\Sigma\Pi\Sigma$ circuits but a very recent result of Kayal, Saha and Tavenas~\cite{kst16} has improved this to an almost cubic lower bound (for a different explicit family of polynomials) which we shall see at a later point.
-This section however shall focus on the proof of the above theorem.
+This chapter however shall focus on the proof of the above theorem.
 
-\section{Revisiting the hom. $\SPS$ lower bound of \cite{nw1997}}
+\section{Lower bounds for hom. $\SPS$ circuits \cite{nw1997}}
 
-From \autoref{obs:low-rank-sps-rank}, if $T = \ell_1 \cdots \ell_d$ then for every $0\leq k \leq d$ we have
-\[
-\dim \partial^{=k}(T) \spaced{\leq} \binom{d}{k}. 
-\]
-For a polynomial such as the $\Det_n$, we know that $\partial^{=k}(\Det_n) = \binom{n}{k}^2$. Let us first get a sense of what is the best $k$ to choose for proving lower bounds for $\Sigma\Pi^{[d]}\Sigma$ circuits. We recall some bounds on binomial coefficients from \autoref{chap:binom-estimates}. 
+Let us first consider the following restricted question.
+Say we want to compute an $n$-variate degree $d$ polynomial $f$ using a $\SPS$ circuit, but under the restriction that all intermediate computations have degree at most $d$.
+The class of such circuits are denoted by $\Sigma\Pi^{[d]}\Sigma$ circuits.
+Can we prove lower bounds for this class first?
 
-\begin{proposition*}[\autoref{prop:binom-ub-lb}]For any $n\geq k \geq 0$, 
-\[
-\pfrac{n}{k}^k \spaced{\leq} \binom{n}{k} \spaced{\leq} \pfrac{ne}{k}^k\qedhere
-\]
-\end{proposition*}
+Indeed, and in fact we have already seen how to in \autoref{chap:simpleLBs}. But it would be good to recall the method again as we would be using this heavily. 
 
-\begin{lemma}[\cite{nw1997}]\label{NW:d3hom-mainlemma} For any $d \geq 0$, any $\Sigma\Pi^{[d]}\Sigma$ circuit computing $\Det_n$ must have size $\exp\inparen{\Omega\pfrac{n^2}{d}}$. 
-\end{lemma}
+\begin{theorem}[\cite{nw1997}]
+Any $\Sigma\Pi^{[d]}\Sigma$ circuit that computes $\ESym_d$ must have size $\frac{\binom{n}{d/2}}{2^d}$. 
+\end{theorem}
+Thus, if $n = 3d$, this gives an exponential lower bound. 
+
 \begin{proof}
-As just mentioned, if $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of at most $d$ linear polynomials, then 
+For a polynomial $f$, define the \emph{dimension of $k$-th order partial derivatives}, denoted by $\CM{NW}_k(f)$, as follows
 \[
-\dim(\partial^{=k}(C)) \spaced{\leq } s \cdot \binom{d}{k}.
+\CM{NW}_k(f) \spaced{=} \dim \partial^{=k}(f)
 \]
-On the other hand, 
+\begin{claim}\label{claim:d3-nw-upperbound}
+  If $f = \ell_1 \cdots \ell_d$ where each $\ell_i$ is a linear polynomial, then $\CM{NW}_k(f) \leq \binom{d}{k}$. 
+  Thus, if $f = \ell_{11}\cdots \ell_{1d} + \cdots + \ell_{s1}\cdots \ell_{sd}$, then $\CM{NW}_k(f) \leq s \cdot \binom{d}{k}$. 
+\end{claim}
+
+\noindent
+A fact that we would need here but won't prove is that $\ESym_d$ has large space of partial derivatives. 
+
+\begin{claim}
 \[
-\dim(\partial^{=k}(\Det_n)) \spaced{\geq } \binom{n}{k}^2.
+\CM{NW}_k(\ESym_d) = \min\inparen{\binom{n}{d-k}, \binom{n}{k}}
 \]
-Therefore, we get a lower bound of 
-\begin{eqnarray*}
-s & \geq & \frac{\binom{n}{k}^2}{\binom{d}{k}}\\
-  & \geq & \pfrac{n}{k}^{2k} / \pfrac{de}{k}^k \spaced{=} \pfrac{n^2}{e\cdot dk}^k
-\end{eqnarray*}
-Thus, by choosing $k = \pfrac{n^2}{2ed}$, we get a lower bound of $2^k = \exp\inparen{\Omega\pfrac{n^2}{d}}$. 
+Hence, for $k = d/2$, we get 
+\[
+\CM{NW}_k(\ESym_d) = \binom{n}{d/2}.
+\]
+\end{claim}
+
+\noindent 
+The theorem follows directly from these two claims. \qedhere
 \end{proof}
 
+\section{Handling \emph{few} high degree gates}
 
-\section{The win-win proof of \cite{sw2001}}
+In the last section we saw a way to prove lower bounds for $\SPS$ circuits were the degree of each product of linear forms was bounded by $d$. Suppose we had a $\SPS$ circuit $C$ such that all but say two of the products of linear forms have degree bounded by $d$. That is,
+\[
+C = C' + T_1 + T_2
+\]
+where $C' \in \Sigma\Pi^{[d]}\Sigma$ and  $T_1,T_2$ is a product of linear forms of degree possibly larger than $d$. Can we prove lower bounds for such circuits as well? \\
+
+{\bf Key Idea: } Replace some variables by linear functions in other variables to make $T_1$ and $T_2$ equal to zero. \\
+
+Say $T_1$ had one of the linear polynomials as $x_1 + 3x_2 + 5x_3 - 4$, then we shall replace $x_1$ by $- (3x_2 + 5x_3 - 4)$.
+The result is that $T_1$ now becomes zero.
+What happens to $T_2$?
+Note that $T_2$ after this substitution still remains a product of linear polynomials, and its degree cannot increase in this process.
+However, it may be the case that $T_2$ was $(x_1 + 3x_2 + 5x_3 - 7)^{2d}$ and under our substitution of $x_1$ this reduces to a constant.
+But this is still good because the goal is to eliminate all high degree $T_i$s completely (either by making them zero, or reducing them to constants).
+This was the key idea of Shpilka and Wigderson~\cite{sw2001} and we shall formalize this as a lemma.
+
+\begin{lemma}\label{lem:d3-few-affine-projection}
+  Let $C = T_1 + \cdots + T_s$ be a $\Sigma\Pi\Sigma$ and suppose $r$ of the $T_i$s have degree greater than $d$.
+Then by taking an \emph{affine projection of co-dimension at most $r$}, that is by setting at most $r$ variables to linear functions in the remaining variables, the resulting circuit $C' = T_1' + \cdots T_{s'}'$ is a $\Sigma\Pi^{[d]}\Sigma$ circuit with $s' \leq s$.
+\end{lemma}
+
+In order to prove a lower bound for $\Sigma\Pi^{[d]}\Sigma$ circuits, we needed to find a polynomial $f$ for which $\dim \partial^{=k}(f)$ is large.
+The strategy to prove lower bounds for $\Sigma\Pi\Sigma$ circuits with $r$ or fewer \emph{high degree} $T_i$s is now clear:
+\begin{quote}
+  Find a polynomial $g$ such that for every $g'$ that is an \emph{affine projection of co-dimension $r$} on $g$ (that is, obtained from $g$ by setting at most $r$ variables to linear functions in the remaining), we have that $\dim \partial^{=k}(g')$ is large.  
+\end{quote}
+
+\section{Shpilka and Wigderson's lower bound for $\Sigma\Pi\Sigma$ circuits}
+
+Shpilka and Wigderson~\cite{sw2001} show that $\ESym_d$ not only has a large $\dim \partial^{=k}$, it also has large $\dim \partial^{=k}$ even after affine projections of co-dimension $d/100$. 
+
+\begin{theorem}[\cite{sw2001}]\label{thm:SW-Esym-robust} Consider the polynomial $\ESym_d$ for any $d < \frac{n}{100}$. If $g$ is an affine projection of $\ESym_d$ of co-dimension $r < \frac{d}{100}$, then
+\[
+\dim \partial^{=k}(g) \spaced{\geq} \min\inparen{\binom{n-2r}{k},\binom{n-2r}{d-2r -k}}.
+\]
+Thus, if $k = (d-2r)/2$, then 
+\[
+\dim \partial^{=k}(g) \geq \binom{n-2r}{(d-2r)/2}.
+\]
+\end{theorem}
+
+We shall defer the proof of \autoref{thm:SW-Esym-robust} to the end of this section but see why the above theorem implies \autoref{thm:SW-SPS-main-thm}. 
 
 \begin{proof}[Proof of \autoref{thm:SW-SPS-main-thm}]
- Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
-We will prove by induction that $s\geq \frac{n^4}{100\log n} + 1$. Starting with $C$, we shall modify the circuit to a new circuit $C'$ that computes $\Det_{n-1}$ (up to renaming variables). By induction, we shall assume that 
+Consider the polynomial $\ESym_d$ for $d = \frac{n}{100}$. Suppose it is computable by a $\Sigma\Pi\Sigma$ circuit $C = T_1 + \cdots + T_s$ with at most $\frac{d^2}{100}$ wires. Let $r$ be the number of $T_i$s of degree more than $d$. Note that, given the bound on the number of wires, there cannot be more than $\frac{d}{100}$ $T_i$s that have degree more than $d$. Hence, we know that $r \leq \frac{d}{100}$. 
+
+Now that $r \leq \frac{d}{100}$, by \autoref{lem:d3-few-affine-projection}, there is an affine projection $\rho$ of co-dimension at most $r$ such that 
 \[
-\mathrm{size}(C') \spaced{\geq} \frac{(n-1)^4}{100\log (n-1)}.
+\rho(\ESym_d) \spaced{=} T_1' + \cdots + T_s' \spaced{\in} \Sigma\Pi^{[d]}\Sigma
 \]
+with $\deg(T_i') \leq d$ and $s \leq \frac{d^2}{100}$. 
 
-We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/20\log n)$).
-By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at most $d$ linear polynomials, we have a lower bound of $\exp(\Omega(n^2/d))$. We shall say a variable $x_{ij}$ is \emph{$d$-good} in $C$ if each $T_i$ that depends on $x_{ij}$ has degree at most $d$. \\
+But then, on the one hand we know from \autoref{claim:d3-nw-upperbound} that $\CM{NW}_k(\rho(\ESym_d))$ is at most $s \cdot \binom{d}{k}$ but on the other hand \autoref{thm:SW-Esym-robust} states that $\CM{NW}_k(\rho(\ESym_d))$ is \emph{large}. If we set the value of $k$ right ($k=(d-2r)/2$ should work) we get a contradiction to the original assumption that $s < \frac{d^2}{100}$. 
 
-{\bf Case 1:} There is a variable in the first row $x_{1j}$ that is $d$-good. 
-
-\medskip
-
-\noindent 
-In this setting, consider the polynomial $C' = C_{(x_{1i} = 1)} - C_{(x_{1i} = 0)}$.
-As far as $\Det_n$ is concerned, this is equivalent to taking the derivative with respect to $x_{ij}$ and hence the polynomial is the corresponding $(n-1)\times (n-1)$ minor.
-The circuit $C'$ on the other hand now is a $\Sigma\Pi^{[d]}\Sigma$ circuit with top fan-in at most $2s$, as all $T_i$s in $C$ that do not depend on $x_{ij}$ would now be eliminated.
-By \autoref{NW:d3hom-mainlemma}, this implies that $2s > \exp(\Omega((n-1)^2/d))$ which is certainly bigger than $(n^4 / \log n)$ if $d = n^2/20\log n$.\\
-
-{\bf Case 2:} There is \emph{no} variable in the first row that is $d$-good. 
-
-\medskip
-
-\noindent 
-We know that the variable $x_{12}$ is not $d$-good.
-This means that there is some $T_i$ of degree more than $d$ which has a factor of the form $(x_{12} - \ell)$.
-We shall now set $x_{12} = \ell$ in $C$ and this eliminates the gate $T_i$ altogether and thereby reducing the size by at least $d$ wires. 
-
-Now move on to $x_{13}$. It is possible now that after eliminating $T_i$ in the previous step, we may now have $x_{13}$ to be $d$-good. Then we reduce to Case 1 and we are done. Otherwise, there is some $T_j$ of degree more than $d$ with a factor of the form $(x_{13} - \ell')$. Once again, we set $x_{13} = \ell'$ to eliminate $T_j$ and thereby reduce the size of the circuit by $d$. \\
-
-Repeating this process for $\set{x_{12}, \ldots, x_{1n}}$, we either reach Case 1 (in which case we are done), or we have thereby reduced the circuit by at least $d(n-1)$ wires. So far, we have only messed with the variables $\set{x_{12},\ldots, x_{1n}}$ but this is not an issue because we can further set $x_{11} = 1$ and $x_{21} = x_{31} = \cdots = x_{n1} = 0$. Therefore, the polynomial thus computed has to be the minor with respect to $x_{11}$ which is just $\Det_{n-1}$ up to renaming variables. But then,
-\[
-\mathrm{size}(C) \spaced{\geq} \mathrm{size}(C') \;+\; \pfrac{(n-1)^2 n^2}{20\log n}
-\]
-Hence, it follows by induction that $\mathrm{size}(C) \geq \pfrac{n^4}{100\log n} + 1$.
+Hence, $s > \frac{d^2}{100} = \Omega(n^2)$ as claimed by the theorem. 
 \end{proof}
+
+This entire discussion can be summarized in the following very general remark.
+
+\begin{mdframed}
+\begin{remark}\label{rem:meta-SW-lb}
+  Suppose we can find an polynomial $f$ of degree $d$ that have the following properties. 
+  \begin{itemize}
+  \item $f$ has a large \emph{dimension of partial derivatives},
+  \item even after an affine restriction $\rho$ of co-dimension $r$, the polynomial $\rho(f)$ has large \emph{dimension of partial derivatives}.
+  \end{itemize}
+  
+  Then, the above method gives a $\Omega(dr)$ lower bound for $f$. 
+\end{remark}
+\end{mdframed}
+What we did above was choose the polynomial $f$ as $\ESym_d$ with $d = \Omega(n)$ and using the fact that the partial derivative space remains large even after an affine restriction of co-dimension $r = \Omega(d)$, we get a $\Omega(d^2) = \Omega(n^2)$ lower bound for $\SPS$ circuits.
+
+\subsection{Rough proof of Theorem~\ref{thm:SW-Esym-robust}}
+
+Let us order the variables as $x_1 \succ x_2 \succ \cdots \succ x_n$.
+Say we have an affine projection $\rho$ of co-dimension $r$ that sets the linear polynomials $\set{\ell_1,\cdots, \ell_r}$ to zero. Let $x_{i_j}$ be the \emph{highest} variables participating in each $\ell_j$, that is,
+\[
+  \ell_j \spaced{=} x_{i_j} - \ell_j'.
+\]
+Thus, applying this affine restriction is equivalent to replacing each $x_{i_j}$ by $\ell_{j}'$. To get a sense of what this does to $\ESym_d$, let $y_j$ be the \emph{highest variable} participating in $\ell_j'$.
+
+Let us now look at $\ESym_d$, paying attention to the variables $x_{i_j}$s and $y_j$s. We may assume that  $S = \set{x_{i_1},\ldots, x_{i_r}, y_1,\ldots, y_r}$ are all distinct variables (why?).
+\begin{eqnarray*}
+  \ESym_d(x_1,\cdots, x_n) & = &  x_{i_1}\cdots x_{i_r}\cdot y_1\cdots y_r \cdot \ESym_{d - 2r}(\vecx \setminus S) \spaced{+} \text{other monomials}
+\end{eqnarray*}
+Replacing each $x_{i_j}$ by $\ell_j'$ introduces higher powers of $y_1,\ldots, y_r$.
+
+\begin{claim}
+  If we collect all monomials in $\rho(\ESym_d)$ that are divisible by $y_1^2\cdots y_r^2$, it is precisely
+  \[
+    y_1^2 \cdots y_r^2 \cdot \ESym_{d-2r}(\vecx \setminus S).
+  \]
+\end{claim}
+
+\begin{exercise}
+Prove this claim. 
+\end{exercise}
+
+That is, such monomials can \emph{only} be generated by the first term in the above equation. Now, if we only choose to differentiate by monomials in $\vecx \setminus S$, the remaining monomials do not interfere with the monomials that are divisible by $y_1^2 \cdots y_r^2$. Therefore we get
+\[
+  \dim \partial^{=k}(\rho(\ESym_d)) \;\geq\; \dim \partial^{=k}\ESym_{d-2r}(\vecx \setminus S) \;=\; \min\inparen{\binom{n-2r}{d-2r-k}, \binom{n-2r}{k}}.\qed
+\]
+
+% \section{Revisiting the hom. $\SPS$ lower bound of \cite{nw1997}}
+
+% From \autoref{obs:low-rank-sps-rank}, if $T = \ell_1 \cdots \ell_d$ then for every $0\leq k \leq d$ we have
+% \[
+% \dim \partial^{=k}(T) \spaced{\leq} \binom{d}{k}. 
+% \]
+% For a polynomial such as the $\Det_n$, we know that $\partial^{=k}(\Det_n) = \binom{n}{k}^2$. Let us first get a sense of what is the best $k$ to choose for proving lower bounds for $\Sigma\Pi^{[d]}\Sigma$ circuits. We recall some bounds on binomial coefficients from \autoref{chap:binom-estimates}. 
+
+% \begin{proposition*}[\autoref{prop:binom-ub-lb}]For any $n\geq k \geq 0$, 
+% \[
+% \pfrac{n}{k}^k \spaced{\leq} \binom{n}{k} \spaced{\leq} \pfrac{ne}{k}^k\qedhere
+% \]
+% \end{proposition*}
+
+% \begin{lemma}[\cite{nw1997}]\label{NW:d3hom-mainlemma} For any $d \geq 0$, any $\Sigma\Pi^{[d]}\Sigma$ circuit computing $\Det_n$ must have size $\exp\inparen{\Omega\pfrac{n^2}{d}}$. 
+% \end{lemma}
+% \begin{proof}
+% As just mentioned, if $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of at most $d$ linear polynomials, then 
+% \[
+% \dim(\partial^{=k}(C)) \spaced{\leq } s \cdot \binom{d}{k}.
+% \]
+% On the other hand, 
+% \[
+% \dim(\partial^{=k}(\Det_n)) \spaced{\geq } \binom{n}{k}^2.
+% \]
+% Therefore, we get a lower bound of 
+% \begin{eqnarray*}
+% s & \geq & \frac{\binom{n}{k}^2}{\binom{d}{k}}\\
+%   & \geq & \pfrac{n}{k}^{2k} / \pfrac{de}{k}^k \spaced{=} \pfrac{n^2}{e\cdot dk}^k
+% \end{eqnarray*}
+% Thus, by choosing $k = \pfrac{n^2}{2ed}$, we get a lower bound of $2^k = \exp\inparen{\Omega\pfrac{n^2}{d}}$.
+% \end{proof}
+
+
+
+
+% \section{The win-win proof of \cite{sw2001}}
+
+% \begin{proof}[Proof of \autoref{thm:SW-SPS-main-thm}]
+%  Say $\Det_n$ is computed by $C = T_1 + \cdots + T_s$ where each $T_i$ is a product of linear forms.
+% We will prove by induction that $s\geq \frac{n^4}{100\log n} + 1$. Starting with $C$, we shall modify the circuit to a new circuit $C'$ that computes $\Det_{n-1}$ (up to renaming variables). By induction, we shall assume that 
+% \[
+% \mathrm{size}(C') \spaced{\geq} \frac{(n-1)^4}{100\log (n-1)}.
+% \]
+
+% We shall keep in mind a threshold $d$ that would be set shortly (spoiler: $d= n^2/20\log n)$).
+% By \autoref{NW:d3hom-mainlemma} we know that if each $T_i$ is a product of at most $d$ linear polynomials, we have a lower bound of $\exp(\Omega(n^2/d))$. We shall say a variable $x_{ij}$ is \emph{$d$-good} in $C$ if each $T_i$ that depends on $x_{ij}$ has degree at most $d$. \\
+
+% {\bf Case 1:} There is a variable in the first row $x_{1j}$ that is $d$-good. 
+
+% \medskip
+
+% \noindent 
+% In this setting, consider the polynomial $C' = C_{(x_{1i} = 1)} - C_{(x_{1i} = 0)}$.
+% As far as $\Det_n$ is concerned, this is equivalent to taking the derivative with respect to $x_{ij}$ and hence the polynomial is the corresponding $(n-1)\times (n-1)$ minor.
+% The circuit $C'$ on the other hand now is a $\Sigma\Pi^{[d]}\Sigma$ circuit with top fan-in at most $2s$, as all $T_i$s in $C$ that do not depend on $x_{ij}$ would now be eliminated.
+% By \autoref{NW:d3hom-mainlemma}, this implies that $2s > \exp(\Omega((n-1)^2/d))$ which is certainly bigger than $(n^4 / \log n)$ if $d = n^2/20\log n$.\\
+
+% {\bf Case 2:} There is \emph{no} variable in the first row that is $d$-good. 
+
+% \medskip
+
+% \noindent 
+% We know that the variable $x_{12}$ is not $d$-good.
+% This means that there is some $T_i$ of degree more than $d$ which has a factor of the form $(x_{12} - \ell)$.
+% We shall now set $x_{12} = \ell$ in $C$ and this eliminates the gate $T_i$ altogether and thereby reducing the size by at least $d$ wires. 
+
+% Now move on to $x_{13}$. It is possible now that after eliminating $T_i$ in the previous step, we may now have $x_{13}$ to be $d$-good. Then we reduce to Case 1 and we are done. Otherwise, there is some $T_j$ of degree more than $d$ with a factor of the form $(x_{13} - \ell')$. Once again, we set $x_{13} = \ell'$ to eliminate $T_j$ and thereby reduce the size of the circuit by $d$. \\
+
+% Repeating this process for $\set{x_{12}, \ldots, x_{1n}}$, we either reach Case 1 (in which case we are done), or we have thereby reduced the circuit by at least $d(n-1)$ wires. So far, we have only messed with the variables $\set{x_{12},\ldots, x_{1n}}$ but this is not an issue because we can further set $x_{11} = 1$ and $x_{21} = x_{31} = \cdots = x_{n1} = 0$. Therefore, the polynomial thus computed has to be the minor with respect to $x_{11}$ which is just $\Det_{n-1}$ up to renaming variables. But then,
+% \[
+% \mathrm{size}(C) \spaced{\geq} \mathrm{size}(C') \;+\; \pfrac{(n-1)^2 n^2}{20\log n}
+% \]
+% Hence, it follows by induction that $\mathrm{size}(C) \geq \pfrac{n^4}{100\log n} + 1$.
+% \end{proof}
+
 
 %%% Local Variables: 
 %%% mode: latex
