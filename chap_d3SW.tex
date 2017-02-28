@@ -115,16 +115,24 @@ This entire discussion can be summarized in the following very general remark.
 
 \begin{mdframed}
 \begin{remark}\label{rem:meta-SW-lb}
-  Suppose we can find an polynomial $f$ of degree $d$ that have the following properties. 
+  Suppose we have a measure $\Gamma$ to prove lower bounds for a degree $d$ polynomial computed by a $\Sigma\Pi^{[D]}\Sigma$ circuit. If we can find an explicit polynomial $f$ of degree $d$ with the following properties,
   \begin{itemize}
-  \item $f$ has a large \emph{dimension of partial derivatives},
-  \item even after an affine restriction $\rho$ of co-dimension $r$, the polynomial $\rho(f)$ has large \emph{dimension of partial derivatives}.
+  \item $\Gamma(f)$ is \emph{large},
+  \item even after an affine restriction $\rho$ of co-dimension $r$, we have $\Gamma(\rho(f))$ is \emph{large}
   \end{itemize}
-  
-  Then, the above method gives a $\Omega(dr)$ lower bound for $f$. 
+  Then, we can get a $\Omega(Dr)$ lower bound for $f$. 
 \end{remark}
 \end{mdframed}
-What we did above was choose the polynomial $f$ as $\ESym_d$ with $d = \Omega(n)$ and using the fact that the partial derivative space remains large even after an affine restriction of co-dimension $r = \Omega(d)$, we get a $\Omega(d^2) = \Omega(n^2)$ lower bound for $\SPS$ circuits.
+What we did above was choose the polynomial $f$ as $\ESym_d$ with $D = d = \Omega(n)$ and using the fact that the partial derivative space remains large even after an affine restriction of co-dimension $r = \Omega(d)$, we get a $\Omega(d^2) = \Omega(n^2)$ lower bound for $\SPS$ circuits.
+
+However, this remark is quite general and in principle, if we could prove a lower bound for say $\Sigma\Pi^{[d^2]}\Sigma$ circuits using some measure, then we could potentially extend this to give a cubic lower bound using the affine projection idea.
+In fact, Kayal, Saha and Tavenas \cite{kst16} (which was subsequently strengthened by Balaji, Limaye and Srinivasan \cite{BLS16}) do indeed show an \emph{almost} cubic lower bound using a measure that we shall be discussed later.
+We shall see this later in the survey.
+
+\begin{theorem}[\cite{kst16}] There is an explicit $n$-variate poylnomial $f$ of degree $d$ such that any $\SPS$ circuit computing $f$ must require $\Omega\inparen{n^3}{\poly \log(n)}$ size. 
+\end{theorem}
+
+Much later in the survey\todo{add link}, we shall see the proof of Balaji, Limaye and Srinivasan \cite{BLS16} that, besides being a much simpler and modular proof of \cite{kst16}, also proves the lower bound for a polynomial computed by a depth-$5$ circuit.
 
 \subsection{Rough proof of Theorem~\ref{thm:SW-Esym-robust}}
 
