@@ -5,9 +5,9 @@ This chapter focuses on their definitions, and some important properties related
 
 \section{Definition of classes}
 
-Recall that $\P$ is\footnote{if one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. 
+Recall that $\P$ is\footnote{If one is to be more precise, this is $\P/\poly$ or non-uniform $\P$. 
 But in this article, we shall be interested only in the non-uniform versions since we mainly deal with circuit sizes.} the class of boolean functions that can be computed by circuits of polynomial size. 
-As any boolean function can be expressed as a multilinear\footnote{a polynomial where the degree in any variable is bounded by $1$} polynomial, an analogue of this in the arithmetic world could be multilinear polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. 
+As any boolean function can be expressed as a multilinear\footnote{A polynomial where the degree in any variable is bounded by $1$.} polynomial, an analogue of this in the arithmetic world could be multilinear polynomials $f(x_1,\dots, x_n)$ that can be computed by arithmetic circuits of size $\poly(n)$. 
 However, unlike in the boolean world, the polynomial $x^2$ is not equal to the polynomial $x$ as we are dealing with formal polynomials. 
 Valiant's definition of $\VP$ was the class of the class of ``low degree'' polynomials that can be computed by circuits of small size. 
 
@@ -21,7 +21,8 @@ These are subclasses of $\VP$ by definition.
 
 \subsection*{More on the low-degree restriction}
 
-But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits, that include such polynomials of very large degree? 
+But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic
+circuits, including polynomials of very large degree?
 We can indeed compute polynomials of very large degree, such as a circuit that is a chain of $s$ multiplication gates thus computing a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring). 
 Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. 
 There are several intuitive reasons for this, and this ``restricted'' definition also yields beautiful structural results. 
@@ -30,9 +31,9 @@ This discussion is from an answer by Joshua Grochow on \texttt{cstheory.SE} \cit
 \begin{enumerate}
 
 \item Every boolean function can be expressed as a multilinear polynomial. 
-Multilinear polynomials are of course polynomials of ``low degree''. 
+Multilinear polynomials are, of course, polynomials of ``low degree''. 
 
-\item Much of the earlier work were based on understanding formula size. 
+\item Much of the earlier work was based on understanding formula size. 
 In the case of arithmetic formulas, the degree cannot be more than the size of the formula. 
 If a polynomial is computed by a $\poly(n)$ sized formula, then its degree must be bounded by $\poly(n)$ too. 
 
@@ -44,7 +45,8 @@ However, as we shall soon see, Strassen's result shows that such high degree com
 Dealing with low-degree circuits also makes the class robust under this transformation. 
 Eliminating division gates also only incurs an $O(\deg^2)$ increase in size. 
 
-\item Without this restriction, cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or the numerous structural results such as depth reduction that we have. 
+\item Without this restriction, one cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or
+show the numerous structural results such as depth reduction that we have. 
 
 \end{enumerate}
 
@@ -54,23 +56,23 @@ Having said that, there is also a notion of ``degree'' in a boolean circuit that
 
    For any OR gate, the degree is the maximum of the degree of its children. 
 
-   For any AND gate, the degree is the sum of the degrees of its children. 
+   For any AND gate, the degree is the sum of the degree of its children. 
  \end{quote}
-The class boolean functions that can be computed by poly-sized poly-degree circuits coincide with a class called $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. 
+The class of boolean functions that can be computed by poly-sized poly-degree circuits coincide with a class called $\mathsf{LOGCFL}$ or $\mathsf{SAC}^1$. 
 With this notion, one might say that $\VP$ is really an analogue of $\mathsf{SAC}^1$.\\
 
 
 We now move on to the arithmetic analogue of the class $\NP$. 
-Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ such that 
+Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ and 
 \[
-f(x_1,\dots, x_n)\spaced{=} \bigvee_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m)
+f(x_1,\dots, x_n)\spaced{=} \bigvee_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
 Valiant's $\NP$ is defined analogously by replacing the OR by a sum. 
 
 \begin{definition}[Valiant's $\NP$]\label{defn:vnp}
-The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, g_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ such that 
+The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, g_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ and
 \[
-f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m)
+f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
 \end{definition}
 
@@ -96,21 +98,21 @@ The polynomials $\Perm_n$ and $\NW_{n,m,d}$ are in $\VNP$.
 \end{corollary}
 
 As stated in \autoref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. 
-However, a subsequent paper of Valiant~\cite{v82} showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. 
+However, a subsequent paper of Valiant~\cite{v82} showed that we may assume without loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. 
 This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. 
 We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
 
 \begin{theorem}\label{thm:vnp-formula}
 For any $f(x_1,\dots, x_n)\in \VNP$, there is a $g(x_1,\dots, x_n, y_1,\dots, y_m)$ that can be computed by a $\poly(n)$ sized \emph{formula} such that 
 \[
-f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m} g(x_1,\dots, x_n, a_1,\dots, a_m)
+f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m} g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
 \end{theorem}
 
 \section{Reductions and completeness}
 
 For polynomials, the most natural form of reductions are via \emph{projections}. 
-We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by setting substituting variables of $f$ to other variables or field constants. 
+We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by substituting variables of $f$ to other variables or field constants. 
 Under such reductions, do we have natural complete polynomials for the classes $\VP$ and $\VNP$? 
 Valiant \cite{v79} showed that the $\Det_n$ and $\Perm_n$ are (almost) complete for the classes $\VP$ and $\VNP$ respectively. 
 We shall see the proof of this in this section. 
@@ -125,7 +127,8 @@ Over any field $\F$ of characteristic not equal to $2$, the polynomial $\Perm_n$
 \subsection{Warm-up: Formulas to permanents}\label{sec:formula-to-dets}
 
 Let us first show that any polynomial sized arithmetic formula can be expressed as permanent of a small matrix.
-In fact, all matrices that we shall be building this way will have the following structure, and this would be important.\\
+In fact, all matrices that we shall be building this way will have the following structure, and this would be
+important. (Here \textcolor{red}{*}, \textcolor{blue}{*} denote upper triangle entry of the matrix of $f$, $g$ respectively.)
 
 \begin{center}
 \begin{tikzpicture}
@@ -219,17 +222,18 @@ In fact, all matrices that we shall be building this way will have the following
 \end{tikzpicture}
 \end{center}
 
-We leave it to as an exercise to check that this indeed works. This may seem bizarre at first but there is indeed a method to this. To understand that, we must realise that there is a graph theoretic way to understand $\Det_n$ and $\Perm_n$. 
+We leave it to as an exercise to check that this indeed works. This may seem bizarre at first but there is indeed a
+method to this. To understand that method, we must realise that there is a graph theoretic way to understand $\Det_n$ and $\Perm_n$. 
 
 \subsubsection*{Graph theoretic representation of $\Det_n$ and $\Perm_n$}
 
 Let us think of an $n\times n$ symbolic matrix as an adjacency matrix of a directed graph $G$ with the edge from $i$ to $j$ having weight $x_{ij}$. 
-Then every monomial of $\Det_n$ or $\Perm_n$ corresponds to a permutation $\sigma$, and the corresponding edges in the graph $G$ form a \emph{cycle cover} i.e. a partition of the vertices of $G$ into disjoint cycles. 
+Then every monomial of $\Det_n$ or $\Perm_n$ corresponds to a permutation $\sigma$, and the corresponding edges in the graph $G$ form a \emph{cycle cover} i.e., a partition of the vertices of $G$ into disjoint cycles. 
 The weight of a cycle-cover shall be defined as the product of weights of the edges constituting the cycles, and the sign of the cycle cover shall be the sign of the permutation $\sigma$. 
 This allows us to write $\Det_n$ and $\Perm_n$ as
 \begin{eqnarray*}
-\det(G) & = & \sum_{C\in \mathrm{CycleCovers}(G)} wt(C) \cdot \mathrm{sign}(C)\\
-\mathrm{perm}(G) & = & \sum_{C\in \mathrm{CycleCovers}(G)} wt(C) \\
+\det(G) & = & \sum_{C\in \mathrm{CycleCovers}(G)} wt(C) \cdot \mathrm{sign}(C),\\
+\mathrm{perm}(G) & = & \sum_{C\in \mathrm{CycleCovers}(G)} wt(C).\\
 \end{eqnarray*}
 
 \subsection{ABPs reduce to $\Det_n$}
@@ -249,9 +253,10 @@ We shall now modify the graph slightly such that each such $s\leadsto t$ path wo
 \end{quote}
 
 Let $A$ be the adjacency matrix of this new graph $G'$. 
-The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $\IMM_{n,d}$. 
+The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $-\IMM_{n,d}$. 
 To see this observe that all cycle covers of $G'$ must consist of a single $s\leadsto t$ path that loops back to $s$ via the edge $t\rightarrow s$ that we added, and self-loops on all excluded vertices. 
-Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers have the same sign. 
+Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers
+have the same sign. If the sign is negative, we can change the weight of the $t\leadsto s$ edge to $-1$.
 Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (\autoref{thm:vp})}\\
 
 \begin{exercise}
@@ -265,7 +270,7 @@ Proving the same for determinants requires handling signs. Modify the constructi
 
 \subsection{$\Det_n$ can be computed by ABPs}
 
-A result that is often stated but not proved explicitly is a polynomial sized circuit for $\Det_n$. 
+A result that is often stated, but not proven explicitly, is the existence of a polynomial sized circuit for $\Det_n$. 
 This is often attributed by Berkowitz \cite{Berk84}. 
 In fact, $\Det_n$ has a polynomial sized ABP and this construction is due to Mahajan and Vinay~\cite{mv97} based on \emph{clow sequences}. 
 The construction is really neat and we shall describe the ABP explicitly here. 
@@ -279,8 +284,8 @@ x_{n1} & \dots & x_{nn}
 }\]
 
 If the symbolic matrix on the RHS is the adjacency matrix of an $n$-vertex graph, then the determinant is just the sum of weighted signed cycle-covers of the graph. 
-A natural approach compute this via an ABP is to somehow compute each cycle cover on one path of the ABP. 
-Unfortunately, if one were to try the \naive approach of building a cycle cover over many layers, to decide what our next vertex should be we are forced to remember the entire partial construction thus far. 
+A natural approach to compute this via an ABP is to somehow compute each cycle cover on one path of the ABP. 
+Unfortunately, if one were to try the \naive approach of building a cycle cover over many layers, to decide what our next vertex should be, we are forced to remember the entire partial construction thus far. 
 This ends up yielding an ABP with super-polynomial width (the width intuitively corresponds to the memory required). 
 
 The key insight of Mahajan and Vinay was to relax the notion of cycle covers to something weaker that can be built with less memory, to what they called \emph{clow sequences}. 
@@ -299,19 +304,19 @@ The weight of a clow sequence is just the product of weights of the edges it com
 Also, the sign of a clow sequence of length $\ell$ that comprises of $r$ clows is $(-1)^{\ell + r}$. 
 \end{definition}
 
-Any cycle cover is of course a clow sequence. 
+Any cycle cover is, of course, a clow sequence. 
 Further, the sign of the cycle cover matches the above definition of the sign of a clow sequence. 
-But there are many clow sequences that visit some vertices multiple times, and hence not cycle covers. 
+But there are many clow sequences that visit some vertices multiple times, and hence are not cycle covers. 
 However, Mahajan and Vinay show that the sum of signed-weights of all clow sequences also yields the determinant. 
 
 \begin{lemma}[\cite{mv97}]\label{lem:mv-clowseq} If $A_G$ is the adjacency matrix of a graph $G$, then
 \begin{eqnarray*}
 \det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C) \spaced{=} \det(A_G)\\
-& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C)
+& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C).
 \end{eqnarray*}
 \end{lemma}
 
-They prove this by showing that the set of clow sequences that are not cycle covers can partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. 
+They prove this by showing that the set of clow sequences that are not cycle covers can be partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. 
 We shall see an explicit proof of this shortly, but first let us see why this yields an ABP. \\
 
 The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. 
@@ -367,7 +372,7 @@ Define a new clow sequence  $\tilde{C}$ obtained by decomposing the clow $C_i$ w
 Note that the second clow $(v_{j'},\dots, v_j)$ is an honest-to-god cycle that does not intersect with any of the cycles $C_{i+1},\dots, C_r$. 
 This transformation converts the clow sequence $C$ with $r$ clows to a clow sequence $C'$ of $r+1$ clows and hence $\mathrm{sign}(C) = - \mathrm{sign}(C')$. 
 
-In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. 
+In the second case, we have $v_j \in C_i$ also present in $C_{i'}$ for some $i' > i$. 
 Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. 
 Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. 
 The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. 
@@ -561,7 +566,7 @@ A = \insquare{\begin{array}{rrr}
 -1 & 1 & 1/2\\
 1 & 1 & -1/2\\
 1 & 1 & -1/2
-\end{array}}
+\end{array}}.
 \]
 
 \noindent

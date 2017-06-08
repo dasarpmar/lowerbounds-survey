@@ -61,7 +61,7 @@ Show a super-polynomial separation between any of the models -- formulas, ABPs a
 \subsection{Constant depth circuits}
 
 We shall be dealing a lot with constant depth circuits. 
-Normally, the root is assumed to be a $+$ gate\footnote{the reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates. 
+Normally, the root is assumed to be a $+$ gate\footnote{The reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates.
 A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. 
 Thus, a depth two circuit consist of the form 
 \[
@@ -108,11 +108,11 @@ The polynomials that we would be dealing with in this article are defined below.
 
 The determinant of an $n\times n$ symbolic matrix shall be denoted by $\Det_n$ and is defined as
 \[
-\Det_n \spaced{=} \sum_{\sigma \in S_n} \text{sign}(\sigma) x_{1,\sigma(1)}\dots x_{n,\sigma(n)}
+\Det_n \spaced{=} \sum_{\sigma \in S_n} \text{sign}(\sigma) x_{1,\sigma(1)}\dots x_{n,\sigma(n)}.
 \]
 The permanent of an $n\times n$ symbolic matrix shall be denoted by $\Perm_n$ and is defined as
 \[
-\Perm_n \spaced{=} \sum_{\sigma \in S_n}x_{1,\sigma(1)}\dots x_{n,\sigma(n)}
+\Perm_n \spaced{=} \sum_{\sigma \in S_n}x_{1,\sigma(1)}\dots x_{n,\sigma(n)}.
 \]
 
 Both of these polynomials are of degree $n$ and over $n^2$ variables. 
@@ -126,7 +126,7 @@ Since $m$ is a power of a prime, let us identify the set $[m]$ with the field $\
 Note that since $n \leq m$, we have that $[n] \subseteq \F_m$. 
 The Nisan-Wigderson polynomial with parameters $n,m,d$, denoted by $\mathrm{NW}_{n,m,d}$ is defined as
 \[
-\NW_{n,m,d}(\vecx) \spaced{=} \sum_{\substack{p(t) \in \F_m[t]\\ \deg(p) \leq d}} x_{1,p(1)}\dots x_{n,p(n)}
+\NW_{n,m,d}(\vecx) \spaced{=} \sum_{\substack{p(t) \in \F_m[t]\\ \deg(p) \leq d}} x_{1,p(1)}\dots x_{n,p(n)}.
 \]
 That is, for every univariate polynomial $p(t) \in \F_m[t]$ of degree at most $d$, we add one monomials that encodes the `graph' of $p$ on the points $[n]$. 
 This is a polynomial of degree $n$ over $mn$ variables.
@@ -141,9 +141,9 @@ Then, there are at most $d$ variables that divide both $m_1$ and $m_2$.
 \end{lemma}
 \begin{proof}
 Let $m_1$ and $m_2$ correspond to univariates $p_1(t), p_2(t) \in \F_m[t]$ of degree at most $d$. 
-Then if $x_{ij}$ divides $m_1$, then $p_1(i) = j$, similarly for $m_2$. 
+Then if $x_{ij}$ divides $m_1$, then $p_1(i) = j$, similarly for $m_2$.
 But since $p_1$ and $p_2$ are two distinct polynomials of degree at most $d$, they can agree in at most $d$ evaluations. 
-Thus, there can be at most $d$ variables that divide both $m_1$ and $m_2$. 
+Thus, there can be at most $d$ variables that divide both $m_1$ and $m_2$.
 \end{proof}
 
 For most generic choices of the parameters, the polynomial $\NW_{n,m,d}$ is believed to require circuits of exponential size to compute them. 
@@ -161,7 +161,7 @@ $$
 
 It is often useful to think of this as the polynomial computed by a \emph{generic algebraic branching program} of width $n$ and depth $n$ (where the edge connecting vertex $i$ of layer $\ell$ to vertex $j$ of layer $\ell+1$ has weight $x_{ij}^{(\ell)}$). 
 
-This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}. 
+This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{Only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}.
 Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
 
 

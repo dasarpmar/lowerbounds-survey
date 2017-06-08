@@ -9,11 +9,11 @@ We shall use $\log$ to refer to $\log_2$ and $\ln$ to refer to the natural logar
 \begin{definition}[Entropy function]\label{def:entropy}
 The binary entropy function $H_2:[0,1]\rightarrow [0,1]$ is defined as
 \[
-H_2(p) \quad = \quad - p \log_2(p) \spaced{-} (1-p) \log_2(1-p)
+H_2(p) \quad = \quad - p \log_2(p) \spaced{-} (1-p) \log_2(1-p).
 \]
 The entropy function with respect to the natural logarithm is refer to as $H$ and
 \[
-H(p) \quad = \quad - p \ln(p) \spaced{-} (1-p) \ln(1-p)
+H(p) \quad = \quad - p \ln(p) \spaced{-} (1-p) \ln(1-p).
 \]
 \end{definition}
 
@@ -24,14 +24,14 @@ For any $0< p  < 1$, we have $p\ln\frac{1}{p} \leq H(p) \leq p\ln\frac{1}{p} + p
 
 \begin{proposition}[Stirling's Approximation]\label{prop:sterling}
 \[
-\lim_{n\rightarrow \infty}\frac{n!}{\inparen{\frac{n}{e}}^n \sqrt{2\pi n}}  \quad=\quad 1
+\lim_{n\rightarrow \infty}\frac{n!}{\inparen{\frac{n}{e}}^n \sqrt{2\pi n}}  \quad=\quad 1.
 \]
 \end{proposition}
 
 \begin{proposition}\label{prop:binom-ub-lb}
 For any $n \geq  k \geq 0$, 
 \[
-\pfrac{n}{k}^k \spaced{\leq} \binom{n}{k}\spaced{\leq} \pfrac{ne}{k}^k
+\pfrac{n}{k}^k \spaced{\leq} \binom{n}{k}\spaced{\leq} \pfrac{ne}{k}^k.
 \]
 \end{proposition}
 
@@ -39,7 +39,7 @@ For any $n \geq  k \geq 0$,
 \begin{proposition}
 For any constants $\alpha, \beta$, 
 \[
-\log\binom{\alpha n}{\beta n} \quad = \quad H_2\inparen{\frac{\beta}{\alpha}} \cdot \alpha n - O(\log n)
+\log\binom{\alpha n}{\beta n} \quad = \quad H_2\inparen{\frac{\beta}{\alpha}} \cdot \alpha n - O(\log n).
 \]
 In particular, if $\beta = \alpha/2$, then $\binom{\alpha n}{\beta{n}} = 2^{\alpha n} / \poly(n)$. 
 \end{proposition}
@@ -49,7 +49,7 @@ The following lemma would help us simplify several such expressions and get a be
 
 \begin{lemma}{\cite[Lemma 6]{gkks13}}\label{lem:factorial-ratio} For any $a,b = O(\sqrt{n})$, then
 \[
-\frac{(n+a)!}{(n-b)!}\quad=\quad n^{a + b} \cdot \poly(n)
+\frac{(n+a)!}{(n-b)!}\quad=\quad n^{a + b} \cdot \poly(n).
 \]
 \end{lemma}
 
@@ -60,7 +60,7 @@ One particular instantiation that shall also appear frequently shall be the foll
 Let $n$ and $\ell$ be parameters such that $\ell = \frac{n}{2}(1 - \epsilon)$ for some $\epsilon = o(1)$. 
 For any $a, b$ such that $a,b = O(\sqrt{n})$, 
 \[
-\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \exp(O(b\cdot \epsilon^2))
+\binom{n - a}{\ell - b} \quad = \quad \binom{n}{\ell} \cdot 2^{-a} \cdot (1+\epsilon)^{a-2b} \cdot \exp(O(b\cdot \epsilon^2)).
 \]
 \end{restatable}
 \begin{proof}
@@ -69,7 +69,7 @@ The proof of the above lemma would repeated use \autoref{lem:factorial-ratio}.
 \frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
 & \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
 & = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
-& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2))
+& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2)).
 \end{eqnarray*}
 \end{proof}
 
