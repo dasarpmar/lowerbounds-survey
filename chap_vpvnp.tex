@@ -21,7 +21,8 @@ These are subclasses of $\VP$ by definition.
 
 \subsection*{More on the low-degree restriction}
 
-But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic circuits, that include such polynomials of very large degree? 
+But should the analogue of $\VP$ not be the class of polynomials that are computable by $\poly(n)$-sized arithmetic
+circuits, including polynomials of very large degree?
 We can indeed compute polynomials of very large degree, such as a circuit that is a chain of $s$ multiplication gates thus computing a polynomial of degree $\mathrm{exp}(s)$ (by repeated squaring). 
 Let us first take a moment to understand why the additional restriction of ``low-degree'' in the above definition of $\VP$ was imposed. 
 There are several intuitive reasons for this, and this ``restricted'' definition also yields beautiful structural results. 
@@ -44,7 +45,8 @@ However, as we shall soon see, Strassen's result shows that such high degree com
 Dealing with low-degree circuits also makes the class robust under this transformation. 
 Eliminating division gates also only incurs an $O(\deg^2)$ increase in size. 
 
-\item Without this restriction, one cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or the numerous structural results such as depth reduction that we have. 
+\item Without this restriction, one cannot hope to show that $\Det_n$ or $\Perm_n$ is ``complete'' for such classes, or
+show the numerous structural results such as depth reduction that we have. 
 
 \end{enumerate}
 
@@ -61,14 +63,14 @@ With this notion, one might say that $\VP$ is really an analogue of $\mathsf{SAC
 
 
 We now move on to the arithmetic analogue of the class $\NP$. 
-Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ such that 
+Recall that the class $\NP$ may be defined as the set of all boolean functions $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m)$ with $m = \poly(n)$ and 
 \[
 f(x_1,\dots, x_n)\spaced{=} \bigvee_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
 Valiant's $\NP$ is defined analogously by replacing the OR by a sum. 
 
 \begin{definition}[Valiant's $\NP$]\label{defn:vnp}
-The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, g_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ such that 
+The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, g_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ and
 \[
 f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
@@ -96,7 +98,7 @@ The polynomials $\Perm_n$ and $\NW_{n,m,d}$ are in $\VNP$.
 \end{corollary}
 
 As stated in \autoref{defn:vnp}, the polynomial $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$. 
-However, a subsequent paper of Valiant~\cite{v82} showed that we may assume with loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. 
+However, a subsequent paper of Valiant~\cite{v82} showed that we may assume without loss of generality that $g \in \mathsf{VF}$, that is $g$ is computable by a small formula. 
 This is similar to the fact that counting solutions of 3-\textsf{CNF} instance, which is a formula, is as hard as counting solutions of any polynomial sized boolean circuit. 
 We state this result here, and a proof may be found in B\"urgisser's book \cite{bur00}. 
 
@@ -110,7 +112,7 @@ f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m} g(x_1,\dots, x_n, a
 \section{Reductions and completeness}
 
 For polynomials, the most natural form of reductions are via \emph{projections}. 
-We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by setting substituting variables of $f$ to other variables or field constants. 
+We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by substituting variables of $f$ to other variables or field constants. 
 Under such reductions, do we have natural complete polynomials for the classes $\VP$ and $\VNP$? 
 Valiant \cite{v79} showed that the $\Det_n$ and $\Perm_n$ are (almost) complete for the classes $\VP$ and $\VNP$ respectively. 
 We shall see the proof of this in this section. 
@@ -125,7 +127,8 @@ Over any field $\F$ of characteristic not equal to $2$, the polynomial $\Perm_n$
 \subsection{Warm-up: Formulas to permanents}\label{sec:formula-to-dets}
 
 Let us first show that any polynomial sized arithmetic formula can be expressed as permanent of a small matrix.
-In fact, all matrices that we shall be building this way will have the following structure, and this would be important.\\
+In fact, all matrices that we shall be building this way will have the following structure, and this would be
+important. (Here \textcolor{red}{*}, \textcolor{blue}{*} denote upper triangle entry of the matrix of $f$, $g$ respectively.)
 
 \begin{center}
 \begin{tikzpicture}
@@ -219,7 +222,8 @@ In fact, all matrices that we shall be building this way will have the following
 \end{tikzpicture}
 \end{center}
 
-We leave it to as an exercise to check that this indeed works. This may seem bizarre at first but there is indeed a method to this. To understand that, we must realise that there is a graph theoretic way to understand $\Det_n$ and $\Perm_n$. 
+We leave it to as an exercise to check that this indeed works. This may seem bizarre at first but there is indeed a
+method to this. To understand that method, we must realise that there is a graph theoretic way to understand $\Det_n$ and $\Perm_n$. 
 
 \subsubsection*{Graph theoretic representation of $\Det_n$ and $\Perm_n$}
 
@@ -249,9 +253,10 @@ We shall now modify the graph slightly such that each such $s\leadsto t$ path wo
 \end{quote}
 
 Let $A$ be the adjacency matrix of this new graph $G'$. 
-The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $\IMM_{n,d}$. 
+The claim is that $\det(A)$ is either $\IMM_{n,d}$ or $-\IMM_{n,d}$. 
 To see this observe that all cycle covers of $G'$ must consist of a single $s\leadsto t$ path that loops back to $s$ via the edge $t\rightarrow s$ that we added, and self-loops on all excluded vertices. 
-Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers have the same sign. 
+Further, since all $s\leadsto t$ paths in $G$ were of the same length, it is easy to check that all the cycle covers
+have the same sign. If the sign is negative, we can change the weight of the $t\leadsto s$ edge to $-1$.
 Thus $\IMM_{n,d}$ does indeed reduce to $\Det_m$ for $m = \poly(n)$. \qed {\footnotesize (\autoref{thm:vp})}\\
 
 \begin{exercise}
@@ -265,7 +270,7 @@ Proving the same for determinants requires handling signs. Modify the constructi
 
 \subsection{$\Det_n$ can be computed by ABPs}
 
-A result that is often stated, but not proved explicitly, is a polynomial sized circuit for $\Det_n$. 
+A result that is often stated, but not proven explicitly, is the existence of a polynomial sized circuit for $\Det_n$. 
 This is often attributed by Berkowitz \cite{Berk84}. 
 In fact, $\Det_n$ has a polynomial sized ABP and this construction is due to Mahajan and Vinay~\cite{mv97} based on \emph{clow sequences}. 
 The construction is really neat and we shall describe the ABP explicitly here. 
@@ -367,7 +372,7 @@ Define a new clow sequence  $\tilde{C}$ obtained by decomposing the clow $C_i$ w
 Note that the second clow $(v_{j'},\dots, v_j)$ is an honest-to-god cycle that does not intersect with any of the cycles $C_{i+1},\dots, C_r$. 
 This transformation converts the clow sequence $C$ with $r$ clows to a clow sequence $C'$ of $r+1$ clows and hence $\mathrm{sign}(C) = - \mathrm{sign}(C')$. 
 
-In the second case, we have $v_j \in C_i$ present also in $C_{i'}$ for some $i' > i$. 
+In the second case, we have $v_j \in C_i$ also present in $C_{i'}$ for some $i' > i$. 
 Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. 
 Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. 
 The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. 
