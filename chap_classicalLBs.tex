@@ -36,7 +36,7 @@ completely characterize computations that result in an output of all ones.
 The following classical theorem allows us to bound the number of  common roots to a system of polynomial equations. 
 
 \begin{theorem}[\Bezout's theorem]
-  Let $g_1,\dots, g_r \in \F[X]$ such that $\deg(g_i) = d_i$ such that the number of common roots of $g_1=\dots=g_r = 0$ is finite. 
+  Let $g_1,\dots, g_r \in \F[X]$ and $\deg(g_i) = d_i$ such that the number of common roots of $g_1=\dots=g_r = 0$ is finite.
 Then, the number of common roots (counted with multiplicities) is bounded by $\prod d_i$.
 \end{theorem}
 
@@ -62,8 +62,8 @@ Note that this immediately implies that any circuit computing $f = x_1^{d+1} + \
 \subsection{Computing all first order derivatives simultaneously}
 
 Since we are working with fan-in $2$ circuits, the number of edges is at most twice the size. 
-Hence let $s$ denote the number of edges in the circuit $\Phi$, and we shall prove by induction that all first order derivatives of $\Phi$ can be computed by a circuit of size at most $5s$. 
-Pick a non-leaf node $v$ in the circuit $\Phi$ closest to the leaves with both its children being variables, and say $x_1$ and $x_2$ are the variables feeding into $v$. 
+Hence let $s$ denote the number of edges in the circuit $\Phi$. We shall prove by induction that all first order derivatives of $\Phi$ can be computed by a circuit of size at most $5s$.
+Pick a non-leaf node $v$ in the circuit $\Phi$ closest to the leaves with both its children being variables, and let $x_1$ and $x_2$ are the variables feeding into $v$.
 In other words, $v = x_1 \odot x_2$ where $\odot$ is either $+$ or $\times$.
 
 Let $\Phi'$ be the circuit obtained by deleting the two edges feeding into $v$, and replacing $v$ by a new variable. 
@@ -188,7 +188,7 @@ Hence, by adding at most $10$ additional edges (see \autoref{fig:baur-strassen},
 
 \section{Lower bounds for formulas}\label{sec:Kalorkoti}
 
-This section would be devoted to the proof of Kalorkoti's lower bound \cite{k85} for formulas computing $\Det_n$, $\Perm_n$.
+This section would be devoted to the proof of Kalorkoti's lower bound \cite{k85} for formulas computing $\Det_n$ or $\Perm_n$.
 
 \begin{theorem}[\cite{k85}]\label{thm:kalorkoti}
   Any arithmetic formula computing $\Perm_n$ (or $\Det_n$) requires $\Omega(n^3)$ size.
@@ -237,13 +237,13 @@ The lower bound proceeds in two natural steps:
 Then for any partition of variables $X = X_1\sqcup \dots \sqcup X_r$, we have $\CM{Kal}(f) = O(s)$.
 \end{lemma}
 \begin{proof}
-  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote the leaves of the subtree rooted at $v$ that are in the part $X_i$.
+  For any node $v\in \Phi$, let $\textsc{Leaf}(v)$ denote the leaves of the subtree rooted at $v$ and let $\textsc{Leaf}_{X_i}(v)$ denote the leaves of the subtree rooted at $v$ that are in the set $X_i$.
 Since the underlying graph of $\Phi$ is a tree, it follows that the size of $\Phi$ is bounded by a twice the number of leaves.
-For each part $X_i$, we shall show that $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which would prove the required bound.
+For each set $X_i$, we shall show that $\mathrm{td}_{X_i}(f) = O(\abs{\textsc{Leaf}_{X_i}(\Phi)})$, which would prove the required bound.
 \\
 
-Fix an arbitrary part $Y = X_i$.
-Since the goal is really to just get a bound on $\textsc{Leaf}_{Y}(\Phi)$, we shall modify the formula $\Phi$ by introducing new leaf variables that compute polynomial in $\F[X \setminus Y]$.
+Fix an arbitrary set $Y = X_i$.
+Since the goal is to just get a bound on $\textsc{Leaf}_{Y}(\Phi)$, we shall modify the formula $\Phi$ by introducing new leaf variables that compute polynomial in $\F[X \setminus Y]$.
 This does not affect the size of $\textsc{Leaf}_{Y}(\Phi)$.
 This in some sense is allowing $\Phi$ to ``freely'' compute any polynomial on variables outside $Y$, as we are only interested in how many times the $Y$ variables are used in the computation of $\Phi$.
 
@@ -252,7 +252,7 @@ We shall always ensure that when we introduce new leaf nodes, they only hold pol
 
 Define the following three sets of nodes:
   \begin{eqnarray*}
-    V_0 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 0 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
+    V_0 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 0}\\
     V_1 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} = 1 \quad\text{and}\quad \abs{\textsc{Leaf}_{Y}(\textsc{Parent}(v))} \geq 2}\\
     V_2 & = & \setdef{v\in \Phi}{\abs{\textsc{Leaf}_{Y}(v)} \geq 2}.
   \end{eqnarray*}
@@ -285,7 +285,7 @@ The following observation would show how we can eliminate such long chains.
 
   \begin{observation}\label{obs:same-leaf-collapse}
     Let $u$ be an arbitrary node, and $v$ be another node in the subtree rooted at $u$ with $\textsc{Leaf}_Y(u) = \textsc{Leaf}_Y(v)$.
-Then the polynomial $g_u$ computed at $u$ and the polynomial $g_v$ computed at $v$ are related as $g_u = f_1 g_v + f_0$ for some $f_1,f_0 \in \F[X\setminus Y]$.
+Then the polynomial $g_u$ computed at $u$ and the polynomial $g_v$ computed at $v$ are related, i.e., $g_u = f_1 g_v + f_0$ for some $f_1,f_0 \in \F[X\setminus Y]$.
   \end{observation}
   \begin{myproof}{Obs}
     If $\textsc{Leaf}_Y(u) =\textsc{Leaf}_Y(v)$, then every node on
