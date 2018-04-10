@@ -1,0 +1,163 @@
+\chapter{Separating monotone circuits and monotone ABPs}\label{chap:monABPCktSep}
+
+\newcommand{\MonChi}{\operatorname{Mon}}
+\newcommand{\EIP}{\operatorname{EIP}}
+
+As mentioned earlier, we know that Formulas $\subseteq$ ABP $\subseteq$ Circuits and it is a major open problem to show if any of these are strict containments.
+Currently we do not even know how to prove super-polynomial lower bounds for any of these classes.
+However, we have just seen that we have techniques to prove lower bounds in the monotone setting.
+A natural question is therefore if any of these containments are strict in the monotone setting. In this chapter, we shall see a beautiful lower bound of Hrube\v{s} and Yehudayoff~\cite{HY16}.
+
+\begin{theorem}[Hrube\v{s} and Yehudayoff~\cite{HY16}]\label{thm:mon-abp-ckt-sep}
+  There is an explicit $n$-variate degree $d$ polynomial $P$ that is computable by a $\poly(n,d)$ sized monotone algebraic circuit such that any monotone algebraic ABP computing it must have size $(nd)^{\Omega(\log nd)}$. 
+\end{theorem}
+
+Monotone ABPs are defined analogously to \autoref{defn:monotone-circuit}, where no path computes a monomial that is not present in the output polynomial. The above theorem show that
+  \[
+    \text{Monotone ABPs} \subsetneq \text{Monotone Circuits}.
+  \]
+
+\subsection*{Weakness for ABPs?}
+
+What sort of weakness can we exploit for ABPs? There are many similarities between ABPs and circuits. Both can be homogenised without much blow-up in size. Even the frontier decomposition for ABPs and circuits look similar:
+\begin{quote}
+  If $f(\vecx)$ is an $n$-variate degree $d$ polynomial that is computable by a homogeneous size $s$ circuit, then
+  \[
+    f = \sum_{i=1}^s g_i h_i
+  \]
+  where $\frac{d}{3} \leq \deg(g_i),\deg(h_i) \leq \frac{2d}{3}$ for all $i$.\\ 
+
+  If $f(\vecx)$ is an $n$-variate degree $d$ polynomial that is computable by a homogeneous ABP of size $s$, then for any $0\leq k \leq d$ we have
+  \[
+    f = \sum_{i=1}^s g_i h_i
+  \]
+  where $\leq \deg(g_i) = k$ and $\deg(h_i) =  d-k$ for all $i$.
+\end{quote}
+
+Although the above frontier decompositions look very similar, observe that for ABPs we have a much finer control of what the degree of $g_i$ and $h_i$ are unlike algebraic circuits. Hrube\v{s} and Yehudayoff~\cite{HY16} show that this ``weakness'' can be exploited when working with the monotone setting. 
+
+\section{The polynomial}
+
+Let $d,m$ be parameters that will be set eventually (we will choose it such a way that $d = O(\log m)$ eventually).
+We shall identify $[m]$ with the additive group $\frac{\Z}{m\Z}$. Let $T_d$ denote the complete binary tree of depth $d$ (with $2^d$ leaves). A colouring of $T_d$ will be a function $\chi:V(T_d) \rightarrow [m]$, which just assigns colours from $[m]$ to the vertices of the tree $T_d$. We shall say that a colouring $\chi$ is \emph{valid} if for every internal node $u$ with children $v$ and $w$ in $T_d$ the colouring satisfies $\chi(u) = \chi(v) + \chi(w)$ (over $\frac{\Z}{m\Z}$).
+
+Clearly, there are $m^{2^d}$ possible valid colourings as the leaves can be assigned colours arbitrarily and the colours of the other vertices are forced. We will now build a polynomial from this.
+
+Let $D = 2^{d+1}-1= \abs{V(T_d)}$, the number of vertices of $T_d$, and let $\vecx = \setdef{x_{ij}}{i\in [D]\;,\;j\in [m]}$ where $[D]$ is identified with the vertex set of $T_d$.
+For a valid colouring $\chi:V(T_d)\rightarrow [m]$ we  assign a monomial $\MonChi(\chi) := \prod_{v\in V(T_d)} x_{v\chi(v)}$. We now define the polynomial $P_{m,d}$ as follows:
+\[
+  P_{m,d} = \sum_{\text{valid colourings } \chi} \MonChi(\chi)
+\]
+This is a polynomial in $m \cdot (2^{d+1} - 1)$ of degree $2^{d+1}-1$. Eventually, we shall choose $d = O(\log m)$ so this is a polynomial in $\poly(m)$ variables and degree $\poly(m)$. 
+
+\subsection*{Upper bound}
+
+\begin{lemma}\label{lem:MonSep-upper-bound}
+  The polynomial $P_{m,d}$ can be computed by a monotone algebraic circuit of size $\poly(m,d)$. 
+\end{lemma}
+
+\begin{exercise}
+  Prove this lemma. 
+\end{exercise}
+
+\subsection{Some intuition for the lower bound}
+
+What is left to show is that this polynomial cannot be computed by polynomial sized monotone ABPs. If you solve the above exercise, you would see that the polynomial $P_{m,d}$ can be computed via a \emph{monotone} expression of the form
+\[
+  P_{m,d} = \sum_{i=1}^{\poly(m,d)} g_i h_i
+\]
+where $\deg g_i = 2^d$ and $\deg h_i = 2^{d}-1$ for all $i$. The property that we shall exploit is that if $P_{m,d}$ is computable by a monotone ABP, then for every $0\leq k \leq 2^{d+1} - 1$, there must be a monotone expression computing $P_{m,d}$ of the form
+\[
+P_{m,d} = \sum_{i=1}^{s} g_i h_i
+\]
+where $\deg(g_i) = k$ and $\deg(h_i) = 2^{d+1} - 1 - k$. We need to find the right value of $k$ that allows us to force $s$ to be large (and clearly $k = 2^d$ or $2^{d} -1$ are bad choices!). Hrube\v{s} and Yehudayoff~\cite{HY16}'s cool idea was to look at the \emph{isoperimetric profile} of the tree and choose $k$ accordingly.
+
+\section{Isoperimetric profiles}
+
+The following definitions can be made for general graphs but we will restrict ourselves to the tree $T_d$ as only that would be relevant here. For a parameter $k \leq \abs{V(T_d)}$, we shall define $\EIP(k)$ as
+\[
+  \EIP(k) := \min_{\substack{S\subseteq V(T_d)\\|S| = k}} \abs{E(S,\overline{S})}.
+\]
+That is, $\EIP(k)$ is the size of the smallest cut induced by a subset of exactly $k$ vertices.
+
+Note that if $k = 2^\ell - 1$, then we can choose the subset $S$ to be a subtree of depth $\ell$ and the size of the cut would just be $1$.
+So there are several values of $k$ for which $\EIP(k)$ is really small.
+But the point is that there are many other values of $k$ for which $\EIP(k)$ is reasonably large. 
+
+\begin{lemma}\label{lem:eip-for-good-k}
+  Let $k$ be the $d$-bit integer with binary representation $1010\cdots 10$. For this $k$, we have $\EIP(k) \geq d/4$. 
+\end{lemma}
+
+This is not a hard proof but is certainly believable. Let us just assume this and proceed with their proof (the interested reader can see a proof if this in the paper of Hrube\v{s} and Yehudayoff~\cite{HY16}). From this point onwards, whenever we use the variable $k$, we mean this $d$-bit integer with binary representation $1010\cdots10$. 
+
+\section{Lower bound}
+
+Suppose that $P_{m,d}$ can be computed by a monotone ABP of size $s$. Then $P_{m,d}$ must have a monotone computation of the form
+\[
+P_{m,d} = \sum_{i=1}^s g_i h_i
+\]
+that satisfies the following constraints:
+\begin{description}
+  \itemsep 0pt
+\item [Degree constraints] For each $i$ we have $\deg g_i = k$ and $\deg h_i = D - k$,
+\item [Monotonicity] If $m_1$ and $m_2$ are monomials in $g_i$ and $h_i$ respectively, then the product $m_1m_2$ must be a monomial present in $P_{m,d}$.
+\end{description}
+
+Let's just focus on one summand $g \cdot h$. 
+All the monomials in $P_{m,d}$ are of the form $\prod_{v\in V(T_d)}{x_{v,c_v}}$. This in particular means that each vertex $v$ is ``represented'' exactly once in any monomial. Therefore, each vertex $v\in V(T_d)$ must appear in exactly one of $g$ or $h$. This naturally partitions $V(T_d) = V_0 \sqcup V_1$ where $g$ only involves variables corresponding to $V_0$ and $h$ only involves varaibles corresponding to $V_1$.
+
+The polynomial $g$ (and similarly $h$) can now be thought of as a collection of \emph{partial colourings} of just the vertices in $V_0$. Indeed, if $\prod_{v\in V_0} x_{v,c_v}$ is a monomial in $g$, then this corresponds to the partial colouring $\chi_0: V_0 \rightarrow [m]$ that assigns colour $c_v$ to $v$. Furthermore, if $\chi_0$ is any partial colouring in $g$ and $\chi_1$ is any partial colouring in $h$, it must also be the case that $\chi = \chi_0 \union \chi_1:V(T_d)\rightarrow[m]$ is a valid colouring. The following lemma states that this more or less forces $g$ and $h$ to be quite sparse.
+
+\begin{lemma}\label{lem:MonSep-partial-colourings-consistence}
+  Let $V(T_d) = V_0 \sqcup V_1$ with $\abs{V_0} = k$. Let $\mathcal{C}_g$ be a collection of colourings from $V_0$ to $[m]$ and $\mathcal{C}_h$ be a collection of colourings from $V_1$ to $[m]$. Then,
+  \[
+    \abs{\mathcal{C}_g} \cdot \abs{\mathcal{C}_h} \leq m^{-\abs{E(V_0,V_1)}/4} \cdot (\#\text{ valid colourings of $V(T_d)$}). 
+  \]
+\end{lemma}
+\begin{proof}
+  Given a partition $V(T_d) = V_0 \sqcup V_1$, we shall call a non-leaf vertex $u \in V_i$ (where $i \in \set{0,1}$) a \emph{pure node} if there is a leaf $\ell$ in the subtree rooted at $u$ such that the entire path from $u$ to $\ell$ besides $u$ consists of vertices in $V_{1-i}$.
+That is, if $u\rightarrow u_1 \rightarrow \cdots \rightarrow u_r = \ell$ is the path, then $\set{u,u_1,u_2,\ldots, u_r} \cap V_i = \set{u}$.
+For a pure node $u$, there may be many leaves in the subtree rooted at $u$ that is a witness to $u$ being pure; we'll assign one such leaf $\ell_u$ arbitrarily and call them \emph{pure leaves}.
+Let $\tilde{P}$ be the set of pure leaves in $T_d$ with respect to the partition $V_0\sqcup V_1$.
+\begin{addmargin}[2em]{2em}
+  \begin{subclaim}\label{subclaim:monSep-many-pure-nodes}
+    $\abs{\tilde{P}} \geq E(V_0,V_1)/4$. 
+  \end{subclaim}
+
+  \bigskip
+  
+\end{addmargin}
+
+The proof of this is not too hard (follows from basic graph theory, contraction of edges etc.) and we leave this proof as an exercise. We proceed with completing the proof of the lemma assuming the claim. We may assume that $\mathcal{C}_g,\mathcal{C}_h$ are both non-empty (for otherwise the lemma is vacuously true). We claim that any $\chi_0:V_0 \rightarrow [m]$ in $\mathcal{C}_g$ is completely determined by its values on $(\operatorname{Leaves}(T_d) \cap V_0) \setminus \tilde{P}$ and similarly any $\chi_1:V_1\rightarrow [m]$ in $\mathcal{C}_h$ is completely determined by its values on $(\operatorname{Leaves}(T_d) \cap V_1) \setminus \tilde{P}$.
+
+To see this fix some $\chi_1 \in \mathcal{C}_h$ and suppose $\chi_0$ and $\chi'_0$ are two different colourings of $V_0$ that agree on $(\operatorname{Leaves}(T_d) \cap V_0) \setminus \tilde{P}$.
+If $\chi_0 \neq \chi_0'$, then they must disagree on leaf in $V_0$, and this leaf has to be a \emph{pure leaf} as we already know $\chi_0$ and $\chi_0'$ agree on other leaves of $V_0$.
+Let this be $\ell_u \in \tilde{P}$ where $u$ is a pure node in $V_1$.
+We will assume that this $u$ is minimal in the sense that for any other pure node $u' \in V_1$ in the subtree rooted at $u$, we have $\chi_0(\ell_{u'}) = \chi_0'(\ell_{u'})$.
+Therefore, among the leaves in the subtree rooted at $u$, the colourings $\chi_0 \union \chi_1$ and $\chi_0' \union \chi_1$ agree on all leaves except $\ell_u$. 
+But then $\chi_0 \union \chi_1$ and $\chi_0' \union \chi_1$ cannot both be valid colourings. Therefore any colour in $\mathcal{C}_g$ is completely determined by the colours of $(\operatorname{Leaves}(T_d) \cap V_0) \setminus \tilde{P}$.
+Hence,
+\begin{align*}
+  \abs{\mathcal{C}_g}\cdot \abs{\mathcal{C}_h} & \leq  m^{\abs{(\operatorname{Leaves}(T_d) \cap V_0) \setminus \tilde{P}}} \cdot m^{\abs{(\operatorname{Leaves}(T_d) \cap V_1) \setminus \tilde{P}}}\\
+                                               & = m^{\abs{\operatorname{Leaves}(T_d)} - \abs{\tilde{P}}}\\
+                                               & \leq m^{2^d} / m^{\abs{E(V_0,V_1)}/4}.
+\end{align*}
+\end{proof}
+
+\begin{exercise}
+Prove \autoref{subclaim:monSep-many-pure-nodes}. 
+\end{exercise}
+\subsection*{Putting it all together}
+
+We will chose parameters now. Let $d = O(\log m)$ so that $P_{m,d}$ is a polynomial on $m \cdot D = \poly(m)$ variables and degree $D = \poly(m)$. From \autoref{lem:MonSep-upper-bound}, we know that this can be computed by a $\poly(m)$-sized monotone algebraic circuit. \\
+
+Recall that for our chosen $k$, \autoref{lem:eip-for-good-k} tell us that $E(V_0,V_1) \geq d/4 = \Omega(\log m)$. If $P_{m,d}$ can be computed by a size $s$ monotone ABP, then $P_{m,d} = \sum_{i=1}^s g_i h_i$ where this expression is \emph{monotone} and $\deg(g_i) = k$ and $\deg(h_i) = D - k$. 
+\autoref{lem:MonSep-partial-colourings-consistence} states that the degree and monotonicity constraints force the sparsity of $g_i\cdot h_i$ to be at most $m^{2^d} / m^{d/16}$. Since $P_{m,d}$ is a polynomial with $m^{2^d}$ monomials, we are forced to have $s \geq m^{d/16} = m^{\Omega(\log m)}$ which then completes the proof of \autoref{thm:mon-abp-ckt-sep}. \qed
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
