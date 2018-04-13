@@ -9,7 +9,7 @@ A natural question now is where do multilinear ABPs sit? We do know that multili
 An algebraic branching program is said to be multilinear if every path from $s$ to $t$ has variable-disjoint edge weights. 
 \end{definition}
 
-Dvir, Malod, Perifel and Yehudayoff~\cite{dmpy12} proved that multilinear formulas are strictly contained multilinear ABPs. Formally, they prove the following result.
+Dvir, Malod, Perifel and Yehudayoff~\cite{dmpy12} proved that multilinear formulas are strictly contained in multilinear ABPs. Formally, they prove the following result.
 
 \begin{theorem}[\cite{dmpy12}]
 \label{thm:separation}
@@ -21,15 +21,15 @@ For every $m \in \mathbb{N}$, there is an explicit polynomial $F_n$ on $n = \pol
 \end{theorem}
 
 It is worth noting that one can not get an asymptotically better separation than this, as any $\poly(n)$ sized multilinear circuit can be converted into a multilinear formula of size $n^{O(\log n)}$.
-Therefore, among other things this result tells us that a better reduction from circuits to formulae is not possible at least in the multilinear regime.
+Therefore, among other things this result tells us that a better reduction from circuits to formulas is not possible at least in the multilinear regime.
 
 \subsection*{Proof idea}
 
-The outline of the proof follows that of Raz's proof \cite{raz2004} of a quasipolynomial lower bound for the \emph{full-rank-polynomial} against multilinear formulae that we saw in \autoref{chap:multilinear}. That is it used the \emph{log-product decomposition} for multilinear formulae, and showed that the decomposition is ``rank deficient'' under a uniformly random equipatition of the variable set, with high probability.
+The outline of the proof follows that of Raz's proof \cite{raz2004} of a quasipolynomial lower bound for the \emph{full-rank-polynomial} against multilinear formulas that we saw in \autoref{chap:multilinear}. That is it used the \emph{log-product decomposition} for multilinear formulas, and showed that the decomposition is ``rank deficient'' under a uniformly random equipartition of the variable set, with high probability.
 
 At this point, a possible line of argument is to use Raz's full-rank-polynomial and show that it is computable by multilinear ABPs.
 However, it is not known that this polynomial is computable by a small multilinear ABP.
-The idea of Dvir et. al. is to construct a different polynomial that is full-rank for a certain \emph{subset of restricted partitions}, and choose this subset of partitions carefully so that the polynomial is computable by ABPs.
+The idea of Dvir et al. is to construct a different polynomial that is full-rank for a certain \emph{subset of restricted partitions}, and choose this subset of partitions carefully so that the polynomial is computable by ABPs.
 This carefully chosen set of partitions is referred to as \emph{arc partitions} in the proof.
 The name becomes fairly clear from the process of ``sampling'' an arc partition that is  used to describe the distribution.
 
@@ -39,7 +39,7 @@ The harder part is to show that Raz's lower bound proof continues to hold even f
 
 As mentioned above, the full-rank-polynomial as used in \cite{raz2004} need not be computable by multilinear ABPs. We will therefore have to work with a polynomial that has full rank under a smaller set of partitions. We will call these partitions as \emph{arc partitions}, which will be characterised by the support of the distribution $\mathcal{D}$ of the random process given below.
 
-The random process will first pick $n/2$ pairs from $\vecx$ and then ``bicolour'' each pair with $\vecy$ and $\vecz$ uniformly at random, to obtain an equipartition. Imagine the indices of $\vecx$ from $[n]$ arranged in order on an $n$-cycle, in a clockwise manner. The following example of such a partition from this distribution should help understand the formal sampling process. 
+The random process will first pick $n/2$ pairs from $\vecx$ and then ``bicolour'' each pair with $\vecy$ and $\vecz$ uniformly at random, to obtain an equipartition. Imagine the indices of $\vecx$ from $\inbrace{0,\ldots,n-1}$ arranged in order on an $n$-cycle, in a clockwise manner. The following example of such a partition from this distribution should help understand the formal sampling process. 
 
 \vspace{0.5em}
 
@@ -112,18 +112,18 @@ This helps us construct the following ABP of width $\leq n$ and $n/2$ layers, th
 
 Let the nodes in each layer $t$ be labelled as $v_1^{(t)},\cdots, v_n^{(t)}$.
 The node $v_i^{(t)}$ would correspond to the fact that the current arc is $[i,i+2t] \bmod{n}$.
-The edges of the ABP are as follows.
+We now describe the edges of the ABP.
 There would be three edges out of $v_i^{(t)}$ and they are as follows:
 
 \begin{tikzpicture}
-  \node (vj) at (0,0) {$v_j^{(t)}$};
-  \node (v1) at (4,2) {$v_{j-2}^{(t+1)}$}
-  edge[<-] node [midway,above=10pt] {{\tiny $(x_{j-2} + x_{j-1})\cdot w_{1,j,t}$}} (vj);
-  \node (v2) at (4,0) {$v_{j-1}^{(t+1)}$}
-  edge[<-] node [midway,above] {{\tiny $(x_{j-1} + x_{j+t+1})\cdot w_{2,j,t}$}} (vj);
+  \node (vj) at (0,0) {$v_i^{(t)}$};
+  \node (v1) at (4,2) {$v_{i-2}^{(t+1)}$}
+  edge[<-] node [midway,above=10pt] {{\tiny $(x_{i-2} + x_{i-1})\cdot w_{1,i,t}$}} (vj);
+  \node (v2) at (4,0) {$v_{i-1}^{(t+1)}$}
+  edge[<-] node [midway,above] {{\tiny $(x_{i-1} + x_{i+2t+1})\cdot w_{2,i,t}$}} (vj);
 
-  \node (v3) at (4,-2) {$v_{j}^{(t+1)}$}
-  edge[<-] node [midway,below=10pt] {{\tiny $(x_{j+t+1} + x_{j+t+2})\cdot w_{3,j,t}$}} (vj);
+  \node (v3) at (4,-2) {$v_{i}^{(t+1)}$}
+  edge[<-] node [midway,below=10pt] {{\tiny $(x_{i+2t+1} + x_{i+2t+2})\cdot w_{3,i,t}$}} (vj);
 \end{tikzpicture}
 
 The ABP therefore has $O(n^2)$ vertices and since there are three edges out of each vertex, there are $O(n^2)$ edges.
@@ -135,15 +135,15 @@ From the construction, the following lemma is easy to verify and is left as an e
 \end{exercise}
 
 
-\subsection{Lower bound against formulae}
+\subsection{Lower bound against formulas}
 
-As see earlier in \autoref{chap:multilinear}, we will prove the lower bound by proving that the probability of a \emph{log-product term} having rank that is $n^{\delta}$ close to full is inverse quasipolynomially small (for some small enough $\delta > 0$).
+As seen earlier in \autoref{chap:multilinear}, we will prove the lower bound by proving that the probability of a \emph{log-product term} having rank that is $n^{\delta}$ close to full is inverse quasipolynomially small (for some small enough $\delta > 0$).
 The difference here is the distribution is over the arc-partitions and not the uniform distribution.
 
 Suppose $|X| = n$.
 As in the previous settings, we have a partition $X = X_1 \sqcup \cdots \sqcup X_t$ from our log-product decomposition with $k = \Theta(\log n)$ and $\abs{X_i} \geq |X|^{7/8}$ for all $i$.
 We'll refer to each $X_i$ as a bucket.
-If we pick an arc-partition at random, we would like to estimate the probability that none of $X_i$'s are $n^\delta$ imbalanced.
+If we pick an arc-partition at random, we would like to estimate the probability that none of the $X_i$'s are $n^\delta$ unbalanced.
 We would like to show that this is inverse quasi-polynomially small.
 
 Arc partitions are chosen by first choosing a pairing $P$ and then bi-colouring each pair $p \in P$.
@@ -162,7 +162,7 @@ Therefore, at the very least, for each $i \in G(P)$, we can hope to say that the
   Let $P$ be a partition of $X$ into pairs and let $G(P)$ be as defined above. 
   Then, for any $i \in G(P)$,
   \[
-    \Pr[ \text{$X_i$ is not $n^{\delta}$-balanced} ] \leq O\pfrac{2n^{\delta}}{n^{1/2000}}
+    \Pr[ \text{$X_i$ is $n^{\delta}$-balanced} ] \leq O\pfrac{2n^{\delta}}{n^{1/2000}}
   \]
   where the probability is over a random bi-colouring of the pairs in $P$. 
 \end{lemma}
@@ -189,16 +189,16 @@ Now we would like to say that there are many (almost) independent events among t
 
 Assume the good buckets are $X_1,\ldots,X_{r}$ without loss of generality.
 From \autoref{lem:MLSep:bound-for-good-buckets}, we know that the probability that $X_1$ is too balanced is small.
-However if we now want to argue the same for $X_2$, even after we condition on $X_1$ being too balanced.
+However we now want to argue the same for $X_2$, even after we condition on $X_1$ being too balanced.
 This need not always be true.
 Consider the setting that both $X_1 \union X_2$ is a just a union of pairs, but each pair has one end-point in $X_1$ and the other in $X_2$.
 Now if $X_1$ is very balanced, then $X_2$ would also be very balanced.
 
 Thus, in order to say $X_2$ would likely be unbalanced even after conditioning on $X_1$ being balanced, we need to say that $X_2$ has many \emph{other} pairs that are cut (that is, these aren't accounted for in $X_1$).
-More generally, want to ensure that for each $i \in [r]$, the bucket $X_i$ has cuts many pairs $p \in P$ whose other end-point is \emph{not} in $X_1 \sqcup \cdots \sqcup X_{i-1}$.\\
+More generally, want to ensure that for each $i \in [r]$, the bucket $X_i$ cuts many pairs $p \in P$ whose other end-point is \emph{not} in $X_1 \sqcup \cdots \sqcup X_{i-1}$.\\
 
 Let us consider a graph $H(P)$ with the buckets $[t]$ as vertices and let us mark the good buckets $[r]$ as red.
-Add an edge $(i,j)$ if $\abs{V_i(P) \cap V_j(P)} \geq n^{1/1500}$; that is there are many pair with one end-point in $i$ and one in $j$.
+Add an edge $(i,j)$ if $\abs{V_i(P) \cap V_j(P)} \geq n^{1/1500}$; that is there are many pairs with one end-point in $i$ and one in $j$.
 Note that each good bucket $i$ has degree at least $1$ in $H(P)$ as each good bucket cuts $n^{1/1000}$ pairs and we only have $O(\log n)$ buckets.
 
 \begin{lemma}
@@ -244,15 +244,17 @@ We will a brief sketch of the proof of \autoref{lem:manyBucketsWithCuts}.
 The full proof is quite invovled and a full description can of course be found in their paper \cite{dmpy12}.
 We will try to give a rough sketch of the main ideas in the proof. \\
 
-We will call an index $j$ a \emph{jump} with respect to the bucket $\vecx_k$, if $x_j \in \vecx_k$ and $x_{j+1} \notin \vecx_k$.
+We will call an index $j$ a \emph{jump} with respect to the bucket $X_k$, if $x_j \in X_k$ and $x_{j+1} \notin X_k$.
 The following observation is easy to see.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{observation}\label{obs:jumps-cut}
   For any $j\neq 0,1$, the probability that $(j,j+1)$ is chosen as a pair by an arc partition is at least $1/9$. 
 \end{observation}
 
 Therefore, if we have many buckets with lots of jumps, then a lot of them would contribute pairs that are cut.
-More formally, suppoes we have more then $K/2$ buckets with at least $N = n^{1/100}$ jumps.
+More formally, suppose we have more then $K/2$ buckets with at least $N = n^{1/100}$ jumps.
 We then collect at most $N$ jumps from each bucket to get a total of $\geq KN/2$ distinct indices.
 \autoref{obs:jumps-cut} says the probability that a particular jump results in a pair that is cut bounded below by some constant.
 We therefore conclude that $\geq KN/100$ of the total jumps get converted into cuts with high probability.
@@ -278,12 +280,12 @@ Therefore, the probability that $i$ fails to be a part of $G(P)$ is inverse poly
 Therefore, the probability that $G(P) < t/1000$ is at most $n^{-\Omega(t)}$ as claimed by \autoref{lem:manyBucketsWithCuts}.
 
 
-The formal proof requires some careful analysis and Dvir~et.~al.~\cite{dmpy12} do this by considering the process as a ``random walk on a distorted chess board''. 
+The formal proof requires some careful analysis and Dvir~et~al.~\cite{dmpy12} do this by considering the process as a ``random walk on a distorted chess board''. 
 
 \section{What about $\IMM$?}
 
-The result of Dvir, Malod, Perifel and Yehudayoff \cite{dmpy12} that we dicussed separate the class of syntactic multilinear ABPs and multilinear formulas.
-A natural question question is whether this also works for the iterated matrix multiplication polynomial ($\IMM$).
+The result of Dvir, Malod, Perifel and Yehudayoff \cite{dmpy12} that we dicussed separate the classes of syntactic multilinear ABPs and multilinear formulas.
+A natural question is whether this also works for the iterated matrix multiplication polynomial ($\IMM$).
 Note that the polynomial used for this lower bound was a syntactic multilinear ABP but is \emph{not} a multilinear projection of $\IMM$!
 The same variable may occur in many edges even though each path may use each variable at most once.
 Therefore, such a reduction does not follow from this proof.
