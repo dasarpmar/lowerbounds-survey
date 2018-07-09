@@ -1,7 +1,211 @@
 \chapter{Separation between monotone $\VP$ and $\VNP$}
 \label{chap:monVPVNP}
 
-\cite{Yeh18}
+\newcommand{\monVP}{\mathrm{mon}\text{-}\VP}
+\newcommand{\monVNP}{\mathrm{mon}\text{-}\VNP}
+\newcommand{\Row}{\operatorname{Row}}
+\newcommand{\Col}{\operatorname{Col}}
+\newcommand{\coeff}{\operatorname{coeff}}
+
+
+We have seen that monotone computational models are rather restrictive and we have seen lower bounds that use just sparsity as the complexity measure (with a clever monomial counting making use of the restrictive nature of computatation). We have seen exponential lower bounds against monotone circuits (\autoref{thm:monotone-circuit-lbs}) and also a quasipolynomial separation between monotone ABPs and monotone circuits (\autoref{thm:mon-abp-ckt-sep}). Here, we shall see a beautiful result of Yehudayoff~\cite{Yeh18} that separates $\VP$ and $\VNP$ in the monotone world.
+
+The definition of the class ``monotone $\VP$'' is clear. The following is an analogous definition of the class monotone $\VNP$ (or $\monVP$). Throughout this chapter, we will restrict ourselves to polynomials over $\R$. Over a characteristic zero field such as $\R$, we will work with the \emph{standard} definition of monotone models which is just that there are no negative constants. 
+
+\begin{definition}[Monotone $\VNP$] A family of polynomial $\set{f_n(\vecx)} \in \R[\vecx]$ is said to be in monotone $\VNP$ (or $\monVNP$) if there is a family of polynomials $\set{g_n(\vecx, \vecy)} \in \monVP$ with $\abs{\vecy} = \poly{\abs{\vecx}}$ such that
+  \[
+    f(\vecx) = \sum_{\vecb \in \set{0,1}^{\abs{\vecy}}} g(\vecx, \vecb).\qedhere
+  \]
+\end{definition}
+
+We are now ready to state the main theorem.
+
+\begin{theorem}[\cite{Yeh18}]\label{thm:monVPVNPseparation}
+There is an explicit polynomial family $\set{f_n} \in \monVNP$ such that any $\monVP$ circuit computing it must have size $2^{\Omega(n/\log n)}$. 
+\end{theorem}
+
+\subsection*{The importance of coefficients}
+
+We already know lower bounds against monotone circuits. Can we not find a small modification such that the lower bound is using a polynomial that is in $\monVNP$? The issue with this is that all the techniques for monotone lower bounds we have seen so far \emph{only uses the structure of the set of monomials} and \emph{not} the coefficients. Any technique that uses just the underlying set of monomials to prove a lower bound against $\monVP$ also necessarily yields a lower bound against $\monVNP$.
+
+\begin{exercise}
+  Let $\Gamma:\F[\vecx] \rightarrow \R$ be a complexity measure such that
+  \begin{itemize}
+  \item For two polynomials $f,g$ with the same set of monomials, $\Gamma(f) = \Gamma(g)$,
+  \item For any $f \in \VP$, we have $\Gamma(f)$ is ``small''.
+  \end{itemize}
+  Show that $\Gamma(h)$ is small for every $h \in \monVNP$ as well. 
+\end{exercise}
+
+Therefore, it is imperative that any separation between $\monVP$ and $\monVNP$ must necessarily use the coefficients of the underlying polynomials.
+
+\subsection*{The polynomial}
+
+\begin{align*}
+  P(\vecx) & := \frac{1}{2^n} \sum_{\vecb \in \set{0,1}^n} \prod_{i=1}^n \sum_{j=1}^n b_j x_{ij}\\
+           & = \sum_{\sigma: [n] \rightarrow [n]} \frac{1}{2^{\abs{\Range(\sigma)}}} \cdot x_{1\sigma(1)} \cdots x_{n\sigma(n)}
+\end{align*}
+
+\begin{lemma}
+  The polynomial $P \in \monVNP$. 
+\end{lemma}
+\begin{proof}
+  Follows just from the definition. 
+\end{proof}
+
+Before we proceed towards describing the complexity measure, a few notations would help the writing. 
+
+\subsection*{Some notation}
+
+The polynomial $P(\vecx)$ is set-multilinear respect to rows, and any monotone model computing this must also be set-multilinear. Therefore, all intermediate computations must involve monomials that picks at most $1$ variable from each row.
+
+For a set-multilinear monomial $\alpha$, let $\Row(\alpha)$ denote the set of rows that it picks up variables from and similarly define $\Col(\alpha)$ analogously.
+
+We shall say a polynomial $f(\vecx)$ is \emph{row-aligned} if $\Row(\alpha)$ is the same for every $\alpha \in f$. In such a case, define $\Row(f) = \Row(\alpha)$ for an arbitrary $\alpha \in f$. \\
+
+
+\section{Structural weakness of monotone circuits}
+
+We have already seen the standard structural weakness for monotone circuits that was used in both \autoref{chap:monABPCktSep} and \autoref{chap:monABPCktSep}. We will use this specifically for a circuit computing a set-multilinear polynomial such as $P$. 
+
+\begin{lemma}\label{lem:monVPVNP:structure}
+  Let $C$ be a monotone circuit of size $s$ computing the polynomial $P(\vecx)$ defined above. Then, $P(\vecx)$ can be written as
+  \begin{equation}\label{eqn:monVPVNP-main}
+    P(\vecx) = \sum_{i=1}^s f_i(\vecx) \cdot g_i(\vecx)
+  \end{equation}
+  such that
+  \begin{itemize}\itemsep 0pt
+  \item For each $i$, we have that $f_i$ and $g_i$ are row-aligned with
+    $\Row(f_i) \sqcup \Row(g_i) = [n]$. Also, $\frac{n}{3} \leq \Row(f_i), \Row(g_i) \leq \frac{2n}{3}$. 
+  \item $f_i$'s and $g_i$'s contain only non-negative coefficients,
+  \item for any $i$, and any $\alpha \in f_i$ and $\beta\in g_i$, we have
+    \[
+      f_i[\alpha]\cdot g_i[\beta] \leq P[\alpha \cdot \beta]
+    \]
+    where by $h[\alpha]$ we denote the coefficient of the monomial $\alpha$ in $h$.
+  \end{itemize}
+\end{lemma}
+
+\noindent
+The proof of this is exactly along the same lines as we have seen earlier and we skip it. We can now describe the complexity measure.
+
+We shall choose a parameter $\delta  = O\inparen{\frac{1}{\log n}}$. Let $\Pi:\R[\vecx] \rightarrow \R[\vecx]$ be the map that projects down to only monomials that touch exactly $\delta n$ columns. That is,
+\[
+  \Pi(h) = \sum_{\substack{\alpha \in h \\ \abs{\Col(\alpha)} = \delta n}} h[\alpha] \cdot \alpha
+\]
+
+\paragraph{The complexity measure:} Define $\Gamma:\R[\vecx] \rightarrow \R$ as
+\begin{align*}
+  \Gamma(h(\vecx)) & := \abs{\Pi(h)}_1 \\
+                   & = \sum_{\substack{\alpha \in h \\ \abs{\Col(\alpha)} = \delta n}} h[\alpha],
+\end{align*}
+the sum of the coefficients of monomials that touch exactly $\delta n$ columns. \\
+
+Given the above complexity measure, it would be useful to also have one more notation. Let $\mathcal{F}_{n,k}$ denote the set of onto functions from $[n]$ to $[k]$, and let $F_{n,k}$ be the size of this set. We would be mostly interested in $k = \delta n$.
+
+\begin{proposition}\label{prop:bound-on-onto-fns}
+  For $\delta = O\inparen{\frac{1}{\log n}}$, we have that
+  \[
+    \frac{1}{2}\cdot (\delta n)^n \leq  F_{n,\delta n} \leq (\delta n)^n
+  \]
+\end{proposition}
+\begin{proof-sketch}
+  The upper bound is clear. As for the lower bound, notice that for $\delta$ so small, a random function from $[n]$ to $[\delta n]$ would be onto with probability at least $1/2$. 
+\end{proof-sketch}
+
+\begin{lemmawp}(Upper bound for the polynomial) \label{lemma:monVPVNP-ub-for-poly} For the polynomial defined above, 
+  \[
+    \Gamma(P) = \binom{n}{\delta n} \cdot  2^{-\delta n} \cdot F_{n,k}. 
+  \]
+\end{lemmawp}
+
+\section{Upper bounding measure on building blocks}
+
+The strategy is the usual plan of bounding the measure for each building block in \eqref{eqn:monVPVNP-main}. The following is the main technical lemma.
+
+\begin{lemma}[Main technical lemma] \label{lem:monVPVNP-weakness-lemma}
+  Let $f(\vecx)$ and $g(\vecx)$ be row-aligned polynomials such that
+  \begin{itemize}\itemsep 0pt
+  \item $\Row(f) \sqcup \Row(g) = [n]$,
+  \item $\frac{n}{3} \leq \Row(f),\Row(g) \leq \frac{2n}{3}$,
+  \item For each $\alpha \in f$ and $\beta \in g$, we have $f[\alpha] \cdot g[\beta] \leq P(\alpha \cdot \beta)$.
+  \end{itemize}
+  Then,
+  \[
+    \Gamma(f \cdot g) \leq 2^{-\Omega(\delta n)} \cdot \Gamma(P).
+  \]
+\end{lemma}
+
+Clearly \autoref{thm:monVPVNPseparation} follows readily from the above lemma. The rest of this chapter will be spent on the proof of this lemma. Let $\epsilon = 1/20$. We shall split $\Gamma(f \cdot g)$ into three sums.
+\begin{align*}
+  \Gamma(f \cdot g) & :=   \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S}} f[\alpha] \cdot g[\beta]\\
+                    & \leq \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\alpha)} < (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta] & \text{($T_1$, involving thin $\alpha$'s)}\\
+                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\beta)} < (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta] & \text{($T_2$, involving thin $\beta$'s)}\\
+                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\alpha)},\abs{\Col(\beta)} \geq (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta]. & \text{($T_3$, the rest)}                                                           
+\end{align*}
+We will address the three terms seperately and show that each of them are substantially smaller than $\Gamma(P)$. It is easier to handle the thin terms first.
+\begin{claim}
+  $T_1 + T_2 \leq 2^{-\Omega(n)} \cdot \Gamma(P)$. 
+\end{claim}
+\begin{proof}
+  The main point is that there are not-too-many ways of splitting a monomial touching $\delta n$ columns into two parts where one is thin.
+  Fix a set $S$ and let us estimate $T_1$ (the term $T_2$ is identical).
+  The number of different ways of choosing $\alpha$ and $\beta$ that cover columns $S$ with $\alpha$ being thin is at most
+  \begin{align*}
+    & \;\; \binom{\delta n}{< (1 - \epsilon)\delta n} \cdot \inparen{(1- \epsilon)\delta n}^{\abs{\Row(f)}} \cdot \inparen{\delta n}^{\abs{\Row(g)}}\\
+    \leq & \;\; \binom{\delta n}{< (1 - \epsilon)\delta n} \cdot \textcolor{BrickRed}{(1 - \epsilon)^{n/3}} \cdot (\delta n)^n \\
+    \leq & \;\; 2^{-\Omega(n)} \cdot (\delta n)^n\\
+    \leq & \;\; 2^{-\Omega(n)} \cdot F_{n,\delta n}. &\text{(\autoref{prop:bound-on-onto-fns})}
+  \end{align*}
+  Summing over all such $S$, and using the fact that $f[\alpha] \cdot g[\beta] < P[\alpha \cdot \beta] = 2^{-\delta n}$, we have
+  \begin{align*}
+    T_1 + T_2 & \leq \binom{n}{\delta n} \cdot 2^{- \Omega(n)} \cdot F_{n,\delta n} \cdot 2^{-\delta n} \\
+    & \leq 2^{-\Omega(n)} \cdot \Gamma(P) & \text{(\autoref{lemma:monVPVNP-ub-for-poly})}
+  \end{align*}
+\end{proof}
+
+\noindent
+We are now left with the tricky part of estimating $T_3$. The rough intuition is the following. If we pick two ``typical'' monomials $\alpha$ and $\beta$, neither of which are thin, then $\alpha \cdot \beta$ would touch about $2(1-\epsilon)\delta n$ columns as they would likely be disjoint. The coefficients of such monomials in $P$ is just $2^{-2(1-\epsilon)\delta n}$. On the other, we also want to ``cover'' the coefficient of monomials of $P$ that touch $\delta n$ columns as much as possible. Hence $f$ and $g$ have conflicting requirements and we want to exploit this.
+
+Without loss of generality, we may assume (by scaling $f$ and $g$ by scalars if required) that
+\[
+  \max_{\substack{\alpha \in f \\ \delta n \geq \abs{\Col(\alpha)} \geq (1-\epsilon)\delta n}} f[\alpha] \quad=\quad   \max_{\substack{\beta \in g \\ \delta n \geq \abs{\Col(\beta)} \geq (1-\epsilon)\delta n}}  g[\beta] \quad =: M 
+\]
+\paragraph{Case $1$: $M \leq 2^{-(1-\epsilon) \delta n}$.} In this case, we can plug this in our bounds directly.
+\begin{align*}
+  T_3 & \leq \binom{n}{\delta n} \cdot (\delta n)^n\cdot 2^{-2(1-\epsilon)\delta n} \\
+      & \leq \binom{n}{\delta n} \cdot \frac{1}{2} \cdot F_{n,\delta n} \cdot 2^{-2(1-\epsilon)\delta n} & \text{(\autoref{prop:bound-on-onto-fns})}\\
+      & \leq \binom{n}{\delta n} \cdot 2^{-\delta n} \cdot F_{n,\delta n} \cdot 2^{-\Omega(\delta n)}\\
+      & \leq 2^{-\Omega(\delta n)} \cdot \Gamma(P_1) & \text{(\autoref{lemma:monVPVNP-ub-for-poly})}
+\end{align*}
+
+\paragraph{Case $2$: $M > 2^{-(1-\epsilon) \delta n}$.} Let $\alpha_0 \in f$ and $\beta_0\in g$ be such that
+\[
+f[\alpha_0], g[\beta_0] \geq 2^{-(1-\epsilon) \delta n}.
+\]
+Note that $\Col(\alpha_0 \cdot \beta_0) \leq 2\delta n$ and hence there are many columns that are untouched by $\alpha_0$ or $\beta_0$. Therefore, if we pick a random $\delta n$ sized set $S$ at random, we should expect to have a pretty small intersection with $\Col(\alpha_0 \beta_0)$. The following is a straightforward application of the Chernoff's bound.
+\begin{claim}
+  \[
+    \Pr_{S \in \binom{[n]}{\delta n}}\insquare{\abs{S \setminus \Col(\alpha_0 \beta_0)} < (1 - 2\delta - \epsilon)\delta n } \leq 2^{-\Omega(\delta n)}.
+  \]
+\end{claim}
+We will call a set $S$ to be \emph{typical} if $\abs{S \setminus \Col(\alpha_0 \beta_0)} \geq (1 - 2\delta - \epsilon)\delta n$, and \emph{atypical} otherwise. Then,
+\begin{align*}
+  T_3 & = \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]\\
+      & = \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta].\\
+      & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} 2^{-\delta n}\\
+  & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad 2^{-\Omega(\delta n)} \cdot \Gamma(P)
+\end{align*}
+Note that, for any typical $S$, we have that $\Col(\alpha_0)$ intersects $S$ at at most $(\epsilon + 2\delta)\delta n$. Therefore, $\abs{\Col(\alpha_0 \beta)} \geq (1 - \epsilon)\delta n + (1 - 2\epsilon -2\delta)\delta n$. 
+\[
+  g[\beta] \leq \frac{P[\alpha_0 \beta]}{f[\alpha_0]} \leq 2^{-(1 - 2\epsilon - 2\delta)\delta n} \leq 2^{-\frac{2\delta n}{3}},
+\]
+and a similar bound applies for $f[\alpha]$. Therefore,
+\begin{align*}
+  T_3 & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} 2^{-\frac{\delta n}{3}}\cdot 2^{-\delta n} \quad+\quad 2^{-\Omega(\delta n)} \Gamma(P)\\
+  & \leq 2^{-\frac{\delta n}{3}} \cdot \Gamma(P) \quad + \quad 2^{-\Omega(\delta n)}\cdot \Gamma(P) = 2^{-\Omega(\delta n)} \Gamma(P).
+\end{align*}
+This completes the bound for {\bf Case 2}, and thus concludes the proof of \autoref{lemma:monVPVNP-ub-for-poly} and hence \autoref{thm:monVPVNPseparation}.
 
 
 %%% Local Variables:
