@@ -66,7 +66,7 @@ We shall say a polynomial $f(\vecx)$ is \emph{row-aligned} if $\Row(\alpha)$ is 
 
 \section{Structural weakness of monotone circuits}
 
-We have already seen the standard structural weakness for monotone circuits that was used in both \autoref{chap:monABPCktSep} and \autoref{chap:monABPCktSep}. We will use this specifically for a circuit computing a set-multilinear polynomial such as $P$. 
+We have already seen the standard structural weakness for monotone circuits that was used in both \autoref{sec:monotone-ckts} and \autoref{chap:monABPCktSep}. We will use this specifically for a circuit computing a set-multilinear polynomial such as $P$. 
 
 \begin{lemma}\label{lem:monVPVNP:structure}
   Let $C$ be a monotone circuit of size $s$ computing the polynomial $P(\vecx)$ defined above. Then, $P(\vecx)$ can be written as
@@ -136,14 +136,18 @@ The strategy is the usual plan of bounding the measure for each building block i
   \]
 \end{lemma}
 
-Clearly \autoref{thm:monVPVNPseparation} follows readily from the above lemma. The rest of this chapter will be spent on the proof of this lemma. Let $\epsilon = 1/20$. We shall split $\Gamma(f \cdot g)$ into three sums.
+Clearly \autoref{thm:monVPVNPseparation} follows readily from the above lemma.
+The rest of this chapter will be spent on the proof of this lemma.
+Let $\epsilon = 1/20$. We will call a monomial $\alpha$ to be ``thin'' if $\abs{\Col(\alpha)} \leq (1-\epsilon) \delta n$, and ``wide'' otherwise. 
+We shall split $\Gamma(f \cdot g)$ into three sums.
 \begin{align*}
   \Gamma(f \cdot g) & :=   \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S}} f[\alpha] \cdot g[\beta]\\
-                    & \leq \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\alpha)} < (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta] & \text{($T_1$, involving thin $\alpha$'s)}\\
-                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\beta)} < (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta] & \text{($T_2$, involving thin $\beta$'s)}\\
-                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \abs{\Col(\alpha)},\abs{\Col(\beta)} \geq (1-\epsilon)\delta n}} f[\alpha] \cdot g[\beta]. & \text{($T_3$, the rest)}                                                           
+                    & \leq \sum_{S \in \binom{[n]}{\delta n}} \textcolor{BrickRed}{\sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$ thin}}}} f[\alpha] \cdot g[\beta] & \text{($T_1$, involving thin $\alpha$'s)}\\
+                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \textcolor{BrickRed}{\sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\beta$ thin}}}} f[\alpha] \cdot g[\beta] & \text{($T_2$, involving thin $\beta$'s)}\\
+                    & \quad + \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha,\beta$ wide}}} f[\alpha] \cdot g[\beta]. & \text{($T_3$, the rest)}                                                           
 \end{align*}
-We will address the three terms seperately and show that each of them are substantially smaller than $\Gamma(P)$. It is easier to handle the thin terms first.
+We will address the three terms seperately and show that each of them are substantially smaller than $\Gamma(P)$.
+It is easier to handle the thin terms first, as this follows just from the fact that the number of such terms is small.
 \begin{claim}
   $T_1 + T_2 \leq 2^{-\Omega(n)} \cdot \Gamma(P)$. 
 \end{claim}
@@ -165,7 +169,14 @@ We will address the three terms seperately and show that each of them are substa
 \end{proof}
 
 \noindent
-We are now left with the tricky part of estimating $T_3$. The rough intuition is the following. If we pick two ``typical'' monomials $\alpha$ and $\beta$, neither of which are thin, then $\alpha \cdot \beta$ would touch about $2(1-\epsilon)\delta n$ columns as they would likely be disjoint. The coefficients of such monomials in $P$ is just $2^{-2(1-\epsilon)\delta n}$. On the other, we also want to ``cover'' the coefficient of monomials of $P$ that touch $\delta n$ columns as much as possible. Hence $f$ and $g$ have conflicting requirements and we want to exploit this.
+We are now left with the tricky part of estimating $T_3$.
+The rough intuition is the following.
+If we pick two ``typical'' monomials $\alpha$ and $\beta$, neither of which are thin, then $\alpha \cdot \beta$ would touch about $2(1-\epsilon)\delta n$ columns as they would likely be disjoint.
+The coefficients of such monomials in $P$ is just $2^{-2(1-\epsilon)\delta n}$.
+Since we must ensure that $f[\alpha] \cdot g[\beta] = P[\alpha\cdot \beta] = 2^{-2(1-\epsilon)\delta n}$ for all such $\alpha,\beta$, both $f$ and $g$ must \emph{typically} assign no more than $2^{-(1-\epsilon)\delta n}$ for $f[\alpha], g[\beta]$. But in that case, when we pick \emph{typical} $\alpha,\beta$ that touch the same set of $\delta n$ columns, then $f[\alpha] \cdot g[\beta]$ would be about $2^{-2(1-\epsilon)\delta n}$ though $P[\alpha \cdot \beta] = 2^{-(1-\epsilon)\delta n}$ which is much larger.
+
+On the other, if $f[\alpha]$ is much large for a specific $\alpha$, then we are forced to have $g[\beta]$ quite small for any $\beta$ that touches columns disjoint from $\alpha$. Eventually we wish to ``cover'' the coefficient of monomials of $P$ that touch $\delta n$ columns as much as possible.
+Hence $f$ and $g$ have conflicting requirements on what should be assigned to its coefficients, and we want to exploit this.
 
 Without loss of generality, we may assume (by scaling $f$ and $g$ by scalars if required) that
 \[
@@ -173,8 +184,8 @@ Without loss of generality, we may assume (by scaling $f$ and $g$ by scalars if 
 \]
 \paragraph{Case $1$: $M \leq 2^{-(1-\epsilon) \delta n}$.} In this case, we can plug this in our bounds directly.
 \begin{align*}
-  T_3 & \leq \binom{n}{\delta n} \cdot (\delta n)^n\cdot 2^{-2(1-\epsilon)\delta n} \\
-      & \leq \binom{n}{\delta n} \cdot \frac{1}{2} \cdot F_{n,\delta n} \cdot 2^{-2(1-\epsilon)\delta n} & \text{(\autoref{prop:bound-on-onto-fns})}\\
+  T_3 & = \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha,\beta$ wide}}} \textcolor{BrickRed}{f[\alpha] \cdot g[\beta]} \quad \leq\quad \binom{n}{\delta n} \cdot (\delta n)^n\cdot \textcolor{BrickRed}{2^{-2(1-\epsilon)\delta n}} \\
+      & \leq \binom{n}{\delta n} \cdot \frac{1}{2} \cdot F_{n,\delta n} \cdot \textcolor{BrickRed}{2^{-2(1-\epsilon)\delta n}} & \text{(\autoref{prop:bound-on-onto-fns})}\\
       & \leq \binom{n}{\delta n} \cdot 2^{-\delta n} \cdot F_{n,\delta n} \cdot 2^{-\Omega(\delta n)}\\
       & \leq 2^{-\Omega(\delta n)} \cdot \Gamma(P_1) & \text{(\autoref{lemma:monVPVNP-ub-for-poly})}
 \end{align*}
@@ -183,20 +194,20 @@ Without loss of generality, we may assume (by scaling $f$ and $g$ by scalars if 
 \[
 f[\alpha_0], g[\beta_0] \geq 2^{-(1-\epsilon) \delta n}.
 \]
-Note that $\Col(\alpha_0 \cdot \beta_0) \leq 2\delta n$ and hence there are many columns that are untouched by $\alpha_0$ or $\beta_0$. Therefore, if we pick a random $\delta n$ sized set $S$ at random, we should expect to have a pretty small intersection with $\Col(\alpha_0 \beta_0)$. The following is a straightforward application of the Chernoff's bound.
+Note that $\Col(\alpha_0 \cdot \beta_0) \leq 2\delta n$ and hence there are many columns that are untouched by $\alpha_0$ or $\beta_0$. Therefore, if we pick a random $\delta n$ sized set $S$ at random, we should expect to have an  intersection of at most $(2\delta)\abs{S}$ with $\Col(\alpha_0 \beta_0)$. The following is a straightforward application of the Chernoff's bound.
 \begin{claim}
   \[
-    \Pr_{S \in \binom{[n]}{\delta n}}\insquare{\abs{S \setminus \Col(\alpha_0 \beta_0)} < (1 - 2\delta - \epsilon)\delta n } \leq 2^{-\Omega(\delta n)}.
+    \Pr_{S \in \binom{[n]}{\delta n}}\insquare{\abs{S \cap \Col(\alpha_0 \beta_0)} > (2\delta + \epsilon)\abs{S} } \leq 2^{-\Omega(\delta n)}.
   \]
 \end{claim}
-We will call a set $S$ to be \emph{typical} if $\abs{S \setminus \Col(\alpha_0 \beta_0)} \geq (1 - 2\delta - \epsilon)\delta n$, and \emph{atypical} otherwise. Then,
+We will call a set $S$ to be \emph{typical} if $\abs{S \cap \Col(\alpha_0 \beta_0)} \leq (2\delta + \epsilon)\delta n$, and \emph{atypical} otherwise. The above claim quantifies the fact that there aren't too many \emph{atypical} sets. Then,
 \begin{align*}
   T_3 & = \sum_{S \in \binom{[n]}{\delta n}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]\\
-      & = \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta].\\
-      & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} 2^{-\delta n}\\
-  & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]  \quad+\quad 2^{-\Omega(\delta n)} \cdot \Gamma(P)
+      & = \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} \textcolor{BrickRed}{f[\alpha] \cdot g[\beta]}  \quad+\quad \textcolor{BrickRed}{\sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} f[\alpha] \cdot g[\beta]\\
+      & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} \textcolor{BrickRed}{f[\alpha] \cdot g[\beta]}  \quad+\quad \textcolor{BrickRed}{\sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{atypical}}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} P[\alpha \cdot \beta]\\
+  & \leq \sum_{\substack{S \in \binom{[n]}{\delta n}\\\text{typical}}} \sum_{\substack{\alpha, \beta\\ \Col(\alpha \cdot \beta) = S \\ \text{$\alpha$,$\beta$ not thin}}} \textcolor{BrickRed}{f[\alpha] \cdot g[\beta]}  \quad+\quad 2^{-\Omega(\delta n)} \cdot \Gamma(P)
 \end{align*}
-Note that, for any typical $S$, we have that $\Col(\alpha_0)$ intersects $S$ at at most $(\epsilon + 2\delta)\delta n$. Therefore, $\abs{\Col(\alpha_0 \beta)} \geq (1 - \epsilon)\delta n + (1 - 2\epsilon -2\delta)\delta n$. 
+Note that, for any typical $S$, we have that $\Col(\alpha_0)$ intersects $S$ at at most $(2\delta + \epsilon)\delta n$. Therefore, $\Col(\alpha_0)$ has at least $(1 - \epsilon - (2\delta - \epsilon))\delta n$ columns that are not in $\Col(\beta)$. 
 \[
   g[\beta] \leq \frac{P[\alpha_0 \beta]}{f[\alpha_0]} \leq 2^{-(1 - 2\epsilon - 2\delta)\delta n} \leq 2^{-\frac{2\delta n}{3}},
 \]
