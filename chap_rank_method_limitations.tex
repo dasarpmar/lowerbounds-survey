@@ -1,0 +1,161 @@
+\chapter{Limitations of sub-additive rank methods}\label{chap:subadditive-rank-barrier}
+
+So far, almost all lower bound proofs that we have seen follow this template:
+
+\begin{enumerate}
+\item Identify a set $\mathcal{B}$ of \emph{building blocks} or \emph{simple polynomials}.
+\item Build a function $\Gamma: \F[\vecx] \rightarrow \N$, where $\Gamma(f)$ is the rank of an associated matrix $M(f)$ whose entries are linear functions in the coefficients of $f$.
+\item Show that for each building block $g \in \mathcal{B}$ we have that $\rank(M(g)) \leq U$.
+\item Find an explicit polynomial $f$ such that $\rank(M(f)) \geq L$.
+\item This shows that if $f = g_1 + \cdots + g_s$ where each $g_i \in \mathcal{B}$, then $s \geq L/U$. 
+\end{enumerate}
+
+\noindent
+For such a template, what is the largest we can make the ratio $L/U$? This would give us an indication of the limitations of techniques that use subadditivity via building blocks to prove the required lower bound. A beautiful result of Efremenko, Garg, Oliveira and Wigderson~\cite{EGOW18} prove \emph{unconditional} limitations of these techniques for the instances of Waring rank\footnote{Waring rank of a polynomial is the top fan-in of the smallest $\Sigma\!\wedge\!\Sigma$-circuit computing it.} and tensor rank and we shall see their proof in this chapter. Throughout this chapter, the field $\F$ will be assumed to have characteristic zero.
+\begin{theorem}[Limitations for Waring Rank]\label{thm:limitations-waring-rank}
+  Let $M: \F[\vecx]_{= d} \rightarrow \operatorname{Matrix}(\F)$ be a map that assigns a matrix to every homogeneous polynomial of degree  $d$,  that acts linearly, that is $M(f + g) = M(f) + M(g)$. Suppose $\mathcal{B} = \setdef{\ell^d}{\ell = \sum a_i x_i}$; define $\rank(\mathcal{B}) = \max\setdef{\rank(g)}{g\in \mathcal{B}}$. Then, for any $f \in \F[\vecx]_{=d}$ we have that
+  \[
+    \frac{\rank(M(f))}{\rank(M(\mathcal{B}))} \leq (d+1) \cdot \binom{n+(d/2)}{n}. 
+  \]
+\end{theorem}
+
+This shows that such sub-additive rank measures as outlined above cannot prove a lower bound for $\Sigma\!\wedge\!\Sigma$-circuits much better than $\binom{n+(d/2)}{n}$, though counting arguments show that there are $n$-variate degree-$d$ polynomials that require $\Sigma\!\wedge\!\Sigma$-circuits of size $\frac{1}{\poly(n)} \cdot \binom{n+d}{n}$ to compute it.  
+
+Efremenko, Garg, Oliveira and Wigderson~\cite{EGOW18} also show a similar limitation for tensor rank. 
+\begin{theorem}[Limitations for Tensor Rank]\label{thm:limitations-tensor-rank}
+  Let $X = X_1 \sqcup \cdots \sqcup X_d$ with each $|X_i| = n$, and let $\F[X]_{\text{SML}}$ refer to the class of set-multilinear polynomials with respect to the above partition (these are synonymous to tensors of order-$d$).
+  
+  Let $M: \F[\vecx]_{\text{SML}} \rightarrow \operatorname{Matrix}(\F)$ be a map that assigns a matrix to every set-multilinear polynomial  that acts linearly, that is $M(f + g) = M(f) + M(g)$. Suppose
+  \[\mathcal{B} = \setdef{\ell_1(X_1)\cdots \ell_d(X_d)}{\ell_i = \sum a_{ij} x_{ij}},\]
+  which is synonymous to rank-$1$ tensors. Define $\rank(\mathcal{B}) = \max\setdef{\rank(g)}{g\in \mathcal{B}}$. Then, for any $f \in \F[\vecx]_{\text{SML}}$ we have that
+  \[
+    \frac{\rank(M(f))}{\rank(M(\mathcal{B}))} \leq 2^{d} \cdot  n^{\floor{d/2}}. 
+  \]
+\end{theorem}
+
+Once again, a counting argument would tell us that there are order-$d$ tensors of rank $\frac{1}{d} \cdot n^{d-1}$. Furthermore, both in the setting of $\Sigma\!\wedge\!\Sigma$-circuits and tensor rank, current vanilla techniques achieve a lower bound of $n^{\floor{d/2}}$. The above theorems show that this template of proving lower bounds cannot do too much better. 
+
+
+We shall see the proof of \autoref{thm:limitations-waring-rank} in complete detail; the proof of \autoref{thm:limitations-tensor-rank} is very similar. 
+
+\subsection*{What does this limitation mean?}
+
+Currently, the limitations hold for tensor rank and Waring rank but it is conceivable that there is a broader setting where such limitations can be proven. What does that imply for algebraic circuit lower bounds?
+
+Almost all the lower bounds we have discussed so far follows the template of constructing a suitable linear matrix, upper bounding the rank of some building blocks, and lower bounding the rank for the target polynomial. There are, nevertheless, a few exceptions that we have seen in this survey. The first is the lower bound of Grigoriev and Karpinski~\cite{grigoriev98} that we saw in \autoref{chap:GK}. The complexity measure used by Grigoriev and Karpinski~\cite{gr00} is indeed via a linear matrix, but we study the rank of this matrix \emph{after a certain set of columns have been dropped}. It is unclear if such non-deterministic choices can also be captured in the framework of Efremenko, Garg, Oliveira and Wigderson.
+
+Another lower bound that does not go via sub-additive rank measures is the determinantal complexity lower bound of Mignon and Ressayre~\cite{mr04} (as seen in \autoref{chap:dc}). This lower bound, though is again a rank of an associated matrix, is not proven using sub-additivity of building blocks.
+
+Furthermore, it should also be noted that even for Waring rank and tensor rank, we \emph{can} provide super-polynomial lower bounds via sub-additive rank measures. Of course, in the tensor-rank setting, a lower bound of $n^{\floor{d/2}}$ is trivial since this just involves flattening to a matrix. But for most other applications, we are aiming for much weaker lower bounds than $\binom{n+d}{d}$. Hence, even if this framework extends for models such as homogeneous $\SPSP$ circuits, we cannot rule out the possibility that sub-additive rank methods can give lower bounds of $n^{\omega(\sqrt{d})}$, which is sufficient to separate $\VP$ and $\VNP$. 
+
+\section*{Proof outline}
+
+We have a set $\mathcal{B}$ such that every polynomial we care about can be expressed as a linear combination of polynomials in $\mathcal{B}$. We want to think of $\mathcal{B}$ as a set of \emph{simple polynomials} in the sense that  $\rank(\mathcal{B}) = U$.
+
+Now suppose that the set $\mathcal{B}$ of \emph{simple polynomials} can be generated by one polynomial $B(\vecy)$ with $\abs{\vecy} = m$, that is for every $g\in \mathcal{B}$ there is some $\veca \in \F^m$ such that $g = B(\veca)$. In the case of Waring rank, this polynomial would be \[B(\vecy) = (x_1 y_1 + \cdots + x_ny_n)^d,\] and in the case of tensor-rank this polynomial would be
+\[ B(\vecy) = \inparen{\sum_{j=1}^n y_{1j} x_{1j}} \times \cdots \times \inparen{\sum_{j=1}^n y_{dj} x_{dj}}. 
+  \]
+  The fact that $\max_\veca \rank(M(B(\veca))) = U$ implies that the rank of the symbolic matrix $M(B(\vecy))$ \emph{over the function field $\F(\vecy)$} is $U$. Now suppose $f$ was an arbitrary polynomial, we know that $f(\vecx) = \sum_{\veca\in A} B(\veca)$ for some finite set $A$ since $\mathcal{B}$ forms a spanning set. Therefore, we have
+  \[
+    M(f) = \sum_{\veca\in A} M(B(\veca)).
+  \]
+  What we know is that any fixed evaluation $M(B(\veca))$ of $M(B(\veca))$ has rank at most $U$ and hence its rows/columns are spanned by some set of $U$ row/column vectors. Suppose it turns out that there are row/column vectors $V_1,\ldots, V_{t}$ (with $t$ not much larger than $U$) such that \emph{every evaluation} $M(B(\veca))$ has its rows/columns spanned by these $t$ vectors. Then, by linearity, so must the rows/columns of $M(f)$! This would let us show that $\rank(M(f)) \leq t$  for any arbitrary $f$. Efremenko, Garg, Oliveira and Wigderson show that something almost similar is true for the setting of Waring rank or tensor rank.
+
+  \begin{lemma}[Bounding rank of all evaluations] \label{lem:limitation:decomposition-eval-space}
+    Consider the set-up as before for the Waring rank or tensor rank setting. Suppose $\rank_{\F(\vecy)}(M(B(\vecy)) = U$. Then there exists a set of row vectors $R_1,\ldots, R_t$ and column vectors $C_1,\ldots, C_{t'}$ such that every evaluation $M(B(\veca)) = C + R$ where the columns of $C$ are spanned by $\set{C_1,\ldots, C_{t'}}$ and the rows of $R$ are spanned by $\set{R_1,\ldots, R_t}$.
+
+    \begin{itemize}
+    \item  For the setting of Waring rank, we have $t + t' \leq U \cdot (d+1) \cdot \binom{n+(d/2)}{n}$.
+
+    \item For the setting of tensor rank, we have $t+t' \leq U \cdot 2^{d} \cdot n^{\floor{d/2}}$.
+    \end{itemize}
+  \end{lemma}
+
+  This lemma immedietely yields that $\rank(M(f)) \leq U\cdot (d+1) \cdot \binom{n+(d/2)}{n}$ in the Waring rank setting, and $\rank(M(f)) \leq U\cdot 2^{d} \cdot n^{\floor{d/2}}$ in the tensor rank setting. \\
+
+  In fact, as it would soon be evident from the proof, the same set-up can be used to prove similar limitations in a more general setting. Suppose $B(\vecy)$ is the polynomial whose evaluations generate the class $\mathcal{B}$ and suppose $\deg_\vecy B(\vecy) = \deg f$ and $\abs{\vecy} = m$. Then for any $f \in \operatorname{span}(\mathcal{B})$ we have
+  \[
+    \frac{\rank(M(f))}{\rank(M(\mathcal{B}))} \leq (d + 1) \cdot \binom{m + \floor{d/2}}{m}. 
+  \]
+  The Waring rank setting was the instantiation with $m = n$. Of course, if $m = \Omega(n^2)$, then we get a meaningless limitation that these techniques cannot prove lower bounds better than $n^d$ (which is roughly the number of monomials in $f$ anyway!) but we get a meaningful limitation for all $m = n^{2 - \epsilon}$. (In fact, the tensor rank setting can also be cast this way with $m = dn$, but \autoref{thm:limitations-tensor-rank} improves this above bound.)\\
+
+  In the rest of this chapter, we shall see a proof of the key lemma (\autoref{lem:limitation:decomposition-eval-space}) for the general instance when the building blocks are generated by a $B(\vecy)$.
+
+\section{The main decomposition lemma}
+
+We have a polynomial $B(\vecx, \vecy) \in \F[\vecx, \vecy]$ that is homogeneous in $\vecy$ and $\deg_\vecy B = \deg f = d$; let $\abs{\vecy} = m$ and $\abs{\vecx} = n$. We shall sometime denote $B(\vecx, \vecy)$ by just $B(\vecy)$ as we will be more interested in $B$ as a function of $\vecy$.
+\[
+  \mathcal{B} = \setdef{B(\veca)}{\veca \in \F^m}
+\]
+Let us assume that $M(f)$ is an $N\times N$ matrix, without loss of generality, for some $N \geq 0$. 
+If $U = \rank(M(\mathcal{B}))$, then we have that $\tilde{M} = \rank_{\F(\vecy)}(M(B(\vecy))) = U$ as a symbolic matrix. Therefore, $\tilde{M}$ can be written as
+\[
+  \tilde{M} = V_1 W_1^T + \cdots V_U W_U^T
+\]
+for $N$-length vectors $V_i, W_i$ with entries from $\F(\vecy)$. This is a little annoying that even though $\tilde{M}$ only involves entries that are homogeneous degree $d$ polynomials in $\vecy$, the entries of the vectors could involve rational functions in $\vecy$ of arbitrary numerators and denominators. A natural question is whether every \emph{homogeneous matrix} of small rank has a \emph{small homogeneous rank-$1$ decomposition}. Efremenko, Garg, Oliveira and Wigderson show that this is indeed true.
+
+\begin{lemma}[Homogeneous rank-$1$ decomposition]\label{lem:limitation:hom-rank-decomposition}
+  Suppose $\tilde{M}$ is a matrix with entries in $\F[\vecy]_{=d}$ and suppose $\rank_{\F(\vecy)} \tilde{M} = U$. Then there are row vectors $P_1,\ldots, P_{t}$ and $Q_1,\ldots, Q_t$ such that
+  \[
+    \tilde{M} = P_1 Q_1^T + \cdots + P_t Q_t^T,
+  \]
+  satisfying
+  \begin{itemize}
+  \item $t \leq (d+1) U$,
+  \item For each $i$ there is some $0 \leq d_i \leq d$ such the vectors $P_i$ and $Q_i$ consists of homogeneous polynomials of degree $d_i$ and $d - d_i$ respectively.  
+  \end{itemize}
+\end{lemma}
+
+In other words, if the rank of a matrix $\tilde{M}$ involving homogeneous polynomials of degree $d$ as its entries is at most $U$, then its \emph{homogeneous rank}\footnote{Defined analogously as the smallest \emph{homogeneous} rank-$1$ decomposition} is at most $(d+1) U$. 
+
+An analogue of the above lemma holds for set-multilinear polynomials as well, where we would like to have each rank-$1$ term to also be set-multilinear. This is the analogue required in the proof of \autoref{thm:limitations-tensor-rank}. 
+
+The proof of \autoref{lem:limitation:hom-rank-decomposition} is along the lines of Strassen's division elimination and we will defer this to later and see how to prove \autoref{lem:limitation:decomposition-eval-space} using this.
+
+\begin{proof}[Proof of \autoref{lem:limitation:decomposition-eval-space}]
+  Consider the homogeneous rank-$1$ decomposition of $\tilde{M}$ given above by \autoref{lem:limitation:hom-rank-decomposition}:
+  \[
+    \tilde{M} = P_1 Q_1^T + \cdots + P_t Q_t^T.
+  \]
+  Write $\tilde{M} = \tilde{R} + \tilde{C}$ where
+  \[
+\tilde{R} := \sum_{i: \deg P_i \leq \frac{d}{2}} P_i Q_i^T\quad,\quad \tilde{C} := \sum_{i: \deg P_i > \frac{d}{2}} P_i Q_i^T.
+  \]
+  We will focus on $\tilde{R}$; the analysis for $\tilde{C}$ would be analogous.
+  \begin{align*}
+    \tilde{R}(\vecy) & = \sum_{i: \deg P_i \leq \frac{d}{2}} P_i(\vecy)  Q_i(\vecy)^T\\
+             & = \sum_{i: \deg P_i \leq \frac{d}{2}}\;\; \sum_{\vece: \abs{\vece} \leq \frac{d}{2}} \vecy^{\vece} \cdot \coeff_{\vecy^{\vece}}(P_i)  Q_i (\vecy)^T\\
+    \implies \tilde{R}(\veca) & = \sum_{i: \deg P_i \leq \frac{d}{2}}\;\; \sum_{\vece: \abs{\vece} \leq \frac{d}{2}} \veca^{\vece} \cdot \coeff_{\vecy^{\vece}}(P_i)  Q_i (\veca)^T
+  \end{align*}
+  Hence, every row of $\tilde{R}(\veca)$ is spanned by $\setdef{\coeff_{\vecy^{\vece}}(P_i)}{\deg P_i \leq \frac{d}{2}\;,\; \deg \vecy^{\vece} \leq \frac{d}{2}}.$  Similarly, every column of $\tilde{C}(\veca)$ is spanned by $\setdef{\coeff_{\vecy^{\vece}}(Q_i)^T}{\deg P_i > \frac{d}{2}\;,\; \deg \vecy^{\vece} \leq \frac{d}{2}}.$ Together, we have at most $t \cdot \binom{m + (d/2)}{m}$ vectors. 
+The statement of \autoref{lem:limitation:decomposition-eval-space} follows since $M(f)$ is a linear combination of the evaluations $\setdef{R(\veca)+C(\veca)}{\veca\in \F^m}$   
+\end{proof}
+
+\subsection*{Proof of the decomposition lemma}
+
+We begin with the standard rank-$1$ decomposition of the symbolic matrix $\tilde{M}$.
+\[
+  \tilde{M} = V_1 W_1^T + \cdots V_U W_U^T
+\]
+As stated, the entries of $V_i,W_i$ could involve rational functions in $\vecy$. Nevertheless, we can clear denominators and obtain
+\[
+\tilde{M} = \pfrac{1}{g(\vecy)} \cdot \inparen{V'_1 W'_1{}^T + \cdots V'_U W'_U{}^T}
+\]
+where now $g(\vecy)$ and the entries of $V_i'$ and $W_i'$ are honest-to-god polynomials in $\vecy$. Assume without loss of generality that $g(\mathbf{0}) = 1$ (by suitable translation and scaling if necessary). Then, $g(\vecy) = 1 - g'(\vecy)$ where $g'(\mathbf{0}) = 0$. Therefore,
+\[
+\frac{1}{g(\vecy)} = 1 + g'(\vecy) + (g'(\vecy))^2 + \cdots . 
+\]
+Therefore, 
+\[
+  \tilde{M} = \inparen{V'_1 W'_1{}^T + \cdots V'_U W'_U{}^T} \cdot \inparen{1 + g'(\vecy) + (g'(\vecy))^2 + \cdots}.
+\]
+Here comes the important point: even though the right hand side has infinitely many terms, every entry on the left-hand side has degree at most $d$. Hence, we may just collect homogeneous components from the RHS to obtain our homogeneous decomposition. Define $\tilde{g}(\vecy) = (1 + g'(\vecy) + \cdots + (g'(\vecy))^d)$. Then,
+\[
+  \tilde{M} = \sum_{i=0}^d \sum_{j=1}^U \inparen{\operatorname{Hom}_{ i}\inparen{\tilde{g} \cdot V_j'}} \inparen{\operatorname{Hom}_{d - i}\inparen{W_j'}}^T. \qed
+\]
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End:
