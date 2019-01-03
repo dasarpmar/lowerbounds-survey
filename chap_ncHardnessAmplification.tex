@@ -1,4 +1,115 @@
 \chapter{Hardness amplification for non-commutative circuits}
+\label{chap:nc-hardness-amp}
+
+\newcommand{\Amp}{\operatorname{Amp}}
+
+In \autoref{chap:evalDim}, we saw exponential lower bounds lower bounds for the non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
+
+In this chapter, we shall see a beautiful result of Carmasino, Impagliazzo, Mihajlin and Lovett~\cite{CILM18} that show that even mildly super-linear lower bounds for a family of non-commutative polynomials can be \emph{amplified} to obtain much stronger lower bounds.
+
+\begin{theorem}[\cite{CILM18}] \label{thm:CILM18-mainthm}
+  Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $\poly(n)$) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
+
+  Then, for every $c \geq 1$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $n^c$. 
+\end{theorem}
+
+In fact, the conclusion can be strengthened if the initial polynomial family $\set{f_n}$ is a constant degree family.
+
+\begin{theorem}[\cite{CILM18}] \label{thm:CILM18-mainthm-constdeg}
+  Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting \emph{constant degree}polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $d$, which is a constant) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
+
+  Then, for some $\delta \geq 0$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $\exp(n^{\delta})$. 
+\end{theorem}
+
+In both the above theorems, $\omega$ refers to the exponent of matrix multiplication. For simplicity, we shall just work with this being replaced by $3$. Hence, the above theorems say that if we can get lower bounds of $n^{1.5 + \epsilon}$, then this can be amplified.
+
+\section{Intuition}
+
+Both these theorems go via a clever \emph{hardness-preserving variable reduction}. Formally, we will start with a polynomial $f(x_1,\ldots, x_n) \in \F\inangle{x_1,\ldots, x_n}$ and transform this to a polynomial $g(y_1,\ldots, y_m) \in \F\inangle{y_1,\ldots, y_m}$  where $m \ll n$. This transformation would be obtained by replacing each $x_i$ by some $h_i(y_1,\ldots, y_m)$ for some relatively simple $h_i$'s (in fact, they will just be monomials).
+
+Clearly, if $f$ has a small circuit, then so does $g$ (since each of the $h_i$'s are simple). The key point would be that a rough converse also would hold. That is, if someone provided a size $s$ non-commutative circuit for $g$, then there is a circuit of size $s'$ (which is not-much-larger-than $s$) that computes $f$. As a contrapositive, if $f$ \emph{cannot} be computed by circuits of size $s$, then $g$ \emph{cannot} be computed by circuits of size $s'$. Why is this a hardness amplification? Notice that $m \ll n$; hence $s'$ as a function of $m$ could be way larger than $s$ as a function of $n$.
+
+The proofs of both the theorems essentially repeat the above transformation as many times as possible. In the general case, we can repeat this any constantly many times and hence this would eventually yield \autoref{thm:CILM18-mainthm}. In the setting when the polynomial family has constant degree, we can repeat this more times and that yields \autoref{thm:CILM18-mainthm-constdeg}.
+
+We will see the details in the rest of the chapter. 
+
+\section{The hardness-preserving variable reduction}
+
+Suppose $f \in \F\inangle{x_1,\ldots, x_n}$ is a polynomial of degree $d$. Let $m = \ceil{n^{1/3}}$. To each of the variables $x_i$, we shall assign a unique non-commutative monomial $y_{i_1}y_{i_2}y_{i_3}$. Define the polynomial $g$ obtained from $f$ via by substituting the associated monomial for $x_i$:
+\[
+\Amp_3(f) :=  g(y_1,\dots, y_m) := f(y_{1_1}y_{1_2}y_{1_3}, \ldots, y_{n_1}y_{n_2}y_{n_3})
+\]
+Clearly, $g$ is an $m$-variate non-commutative polynomial with  $\deg g \leq 3 d$. 
+
+\begin{lemma}[Hardness-preserving reduction]\label{lem:cilm-mainlemma}
+Let $f$ be an $n$-variate non-commutative polynomial. Suppose there is a non-commutative circuit of size at most $s$ that computes $\Amp_3(f)$. Then, there is a non-commutative circuit of size at most $s' = C \cdot s \cdot n^{\omega/3}$ for a universal constant $C$. 
+\end{lemma}
+We shall assume the above lemma for now and finish the proofs of \autoref{thm:CILM18-mainthm} and \autoref{thm:CILM18-mainthm-constdeg}. We shall define the following operator which applies this amplification multiple times. 
+\[
+  \Amp_3^{(k)}(f) := \underbrace{\Amp_3 \circ \Amp_3 \circ \cdots \circ \Amp_3}_{\text{$k$ times}} (f).\]
+\begin{corollary}[Iterative hardness-preserving reduction]\label{cor:cilm-maincorr}
+  Let $f$ be an $n$-variate non-commutative polynomial, of degree $d$, with $n = m^{3^k}$ for some positive integers $m$ and $k$. Let $g(y_1,\ldots, y_m) = \Amp_3^{(k)}(f)$, an $m$-variate non-commutative polynomial of degree $3^k d$. If $g$ can be computed by a circuit of size $s$, then $f$ can be computed by a circuit of size at most $s \cdot n^{\omega/2}\cdot C^k$ where $C$ is the universal constant in \autoref{lem:cilm-mainlemma}
+\end{corollary}
+\begin{proof}\belowdisplayskip=-12pt
+  By repeated applications of \autoref{lem:cilm-mainlemma} yields that $f$ can be computed by a circuit of size at most
+  \begin{align*}
+    s' & = s \cdot C^k \cdot \inparen{m \cdot m^3 \cdot \cdots \cdot m^{3^k}}^{\omega/3}\\
+       & = s \cdot C^k \cdot m^{(\omega/3) \cdot (3^{k+1} - 1)/(3 - 1)})\\
+       & = s \cdot C^k \cdot m^{(\omega/2) \cdot 3^k}) = s \cdot C^k \cdot n^{\omega/2}.
+  \end{align*}
+\end{proof}
+
+\begin{proof}[Proof of \autoref{thm:CILM18-mainthm} and \autoref{thm:CILM18-mainthm-constdeg}]
+  Let $g = \Amp_3^{(k)}(f)$ for a $k$ that shall be fixed shortly. If $n = m^{3^k}$ of degree $d$, then $g$ is an $m$-variate polynomial of degree $3^k \cdot d$. \autoref{cor:cilm-maincorr} states that if $f$ requires circuits of size $\Omega(n^{(\omega/2) + \epsilon})$ then $g(y_1,\ldots, y_m)$ requires circuits of size $C^k \cdot n^\epsilon$.
+
+  \begin{itemize}
+  \item (Proof of \autoref{thm:CILM18-mainthm}) Set $k$ large enough constant so that $3^k \cdot \epsilon > c$. Then $\deg(g) = 3^k d = \poly(n) = \poly(m)$ as $k$ is a constant. Also, $g$ requires circuits of size $\Omega(n^\epsilon) = \Omega(m^c)$ by the choice of $k$.
+
+  \item (Proof of \autoref{thm:CILM18-mainthm-constdeg}) Pick the smallest $k$ such that $3^k \cdot k > \log n$; let $m = n^{1/3^k}$ and $g = \Amp_3^{(k)}(f)$.
+Note that for this choice of $k$, we have $k > \log m$. 
+    With this choice of $k$ and since $d = \deg(f)$ is a constant, we have
+    \[
+      \deg(g) = 3^k \cdot d \approx 3^{(\log n) / 3^k} \cdot d = 3^{\log m} \cdot d = \poly(m).
+    \]
+    Also, $g$ requires circuits of size at least
+    \[
+      C^k n^\epsilon = m^{3^k \cdot \epsilon} C^k \approx m^{3^k \cdot \epsilon + \log C}= \Omega(\exp(m^\delta))
+    \]
+    for some $\delta > 0$. \qedhere
+  \end{itemize}
+\end{proof}
+
+\noindent
+In the rest of the chapter we shall see how to prove \autoref{lem:cilm-mainlemma}.
+
+\section{Proof of the main lemma}
+
+We are provided a circuit of size $s$ that computes $\Amp_3(f)$ and we want to use that to find a circuit for $f$. Basically, what we need to do is undo this monomial transformation.
+
+Intuitively, we want to say that there shouldn't be a circuit much better than actually computing $f$ and doing this transformation. Of course, given \emph{such} a circuit for $\Amp_3(f)$, then we can just pull out a circuit for $f$. The main idea is that given \emph{any} circuit for $g$, we can always structure the circuit in such a way that it really does look like a circuit computing $f$ and then doing the monomial substitution.
+
+We will first perform a \emph{partial homogenisation} operation, very similar to \autoref{lem:homogenization} but much weaker. This would be the first step towards at least ensuring that each gate computes a polynomial of degree divisible by $3$. 
+
+\begin{definition}[A $\pmod{3}$-homogeneous circuit] A circuit $C$ is said to be $\pmod{3}$-homogeneous if every gate is labelled by a pair $(i,j) \in \set{1,2,3}^2$ satisfying the following conditions: 
+  \begin{itemize}
+  \item All leaves will be labelled by some $(i,j)$ such that $j = i+1 \bmod 3$ if it is a variable, and by some $(i,i)$ the leaf is a constant.
+  \item If $g$ is a $+$ gate with label $(i,j)$, then all its children also have label $(i,j)$.
+  \item If $g = g_1 \times g_2$ with label $(i,j)$ then there must be some $k \in \set{0,1,2}$ such that $g_1$ has label $(i,k)$ and $g_2$ has label $(k,j)$. \qedhere
+  \end{itemize}
+\end{definition}
+
+Intuitively, each gate's label of $(i,j)$ says that its contribution will always be from a position that is $i \bmod 3$ and until $j\bmod 3$. We leave the proof of the following observation as an easy exercise. 
+
+\begin{observation}
+  Any non-commutative circuit of size $s$ that computes a polynomial $f$ can be equivalently computed by a $(\bmod{3})$-homogeneous polynomial of size at most $9s$.  
+\end{observation}
+
+Let us see what would happen if we started with the trivial circuit for $\Amp_3(f)$ obtained from a circuit for $f$ and applying the monomial substitution. The resulting circuit is already $(\bmod{3})$-homogeneous, and \emph{every} gate has label $(1,1)$ (and we are thinking of leaves as now being monomials; they also have label $(1,1)$ then). This is the state we want to get to from an arbitrary circuit. The partial homogenisation is one step towards it but there are all kinds of labels for the gates and we want to fix that.
+
+The beautiful idea of Carmosino et al \cite{CILM18} is to replace each gate of the circuit by a $m\times m$ matrix of gates, such that each entry of this matrix would have label $(1,1)$. We then want to simulate all additions and multiplications as matrix multiplications.
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
