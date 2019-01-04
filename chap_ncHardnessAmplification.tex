@@ -1,8 +1,6 @@
 \chapter{Hardness amplification for non-commutative circuits}
 \label{chap:nc-hardness-amp}
 
-\newcommand{\Amp}{\operatorname{Amp}}
-
 In \autoref{chap:evalDim}, we saw exponential lower bounds lower bounds for the non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
 
 In this chapter, we shall see a beautiful result of Carmasino, Impagliazzo, Mihajlin and Lovett~\cite{CILM18} that show that even mildly super-linear lower bounds for a family of non-commutative polynomials can be \emph{amplified} to obtain much stronger lower bounds.
@@ -106,10 +104,68 @@ Intuitively, each gate's label of $(i,j)$ says that its contribution will always
 
 Let us see what would happen if we started with the trivial circuit for $\Amp_3(f)$ obtained from a circuit for $f$ and applying the monomial substitution. The resulting circuit is already $(\bmod{3})$-homogeneous, and \emph{every} gate has label $(1,1)$ (and we are thinking of leaves as now being monomials; they also have label $(1,1)$ then). This is the state we want to get to from an arbitrary circuit. The partial homogenisation is one step towards it but there are all kinds of labels for the gates and we want to fix that.
 
-The beautiful idea of Carmosino et al \cite{CILM18} is to replace each gate of the circuit by a $m\times m$ matrix of gates, such that each entry of this matrix would have label $(1,1)$. We then want to simulate all additions and multiplications as matrix multiplications.
+The beautiful idea of Carmosino et al \cite{CILM18} is to replace each gate of the circuit by a $m\times m$ matrix of gates, such that each entry of this matrix would have label $(1,1)$. We then want to simulate all additions and multiplications as matrix multiplications. We will need to build some notation. 
+
+\begin{definition}[Division operators]
+  For a polynomial $f \in \F\inangle{y_1,\ldots, y_m}$ and a variable $y \in \set{y_1,\ldots, y_m}$, we shall define the left and right division operators as
+  \begin{align*}
+    [y^{-1}] f & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = y \vecw'}} \coeff_\vecw(f) \cdot \vecw'\\
+     f [y^{-1}] & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = \vecw' y}} \coeff_\vecw(f) \cdot \vecw'
+  \end{align*}
+  In words, $[y^{-1}] f$ divides from the left by $y$ (and monomials that do not begin with $y$ are zeroed out) and $f [y^{-1}]$ divides from the right. 
+\end{definition}
+
+We now define an operator that maps every labelled gate of the circuit to a matrix of polynomials each of whose entries are $(\bmod{3})$-homogeneous. We'll call it the \emph{glacial} operator after the following sentence in \cite{CILM18}:
+\begin{quote}
+  ``This process is like a glacial movement during the ice age. An operator slides over the circuit and then disappears, drastically changing the landscape behind it.''
+\end{quote}
+
+\begin{definition}[The \emph{glacial} operator]
+  Let $g$ be a gate in a $(\bmod{3})$-homogeneous non-commutative circuit $C$ with label $(a,b)$. Let $g$ also denote the polynomial computed by the gate.
+We shall use $\delta(a)$ to denote the function that is $1$ when $a = 1$, and zero otherwise. 
+
+The operator $\Phi(g)$ returns an $m\times m$ matrix of polynomials whose $(i,j)$-th entry is given by the $(a,b)$-th entry of the following matrix:
+\begin{align*}
+  \insquare{
+  \begin{array}{ccc}
+    g \cdot \delta(i)\delta(j) & g\insquare{y_j^{-1}} \cdot \delta(i) & g y_j \cdot \delta(i)\\
+    y_i g \cdot \delta(j) & y_i g\insquare{y_j^{-1}} & y_i gy_j\\
+    \insquare{y_i^{-1}} g \cdot \delta(j) & \insquare{y_i^{-1}} g\insquare{y_j^{-1}} & \insquare{y_i^{-1}} g\insquare{y_j^{-1}}\\
+  \end{array}
+  }.
+\end{align*}
+\end{definition}
+What the above definition does is best described in plain words and a few examples. If $g$ is labelled $(a,b)$ and $a = 1$, then basically $g$ is \emph{start-aligned} and hence only the first row of the matrix $\Phi(g)$ would be non-zero; similarly if $b = 1$, only the first column of the matrix would be non-zero. Hence, if $(a,b) = (1,1)$, then $g$ is properly aligned and hence the matrix $\Phi(g)$ will just have one non-zero entry in the $(1,1)$-th location and that would be $g$. 
+
+If $(a,b) = (1,2)$, then the polynomials is \emph{start-aligned} but has \emph{one additional variable at the end}. In this case, $\Phi(g)$ consists of just the first row, and the $j$-th entry of this row would be $g [y_j]^{-1}$, thus account for all symbols that could be deleted on the right to make it aligned. In the case when $(a,b) = (1,3)$, then $g$ is \emph{start-aligned} but has one symbol \emph{less} at the end, and hence $\Phi(g)$ will have just the first row with the $j$-th entry being $g y_j$. 
+
+\begin{observation}\label{obs:cilm-glacial-movement}
+  Let $C$ be a $(\bmod{3})$-homogenised circuit of size $s$. Suppose $g$ is some internal gate in $g$.
+  \begin{itemize}
+  \item If $g = g_1 + g_2$, then $\Phi(g) = \Phi(g_1) + \Phi(g_2)$ (matrix addition).
+  \item If $g = g_1 \times g_2$, then $\Phi(g) = \Phi(g_1) \times \Phi(g_2)$ (matrix multiplication). 
+  \end{itemize}
+\end{observation}
+
+The proof of the above observation is a simple exercise and is left to the reader. Thus, all we need to do for now is replace every gate $g$ of $C$ by the entries of $\Phi(g)$, all addition and multiplication gates by matrix addition and matrix multiplication gates, and we would have obtained our $(\bmod{3})$-homogeneous circuit with each gate labelled with $(1,1)$!
+
+We start with the leaves of $C$ which were computing variables. For any leaf $\ell$, observe that $\Phi(\ell)$ would be an $m\times m$ matrix, each of whose entries is a monomial of degree exactly $3$ or a constant. Thus, we can first  compute $\Phi(\ell)$ for all the leaves $\ell$. If $g = g_1 \circledast g_2$ is some internal gate for which we need to compute $\Phi(g)$, and we have computed $\Phi(g_1)$ and $\Phi(g_2)$, then we can compute the entries of $\Phi(g)$ by a suitable matrix addition/multiplication via \autoref{obs:cilm-glacial-movement}.
+
+And finally, each matrix addition and matrix multiplication of $m\times m$ matrices can be simulated\footnote{technically, it should be $O(m^{\omega + \epsilon})$ for every $\epsilon > 0$... but meh.} by $O(m^\omega)$ usual additions and multiplications. Let us summarize this discussion as a lemma. 
+
+\begin{lemmawp}[Alignment lemma]
+  Suppose $f \in \F\inangle{y_1,\ldots, y_m}$ is a polynomial such that every monomial of $f$ has degree divisible by $3$ and computable by a non-commutative circuit $C$ of size $s$. Then, there is a $(\bmod{3})$-homogeneous circuit $C'$, each of whose gates/leaves are labelled by $(1,1)$, of size at most $O(s \cdot m^{\omega})$
+\end{lemmawp}
+
+\noindent
+\autoref{lem:cilm-mainlemma} is a direct corollary of the above lemma as $m = n^{1/3}$ and this completes the proof of the hardness amplification for non-commtuative circuits. 
+
+\vskip 1em
 
 
-
+\begin{exercise}
+  The main monomial transformation  was replacing the $n$ variables by degree $3$ monomials in $n^{1/3}$ variables. Naturally, one can choose any $r$ and replace each of the $n$ variables by degree $r$ monomials in $n^{1/r}$ variables. How would these bounds change for an arbitrary $r$? 
+\end{exercise}
 
 %%% Local Variables:
 %%% mode: latex
