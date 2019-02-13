@@ -184,7 +184,7 @@ on this equation instead.
   Consider Ryser's formula (\ref{eqn:ryser}) applied for to the
   $r\times r$ matrix where each row is $[y_1,\dots, y_r]$. 
   \[
-  \Perm \insquare{\begin{array}{ccc} y_1 & \dots & y_r\\ \vdots & \ddots & \vdots \\ y_1 & \dots & y_r\end{array}} \quad = \quad r! \cdot y_1\dots y_r \quad = \quad \sum_{S\subseteq [r]} (-1)^{r- |S|} \inparen{\sum_{j\in S} y_j}^n
+  \Perm \insquare{\begin{array}{ccc} y_1 & \dots & y_r\\ \vdots & \ddots & \vdots \\ y_1 & \dots & y_r\end{array}} \quad = \quad r! \cdot y_1\dots y_r \quad = \quad \sum_{S\subseteq [r]} (-1)^{r- |S|} \inparen{\sum_{j\in S} y_j}^r
   \]
   The lemma follows by applying this identity on each term
   $Q_{i1}\dots Q_{ir}$. 
@@ -195,7 +195,7 @@ linear polynomials, is often attributed to Fischer \cite{fischer}.
 We shall refer to this as the Ryser-Fischer trick. 
 
 \begin{lemma}[Ryser-Fischer Trick]\label{lem:ryser-fischer}
-$$y_1 \dots y_r  = \frac{1}{r!} \cdot \sum_{S\subseteq [r]} (-1)^{r- |S|} \inparen{\sum_{j\in S} y_j}^n$$
+$$y_1 \dots y_r  = \frac{1}{r!} \cdot \sum_{S\subseteq [r]} (-1)^{r- |S|} \inparen{\sum_{j\in S} y_j}^r$$
 \end{lemma}
 
 Note that since we need to divide by $r!$, the above lemma fails over
