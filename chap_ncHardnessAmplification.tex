@@ -1,7 +1,7 @@
 \chapter{Hardness amplification for non-commutative circuits}
 \label{chap:nc-hardness-amp}
 
-In \autoref{chap:evalDim}, we saw exponential lower bounds lower bounds for the non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
+In \autoref{chap:evalDim}, we saw exponential lower bounds for the non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
 
 In this chapter, we shall see a beautiful result of Carmasino, Impagliazzo, Mihajlin and Lovett~\cite{CILM18} that show that even mildly super-linear lower bounds for a family of non-commutative polynomials can be \emph{amplified} to obtain much stronger lower bounds.
 
@@ -14,7 +14,7 @@ In this chapter, we shall see a beautiful result of Carmasino, Impagliazzo, Miha
 In fact, the conclusion can be strengthened if the initial polynomial family $\set{f_n}$ is a constant degree family.
 
 \begin{theorem}[\cite{CILM18}] \label{thm:CILM18-mainthm-constdeg}
-  Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting \emph{constant degree}polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $d$, which is a constant) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
+  Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting \emph{constant degree} polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $d$, which is a constant) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
 
   Then, for some $\delta \geq 0$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $\exp(n^{\delta})$. 
 \end{theorem}
@@ -84,13 +84,13 @@ In the rest of the chapter we shall see how to prove \autoref{lem:cilm-mainlemma
 
 We are provided a circuit of size $s$ that computes $\Amp_3(f)$ and we want to use that to find a circuit for $f$. Basically, what we need to do is undo this monomial transformation.
 
-Intuitively, we want to say that there shouldn't be a circuit much better than actually computing $f$ and doing this transformation. Of course, given \emph{such} a circuit for $\Amp_3(f)$, then we can just pull out a circuit for $f$. The main idea is that given \emph{any} circuit for $g$, we can always structure the circuit in such a way that it really does look like a circuit computing $f$ and then doing the monomial substitution.
+Intuitively, we want to say that there shouldn't be a circuit much better than actually computing $f$ and doing this transformation. Of course, given \emph{such} a circuit for $\Amp_3(f)$, we can just pull out a circuit for $f$. The main idea is that given \emph{any} circuit for $g$, we can always structure the circuit in such a way that it really does look like a circuit computing $f$ and then doing the monomial substitution.
 
 We will first perform a \emph{partial homogenisation} operation, very similar to \autoref{lem:homogenization} but much weaker. This would be the first step towards at least ensuring that each gate computes a polynomial of degree divisible by $3$. 
 
-\begin{definition}[A $\pmod{3}$-homogeneous circuit] A circuit $C$ is said to be $\pmod{3}$-homogeneous if every gate is labelled by a pair $(i,j) \in \set{1,2,3}^2$ satisfying the following conditions: 
+\begin{definition}[A $(\bmod{3})$-homogeneous circuit] A circuit $C$ is said to be $(\bmod{3})$-homogeneous if every gate is labelled by a pair $(i,j) \in \set{1,2,3}^2$ satisfying the following conditions: 
   \begin{itemize}
-  \item All leaves will be labelled by some $(i,j)$ such that $j = i+1 \bmod 3$ if it is a variable, and by some $(i,i)$ the leaf is a constant.
+  \item All leaves will be labelled by some $(i,j)$ such that $j = i+1 \bmod 3$ if it is a variable, and by some $(i,i)$ if the leaf is a constant.
   \item If $g$ is a $+$ gate with label $(i,j)$, then all its children also have label $(i,j)$.
   \item If $g = g_1 \times g_2$ with label $(i,j)$ then there must be some $k \in \set{0,1,2}$ such that $g_1$ has label $(i,k)$ and $g_2$ has label $(k,j)$. \qedhere
   \end{itemize}
@@ -99,7 +99,7 @@ We will first perform a \emph{partial homogenisation} operation, very similar to
 Intuitively, each gate's label of $(i,j)$ says that its contribution will always be from a position that is $i \bmod 3$ and until $j\bmod 3$. We leave the proof of the following observation as an easy exercise. 
 
 \begin{observation}
-  Any non-commutative circuit of size $s$ that computes a polynomial $f$ can be equivalently computed by a $(\bmod{3})$-homogeneous polynomial of size at most $9s$.  
+  Any non-commutative polynomial that can be computed by a non-commutative circuit of size $s$ can be equivalently computed by a $(\bmod{3})$-homogeneous non-commutative circuit of size at most $9s$.  
 \end{observation}
 
 Let us see what would happen if we started with the trivial circuit for $\Amp_3(f)$ obtained from a circuit for $f$ and applying the monomial substitution. The resulting circuit is already $(\bmod{3})$-homogeneous, and \emph{every} gate has label $(1,1)$ (and we are thinking of leaves as now being monomials; they also have label $(1,1)$ then). This is the state we want to get to from an arbitrary circuit. The partial homogenisation is one step towards it but there are all kinds of labels for the gates and we want to fix that.
