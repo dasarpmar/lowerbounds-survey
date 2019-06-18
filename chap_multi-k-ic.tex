@@ -1,159 +1,159 @@
-\chapter{Lower bounds for multi-$k$-ic models}\label{chap:multi-k-ic}
+e\chapter{Lower bounds for multi-$k$-ic models}\label{chap:multi-k-ic}
 
-Recall that a multilinear depth three circuit is a sum of \emph{multilinear terms} that are polynomials of the form $T = \ell_1 \dots \ell_d$ where every variable $x \in X$ is present in at most one $\ell_i$. 
-Kayal and Saha \cite{ks15} study more general depth three circuits that are sums of terms where very variable occurs in ``few'' linear factors. 
+Recall that a multilinear depth three circuit is a sum of \emph{multilinear terms} that are polynomials of the form $T = \ell_1 \cdots \ell_d$ where every variable $x \in X$ is present in at most one $\ell_i$.
+Kayal and Saha \cite{ks15} study more general depth three circuits that are sums of terms where very variable occurs in ``few'' linear factors.
 
 \begin{definition}[Multi-$k$-ic depth three circuits]
-  A product of linear polynomials $T = \ell_1 \dots \ell_d$ is said to be a \emph{multi-$k$-ic term} if every variable $x \in X$ occurs in at most $k$ of the linear polynomials. 
-A depth three circuit is said to be a \emph{multi-$k$-ic depth three circuit} if it is a sum of multi-$k$-ic terms. 
-\end{definition} 
+  A product of linear polynomials $T = \ell_1 \cdots \ell_d$ is said to be a \emph{multi-$k$-ic term} if every variable $x \in X$ occurs in at most $k$ of the linear polynomials.
+A depth three circuit is said to be a \emph{multi-$k$-ic depth three circuit} if it is a sum of multi-$k$-ic terms.
+\end{definition}
 
 For example, the circuit computing $(x_1 + x_2)(x_2 + x_3)(x_1 +x_3) + (x_1 + x_3)(x_2 + 3x_3)$ multi-$2$-ic circuit. \\
 
-Kayal and Saha \cite{ks15} studied the question of proving lower bound for such multi-$k$-ic depth-three circuits for small $k$ and they showed that the techniques of \cite{raz2004} can be generalized to give exponential lower bounds for multi-$k$-ic depth-three circuits for small $k$. 
+Kayal and Saha \cite{ks15} studied the question of proving lower bound for such multi-$k$-ic depth-three circuits for small $k$ and they showed that the techniques of \cite{raz2004} can be generalized to give exponential lower bounds for multi-$k$-ic depth-three circuits for small $k$.
 
-\begin{theorem}[\cite{ks15}]\label{thm:multi-k-ic} There is an explicit $n$-variate polynomial $f \in \VNP$ such that any multi-$k$-ic depth-three circuit computing it must have size $2^{\Omega(n/2^{100k})}$. 
+\begin{theorem}[\cite{ks15}]\label{thm:multi-k-ic} There is an explicit $n$-variate polynomial $f \in \VNP$ such that any multi-$k$-ic depth-three circuit computing it must have size $2^{\Omega(n/2^{100k})}$.
 \end{theorem}
 
 \section{Revisiting the measure}
 
-In all the multilinear lower bounds we saw, the measure used was the rank of the partial derivative matrix under a random partition. 
-We shall use the same measure, but keeping in mind that monomials could be non-multilinear. 
-Once again, for a partition $X = Y \sqcup Z$, we shall define the matrix $M_{Y,Z}(f)$ to be the matrix whose rows are indexed by all (possibly non-multilinear) monomials $m_i$ in the $Y$ variables, and columns are indexed by all (possibly non-multilinear) monomials $m_j$ in the $Z$ variables with the entry being the coefficient of $m_i m_j$ in $f$. 
-We shall abuse notation and use $\CM{Raz}_{Y,Z}(f)$ to refer to the rank of $M_{Y,Z}(f)$. 
+In all the multilinear lower bounds we saw, the measure used was the rank of the partial derivative matrix under a random partition.
+We shall use the same measure, but keeping in mind that monomials could be non-multilinear.
+Once again, for a partition $X = Y \sqcup Z$, we shall define the matrix $M_{Y,Z}(f)$ to be the matrix whose rows are indexed by all (possibly non-multilinear) monomials $m_i$ in the $Y$ variables, and columns are indexed by all (possibly non-multilinear) monomials $m_j$ in the $Z$ variables with the entry being the coefficient of $m_i m_j$ in $f$.
+We shall abuse notation and use $\CM{Raz}_{Y,Z}(f)$ to refer to the rank of $M_{Y,Z}(f)$.
 
-As in the earlier lower bounds, we shall take a random partition $X = Y \sqcup Z$ and study $\CM{Raz}_{Y,Z}(f)$ for a small multi-$k$-ic circuit. 
+As in the earlier lower bounds, we shall take a random partition $X = Y \sqcup Z$ and study $\CM{Raz}_{Y,Z}(f)$ for a small multi-$k$-ic circuit.
 
-\begin{remark*}\rm 
-We shall take a slight deviation from the way we chose partitions earlier. 
-Here, we shall take every variable $x\in X$ and map it to $Y$ or $Z$ with equal probability. 
-Thereby, it is possible that $|Y|$ is not exactly $|X|/2$ but it would nevertheless be close to it with high probability. 
-This modification gives us the useful feature that the random partition is made of independent events. 
-This would turn out to be useful in the following calculations. 
+\begin{remark*}\rm
+We shall take a slight deviation from the way we chose partitions earlier.
+Here, we shall take every variable $x\in X$ and map it to $Y$ or $Z$ with equal probability.
+Thereby, it is possible that $|Y|$ is not exactly $|X|/2$ but it would nevertheless be close to it with high probability.
+This modification gives us the useful feature that the random partition is made of independent events.
+This would turn out to be useful in the following calculations.
 \end{remark*}
 
 \section{Proof of Theorem~\ref{thm:multi-k-ic}}
 
-The proof strategy will be the same as earlier. 
-For a random polynomial with degree in every variable bounded by $k$, we expect $\CM{Raz}_{Y,Z}(f)$ to be $\Omega(k^{\min(|Y|,|Z|)})$. 
-We shall show that for a multi-$k$-ic term $T = \ell_1\dots \ell_d$, under a random partition $X = Y \sqcup Z$, the measure $\CM{Raz}(T)$ will be far from $k^{n/2}$ with high probability, if $n = |X|$. 
+The proof strategy will be the same as earlier.
+For a random polynomial with degree in every variable bounded by $k$, we expect $\CM{Raz}_{Y,Z}(f)$ to be $\Omega(k^{\min(|Y|,|Z|)})$.
+We shall show that for a multi-$k$-ic term $T = \ell_1\cdots \ell_d$, under a random partition $X = Y \sqcup Z$, the measure $\CM{Raz}(T)$ will be far from $k^{n/2}$ with high probability, if $n = |X|$.
 
-The proof that we shall describe here is a simplification of the original proof of \cite{ks15}. 
-This proof would be very similar to the proof of \autoref{lem:raz-depth-three}. 
+The proof that we shall describe here is a simplification of the original proof of \cite{ks15}.
+This proof would be very similar to the proof of \autoref{lem:raz-depth-three}.
 
 \begin{lemma}\label{lem:multi-k-ic-ub}
-Let $X = Y \sqcup Z$ be a random partition. 
-If $T$ is a multi-$k$-ic term, then with probability $\inparen{1 - \exp(-\frac{|X|}{2^{6k+1}})}$
+Let $X = Y \sqcup Z$ be a random partition.
+If $T$ is a multi-$k$-ic term, then with probability $\inparen{1 - \exp(-\frac{|X|}{2^{6k+1}})}$ that
 \[
-\CM{Raz}_{Y,Z}(f) \spaced{\leq} (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}
+\CM{Raz}_{Y,Z}(f) \spaced{\leq} (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}.
 \]
 \end{lemma}
 
 
-Let us quickly recall how the proof of \autoref{lem:raz-depth-three} proceeded. 
-We essentially showed that for any linear polynomial involving ``few'' variables, with some non-trivial probability the random partition would map all the variables to one side of the partition. 
-Thus, if there are many such linear polynomials, the is a large fraction of the linear polynomials that do not contribute to $\CM{Raz}_{Y,Z}(T)$. 
-If there are very few such ``small'' linear polynomials, then the degree would have cannot be too large and we can use a trivial bound. 
-The proof here shall proceed in a very similar fashion. 
+Let us quickly recall how the proof of \autoref{lem:raz-depth-three} proceeded.
+We essentially showed that for any linear polynomial involving ``few'' variables, with some non-trivial probability the random partition would map all the variables to one side of the partition.
+Thus, if there are many such linear polynomials, the is a large fraction of the linear polynomials that do not contribute to $\CM{Raz}_{Y,Z}(T)$.
+If there are very few such ``small'' linear polynomials, then the degree would have cannot be too large and we can use a trivial bound.
+The proof here shall proceed in a very similar fashion.
 
 
 \begin{proofof}{\autoref{lem:multi-k-ic-ub}}
-Let $T = \ell_1 \dots \ell_d$. 
-We shall call a factor $\ell$ to be ``large'' if the number of variables it depends on is at least $3k$, and let $T_L$ be the product of all $\ell_i$'s that are ``large'', and let $T_S$ be the product of the remaining $\ell_i$'s. 
+Let $T = \ell_1 \cdots \ell_d$.
+We shall call a factor $\ell$ to be ``large'' if the number of variables it depends on is at least $3k$, and let $T_L$ be the product of all $\ell_i$'s that are ``large'', and let $T_S$ be the product of the remaining $\ell_i$'s.
 
 
-\autoref{obs:pdm-multiplicativity}, generalized to this setting, gives that $\CM{Raz}_{Y,Z}(T) \leq \CM{Raz}_{Y,Z}(T_L) \cdot \CM{Raz}_{Y,Z}(T_S)$. 
-Thus, it suffices to bound each term separately. 
-The easy case is, as one would expect, handling $T_L$. 
-Suppose $Y$ is the smaller of the sets $Y$ and $Z$. 
-Let us list down every variable in $Y$ that occurs in $T_L$ in order as $y_1,\dots, y_{r_L}$ (with repetition). 
-Let $r_L = (1-\delta) |Y|k$ for some $0\leq \delta \leq 1$. 
-A trivial bound for $\CM{Raz}_{Y,Z}(T_L)$ is 
+\autoref{obs:pdm-multiplicativity}, generalized to this setting, gives that $\CM{Raz}_{Y,Z}(T) \leq \CM{Raz}_{Y,Z}(T_L) \cdot \CM{Raz}_{Y,Z}(T_S)$.
+Thus, it suffices to bound each term separately.
+The easy case is, as one would expect, handling $T_L$.
+Suppose $Y$ is the smaller of the sets $Y$ and $Z$.
+Let us list down every variable in $Y$ that occurs in $T_L$ in order as $y_1,\dots, y_{r_L}$ (with repetition).
+Let $r_L = (1-\delta) |Y|k$ for some $0\leq \delta \leq 1$.
+A trivial bound for $\CM{Raz}_{Y,Z}(T_L)$ is
 \begin{equation}\label{eqn:TL-bound}
-\CM{Raz}_{Y,Z}(T_L)\spaced{\leq} 2^{\deg(T_L)} \spaced{\leq} 2^{r_L/3k} \spaced{\leq} 2^{(1-\delta)|Y|/3}
+\CM{Raz}_{Y,Z}(T_L)\spaced{\leq} 2^{\deg(T_L)} \spaced{\leq} 2^{r_L/3k} \spaced{\leq} 2^{(1-\delta)|Y|/3}.
 \end{equation}
-The trickier case is with $T_S$ but intuitively the setting is very similar to what we encountered in the proof of \autoref{lem:raz-depth-three}. 
-Since any factor $\ell$ of $T_S$ depends on at most $3k$ variables, with probability at least $\inparen{\frac{1}{2^{3k-1}}}$, all the variables of $\ell$ would be on the same side of the partition. 
-Thus, on expectation, there would be at least $\inparen{\frac{\deg(T_S)}{2^{3k-1}}}$ factors that would not contribute to $\CM{Raz}_{Y,Z}(T_S)$ at all. 
-In \autoref{lem:raz-depth-three}, we could show that the number of such factors is concentrated around the expectation since the linear polynomials were disjoint and the events were independent. 
-However, in this setting a variable can occur in multiple factors. 
-Nevertheless, one can still use the fact that every variable occurs in at most $k$ factors to establish a concentration very similar to Chernoff's Bounds. 
-The following beautiful theorem of Gavinsky, Lovett, Saks and Srinivasan \cite{GLSS12} is exactly what we need. 
+The trickier case is with $T_S$ but intuitively the setting is very similar to what we encountered in the proof of \autoref{lem:raz-depth-three}.
+Since any factor $\ell$ of $T_S$ depends on at most $3k$ variables, with probability at least $\inparen{\frac{1}{2^{3k-1}}}$, all the variables of $\ell$ would be on the same side of the partition.
+Thus, on expectation, there would be at least $\inparen{\frac{\deg(T_S)}{2^{3k-1}}}$ factors that would not contribute to $\CM{Raz}_{Y,Z}(T_S)$ at all.
+In \autoref{lem:raz-depth-three}, we could show that the number of such factors is concentrated around the expectation since the linear polynomials were disjoint and the events were independent.
+However, in this setting a variable can occur in multiple factors.
+Nevertheless, one can still use the fact that every variable occurs in at most $k$ factors to establish a concentration very similar to Chernoff's Bounds.
+The following beautiful theorem of Gavinsky, Lovett, Saks and Srinivasan \cite{GLSS12} is exactly what we need.
 
 \begin{theorem}[\cite{GLSS12}]
-Let $X_1,\dots, X_n$ be independent random variables. 
-Let $E_1,\dots, E_r$ be boolean random variables that are functions of $\inbrace{X_i}$ such that each $X_i$ influences at most $k$ of the $E_j$'s. 
+Let $X_1,\dots, X_n$ be independent random variables.
+Let $E_1,\dots, E_r$ be boolean random variables that are functions of $\inbrace{X_i}$ such that each $X_i$ influences at most $k$ of the $E_j$'s.
 If $\Pr[E_i = 1] \geq p$, then for any $\epsilon > 0$, we have
 \[
-\Pr\insquare{E_1 + \dots + E_r  \spaced{\leq} (p - \epsilon) r } \spaced{\leq} e^{-2\epsilon^2 r/k}
+\Pr\insquare{E_1 + \dots + E_r  \spaced{\leq} (p - \epsilon) r } \spaced{\leq} e^{-2\epsilon^2 r/k}.
 \]
 \end{theorem}
 
-Again, let us list down every variable in $Y$ that occurs in $T_S$ in order as $y_1,\dots, y_{r_S}$ (listed with repetition). 
-Note that $r_S + r_L \leq |Y|k$, and since $r_L = (1-\delta)k|Y|$,  we have that $r_S \leq \delta |Y|$. 
-Let $E_i$ be the indicator random variable that is $1$ if all the variables of the factor  $\ell$ that contains $y_i$ are mapped to the same side of the partition; we shall call such an instance variable $y_i$ as \emph{ineffective}. 
-In other words, the set of ineffective instances $y_i$ (with $E_i = 1$) are those that do not contribute to $\CM{Raz}_{Y,Z}(T_S)$. 
+Again, let us list down every variable in $Y$ that occurs in $T_S$ in order as $y_1,\dots, y_{r_S}$ (listed with repetition).
+Note that $r_S + r_L \leq |Y|k$, and since $r_L = (1-\delta)k|Y|$,  we have that $r_S \leq \delta |Y|$.
+Let $E_i$ be the indicator random variable that is $1$ if all the variables of the factor  $\ell$ that contains $y_i$ are mapped to the same side of the partition; we shall call such an instance variable $y_i$ as \emph{ineffective}.
+In other words, the set of ineffective instances $y_i$ (with $E_i = 1$) are those that do not contribute to $\CM{Raz}_{Y,Z}(T_S)$.
 
-Since each $\ell$ depends on at most $3k$ variables, we have that $\Pr[Y_i = 1] \geq  p= \frac{1}{2^{3k-1}}$. 
-Let us set $\epsilon = \frac{p}{2}$ and use the above theorem. 
-Hence, the probability at least $\inparen{1 - \exp(-\frac{r_S}{k2^{6k}})}$, there are at least $\inparen{\frac{r_S}{2^{3k}}}$ ineffective instances. 
+Since each $\ell$ depends on at most $3k$ variables, we have that $\Pr[Y_i = 1] \geq  p= \frac{1}{2^{3k-1}}$.
+Let us set $\epsilon = \frac{p}{2}$ and use the above theorem.
+Hence, the probability at least $\inparen{1 - \exp(-\frac{r_S}{k2^{6k}})}$, there are at least $\inparen{\frac{r_S}{2^{3k}}}$ ineffective instances.
 
-For every variable $x \in Y$, let $d_x$ be the number of occurrences of $x$ that is not ineffective. 
-We know that $\sum_{x\in Y} d_x \leq r_S \cdot \inparen{1 - \frac{1}{2^{3k}}}$. 
-On the other hand, $\prod_{x\in Y} (1 + d_x)$ is an upper-bound on the number of non-zero rows of $M_{Y,Z}(T_S)$. 
+For every variable $x \in Y$, let $d_x$ be the number of occurrences of $x$ that is not ineffective.
+We know that $\sum_{x\in Y} d_x \leq r_S \cdot \inparen{1 - \frac{1}{2^{3k}}}$.
+On the other hand, $\prod_{x\in Y} (1 + d_x)$ is an upper-bound on the number of non-zero rows of $M_{Y,Z}(T_S)$.
 Hence,
 \begin{eqnarray*}
 \CM{Raz}_{Y,Z}(T_S) \spaced{\leq}\prod_{x\in Y} (1 + d_i) & \leq & \inparen{\frac{\sum_{x\in Y} (1 + d_x)}{|Y|}}^{|Y|}\\
  & \leq & \inparen{\frac{|Y| + r_S \inparen{1 - \frac{1}{2^{3k}}}}{|Y|}}^{|Y|}\\
  & \leq & \inparen{1 + \delta k\inparen{1 - \frac{1}{2^{3k}}}}^{|Y|}\\
  & \leq & \inparen{1+\delta k}^{|Y|} \cdot \inparen{1 - \frac{1}{2^{3k+1}}}^{|Y|}\\
- & \leq & \inparen{1+k}^{\delta |Y|}\exp\inparen{-\frac{|Y|}{2^{3k+1}}}
+ & \leq & \inparen{1+k}^{\delta |Y|}\exp\inparen{-\frac{|Y|}{2^{3k+1}}}.
 \end{eqnarray*}
-Combining this with \eqref{eqn:TL-bound}, we get with probability at least $\inparen{1 - \exp(-\frac{|X|}{2^{6k+1}})}$
+Combining this with \eqref{eqn:TL-bound}, we get with probability at least $\inparen{1 - \exp(-\frac{|X|}{2^{6k+1}})}$ that
 \[
-\CM{Raz}_{Y,Z}(T) \spaced{\leq} (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}
+\CM{Raz}_{Y,Z}(T) \spaced{\leq} (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}.
 \]
 \end{proofof}
 
 \noindent
-Using an union bound over all multi-$k$-ic terms, we obtain the simple corollary. 
+Using an union bound over all multi-$k$-ic terms, we obtain the simple corollary.
 
 \begin{corollary}\label{cor:multi-k-ic-ub}
-Let $C = T_1 + \dots + T_s$ be a multi-$k$-ic circuit over variables $X$. 
+Let $C = T_1 + \dots + T_s$ be a multi-$k$-ic circuit over variables $X$.
 Then for a random partition $X = Y \sqcup Z$, with probability at least $\inparen{1 - s  \cdot \exp(-\frac{|X|}{2^{6k+1}})}$, we have
 \[
-\CM{Raz}_{Y,Z}(C) \spaced{\leq} s \cdot (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}
+\CM{Raz}_{Y,Z}(C) \spaced{\leq} s \cdot (1+k)^{\min(|Y|,|Z|)}\cdot \exp\inparen{-\frac{|Y|}{2^{3k+1}}}.
 \]
-In particular, if $s < \exp(\frac{|X|}{2^{6k+2}})$, then this happens with probability at least $1/2$. 
+In particular, if $s < \exp(\frac{|X|}{2^{6k+2}})$, then this happens with probability at least $1/2$.
 \end{corollary}
 
-All that is left to do is find an explicit $f$ such that $\CM{Raz}_{Y,Z}(f) = (k+1)^{\min(|Y|,|Z|)}$ with high probability and we would have our lower bound. 
-Here is one example that is a slight generalization of the construction in \autoref{sec:fullrankpoly}  of Raz and Yehudayoff~\cite{ry08} that is defined as follows. 
-We shall again work over the field $\F(\setdef{\omega_{a,b,c},\omega_{a,b}}{a,b,c\leq 2n})$. 
+All that is left to do is find an explicit $f$ such that $\CM{Raz}_{Y,Z}(f) = (k+1)^{\min(|Y|,|Z|)}$ with high probability and we would have our lower bound.
+Here is one example that is a slight generalization of the construction in \autoref{sec:fullrankpoly}  of Raz and Yehudayoff~\cite{ry08} that is defined as follows.
+We shall again work over the field $\F(\setdef{\omega_{a,b,c},\omega_{a,b}}{a,b,c\leq 2n})$.
 
 \[
 f_{i,j}^{(k)} =  \begin{cases}
  \sum\limits_{r=0}^k x_i^r x_{i+1}^r & \text{if $j = i=1$}\\
  0  & \text{if $j -i$ is even}\\
- \inparen{\sum\limits_{r=0}^k x_i^r x_{j}^r} \cdot f_{i+1,j-1}^{(k)} \cdot \omega{i,j}& \\
- \quad + \quad \sum\limits_{\ell=i+1}^{j-1} f_{i,\ell}^{(k)} \cdot f_{\ell+1,j}^{(k)} \cdot \omega_{i,\ell,j}\quad\quad & \text{otherwise} 
+ \inparen{\sum\limits_{r=0}^k x_i^r x_{j}^r} \cdot f_{i+1,j-1}^{(k)} \cdot \omega{i,j},& \\
+ \quad + \quad \sum\limits_{\ell=i+1}^{j-1} f_{i,\ell}^{(k)} \cdot f_{\ell+1,j}^{(k)} \cdot \omega_{i,\ell,j}\quad\quad & \text{otherwise.}
 \end{cases}
 \]
 \noindent
-The following lemma generalizes follows almost directly from \autoref{lem:fullrankpoly}. 
+The following lemma generalizes follows almost directly from \autoref{lem:fullrankpoly}.
 
 \begin{lemma}
 The polynomial $f = f_{1,2n}^{(k)}$ defined above has the property that for every partition $X = \inbrace{x_1,\dots, x_{2n}} = Y \sqcup Z$, we have
 \[
-\CM{Raz}_{Y,Z}(f) \spaced{=} (k+1)^{\min(|Y|,|Z|)}
+\CM{Raz}_{Y,Z}(f) \spaced{=} (k+1)^{\min(|Y|,|Z|)}.
 \]
-Further, this polynomial can be computed by a linear sized arithmetic circuit and hence is in $\VP$. 
+Further, this polynomial can be computed by a linear sized arithmetic circuit and hence is in $\VP$.
 \end{lemma}
 
-Combining this with \autoref{cor:multi-k-ic-ub} directly gives the lower bound of \autoref{thm:multi-k-ic} for a polynomial in $\VP$. 
+Combining this with \autoref{cor:multi-k-ic-ub} directly gives the lower bound of \autoref{thm:multi-k-ic} for a polynomial in $\VP$.
 
 \begin{remark}
-  There has been a subsequent improvement by Kayal, Saha and Tavenas which I hope to add to this chapter soon. 
+  There has been a subsequent improvement by Kayal, Saha and Tavenas which I hope to add to this chapter soon.
 \end{remark}
 
 
