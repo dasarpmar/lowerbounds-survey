@@ -17,7 +17,7 @@ A circuit $C$ is said to be \emph{homogeneous} if every gate in the circuit comp
 
 \begin{lemma}[Homogenization]\label{lem:homogenization}
 Let $f$ be an $n$-variate degree $d$ polynomial computed by a circuit $C$ of size $s$. 
-Then, for every $0\leq i \leq d$, there is a \emph{homogeneous arithmetic circuit} $C_i'$, of size at most $O(sd^2)$, that computes the degree $i$ homogeneous polynomial in $i$. 
+Then, for every $0\leq i \leq d$, there is a \emph{homogeneous arithmetic circuit} $C_i'$, of size at most $O(sd^2)$, that computes the degree $i$ homogeneous polynomial in $f$ (the sum of all degree $i$ monomials in $f$).  
 \end{lemma}
 \begin{proof}
 Assume without loss of generality that the circuit $C$ has all gates with fan-in at most $2$. 
