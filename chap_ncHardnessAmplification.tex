@@ -1,14 +1,14 @@
 \chapter{Hardness amplification for non-commutative circuits}
 \label{chap:nc-hardness-amp}
 
-In \autoref{chap:evalDim}, we saw exponential lower bounds for the non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
+In \autoref{chap:evalDim}, we saw exponential lower bounds for non-commutative formulas and ABPs. As mentioned earlier, in the commutative world, this would have immediately yielded lower bounds for circuits as well due to the depth reduction results (\autoref{thm:vsbr}). However, this does not happen in the non-commutative world, and proving lower bounds for non-commutative circuits has remained elusive.
 
 In this chapter, we shall see a beautiful result of Carmasino, Impagliazzo, Mihajlin and Lovett~\cite{CILM18} that show that even mildly super-linear lower bounds for a family of non-commutative polynomials can be \emph{amplified} to obtain much stronger lower bounds.
 
 \begin{theorem}[\cite{CILM18}] \label{thm:CILM18-mainthm}
   Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $\poly(n)$) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
 
-  Then, for every $c \geq 1$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $n^c$. 
+  Then, for every $c \geq 1$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $n^c$.
 \end{theorem}
 
 In fact, the conclusion can be strengthened if the initial polynomial family $\set{f_n}$ is a constant degree family.
@@ -16,7 +16,7 @@ In fact, the conclusion can be strengthened if the initial polynomial family $\s
 \begin{theorem}[\cite{CILM18}] \label{thm:CILM18-mainthm-constdeg}
   Suppose there is some $\epsilon > 0$ for which we have an explicit family of non-commuting \emph{constant degree} polynomials $\set{f_n}$ (with $f_n$ being an $n$-variate non-commuting polynomial of degree $d$, which is a constant) such that $f_n$ requires non-commutative circuits of size $n^{(\omega/2) + \epsilon}$.
 
-  Then, for some $\delta \geq 0$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $\exp(n^{\delta})$. 
+  Then, for some $\delta \geq 0$, there is an explicit family $\set{g_n}$ (with $g_n$ being an $n$-variate polynomial of degree $\poly(n)$) that requires non-commutative circuits of size $\exp(n^{\delta})$.
 \end{theorem}
 
 In both the above theorems, $\omega$ refers to the exponent of matrix multiplication. For simplicity, we shall just work with this being replaced by $3$. Hence, the above theorems say that if we can get lower bounds of $n^{1.5 + \epsilon}$, then this can be amplified.
@@ -29,24 +29,25 @@ Clearly, if $f$ has a small circuit, then so does $g$ (since each of the $h_i$'s
 
 The proofs of both the theorems essentially repeat the above transformation as many times as possible. In the general case, we can repeat this any constantly many times and hence this would eventually yield \autoref{thm:CILM18-mainthm}. In the setting when the polynomial family has constant degree, we can repeat this more times and that yields \autoref{thm:CILM18-mainthm-constdeg}.
 
-We will see the details in the rest of the chapter. 
+We will see the details in the rest of this chapter.
 
 \section{The hardness-preserving variable reduction}
 
 Suppose $f \in \F\inangle{x_1,\ldots, x_n}$ is a polynomial of degree $d$. Let $m = \ceil{n^{1/3}}$. To each of the variables $x_i$, we shall assign a unique non-commutative monomial $y_{i_1}y_{i_2}y_{i_3}$. Define the polynomial $g$ obtained from $f$ via by substituting the associated monomial for $x_i$:
 \[
-\Amp_3(f) :=  g(y_1,\dots, y_m) := f(y_{1_1}y_{1_2}y_{1_3}, \ldots, y_{n_1}y_{n_2}y_{n_3})
+\Amp_3(f) :=  g(y_1,\dots, y_m) := f(y_{1_1}y_{1_2}y_{1_3}, \ldots, y_{n_1}y_{n_2}y_{n_3}).
 \]
-Clearly, $g$ is an $m$-variate non-commutative polynomial with  $\deg g \leq 3 d$. 
+Clearly, $g$ is an $m$-variate non-commutative polynomial with  $\deg g \leq 3 d$.
 
 \begin{lemma}[Hardness-preserving reduction]\label{lem:cilm-mainlemma}
-Let $f$ be an $n$-variate non-commutative polynomial. Suppose there is a non-commutative circuit of size at most $s$ that computes $\Amp_3(f)$. Then, there is a non-commutative circuit of size at most $s' = C \cdot s \cdot n^{\omega/3}$ for a universal constant $C$. 
+Let $f$ be an $n$-variate non-commutative polynomial. Suppose there is a non-commutative circuit of size at most $s$ that computes $\Amp_3(f)$. Then, there is a non-commutative circuit of size at most $s' = C \cdot s \cdot n^{\omega/3}$ for a universal constant $C$.
 \end{lemma}
-We shall assume the above lemma for now and finish the proofs of \autoref{thm:CILM18-mainthm} and \autoref{thm:CILM18-mainthm-constdeg}. We shall define the following operator which applies this amplification multiple times. 
+We shall assume the above lemma for now and finish the proofs of \autoref{thm:CILM18-mainthm} and \autoref{thm:CILM18-mainthm-constdeg}. We shall define the following operator which applies this amplification multiple times.
 \[
-  \Amp_3^{(k)}(f) := \underbrace{\Amp_3 \circ \Amp_3 \circ \cdots \circ \Amp_3}_{\text{$k$ times}} (f).\]
+  \Amp_3^{(k)}(f) := \underbrace{\Amp_3 \circ \Amp_3 \circ \cdots \circ \Amp_3}_{\text{$k$ times}} (f)
+\]
 \begin{corollary}[Iterative hardness-preserving reduction]\label{cor:cilm-maincorr}
-  Let $f$ be an $n$-variate non-commutative polynomial, of degree $d$, with $n = m^{3^k}$ for some positive integers $m$ and $k$. Let $g(y_1,\ldots, y_m) = \Amp_3^{(k)}(f)$, an $m$-variate non-commutative polynomial of degree $3^k d$. If $g$ can be computed by a circuit of size $s$, then $f$ can be computed by a circuit of size at most $s \cdot n^{\omega/2}\cdot C^k$ where $C$ is the universal constant in \autoref{lem:cilm-mainlemma}
+  Let $f$ be an $n$-variate non-commutative polynomial, of degree $d$, with $n = m^{3^k}$ for some positive integers $m$ and $k$. Let $g(y_1,\ldots, y_m) = \Amp_3^{(k)}(f)$, an $m$-variate non-commutative polynomial of degree $3^k d$. If $g$ can be computed by a circuit of size $s$, then $f$ can be computed by a circuit of size at most $s \cdot n^{\omega/2}\cdot C^k$ where $C$ is the universal constant in \autoref{lem:cilm-mainlemma}.
 \end{corollary}
 \begin{proof}\belowdisplayskip=-12pt
   By repeated applications of \autoref{lem:cilm-mainlemma} yields that $f$ can be computed by a circuit of size at most
@@ -64,7 +65,7 @@ We shall assume the above lemma for now and finish the proofs of \autoref{thm:CI
   \item (Proof of \autoref{thm:CILM18-mainthm}) Set $k$ large enough constant so that $3^k \cdot \epsilon > c$. Then $\deg(g) = 3^k d = \poly(n) = \poly(m)$ as $k$ is a constant. Also, $g$ requires circuits of size $\Omega(n^\epsilon) = \Omega(m^c)$ by the choice of $k$.
 
   \item (Proof of \autoref{thm:CILM18-mainthm-constdeg}) Pick the smallest $k$ such that $3^k \cdot k > \log n$; let $m = n^{1/3^k}$ and $g = \Amp_3^{(k)}(f)$.
-Note that for this choice of $k$, we have $k > \log m$. 
+Note that for this choice of $k$, we have $k > \log m$.
     With this choice of $k$ and since $d = \deg(f)$ is a constant, we have
     \[
       \deg(g) = 3^k \cdot d \approx 3^{(\log n) / 3^k} \cdot d = 3^{\log m} \cdot d = \poly(m).
@@ -86,9 +87,9 @@ We are provided a circuit of size $s$ that computes $\Amp_3(f)$ and we want to u
 
 Intuitively, we want to say that there shouldn't be a circuit much better than actually computing $f$ and doing this transformation. Of course, given \emph{such} a circuit for $\Amp_3(f)$, we can just pull out a circuit for $f$. The main idea is that given \emph{any} circuit for $g$, we can always structure the circuit in such a way that it really does look like a circuit computing $f$ and then doing the monomial substitution.
 
-We will first perform a \emph{partial homogenisation} operation, very similar to \autoref{lem:homogenization} but much weaker. This would be the first step towards at least ensuring that each gate computes a polynomial of degree divisible by $3$. 
+We will first perform a \emph{partial homogenisation} operation, very similar to \autoref{lem:homogenization} but much weaker. This will be the first step towards at least ensuring that each gate computes a polynomial of degree divisible by $3$.
 
-\begin{definition}[A $(\bmod{3})$-homogeneous circuit] A circuit $C$ is said to be $(\bmod{3})$-homogeneous if every gate is labelled by a pair $(i,j) \in \set{1,2,3}^2$ satisfying the following conditions: 
+\begin{definition}[A $(\bmod{3})$-homogeneous circuit] A circuit $C$ is said to be $(\bmod{3})$-homogeneous if every gate is labelled by a pair $(i,j) \in \set{0,1,2}^2$ satisfying the following conditions:
   \begin{itemize}
   \item All leaves will be labelled by some $(i,j)$ such that $j = i+1 \bmod 3$ if it is a variable, and by some $(i,i)$ if the leaf is a constant.
   \item If $g$ is a $+$ gate with label $(i,j)$, then all its children also have label $(i,j)$.
@@ -96,23 +97,24 @@ We will first perform a \emph{partial homogenisation} operation, very similar to
   \end{itemize}
 \end{definition}
 
-Intuitively, each gate's label of $(i,j)$ says that its contribution will always be from a position that is $i \bmod 3$ and until $j\bmod 3$. We leave the proof of the following observation as an easy exercise. 
+Intuitively, each gate's label of $(i,j)$ says that its contribution will always be from a position that is from $i \bmod 3$ and until $j\bmod 3$. We leave the proof of the following observation as an
+easy exercise.
 
 \begin{observation}
-  Any non-commutative polynomial that can be computed by a non-commutative circuit of size $s$ can be equivalently computed by a $(\bmod{3})$-homogeneous non-commutative circuit of size at most $9s$.  
+  Any non-commutative polynomial that can be computed by a non-commutative circuit of size $s$ can be equivalently computed by a $(\bmod{3})$-homogeneous non-commutative circuit of size at most $9s$.
 \end{observation}
 
-Let us see what would happen if we started with the trivial circuit for $\Amp_3(f)$ obtained from a circuit for $f$ and applying the monomial substitution. The resulting circuit is already $(\bmod{3})$-homogeneous, and \emph{every} gate has label $(1,1)$ (and we are thinking of leaves as now being monomials; they also have label $(1,1)$ then). This is the state we want to get to from an arbitrary circuit. The partial homogenisation is one step towards it but there are all kinds of labels for the gates and we want to fix that.
+Let us see what would happen if we started with the trivial circuit for $\Amp_3(f)$ obtained from a circuit for $f$ and applying the monomial substitution. The resulting circuit is already $(\bmod{3})$-homogeneous, and \emph{every} gate has label $(0,0)$ (and we are thinking of leaves as now being monomials; they also have label $(0,0)$ then). This is the state we want to get to from an arbitrary circuit. The partial homogenisation is one step towards it but there are all kinds of labels for the gates and we want to fix that.
 
-The beautiful idea of Carmosino et al \cite{CILM18} is to replace each gate of the circuit by a $m\times m$ matrix of gates, such that each entry of this matrix would have label $(1,1)$. We then want to simulate all additions and multiplications as matrix multiplications. We will need to build some notation. 
+The beautiful idea of Carmosino et al.~\cite{CILM18} is to replace each gate of the circuit by a $m\times m$ matrix of gates, such that each entry of this matrix would have label $(1,1)$. We then want to simulate all additions and multiplications as matrix multiplications. We will need to build some notation.
 
 \begin{definition}[Division operators]
   For a polynomial $f \in \F\inangle{y_1,\ldots, y_m}$ and a variable $y \in \set{y_1,\ldots, y_m}$, we shall define the left and right division operators as
   \begin{align*}
-    [y^{-1}] f & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = y \vecw'}} \coeff_\vecw(f) \cdot \vecw'\\
-     f [y^{-1}] & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = \vecw' y}} \coeff_\vecw(f) \cdot \vecw'
+    [y^{-1}] f & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = y \vecw'}} \coeff_\vecw(f) \cdot \vecw',\\
+     f [y^{-1}] & = \sum_{\substack{\vecw\in \set{y_1,\ldots, y_m}^*\\ \vecw = \vecw' y}} \coeff_\vecw(f) \cdot \vecw'.
   \end{align*}
-  In words, $[y^{-1}] f$ divides from the left by $y$ (and monomials that do not begin with $y$ are zeroed out) and $f [y^{-1}]$ divides from the right. 
+  In words, $[y^{-1}] f$ divides from the left by $y$ (and monomials that do not begin with $y$ are zeroed out) and $f [y^{-1}]$ divides from the right.
 \end{definition}
 
 We now define an operator that maps every labelled gate of the circuit to a matrix of polynomials each of whose entries are $(\bmod{3})$-homogeneous. We'll call it the \emph{glacial} operator after the following sentence in \cite{CILM18}:
@@ -122,9 +124,9 @@ We now define an operator that maps every labelled gate of the circuit to a matr
 
 \begin{definition}[The \emph{glacial} operator]
   Let $g$ be a gate in a $(\bmod{3})$-homogeneous non-commutative circuit $C$ with label $(a,b)$. Let $g$ also denote the polynomial computed by the gate.
-We shall use $\delta(a)$ to denote the function that is $1$ when $a = 1$, and zero otherwise. 
+We shall use $\delta(a)$ to denote the function that is $1$ when $a = 1$, and zero otherwise.
 
-The operator $\Phi(g)$ returns an $m\times m$ matrix of polynomials whose $(i,j)$-th entry is given by the $(a,b)$-th entry of the following matrix:
+The operator $\Phi(g)$ returns an $m\times m$ \todo{I am not sure about the size as the vars in original go from 3n to n}matrix of polynomials whose $(i,j)$-th entry is given by the $(a,b)$-th entry of the following matrix:
 \begin{align*}
   \insquare{
   \begin{array}{ccc}
@@ -135,36 +137,38 @@ The operator $\Phi(g)$ returns an $m\times m$ matrix of polynomials whose $(i,j)
   }.
 \end{align*}
 \end{definition}
-What the above definition does is best described in plain words and a few examples. If $g$ is labelled $(a,b)$ and $a = 1$, then basically $g$ is \emph{start-aligned} and hence only the first row of the matrix $\Phi(g)$ would be non-zero; similarly if $b = 1$, only the first column of the matrix would be non-zero. Hence, if $(a,b) = (1,1)$, then $g$ is properly aligned and hence the matrix $\Phi(g)$ will just have one non-zero entry in the $(1,1)$-th location and that would be $g$. 
+What the above definition does is best described in plain words and a few examples. If $g$ is labelled $(a,b)$ and $a = 0$, then basically $g$ is \emph{start-aligned}, i.e., $\insquare{y^{-1}}g$ is always zero, and hence only the first row of the matrix $\Phi(g)$ would be non-zero; similarly if $b = 0$, only the first column of the matrix would be non-zero. Hence, if $(a,b) = (0,0)$, then $g$ is properly aligned and hence the matrix $\Phi(g)$ will just have one non-zero entry in the $(1,1)$-th location and that would be $g$.\todo{these are wrong or I am not understanding something}
 
-If $(a,b) = (1,2)$, then the polynomials is \emph{start-aligned} but has \emph{one additional variable at the end}. In this case, $\Phi(g)$ consists of just the first row, and the $j$-th entry of this row would be $g [y_j]^{-1}$, thus account for all symbols that could be deleted on the right to make it aligned. In the case when $(a,b) = (1,3)$, then $g$ is \emph{start-aligned} but has one symbol \emph{less} at the end, and hence $\Phi(g)$ will have just the first row with the $j$-th entry being $g y_j$. 
+If $(a,b) = (0,1)$, then the polynomials is \emph{start-aligned} but has \emph{one additional variable at the end}. In this case, $\Phi(g)$ consists of just the first row, and the $j$-th entry of this row
+would be $g [y_j]^{-1}$, thus account for all symbols that could be deleted on the right to make it aligned. In the case when $(a,b) = (0,2)$, then $g$ is \emph{start-aligned} but has one symbol \emph{less} at the
+end, and hence $\Phi(g)$ will have just the first row with the $j$-th entry being $g y_j$.
 
 \begin{observation}\label{obs:cilm-glacial-movement}
   Let $C$ be a $(\bmod{3})$-homogenised circuit of size $s$. Suppose $g$ is some internal gate in $g$.
   \begin{itemize}
   \item If $g = g_1 + g_2$, then $\Phi(g) = \Phi(g_1) + \Phi(g_2)$ (matrix addition).
-  \item If $g = g_1 \times g_2$, then $\Phi(g) = \Phi(g_1) \times \Phi(g_2)$ (matrix multiplication). 
+  \item If $g = g_1 \times g_2$, then $\Phi(g) = \Phi(g_1) \times \Phi(g_2)$ (matrix multiplication).
   \end{itemize}
 \end{observation}
 
-The proof of the above observation is a simple exercise and is left to the reader. Thus, all we need to do for now is replace every gate $g$ of $C$ by the entries of $\Phi(g)$, all addition and multiplication gates by matrix addition and matrix multiplication gates, and we would have obtained our $(\bmod{3})$-homogeneous circuit with each gate labelled with $(1,1)$!
+The proof of the above observation is a simple exercise and is left to the reader. Thus, all we need to do for now is replace every gate $g$ of $C$ by the entries of $\Phi(g)$, all addition and multiplication gates by matrix addition and matrix multiplication gates, and we would have obtained our $(\bmod{3})$-homogeneous circuit with each gate labelled with $(0,0)$!
 
 We start with the leaves of $C$ which were computing variables. For any leaf $\ell$, observe that $\Phi(\ell)$ would be an $m\times m$ matrix, each of whose entries is a monomial of degree exactly $3$ or a constant. Thus, we can first  compute $\Phi(\ell)$ for all the leaves $\ell$. If $g = g_1 \circledast g_2$ is some internal gate for which we need to compute $\Phi(g)$, and we have computed $\Phi(g_1)$ and $\Phi(g_2)$, then we can compute the entries of $\Phi(g)$ by a suitable matrix addition/multiplication via \autoref{obs:cilm-glacial-movement}.
 
-And finally, each matrix addition and matrix multiplication of $m\times m$ matrices can be simulated\footnote{technically, it should be $O(m^{\omega + \epsilon})$ for every $\epsilon > 0$... but meh.} by $O(m^\omega)$ usual additions and multiplications. Let us summarize this discussion as a lemma. 
+And finally, each matrix addition and matrix multiplication of $m\times m$ matrices can be simulated\footnote{technically, it should be $O(m^{\omega + \epsilon})$ for every $\epsilon > 0$... but meh.} by $O(m^\omega)$ usual additions and multiplications. Let us summarize this discussion as a lemma.
 
 \begin{lemmawp}[Alignment lemma]
-  Suppose $f \in \F\inangle{y_1,\ldots, y_m}$ is a polynomial such that every monomial of $f$ has degree divisible by $3$ and computable by a non-commutative circuit $C$ of size $s$. Then, there is a $(\bmod{3})$-homogeneous circuit $C'$, each of whose gates/leaves are labelled by $(1,1)$, of size at most $O(s \cdot m^{\omega})$
+  Suppose $f \in \F\inangle{y_1,\ldots, y_m}$ is a polynomial such that every monomial of $f$ has degree divisible by $3$ and computable by a non-commutative circuit $C$ of size $s$. Then, there is a $(\bmod{3})$-homogeneous circuit $C'$, each of whose gates/leaves are labelled by $(0,0)$, of size at most $O(s \cdot m^{\omega})$
 \end{lemmawp}
 
 \noindent
-\autoref{lem:cilm-mainlemma} is a direct corollary of the above lemma as $m = n^{1/3}$ and this completes the proof of the hardness amplification for non-commtuative circuits. 
+\autoref{lem:cilm-mainlemma} is a direct corollary of the above lemma as $m = n^{1/3}$ and this completes the proof of the hardness amplification for non-commtuative circuits.
 
 \vskip 1em
 
 
 \begin{exercise}
-  The main monomial transformation  was replacing the $n$ variables by degree $3$ monomials in $n^{1/3}$ variables. Naturally, one can choose any $r$ and replace each of the $n$ variables by degree $r$ monomials in $n^{1/r}$ variables. How would these bounds change for an arbitrary $r$? 
+  The main monomial transformation  was replacing the $n$ variables by degree $3$ monomials in $n^{1/3}$ variables. Naturally, one can choose any $r$ and replace each of the $n$ variables by degree $r$ monomials in $n^{1/r}$ variables. How would these bounds change for an arbitrary $r$?
 \end{exercise}
 
 %%% Local Variables:
