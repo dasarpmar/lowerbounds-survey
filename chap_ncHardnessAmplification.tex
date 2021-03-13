@@ -51,9 +51,9 @@ We shall assume the above lemma for now and finish the proofs of \autoref{thm:CI
 \begin{proof}\belowdisplayskip=-12pt
   By repeated applications of \autoref{lem:cilm-mainlemma} yields that $f$ can be computed by a circuit of size at most
   \begin{align*}
-    s' & = s \cdot C^k \cdot \inparen{m \cdot m^3 \cdot \cdots \cdot m^{3^k}}^{\omega/3}\\
-       & = s \cdot C^k \cdot m^{(\omega/3) \cdot (3^{k+1} - 1)/(3 - 1)})\\
-       & = s \cdot C^k \cdot m^{(\omega/2) \cdot 3^k}) = s \cdot C^k \cdot n^{\omega/2}.
+    s' & = s \cdot C^k \cdot \inparen{m^{\omega} \cdot  m^{3\omega}\cdots m^{3^{k-1}\omega}}\\
+       & = s \cdot C^k \cdot m^{\omega  \cdot (3^{k} - 1)/(3 - 1)}\\
+       & \leq  s \cdot C^k \cdot m^{(\omega/2) \cdot 3^k} = s \cdot C^k \cdot n^{\omega/2}.
   \end{align*}
 \end{proof}
 
@@ -122,22 +122,19 @@ We now define an operator that maps every labelled gate of the circuit to a matr
 
 \begin{definition}[The \emph{glacial} operator]
   Let $g$ be a gate in a $(\bmod{3})$-homogeneous non-commutative circuit $C$ with label $(a,b)$. Let $g$ also denote the polynomial computed by the gate.
-We shall use $\delta(a)$ to denote the function that is $1$ when $a = 1$, and zero otherwise. 
 
 The operator $\Phi(g)$ returns an $m\times m$ matrix of polynomials whose $(i,j)$-th entry is given by the $(a,b)$-th entry of the following matrix:
 \begin{align*}
   \insquare{
   \begin{array}{ccc}
-    g \cdot \delta(i)\delta(j) & g\insquare{y_j^{-1}} \cdot \delta(i) & g y_j \cdot \delta(i)\\
-    y_i g \cdot \delta(j) & y_i g\insquare{y_j^{-1}} & y_i gy_j\\
-    \insquare{y_i^{-1}} g \cdot \delta(j) & \insquare{y_i^{-1}} g\insquare{y_j^{-1}} & \insquare{y_i^{-1}} g\insquare{y_j^{-1}}\\
+    g & g\insquare{y_j^{-1}} & g y_j\\
+    y_i g & y_i g\insquare{y_j^{-1}} & y_i gy_j\\
+    \insquare{y_i^{-1}} g & \insquare{y_i^{-1}} g\insquare{y_j^{-1}} & \insquare{y_i^{-1}} g\insquare{y_j^{-1}}\\
   \end{array}
   }.
 \end{align*}
 \end{definition}
-What the above definition does is best described in plain words and a few examples. If $g$ is labelled $(a,b)$ and $a = 1$, then basically $g$ is \emph{start-aligned} and hence only the first row of the matrix $\Phi(g)$ would be non-zero; similarly if $b = 1$, only the first column of the matrix would be non-zero. Hence, if $(a,b) = (1,1)$, then $g$ is properly aligned and hence the matrix $\Phi(g)$ will just have one non-zero entry in the $(1,1)$-th location and that would be $g$. 
-
-If $(a,b) = (1,2)$, then the polynomials is \emph{start-aligned} but has \emph{one additional variable at the end}. In this case, $\Phi(g)$ consists of just the first row, and the $j$-th entry of this row would be $g [y_j]^{-1}$, thus account for all symbols that could be deleted on the right to make it aligned. In the case when $(a,b) = (1,3)$, then $g$ is \emph{start-aligned} but has one symbol \emph{less} at the end, and hence $\Phi(g)$ will have just the first row with the $j$-th entry being $g y_j$. 
+What the above definition does is best described in plain words and a few examples. If $g$ is labelled $(1,1)$, then basically $g$ is both \emph{start-aligned} and \emph{end-aligned} and the matrix $\Phi(g)$ would just have $g$ in every entry. If $g$ is labelled $(2,2)$, then $g$ ``needs one symbol on the left to be added'' to become \emph{start-aligned} and ``needs one symbol on the right to be removed'' to become \emph{end-aligned}. The $(i,j)$-th entry of $\Phi(g)$ then corresponds to $y_i g [y_j^{-1}]$, which \emph{aligns} $g$ by adding $y_i$ on the left and removing $y_j$ on the right. 
 
 \begin{observation}\label{obs:cilm-glacial-movement}
   Let $C$ be a $(\bmod{3})$-homogenised circuit of size $s$. Suppose $g$ is some internal gate in $g$.

@@ -319,7 +319,7 @@ We know that the circuit has depth at most $O(\log s)$ and hence $r \leq O(\log 
 Therefore, the number of paths from any $(v,i)$ to the root is at most $\binom{d + O(\log s)}{d}$.
 Hence, if $\Phi'$ is the formula obtained by unravelling $C$, we have
 \[
-\mathrm{size}(\Phi') = \poly\inparen{s,\binom{d+\log s}{d}}\qedhere
+\mathrm{size}(\Phi') = \poly\inparen{s,\binom{d+\log s}{d}}.
 \]
 \end{proof}
 
@@ -329,7 +329,7 @@ We shall now show that a homogeneous formula can be converted to a set-multiline
 
 \begin{lemma}[Formula Set-multilinearization]\label{lem:formula set-multilinearization}
   Let $f(\vecx)$ be an $n$-variate degree set-multilinear polynomial with respect to the partition $\vecx = \vecx_1\sqcup \cdots \sqcup \vecx_d$ that is computed by a homogeneous formula $\Phi$ of size $s$.
-Then, there exists a set-multilinear formula $\Phi'$ of size at most $2^{O(d\log s)}$ which computes $f$.
+Then, there exists a set-multilinear formula $\Phi'$ of size at most $2^{O(d\log \log s)}$ which computes $f$.
 
 In particular, if $d = O\pfrac{\log n}{\log \log n}$ and $s = \poly(n)$ then the $\mathrm{size}(\Phi') = \poly(n)$.  
 \end{lemma}
@@ -357,8 +357,9 @@ Then any path from $(v,\veca)$ to $(v_r,\mathbf{1})$ is of the form
 (v,\veca) \rightarrow (v_1,\veca_1) \rightarrow \cdots \rightarrow (v_r,\mathbf{1})
 \]
 with $\veca \leq \veca_1 \leq \cdots \leq \mathbf{1}$ in the point-wise sense.
-Therefore, the number of paths from $(v,\veca)$ to the root is at most the number of sequences of vectors in $2^{dr} = 2^{O(d\log s)}$.
-Hence the size of the resulting formula $\Phi'$ is at most $s \cdot 2^{O(d \log s)}$. 
+Therefore, the number of paths from $(v,\veca)$ to the root is at most the number of sequences of ``increasing'' vectors $\veca_1, \cdots, \veca_r \in \set{0,1}^d$. Note that the number of such sequences is at most $r^d$ (why?)
+and hence the number of paths from $(v,\veca)$ to the root is at most $2^{d\log r} = 2^{O(d\log\log s)}$.
+Hence the size of the resulting formula $\Phi'$ is at most $s \cdot 2^{O(d \log\log s)}$. 
 \end{proof}
 
 \autoref{lem:formula-homogenization} and \autoref{lem:formula set-multilinearization} complete the proof of \autoref{thm:form-to-smlform}. 
