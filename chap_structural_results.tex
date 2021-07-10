@@ -639,7 +639,7 @@ We would be using this fact quite a lot so we state this explicitly as a corolla
 If $f$ is an $n$-variate degree $d$ polynomial that requires homogeneous $\SPSP^{[t]}$ circuits of top fan-in $n^{\omega(d/t)}$ to compute it, then $f$ requires general arithmetic circuits of size $n^{\omega(1)}$ to compute it. 
 \end{corollary}
 
-\begin{exercise}
+\begin{exercise}\label{exercise:depth-reduction-prod-depth}
 Define the product-depth of any circuit to be the maximum number of multiplication gates encountered on any root-to-leaf path. 
 
 Show that for any polynomial $n$-variate degree $d$ polynomial $f$ that can be computed by a size $s$ arithmetic circuit, there is a circuit $\Phi'$ of size $s^{O(d^{1/\Delta})}$ and product depth $\Delta$ computing $f$. 
