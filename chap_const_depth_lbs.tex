@@ -176,7 +176,7 @@ Hence, if $C$ is a size $s$ set-multilinear $\Sigma\Pi\Sigma$ circuit, then
 Once we have this lemma, the lower bound is an immediate corollary.
 
 \begin{corollarywp}
-  Let $f$ be a set-multilinear polynomial with respect to the above parts with $\mu(f) = 1$. Then, any set-multilinear $\Sigma\Pi\Sigma\Pi\Sigma$ circuit computing it must have size $n^{\Omega(\sqrt{d}}$. 
+  Let $f$ be a set-multilinear polynomial with respect to the above parts with $\mu(f) = 1$. Then, any set-multilinear $\Sigma\Pi\Sigma\Pi\Sigma$ circuit computing it must have size $n^{\Omega(\sqrt{d})}$. 
 \end{corollarywp}
 
 
@@ -242,8 +242,64 @@ The lower bound for larger depth proceeds exactly along the same lines (with a f
 
 {\bf Case 2: All $\deg(Q_i)$'s are small.} Use the same argument to show that each $M(Q_i)$ is non-square-ish to get the upper bound on $\mu(Q_i)$ and hence $\mu(T)$.\\
 
-The only technical hurdle is that earlier we had chosen our $k$ depending on what degree we were working with etc. but now the choice needs to be flexible. Fortunately, there is a lot of room in the choice of the parameter $k$ and this allows essentially the same argument to sail through without too much difficulty. That's basically the proof for arbitrary constant depth as well. 
+The only technical hurdle is that earlier we had chosen our $k$ depending on what degree we were working with etc. but now the choice needs to be flexible. If we think about it, all we want is to make sure that if Alice parts are of size $\alpha k$ and Bob parts are of size $k$, then we want $\abs{a\alpha - b}$ to be large when $a$ and $b$ are not too large. Here is an easy fix --- take $\alpha$ to be an irrational number, like $\sqrt{2}$! But then, we want $2^{\alpha k}$ to be an integer as well. Turns out, taking Alice parts to be of size $2^{\ceil{\alpha k}}$ and Bob parts to be of size $2^{k}$ is sufficient to make the proof work. 
 
+That's basically the proof for arbitrary constant depth as well.\\
+
+\todo[inline]{RP: Fill in the details}
+
+\section{Getting the lower bound for $\IMM$}
+
+As mentioned earlier, an explicit hard polynomial with respect to the above measure is to just choose a polynomial $P$ such that $M(P)$ looks like the identity matrix. With this definition, we might just be able to say that $P \in \VNP$ but with a bit more care, we can find a hard-polynomial that is actually computable by a polynomial sized set-multilinear ABP and hence extend the above lower bounds to $\IMM$ as well.
+
+\subsection{Re-interpreting the polynomial}
+
+Let us consider a more general setting where $Y_i = 2^{w_i}$ and $Z_i = 2^{v_i}$ for some positive integers $w_i$ and $v_i$. This allows us to just name the variables in each of these parts using binary strings of the appropriate length:
+\begin{align*}
+  Y_i &= \setdef{y_{a}^{(i)}}{a \in \set{0,1}^{w_i}}&
+  Z_i &= \setdef{z_{b}^{(i)}}{b \in \set{0,1}^{v_i}}.
+\end{align*}
+Hence, asking for $M(P) = I$ is the same as saying that $P$ must be a sum of monomials of the form
+\[
+  P = \sum_{\substack{\veca,\vecb \text{ such that}\\a_1\cdots a_r = b_1 \cdots b_{r'}}}y_{a_1}^{(1)} \cdots y_{a_r}^{(r)} \cdot z_{b_1}^{(1)} \cdots z_{b_{r'}}^{(r')}
+\]
+(If the $\prod \abs{Y_i} \neq \prod \abs{Z_i}$, then one can work with monomials where the indices concatenated on the \emph{smaller} side is a prefix of the indices concatenated on the \emph{larger} side so that $M(P)$ becomes a full-rank matrix).
+
+The key point is that, as long as $\abs{Y_i}, \abs{Z_i} = \poly(n)$, the above polynomial is computable by a set-multilinear ABP of polynomial size.
+
+\begin{lemma}
+  Let $Y_1,\ldots, Y_r, Z_1,\ldots, Z_{r'}$ be sets as above with $\abs{Y_i}, \abs{Z_i} \leq m$, and $P$ defined as above. Then there is a $\poly(m, (r+r'))$-sized set-multilinear ABP computing $P$. 
+\end{lemma}
+\begin{proof}
+  Intuitively, the polynomial $P$ looks like the \emph{inner-product} or the \emph{doubling} polynomial in the non-commutative setting. Typically, an ABP cannot ``remember'' the entire concatenated $Y$ indices to currently evolve the $Z$-part. However, we can choose to carefully interleave the parts so that the ABP will never have to ``remember'' too much. Here is how we are going to build the order in which variables are going to be read:
+  \begin{quote}
+    Suppose we have chose $Y_1,\ldots, Y_t$ and $Z_1,\ldots, Z_{t'}$ (in some order). Let $\ell = \sum_{i \leq t} w_i - \sum_{j \leq t'} v_i$; the difference in length of the current Alice-part and Bob-part. If $\ell\leq 0$, add $Y_{t+1}$ next in the order. Else, add $Z_{t'+1}$ next in the order. 
+  \end{quote}
+
+\noindent Here is an example of such an ordering:\\
+  
+  \begin{tikzpicture}
+    \node at (-2,0.25) {$Y_i$'s:};
+    \draw[fill=red!30] (0,0) rectangle (3,0.5) node[midway] {1};
+    \draw[fill=red!30] (3.2,0) rectangle (5,0.5) node[midway] {4};
+    \draw[fill=red!30] (5.2,0) rectangle (6,0.5) node[midway] {6};
+    \draw[fill=red!30] (6.2,0) rectangle (8,0.5) node[midway] {7};
+    \draw[fill=red!30] (8.2,0) rectangle (10,0.5) node[midway] {9};
+
+    \node at (-2,-0.75) {$Z_i$'s:};
+    \draw[fill=blue!30] (0,-1) rectangle (2,-0.5) node[midway] {2};
+    \draw[fill=blue!30] (2.2,-1) rectangle (4,-0.5) node[midway] {3};
+    \draw[fill=blue!30] (4.2,-1) rectangle (7,-0.5) node[midway] {5};
+    \draw[fill=blue!30] (7.2,-1) rectangle (10,-0.5) node[midway] {8};
+    
+  \end{tikzpicture}
+  
+  Notice that given the way we have defined the order, the parameter $\ell$ would never exceed $\ceil{\log_2m}$ as any intermediate imbalance is bounded by just one part.\\
+
+The description of the ABP should now be intuitively clear --- the ABP remembers the ``excess'' string at any intermediate point and picks a variable with this excess string as prefix. For each $i$, let $\ell_i$ be current difference in length (just like in the above ordering algorithm) and the $i$-th layer will have $2^{\ell_i}$ different vertices, one for each string $a \in \set{0,1}^{\ell_i}$. If the excess string at the $i$-th layer is $a \in \set{0,1}^{\ell_i}$, and multiplying with a variable $x_{k}$ from the $i+1$-th part results in an excess string $b \in \set{0,1}^{\ell_{i+1}}$, there is an edge from $v_{a}^{(i)}$ to $v_{b}^{(i+1)}$ with weight $x_k$ on it. It can be readily seen that this ABP indeed computes the polynomial $P$. Furthermore, this ABP is a \emph{set-multilinear} projection of $\IMM$ as all edges between layer $i$ and $i+1$ only involve variables   
+\end{proof}
+
+  
 
 \section{TODO: Subsequent results}
 
