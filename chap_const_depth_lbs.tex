@@ -61,9 +61,9 @@ which seems very similar to the elementary symmetric polynomial except that it i
 \[
   \WESym_{m,d}( z_{1,0}, \ldots, z_{1,d}, \ldots, z_{m,0}, \ldots, z_{m,d}) = \sum_{\substack{\sigma: [m]\rightarrow \{0,\ldots, d\}\\ \sum_{i} \sigma(i) = d}} \;\;\prod_{i=1}^m z_{i, \sigma(i)}.
 \]
-In words, we want all monomials obtained by picking up one homogeneous part from each block such that the total degree is exactly $d$. Very similar to Newton identities that relate the $\ESym_i$ families to the $\PSym_i$ families, there are similar relations between the weighted versions of them. This was also implicit in the work of Bera and Chakrabarti~\cite{BC15}. We'll state it here without proof but a complete proof is presented in the paper of Limaye, Srinivasan and Tavenas~\cite{LST21}.
+In words, we want all monomials obtained by picking up one homogeneous part from each block such that the total degree is exactly $d$. Very similar to Newton identities that relate the $\ESym_i$ families to the $\PSym_i$ families, there are similar relations between the weighted versions of them. Mukherjee and Bera~\cite{MB18} gave a combinatorial proof of this fact.
 
-\begin{lemmawp}[\cite{BC15}]
+\begin{lemmawp}[\cite{MB18}]
   The polynomial $\WESym_{m,d}$ can be computed by a homogeneous $\Sigma\Pi\Sigma\Pi$ circuit of size at most $2^{O(\sqrt{d})} \cdot \poly(m)$. 
 \end{lemmawp}
 
