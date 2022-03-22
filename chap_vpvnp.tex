@@ -312,9 +312,9 @@ However, Mahajan and Vinay show that the sum of signed-weights of all clow seque
 \begin{lemma}[\cite{mv97}]\label{lem:mv-clowseq} If $A_G$ is the adjacency matrix of a graph $G$, then
 \begin{eqnarray*}
 \det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C)\\
-& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C),
-\end{eqnarray*}
-where the latter sum is over clow sequences of length $n$.
+& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C).
+\end{eqnarray*},
+where $\mathrm{ClowSequence(G)}}$ denotes the set of clow sequences of $G$ of length $n$.
 \end{lemma}
 
 They prove this by showing that the set of clow sequences that are not cycle covers can be partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. 
