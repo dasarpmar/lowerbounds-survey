@@ -70,7 +70,7 @@ f(x_1,\dots, x_n)\spaced{=} \bigvee_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_
 Valiant's $\NP$ is defined analogously by replacing the OR by a sum. 
 
 \begin{definition}[Valiant's $\NP$]\label{defn:vnp}
-The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, g_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ and
+The class $\VNP$ is defined to be the set of polynomials $f(x_1,\dots, x_n)$ such that there is some $g(x_1,\dots, x_n, y_1,\dots, y_m) \in \VP$ with $m = \poly(n)$ and
 \[
 f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m}  g(x_1,\dots, x_n, a_1,\dots, a_m).
 \]
@@ -112,7 +112,7 @@ f(x_1,\dots, x_n)\spaced{=} \sum_{\veca \in \inbrace{0,1}^m} g(x_1,\dots, x_n, a
 \section{Reductions and completeness}
 
 For polynomials, the most natural form of reductions are via \emph{projections}. 
-We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by substituting variables of $f$ to other variables or field constants. 
+We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $f$ may be obtained by substituting variables of $g$ to other variables or field constants. 
 Under such reductions, do we have natural complete polynomials for the classes $\VP$ and $\VNP$? 
 Valiant \cite{v79} showed that the $\Det_n$ and $\Perm_n$ are (almost) complete for the classes $\VP$ and $\VNP$ respectively. 
 We shall see the proof of this in this section. 
@@ -238,7 +238,7 @@ This allows us to write $\Det_n$ and $\Perm_n$ as
 
 \subsection{ABPs reduce to $\Det_n$}
 
-We shall now show that for any $f$ computable by an ABP, there is a matrix  $A$ each of whose entries are either variables of constants such that $\det(A) = f$. 
+We shall now show that for any $f$ computable by an ABP, there is a matrix  $A$ each of whose entries are either variables or constants such that $\det(A) = f$. 
 Since any ABP is a projection of the polynomial $\IMM_{n,d}$, we shall show that we can construct a matrix  $A$  such that $\det(A) = \IMM_{n,d}$. \\
 
 Consider the graph $G$ underlying the ABP that corresponds to the polynomial $\IMM_{n,d}$. 
@@ -311,9 +311,10 @@ However, Mahajan and Vinay show that the sum of signed-weights of all clow seque
 
 \begin{lemma}[\cite{mv97}]\label{lem:mv-clowseq} If $A_G$ is the adjacency matrix of a graph $G$, then
 \begin{eqnarray*}
-\det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C) \spaced{=} \det(A_G)\\
-& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C).
+\det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C)\\
+& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C),
 \end{eqnarray*}
+where the latter sum is over clow sequences of length $n$.
 \end{lemma}
 
 They prove this by showing that the set of clow sequences that are not cycle covers can be partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. 
