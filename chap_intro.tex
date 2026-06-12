@@ -52,17 +52,13 @@ For more about completeness classes in arithmetic complexity, \cite{bcs97} is a 
 \section{Prior lower bounds}
 
 Proving lower bounds is generally considered challenging, in most models of computation. 
-For general circuits, the best lower bound we have for an explicit polynomial is by \cite{BS83} who prove an $\Omega(n\log n)$ lower bound. 
+For general circuits, the best lower bound we have (at the time of writing this) for an explicit polynomial is by \cite{BS83} who prove an $\Omega(n\log n)$ lower bound. 
 For the subclass of arithmetic formulas, \cite{k85} has shown a $\Omega(n^{3/2})$ lower bound. 
 On the other hand, we know by standard counting methods that most $n$-variate degree $d$ polynomials require circuits of size $\Omega\inparen{\sqrt{\binom{n+d}{d}}}$.
 
-To gain better understanding of computation by arithmetic circuits, researchers focused on proving lower bounds for restricted models of computation. 
-One very natural restriction is the depth of the circuit. 
-Proving lower bounds for depth two circuits are trivial. 
-For general depth three circuits, the best lower bound we have is by \cite{sw2001} who present an $\Omega(n^2)$ lower bound. 
-Exponential lower bounds are known with additional restrictions like \emph{homogeneity} \cite{nw1997}, \emph{multilinearity} \cite{raz2004,raz-yehudayoff}, over finite fields \cite{gr00,grigoriev98}, \emph{monotonicity} \cite{js82} etc. 
-
-For multilinear models, more is known for even larger depth. \cite{raz2004} showed an $n^{\Omega(\log n)}$ lower bound for the class of multilinear formulas. \cite{raz-yehudayoff} extended those techniques to show an $2^{n^{\Omega(1/\Delta)}}$ lower bound for multilinear formulas of depth $\Delta$. 
+To gain better understanding of computation by arithmetic circuits, researchers focused on proving lower bounds for restricted models of computation. These restrictions have been either by adding structural restrictions (such as focusing on constant depth circuits, or with other fan-in restrictions), or with syntactic restrictions (such as multilinearity, set-multilinearity, homogeneity etc.). 
+Over the years, we have had a variety of techniques that have yielded lower bounds for several natural restrictions. 
+This survey contains a selection of many of these lower bound proofs (many of which have also been simplified over the years). 
 
 \section{Relevance of shallow circuits for ``$\VP$ vs $\VNP$''}
 
@@ -78,7 +74,6 @@ The first result in this regard is by \cite{vsbr83} who proved the following.
 Let $f$ be an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$ of size $s$. 
 Then, $f$ can be equivalently computed by a homogeneous circuit $C'$ of depth $O(\log d)$ with unbounded fan-in $+$ and $\times$ gates and size $s' = (nds)^{O(1)}$. 
 \end{theorem}
-
 
 The above theorem allows us to focus on just homogeneous circuits of $O(\log d)$ depth and attempt lower bounds for this model. 
 Any super-polynomial lower bound for the class of $O(\log d)$ depth circuits automatically yields a super-polynomial lower bound for general circuits. \\
@@ -99,36 +94,18 @@ f\spaced{=} \sum_{i=1}^s Q_{i1}\dots Q_{ia},\quad \text{where $a = O(\sqrt{d})$ 
 \]
 
 In other words, if we can prove a lower bound of $n^{\omega(\sqrt{d})}$ for the class of $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ circuits, we would have a super-polynomial lower bound for the class of general arithmetic circuits! 
-In fact, the model of depth $4$ circuits seem so central in that almost all known lower bounds for other restricted models proceed by proving a suitable lower bound for a depth $4$ analogue. 
-Several examples of this may be seen in \cite{KayalRP}. \\
-
-The first breakthrough was obtained by \cite{gkks13} who showed an $2^{\Omega(\sqrt{d})}$ lower bound for such circuits computing the symbolic $d\times d$ determinant or permanent. 
-Subsequently, there was a flurry of activity towards achieving the goal of proving $n^{\omega(\sqrt{d})}$ lower bounds \cite{KSS13,FLMS13,KS14a}, and this is where we currently stand. 
-
-\begin{theorem}
-There is an explicit homogeneous $n$-variate degree $d$ polynomial $f$ that can be computed by a homogeneous depth $4$ circuit of size $n^{O(1)}$ but any $\SPSPfanin{O(\sqrt{d})}{\sqrt{d}}$ computing it requires top fanin $s = n^{\Omega(\sqrt{d})}$.
-\end{theorem}
-
-If we could change the $n^{\Omega(\sqrt{d})}$ to $n^{\omega(\sqrt{d})}$ in the above theorem (of course, the polynomial $f$ cannot then have a small arithmetic circuit computing it), we would have proved a super-polynomial lower bound for general arithmetic circuits! 
-The following is the simplest formulation of a lower bound of shallow circuit that would imply lower bounds for general circuits. \\
-
-\begin{openproblem}\label{openprob:main} Find an explicit $n$-variate degree $d$ polynomial $f$ such that any expression of the form
-\[
-f \quad=\quad (Q_1)^{\sqrt{d}} + \dots + (Q_{s})^{\sqrt{d}}\quad,\quad \deg(Q_i) \leq \sqrt{d} \text{ for all $i$}
-\]
-must have $s = n^{\omega(\sqrt{d})}$. 
-\end{openproblem}
-\bigskip 
-
-Subsequent to this line of work, several researchers addressed the task of proving lower bounds for homogeneous depth $4$ circuits without any restriction on the fan-ins. 
-It is worth noting that a lower bound for homogeneous depth $4$ circuits must be on the total size and not the top fan-in, as otherwise one could just compute the polynomial $f$ in a single gate of the bottom two layers. 
+In fact, the model of depth $4$ circuits seem so central in that almost all known lower bounds for other restricted models proceed by proving a suitable lower bound for a depth $4$ analogue. \\
 
 \subsection*{What to expect from this article}
 
-This article is intended to be a rolling survey of (almost) all known lower bounds in arithmetic circuit complexity. 
+This article is intended to be a rolling survey of many of the known lower bounds in arithmetic circuit complexity. 
 Most of the proofs in this article are complete and self-contained. 
 However, as one would expect in the more delicate proofs, there would eventually involve a fair amount of calculation and setting of parameters. 
 There might be proofs where this last technical calculation is avoided, but the hope is to make the presentation insightful enough so that it would enable any student to do the calculations (him/her)self.
+
+The first part of the survey contains some necessary preliminaries, structural results and a selection what I believe are lower bounds proofs that most students aiming to work in algebraic complexity should know. 
+These are instructive examples of the key techniques we have been using. 
+Further expositions of lower bounds are present in the ``Advanced topics'' section, to be read at the reader's discretion. 
 
 Also, quite a lot of the proofs presented here are slightly different from the original proofs. 
 The reason for the deviation would almost always be for more clarify and intuition. 
@@ -139,13 +116,7 @@ We shall try to ensure that such losses do not change the overall strength of th
 
 \subsection*{What is not (yet) covered in this survey}
 
-There are surely a few notable lower bounds that are not (yet) discussed in the survey.
-A few that come to mind are the super-linear lower bound of Raz, Shpilka and Yehudayoff for syntactic multilinear circuits \cite{RSY08}, a recent improvement of this by Alon, Kumar and Volk~\cite{KV17} and some more recent lower bounds involving shifted partial derivatives that are yet to be included. 
-
-Besides lower bounds, there are many approaches to prove lower bounds such as Raz's lower bound approach via elusive functions \cite{Raz10elusive}, or Valiant's rigidity approach, or the sum-of-squares question of \cite{hwy}, or the Real $\tau$ conjecture, Geometric Complexity Theory etc.
-
-Perhaps some of these gaps shall be filled in the near\footnote{:-)} future.
-Perhaps.
+There are \emph{several} lower bounds that are not (yet) discussed in this survey. Rather than maintain a list of that here, we will use Github issues to keep track of them. 
 
 %%% Local Variables: 
 %%% mode: latex
