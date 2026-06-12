@@ -11,7 +11,6 @@
 \usepackage{todonotes}
 \usepackage[framemethod=TikZ]{mdframed}
 \usepackage{tikz}
-\usepackage{epigraph}
 \usepackage{verbatim}
 \usepackage{thmtools,thm-restate}
 \usepackage{ccicons}
@@ -20,6 +19,14 @@
 \usepackage[colorlinks]{hyperref}
 
 \input{version}
+
+\newcommand{\gitsha}{unknown}
+\IfFileExists{./sha.tex}{%
+  \newread\gitshareader
+  \openin\gitshareader=sha.tex
+  \read\gitshareader to \gitsha
+  \closein\gitshareader
+}{}
 
 \hypersetup{
   linkcolor=[rgb]{0.3,0.3,0.6},
@@ -32,10 +39,6 @@
 \input{customurlbst/bibmacros}
 
 %% Some title page jazz. Hat-tip: http://tex.stackexchange.com/questions/85904/showcase-of-beautiful-title-page-done-in-tex
-\renewcommand\epigraphflush{flushright}
-\renewcommand\epigraphsize{\normalsize}
-\setlength\epigraphwidth{0.8\textwidth}
-
 \definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
 
 \DeclareFixedFont{\titlefont}{T1}{ppl}{b}{it}{0.5in}
@@ -58,7 +61,12 @@
 \vspace*{1cm}
 
 \titlefont A survey of lower bounds in arithmetic circuit complexity
-\epigraph{\tt \url{https://github.com/dasarpmar/lowerbounds-survey}}{\IfFileExists{./sha.tex}{SHA: \input{sha}\\}{}Version \currentversion}
+
+\vspace{1ex}
+\begin{flushright}
+  {\small\tt \url{https://github.com/dasarpmar/lowerbounds-survey}}\\[0.5ex]
+  {\small \IfFileExists{./sha.tex}{SHA: \gitsha\quad}{}Version \currentversion}
+\end{flushright}
 \null\vfill
 \vspace*{1cm}
 \noindent
