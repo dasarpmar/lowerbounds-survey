@@ -1,0 +1,276 @@
+\chapter{Upper bounds}\label{chap:upper-bounds}
+
+Before we proceed towards seeing techniques for lower bounds, it would be good to be aware of some surprising upper bounds for polynomials. 
+It is often the case that many lower bound proofs are really about leveraging some interesting upper bounds, and we'll see several examples of this in the survey. 
+
+
+\section{Determinant}
+
+In \autoref{thm:det-abp}, we saw that the $n\times n$ symbolic determinant can be computed by an algebraic branching program of size $\poly(n)$. 
+We record that result again here as that is certainly an example of a non-trivial upper bound. 
+
+\begin{theorem*}[(restatement of \autoref{thm:det-abp})] The $n\times n$ symbolic determinant can be computed by an algebraic branching program of depth $n$ and width $O(n^3)$. 
+\end{theorem*}
+
+\section{Permanent}
+
+Although the $n\times n$ symbolic permanent $\Perm_n$ is believed to be hard to compute, there are non-trivially small computations of the permanent. 
+
+The following computation is just `inclusion-exclusion' to compute $\Perm_n$, and is called Ryser's formula. 
+
+\begin{lemma}[Ryser's formula] For any $n \in \N$, 
+  \[
+  \operatorname{perm}(X) = \Perm_n = \sum_{S \subseteq [n]} (-1)^{n-|S|} \prod_{i=1}^n \sum_{j\in S} x_{ij}.
+  \]
+  Thus, $\Perm_n$ can be computed by a \emph{homogeneous, set-multilinear} $\Sigma\Pi\Sigma$ circuit of size $2^n \cdot \poly(n)$. 
+\end{lemma}
+
+If the symbolic matrix $X$ on the LHS is replaced by the matrix each of whose rows are $(x_1, \ldots, x_n)$, then we obtain the following identity to compute a monomial
+
+\begin{lemma}[Fischer's identity]
+\[
+n! \cdot x_1 \cdots x_n = \sum_{S \subseteq [n]} (-1)^{n - |S|} \inparen{\sum_{j \in S} x_j}^n.
+\]
+\end{lemma}
+
+In fact, one can also construct an ABP for $\Perm_n$ (with edges carrying linear forms) consisting of just $2^n$ vertices. 
+
+\begin{exercise}
+Show that there is an ABP for $\Perm_n$ consisting of $2^n$ vertices. 
+
+(Hint: Each node in the ABP will be indexed by a subset of $[n]$, with edges going from nodes corresponding to sets of size $i$ to those corresponding to sets of size $i+1$.)
+\end{exercise}
+
+\section{Elementary symmetric polynomials}
+
+The \emph{elementary symmetric polynomial} $\ESym_d(x_1,\ldots, x_n)$ is defined as 
+\[
+\ESym_d(x_1,\ldots, x_n) = \sum_{\substack{S \subset [n]\\|S| = d}} \prod_{i\in S} x_i,
+\]
+which is the sum of all multilinear monomials corresponding to size $d$ subsets of $[n]$. 
+
+\subsection{Some straightforward computations}
+
+The standard way of computing this as a circuit is just a simple recursive method via 
+\[
+\ESym_{d}(x_1,\ldots, x_n) = \ESym_{d}(x_1,\ldots, x_{n-1}) + x_n \ESym_{d-1}(x_1,\ldots, x_{n-1}).
+\]
+As a formula, this has size $\binom{n}{d}$ but one can show (with some care) that this yields a circuit of size $\poly(n,d)$. 
+
+
+\noindent
+Another computation is 
+\[
+\ESym_{d}(x_1,\ldots, x_n) = \sum_{j=0}^d \ESym_{j}(x_1,\ldots, x_{n/2}) \cdot \ESym_{d-j}(x_{n/2 + 1},\ldots, x_{n}).
+\]
+With a bit of care, one can prove the following. 
+
+\begin{lemma}
+The above expression for the elementary symmetric polynomial yields an algebraic formula of size $n \cdot \binom{d + \log n}{d} \leq n \cdot 2^{d + \log n} = n^2 \cdot 2^d$. 
+\end{lemma}
+
+Both of these computations are homogeneous computations but of large depth. 
+
+\subsection{Depth-3 circuits}
+
+This polynomial \emph{feels like} an algebraic analogue of the boolean ``Threshold'' gate (that returns $1$ if at least $d$ of its input bits are $1$) and one might think that this is perhaps not computable by $\poly(n,d)$-size constant-depth circuits. An important technique we will see in the next chapter is that of \emph{interpolation} (\autoref{lem:interpolation}). 
+
+\begin{lemma}[Interpolation (informal)] For any set of distinct field elements $\alpha_0, \ldots, \alpha_d$ and integers $0 \leq i \leq d$, there are field elements $\beta_{i,0}, \cdots, \beta_{i,d}$ such that for all polynomial $f(x) = f_0 + f_1 x + \cdots + f_d x^d$ we have
+  \[
+  f_i = \sum_{j=0}^d \beta_{i,j} f(\alpha_j).
+  \]
+  That is, we can ``interpolate'' any coefficient from sufficiently many evaluations of $f$. 
+\end{lemma}
+
+With this, consider the polynomial $f(x_1,\ldots, x_n, t) = (1 + tx_1) \cdots (1 + tx_n)$. Interpreted as a univariate in $t$ (with coefficients as polynomials in $x_1,\ldots, x_n$), the coefficient of $t^i$ is precisely $\ESym_i$. Therefore, we immediately get the following. 
+
+\begin{lemma}[Depth-$3$ circuit for $\ESym_d$ over any large field]
+  For all $d \leq n$, and any field $\F$ with $|\F| \geq n+1$, there is a circuit for $\ESym_d$ of the form
+  \[
+  \ESym_d(x_1,\ldots, x_n) = \sum_{j=0}^d  \beta_{j} \cdot (1 + \alpha_j x_1) \cdots (1 + \alpha_j x_n).
+  \]
+\end{lemma}
+The above is a non-homogeneous circuit of depth $3$ for the elementary symmetric polynomial. \\
+
+There are several other ways of computing the elementary symmetric polynomial 
+
+\subsection{Read-once oblivious branching programs}
+
+One other way to construct the elementary symmetric polynomial is via the following branching program:
+\[
+\ESym_d(x_1,\ldots, x_n) = \inparen{\begin{bmatrix} 
+  1 & x_1 & 0   & \cdots & 0\\
+    & 1   & x_1 & \cdots & 0\\
+    &    &  1 & \ddots & \vdots\\
+    & &  & \ddots & \vdots\\
+  & &  &  & 1
+\end{bmatrix}\cdot \begin{bmatrix} 
+  1 & x_2 & 0   & \cdots & 0\\
+    & 1   & x_2 & \cdots & 0\\
+    &    &  1 & \ddots & \vdots\\
+    & &  & \ddots & \vdots\\
+  & &  &  & 1
+\end{bmatrix}
+ \cdots \begin{bmatrix} 
+  1 & x_n & 0   & \cdots & 0\\
+    & 1   & x_n & \cdots & 0\\
+    &    &  1 & \ddots & \vdots\\
+    & &  & \ddots & \vdots\\
+  & &  &  & 1
+\end{bmatrix}}_{(1,d+1)}
+\]
+That is, we can write $\ESym_d(x_1,\dots, x_n)$ as a single entry of a product of $(d+1)\times(d+1)$ matrices, each matrix being a \emph{univariate} in a single variable. Such ABPs are also called \emph{read-once oblivious ABPs}, and we will encounter them later in the survey.
+
+\subsection{Newton-Girard identities}
+
+The Newton-Girard identities, over characteristic zero fields, allow one to write the $\ESym$ polynomials in terms of the $\PSym$ polynomials
+\[
+\PSym_d(x_1,\ldots, x_n) = x_1^d + \cdots + x_n^d.
+\]
+\begin{lemma}[Newton-Girard identities]
+For all $0 \leq d \leq n$, we have
+\[
+d \cdot \ESym_d + \sum_{i=1}^d (-1)^{d-i}\PSym_i \ESym_{d-i} = 0
+\]
+\end{lemma}
+\begin{proof}
+  We'll first prove the statement for $d = n$. 
+  Let $f(t) = (t - x_1) \cdots (t - x_n) = \sum t^i (-1)^{n-i} \ESym_{n-i}$. Clearly $f(x_1) = f(x_2) = \cdots = f(x_n) = 0$ and hence $\sum_i f(x_i) = 0$. 
+  \begin{align*}
+  0 = \sum_i f(x_i) &= \sum_{i=0}^d (-1)^{n-i} \PSym_i \cdot \ESym_{n-i}\\
+    & = n \cdot \ESym_n + \sum_{i=1}^n (-1)^{n-i} \PSym_i \cdot \ESym_{n-i}
+  \end{align*}
+  (where $\ESym_0 = 1$ by convention for all $n$, and $\PSym_0$ is usually not defined so that's handled separately). 
+
+  For $d < n$, consider the LHS and RHS of the purported equality
+  \[
+  d \cdot \ESym_d = \sum_{i=1}^d (-1)^{d-i} \PSym_i \ESym_{d-i}
+  \]
+  For every monomial on the LHS, we can set the other $(n-d)$ variables to zero and notice that the RHS is the Newton identities for $n' = d$ and hence holds. Since the coefficients match for all monomials of degree $d$, the above must indeed be an equality.
+\end{proof}
+
+The Newton-Girard identities are also expressible as a matrix
+\[
+  \ESym_d = \frac{1}{d!} \cdot 
+  \begin{bmatrix}\PSym_1 & 1 & 0 & \cdots & 0 & 0\\ 
+    \PSym_2 & \PSym_1 & 2 & \cdots & 0 & 0 \\ 
+    \vdots& \vdots & \ddots & \ddots &  & \vdots \\
+    \vdots& \vdots &  & \ddots & \ddots & \vdots \\
+    \PSym_{d-1} & \PSym_{d-2} & \PSym_{d-3}& \cdots & \PSym_1 & d-1 \\ 
+    \PSym_d & \PSym_{d-1} & \PSym_{d-2} & \cdots & \PSym_2 & \PSym_1 
+  \end{bmatrix}.
+\]
+The RHS, when expanded into monomials yields a homogeneous (why?) expression of the form 
+\[
+\ESym_d = \sum_{\substack{0\leq e_1,\ldots, e_d\leq d\\ e_1 + 2e_2 + \cdots + de_d = d}} c_{\vece} \cdot \PSym_1^{e_1} \cdot \PSym_2^{e_2} \cdots \PSym_d^{e_d}
+\]
+The number of summands equals the number of partitions of $d$, and turns out this is bounded by $2^{O(\sqrt{d})}$. This then yields the following. 
+
+\begin{lemma}[Homogeneous depth-4 circuit for $\ESym_d$]\label{lem:hom-d4-ckt-esym}
+Over any field of zero (or large) characteristic, there is a homogeneous depth-$4$ circuit of size $2^{O(\sqrt{d})} \cdot \poly(n)$ for $\ESym_d(x_1,\ldots, x_n)$. 
+\end{lemma}
+
+\begin{exercise}
+Use the Newton identities to get a circuit for $\Det_n$ by using the fact that $\Det_n = \lambda_1 \cdots \lambda_n$ where $\lambda_i$'s are the eigenvalues of the symbolic matrix $X$. 
+\end{exercise}
+
+\section{Rectangular permanents}
+
+Much of this section is from Forbes~\cite{TODO} that will be discussed in detail in TODO. 
+
+Consider the following polynomial called the ``rectangular permanent'', denoted by $\RPerm_{r\times n}$, for positive integers $r \leq n$. In words, $\RPerm_{r\times n}$ is the polynomial obtained by considering an $r\times n$ matrix of distinct indeterminates, and adding all monomials that can be obtained by picking $r$ variables from distinct rows and columns. More formally, 
+\[
+\RPerm_{r,n}(X_{r\times n}) = \sum_{\sigma: [r] \hookrightarrow [n]} \prod_{i=1}^r x_{i, \sigma(i)}
+\]
+where $\sigma:[r] \hookrightarrow [n]$ denotes an injective function. 
+
+An obvious computation is of course to just write it as 
+\[
+\sum_{S \in \binom{[n]}{r}}\Perm_n(X_S)
+\]
+which has size $n^{O(r)} \cdot 2^{O(r)}$. Can we do better, particularly in regimes when $r \ll n$? For example, when $r = 2$, we have
+\begin{align*}
+\RPerm_{2,n} & := \sum_{1 \leq i,j\leq n, i\neq j} x_{1i} x_{2_j}\\
+            &  = \inparen{\sum_{1 \leq i \leq n} x_{1i}} \cdot \inparen{\sum_{1 \leq j \leq n} x_{2j}} - \inparen{\sum_{1 \leq i \leq n} x_{1i}x_{2i}}
+\end{align*}
+which only has size $O(n)$. This can be generalised for larger $r$ and is called the Binet-Minc identity. 
+
+\begin{lemma}[Circuits for rectangular permanents]\label{lem:rectangular-perm-computation}
+  For all $1 \leq r \leq n$, we can write $\RPerm_{r,n}$ as
+  \[
+  \RPerm_{r,n}(X_{r\times n}) = \sum_{\lambda \in \mathcal{P}([r])} (-1)^{r - \abs{\lambda}} \prod_{S \in \lambda} (|S| - 1)! \cdot \inparen{\sum_{j=1}^n \sum_{i\in S} x_{ij}}. 
+  \]
+  In particular, the above is a depth-$4$ circuit of size $B_r \cdot \poly(r) \cdot n$ where $B_r$ is the $r$-th Bell number ($B_r = O((r / \log r)^r)$) that counts the number of distinct partitions of $[r]$. 
+\end{lemma}
+
+There are several proofs of this, but we'll give a slightly not-so-self-contained proof via the M\"obius inversion formula that may be applicable in other contexts. 
+
+\paragraph{General context of M\"obius inversion:} Consider any partially ordered set $(\mathcal{P}, \leq)$ (for example the set of subsets of $[n]$ under inclusion, or the set of partitions of $[n]$ under refinement, etc.). Given such a set, we can define a unique \Mobius{} function $\mu: \mathcal{P}\times \mathcal{P} \rightarrow \Z$ that satisfies the following properties:
+\begin{align*}
+\text{For all $A \in \mathcal{P}$,}& &\mu(A, A)  &= 1.\\
+\text{For all $A\leq B \in \mathcal{P}$,}& &\sum_{A \leq T \leq B} \mu(A, T) &= 0.
+\end{align*}
+\noindent
+Equivalently, 
+\[
+\mu(A,B) = \begin{cases}
+  1 & \text{if $A = B$}\\
+  0 & \text{if $A \nleq B$}\\
+  -\sum_{A \leq T < B} \mu(A, T) & \text{otherwise}.
+  \end{cases}
+\]
+(As an example, for the poset of subsets of $[n]$ under inclusion, $\mu(A,B) = (-1)^{|B \setminus A|}$ when $A \subseteq B$.)
+
+The \Mobius{} function is set up to make the following statement hold. 
+
+\begin{lemma}[\Mobius{} inversion formula]
+  Suppose $f,g: \mathcal{P} \rightarrow R$ that satisfies
+  \[
+  f(A) = \sum_{B \geq A} g(B).
+  \]
+  Then, 
+  \[
+  g(A) = \sum_{B \geq A} \mu(A,B) \cdot f(B).
+  \]
+\end{lemma}
+
+With this context, we can now move to rectangular permanents. 
+
+\begin{proof}[Proof of \cref{lem:rectangular-perm-computation}]
+  For a function $h:[r]\rightarrow [n]$, let $\ker h$ denote the partition of $[r]$ defined by setting $i \sim j$ if and only if $h(i) = h(j)$. If $h$ is one-to-one, then $\ker h$ is the finest partition $\hat{0}$ consisting of singletons. 
+
+  Consider the poset $\mathcal{P}$ consisting of partitions of $[r]$ where $\lambda \geq \tau$ if $\tau$ is a finer partition of $\lambda$. Let us define $g: \mathcal{P} \rightarrow \F[\vecx]$ given by 
+  \begin{align*}
+    g(\lambda) & = \sum_{\substack{h: [r] \rightarrow [n]\\ \ker h = \lambda}} \prod_{i=1}^r x_{i, h(i)}\\
+    \implies g(\hat{0}) & = \RPerm_{r,n}(X_{r\times n}).
+  \end{align*}
+  Let us define $f: \mathcal{P} \rightarrow \F[\vecx]$ given by $f(\lambda) = \sum_{\tau \geq \lambda} g(\tau)$.
+  \begin{align*}
+  f(\lambda) & = \sum_{\substack{h: [r] \rightarrow [n]\\ \ker h \geq \lambda}} \prod_{i=1}^r x_{i, h(i)} = \prod_{S \in \lambda} \sum_{j=1}^m \prod_{i\in S} x_{i, j}
+  \end{align*}
+  By the \Mobius{} inversion formula, we now have
+  \begin{align*}
+    \RPerm_{r,n}(X) = g(\hat{0}) & = \sum_{\lambda \geq \hat{0}} \mu(\hat{0}, \lambda) \cdot f(\lambda)\\
+                                 & = \sum_{\lambda \geq \hat{0}} \mu(\hat{0}, \lambda) \cdot \prod_{S \in \lambda} \sum_{j=1}^m \prod_{i\in S} x_{i, j}.
+  \end{align*}
+  Turns out $\mu(\hat{0}, \lambda) = (-1)^{r - |\lambda|} \prod_{S \in \lambda} (|S| - 1)!$. Plugging this into the above expression gives the claim. 
+\end{proof}
+
+\begin{exercise}
+Formally prove the \Mobius{} inversion formula.
+
+For the partition lattice of $[r]$, show that $\mu(\hat{0}, \lambda) = (-1)^{r - |\lambda|} \prod_{S \in \lambda} (|S| - 1)!$. More generally, what is $\mu(\lambda, \tau)$ for $\lambda \leq \tau$?
+\end{exercise}
+
+
+The above expression for the rectangular permanent also provides a homogeneous depth-$4$ circuit for the standard permanent of size $B_n \cdot \poly(n) = \inparen{\frac{n}{\log n}}^{O(n)}$. Similarly, if we were to work with the $r \times n$ matrix $Y$ with $Y_{ij} = x_j$ (i.e., all rows are identical), then 
+\[
+\RPerm_{r,n}(Y) = d! \cdot \ESym_d(x_1,\ldots, x_n),
+\]
+and we get a $\Sigma\Pi\Sigma\wedge$ circuit of size $p(n)$ (the number of partitions of the integer $n$, rather than the number of partitions of the set $[n]$) and hence we get a $2^{O(\sqrt{n})}$-sized depth-$4$ circuit for $\ESym_d$, recovering the bound in \cref{lem:hom-d4-ckt-esym}. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fancymain"
+%%% End: 
