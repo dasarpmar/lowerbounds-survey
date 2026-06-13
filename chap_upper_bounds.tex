@@ -84,7 +84,7 @@ This polynomial \emph{feels like} an algebraic analogue of the boolean ``Thresho
 
 With this, consider the polynomial $f(x_1,\ldots, x_n, t) = (1 + tx_1) \cdots (1 + tx_n)$. Interpreted as a univariate in $t$ (with coefficients as polynomials in $x_1,\ldots, x_n$), the coefficient of $t^i$ is precisely $\ESym_i$. Therefore, we immediately get the following. 
 
-\begin{lemma}[Depth-$3$ circuit for $\ESym_d$ over any large field]
+\begin{lemma}[Depth-$3$ circuit for $\ESym_d$ over any large field]\label{lem:esym-benor-trick}
   For all $d \leq n$, and any field $\F$ with $|\F| \geq n+1$, there is a circuit for $\ESym_d$ of the form
   \[
   \ESym_d(x_1,\ldots, x_n) = \sum_{j=0}^d  \beta_{j} \cdot (1 + \alpha_j x_1) \cdots (1 + \alpha_j x_n).
