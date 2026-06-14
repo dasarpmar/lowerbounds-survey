@@ -15,90 +15,6 @@ However, if the number of variables is understood, we shall drop the subscript.
 \end{itemize}
 
 
-\section{Models of computation}
-
-As mentioned earlier, the most robust model of computation that are studied are arithmetic circuits, which are formally defined as follows. 
-
-\begin{definition}[Arithmetic circuits and formulas]\label{defn:arithmetic-circuit}
-An arithmetic circuit is a directed acyclic graph with a unique sink vertex called the \emph{root}. 
-The source vertices are labelled by either formal variables or field constants, and each internal node of the graph is labelled by either $+$ or $\times$. 
-Nodes compute formal polynomials in the input variables  in the natural way. 
-Further, edges entering a $+$ nodes also might have field constants on them to allow the $+$ to compute an $\F$-linear combination of the children (rather than just a sum). 
-
-The polynomial computed by the circuit is defined as the polynomial computed by the root. \\
-
-\noindent
-If the underlying graph is a \emph{tree} instead of a general acyclic graph, the circuit is called a \emph{formula}.
-\end{definition}
-
-
-Another model of computation that is studied often is the model \emph{algebraic branching programs}, defined as follows. 
-
-\begin{definition}[Algebraic Branching Program]\label{defn:ABP}
-An algebraic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). 
-All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. 
-The polynomial computed by the ABP is defined as 
-\[
-f\spaced{=} \sum_{\gamma: s \leadsto t} \mathrm{wt}(\gamma)
-\]
-where for every path $\gamma$ from $s\leadsto t$, the weight $\mathrm{wt}(\gamma)$ is defined as the product of the labels over the edges in $\gamma$. 
-\end{definition}
-
-The width of the ABP is defined as the maximum number of vertices in any layer, and the depth is defined as the length of the longest path from $s$ to $t$. 
-The polynomial computed by an ABP is captured by the \emph{iterated matrix multiplication} polynomial that we shall soon see. 
-
-It is easy to observe that any arithmetic formula of size $s$ can be simulated by an algebraic branching program of size $\poly(s)$, and any algebraic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. 
-It is a major open problem to show a separation between any of these. 
-
-\[
-\mathrm{Formulas} \spaced{\subseteq} \mathrm{ABPs} \spaced{\subseteq} \mathrm{Circuits}
-\]
-
-\begin{openproblem}
-Show a super-polynomial separation between any of the models -- formulas, ABPs and circuits. 
-\end{openproblem}
-
-\subsection{Constant depth circuits}
-
-We shall be dealing a lot with constant depth circuits. 
-Normally, the root is assumed to be a $+$ gate\footnote{The reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates.
-A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. 
-Thus, a depth two circuit consist of the form 
-\[
-f\quad = \quad \sum_{i=1}^s \prod_{j=1}^d x_{ij}
-\]
-is a $\Sigma\Pi$ circuit. 
-
-\begin{fact}
-Any arithmetic circuit of depth $\Delta$ and size $s$, can be simulated by an arithmetic formula of depth $\Delta$ and size $s' \leq s^{\Delta}$. 
-\end{fact}
-
-Thus for constant depth circuits (where $\Delta = O(1)$), we may assume that we are dealing with formulas without much loss of generality.
-
-
-It would also be useful to keep track of the \emph{fan-in} of the gates in a certain layer (especially of multiplication gates). 
-We shall use superscripts to denote this. 
-For example, an $\Sigma\Pi^{[a]}\Sigma\Pi^{[b]}$ circuits computes a polynomial of the form
-\[
-f \spaced{=} \sum_i \prod_{j=1}^a Q_{ij}
-\]
-where each $Q_{ij}$ is a polynomial of degree at most $b$. \\
-
-It would also be useful to consider special layers of multiplication gates that multiply the same polynomial several times, rather than multiplying several different polynomials together. 
-Since such gates simply raise the input to a certain power, these would be called \emph{exponentiation} gates. 
-A layer of exponentiation will be denoted by $\wedge$ \footnote{To say a little on the choice of notation, it was introduced in \cite{gkks13b} and the first choice was to use ${}^{\wedge}$, but looked rather ugly to write it as say $\Sigma{}^{\wedge}\Sigma$. 
-Hence, $\Sigma\!\wedge\!\Sigma$  was chosen instead. } and, for example, a $\Sigma\!\wedge\!\Sigma$ circuit computes a polynomial of the form 
-\[
-f\spaced{=} \sum_{i=1}^s \ell_{i}^d
-\]
-where each $\ell_i$ is a linear polynomial. \\
-
-\begin{exercise}
-Show that any constant width ABP can be simulated by a polynomial sized formula. 
-\end{exercise}
-
-
-
 \section{Polynomials of interest}
 
 There are a few polynomials that are the usual suspects while proving lower bounds. 
@@ -163,6 +79,222 @@ It is often useful to think of this as the polynomial computed by a \emph{generi
 
 This is a polynomial of degree $d$ and over $n^2(d-2) + 2n$ variables\footnote{Only the first row of the first matrix, and the first column of the last matrix participates in the $(1,1)$ entry of the product}.
 Further, since the polynomial corresponds to a generic algebraic branching program, $\IMM_{n,d}$ can be computed by an arithmetic circuit of size $\poly(n,d)$. 
+
+\subsection*{The Elementary Symmetric Polynomial}
+
+%\subsection*{Schur Polynomials (?)}
+
+\section{Models of computation}
+
+As mentioned earlier, the most robust model for computing polynomials are arithmetic circuits, which are formally defined as follows. 
+
+\begin{definition}[Arithmetic circuits and formulas]\label{defn:arithmetic-circuit}
+An arithmetic circuit is a directed acyclic graph with a unique sink vertex called the \emph{root}. 
+The source vertices are labelled by either formal variables or field constants, and each internal node of the graph is labelled by either $+$ or $\times$. 
+Nodes compute formal polynomials in the input variables  in the natural way. 
+Further, edges entering a $+$ nodes also might have field constants on them to allow the $+$ to compute an $\F$-linear combination of the children (rather than just a sum). 
+
+The polynomial computed by the circuit is defined as the polynomial computed by the root.
+
+\noindent
+If the underlying graph is a \emph{tree} instead of a general acyclic graph, the circuit is called a \emph{formula}.
+\end{definition}
+
+
+Another model of computation that is studied often is the model \emph{algebraic branching programs}, defined as follows. 
+
+\begin{definition}[Algebraic Branching Program]\label{defn:ABP}
+An algebraic branching program (ABP) is a layered graph with a unique source vertex (that we shall call $s$) and a unique sink vertex (that we shall call $t$). 
+All edges are from layer $i$ to layer $i+1$, and each edge is labelled by a linear polynomial. 
+The polynomial computed by the ABP is defined as 
+\[
+f\spaced{=} \sum_{\gamma: s \leadsto t} \mathrm{wt}(\gamma)
+\]
+where for every path $\gamma$ from $s\leadsto t$, the weight $\mathrm{wt}(\gamma)$ is defined as the product of the labels over the edges in $\gamma$. 
+\end{definition}
+
+The width of the ABP is defined as the maximum number of vertices in any layer, and the depth is defined as the length of the longest path from $s$ to $t$. 
+The polynomial computed by an ABP is captured by the \emph{iterated matrix multiplication} polynomial that we shall soon see. 
+
+It is easy to observe that any arithmetic formula of size $s$ can be simulated by an algebraic branching program of size $\poly(s)$, and any algebraic branching program of size $s$ can be simulated of an arithmetic circuit of size $\poly(s)$. 
+It is a major open problem to show a separation between any of these.   
+\[
+    \mathrm{Formulas} \spaced{\subseteq} \mathrm{ABPs} \spaced{\subseteq} \mathrm{Circuits}
+\]
+
+\begin{openproblem}
+Show a super-polynomial separation between any of the models -- formulas, ABPs and circuits. 
+\end{openproblem}
+
+\subsection{Constant depth circuits}
+
+We shall be dealing a lot with constant depth circuits. 
+Normally, the root is assumed to be a $+$ gate\footnote{The reason for this is that often the polynomial computed by the circuits would be irreducible, and hence would be silly to have a $\times$ gate as a root.} and the circuit is assumed to consist of alternating layers of $+$ and $\times$ gates.
+A layer of $+$ gates are called $\Sigma$ layers, and a layer of $\times$ gates are called $\Pi$ layers. 
+Thus, a depth two circuit consist of the form 
+\[
+f\quad = \quad \sum_{i=1}^s \prod_{j=1}^d x_{ij}
+\]
+is a $\Sigma\Pi$ circuit. 
+
+\begin{fact}
+Any arithmetic circuit of depth $\Delta$ and size $s$, can be simulated by an arithmetic formula of depth $\Delta$ and size $s' \leq s^{\Delta}$. 
+\end{fact}
+
+Thus for constant depth circuits (where $\Delta = O(1)$), we may assume that we are dealing with formulas without much loss of generality.
+
+
+It would also be useful to keep track of the \emph{fan-in} of the gates in a certain layer (especially of multiplication gates). 
+We shall use superscripts to denote this. 
+For example, an $\Sigma\Pi^{[a]}\Sigma\Pi^{[b]}$ circuits computes a polynomial of the form
+\[
+f \spaced{=} \sum_i \prod_{j=1}^a Q_{ij}
+\]
+where each $Q_{ij}$ is a polynomial of degree at most $b$. \\
+
+It would also be useful to consider special layers of multiplication gates that multiply the same polynomial several times, rather than multiplying several different polynomials together. 
+Since such gates simply raise the input to a certain power, these would be called \emph{exponentiation} gates. 
+A layer of exponentiation will be denoted by $\wedge$ \footnote{To say a little on the choice of notation, it was introduced in \cite{gkks13b} and the first choice was to use ${}^{\wedge}$, but looked rather ugly to write it as say $\Sigma{}^{\wedge}\Sigma$. 
+Hence, $\Sigma\!\wedge\!\Sigma$  was chosen instead. } and, for example, a $\Sigma\!\wedge\!\Sigma$ circuit computes a polynomial of the form 
+\[
+f\spaced{=} \sum_{i=1}^s \ell_{i}^d
+\]
+where each $\ell_i$ is a linear polynomial. \\
+
+\begin{exercise}
+Show that any constant width ABP can be simulated by a polynomial sized formula. 
+\end{exercise}
+
+\subsection{Homogenity}\label{sec:homogenization}
+
+Suppose we have an $n$-variate degree $d$ polynomial computed by an arithmetic circuit $C$. 
+How large can the degree of intermediate computations be? 
+Potentially, intermediate computations can involve very high degree terms which somehow cancel each other at the root. 
+However, the following lemma of Strassen shows that we may assume without much loss of generality that arithmetic circuits never compute polynomials of degree more than the output. 
+
+\begin{definition}[Homogeneous circuits]
+A circuit $C$ is said to be \emph{homogeneous} if every gate in the circuit computes a homogeneous polynomial. 
+\end{definition}
+
+\begin{lemma}[Homogenization]\label{lem:homogenization}
+    Let $f$ be an $n$-variate degree $d$ polynomial computed by a circuit $C$ of size $s$. 
+    Then, for every $0\leq i \leq d$, there is a \emph{homogeneous arithmetic circuit} $C_i'$, of size at most $O(sd^2)$, that computes the degree $i$ homogeneous polynomial in $f$ (the sum of all degree $i$ monomials in $f$).  
+\end{lemma}
+\begin{proof}
+    Assume without loss of generality that the circuit $C$ has all gates with fan-in at most $2$. 
+    For every gate $g\in C$, define $(d+1)$ gates $g^{(0)},\dots, g^{(d)}$; we shall construct a new circuit $C'$ such that $g^{(i)}$ computes the degree $i$ homogeneous component of the polynomial computed at $g$. 
+    If $g$ has children $h_1$ and $h_2$, then $C'$ would have the following connections depending on the type of the gate $g$:
+    \begin{eqnarray*}
+        \text{$g = h_1 + h_2$}\quad\implies\quad g^{(i)} &=& h_1^{(i)} \spaced{+} h_2^{(i)}\quad\text{for all $i$}\\
+        \text{$g = h_1 \times h_2$}\quad\implies\quad g^{(i)} &=& \sum_{j=0}^i h_1^{(j)} h_2^{(i-j)}\quad\text{for all $i$}
+    \end{eqnarray*}
+    It is easy to check that the size of the circuit $C'$ is at most $O(sd^2)$, and computes all the homogeneous components of $f$. 
+\end{proof}
+
+Thus, for arithmetic circuits, we can assume without much loss of generality that we are working with a homogeneous circuit. 
+The class of ABPs can also be assumed to be homogeneous without loss of generality. 
+We leave this as an exercise.
+
+\begin{exercise}
+    Prove a similar homogenization lemma for algebraic branching programs. 
+\end{exercise}
+
+\begin{remark*}
+    For the class of arithmetic formulas, it is not clear if we can homogeneous without loss of generality. 
+    If we were to apply the above lemma to an arbitrary arithmetic formula, the resulting object is a homogeneous circuit and not a formula. 
+    It is unclear if any formula can be homogenized without loss of generality. 
+    The same is the case even for circuits of a fixed depth, as the above construction doubles the depth of the circuit.  
+\end{remark*}
+
+
+\subsection{Multilinear and Set-Multilinear Settings}
+
+Most of the polynomials that are studied usually, like those described in \autoref{chap:notation}, are multilinear. 
+A natural question is whether or not multilinear polynomials can be computed in a ``multilinear fashion''. 
+This is formalized by what the model of multilinear circuits, in a way analogous to homogeneous circuits. 
+
+\begin{definition}[Multilinear circuits]
+A circuit $C$ is said to be \emph{multilinear} if every gate of the circuit computes a multilinear polynomial. 
+A circuit is said to be \emph{syntactically multilinear} if for any $g = g_1 \times g_2$, there is no variable that has a path to both $g_1$ and $g_2$. 
+\end{definition}
+
+Note that syntactic multilinearity of course implies multilinearity as the definition forces all gates to compute multilinear polynomials. 
+However, we could have a setting where there is a gate $g = g_1 \times g_2$ where some variable $x$ has a path to both $g_1$ and $g_2$ but it so turns out that $g_1$ is independent of $x$ due to other cancellations. 
+However, for arithmetic formulas, the two notions are equivalent. 
+
+\begin{exercise}
+Given any arithmetic formula $\Phi$ that is multilinear, show that it can be converted to a formula $\Phi'$ of size $\poly(\Phi)$ that is syntactically multilinear. 
+
+\noindent
+{\bf (Imp.)} Why does the same not work for multilinear circuits? 
+\end{exercise}
+
+\begin{definition}[Set-multilinear polynomials]\label{defn:set-multilinear}
+  Let $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ be a partition of variables and let $|\vecx_i| = m_i$.
+A polynomial $f(\vecx)$ is said to be \emph{set-multilinear} with respect to the above partition if every monomial $m$ in $f$ satisfies $\abs{m \intersection X_i} = 1$ for all $i \in [d]$.
+\end{definition}
+In other words, each monomial in $f$ picks up at most one variable from each part in the partition. It is easy to see that many natural polynomials such as $\Det$ or $\Perm$ or $\NW$ are all set-multilinear for an appropriate partition of variables.
+
+\subsection{Non-Commutative Setting}
+
+A non-commutative polynomials over many variables, denoted by $\F\inbrace{x_1,\ldots, x_n}$, are formal polynomials over the variables wherein the variables do not commute.
+Hence, a polynomial $x_1x_2 - x_2x_1$ in $\F\set{x_1,\ldots, x_n}$ is a non-zero polynomial.
+They naturally can be added or multiplied but the order in which the variables are multiplied become important.
+Hence,
+\[
+(x_1 + x_2)(x_1 + x_2) \spaced{=} x_1^2 + x_2x_1 + x_1x_2 + x_2^2 \spaced{\neq} x_1^2 + 2x_1x_2 + x_2^2
+\]
+Each monomial is no longer identifiable by just an exponent vector but is rather a \emph{word} on the set $\set{x_1,\ldots, x_n}$. 
+
+In this space, we can continue to talk about arithmetic circuits or algebraic branching programs where we always keep track of the order of variables multiplied.
+In arithmetic circuits or formulas, every $\times$ gate has labelled left and right children.
+In an algebraic branching program, the weight of a path from source to sink is the product of the edge weights \emph{in the order from left to right}.
+
+\subsection{Monotone Setting}
+
+A monotone circuit over $\RR$ is a circuit having $+, \times$ gates in which all the field constants are {\em non-negative} real numbers. 
+Such a circuit can compute any polynomial $f$ over $\RR$ all of whose coefficients are nonnegative real numbers, such as for example the permanent. 
+It is then natural to ask whether there are small monotone circuits over $\RR$ computing the permanent. 
+Jerrum and Snir \cite{js82} obtained an exponential lower bound on the size of monotone circuits over $\RR$ computing the permanent. 
+Note that this definition of monotone circuits is valid only over $\RR$ (actually more generally over ordered fields but not over say finite fields) and such circuits can only compute polynomials with non-negative coefficients. 
+Here we will present Jerrum and Snir's argument in a slightly more generalized form such that the circuit model makes sense over any field $\FF$ and is complete, i.e.  can compute any polynomial over $\FF$.\footnote{This generalization was told to me by Neeraj Kayal} Let us first explain the motivation behind the generalized circuit model that we present here. 
+Observe that in any monotone circuit over $\RR$, there is no cancellation as there are no negative coefficients. 
+Formally, for a node $v$ in our circuits let us denote by $f_{v}$ the polynomial computed at that node. 
+For a polynomial $f$ let us denote by $\Mon(f)$ the set of monomials having a nonzero coefficient in the polynomial $f$.
+\begin{enumerate}
+\item If $w = u + v$ then 
+  $$ \Mon(f_{w}) = \Mon(f_{u}) \cup \Mon(f_{v}). $$
+  
+\item If $w = u \times v$ then
+  $$ \Mon(f_{w}) = \Mon(f_{u}) \cdot \Mon(f_{v}) \eqdef \setdef{m_1\cdot m_2}{m_1 \in \Mon(f_{u}), m_2\in \Mon(f_{v})}. $$
+			
+\end{enumerate}
+This means that for any node $v$ in a monotone circuit over $\RR$ one can determine $\Mon(f_{v})$ in a very syntactic manner starting from the leaf nodes. 
+Let us make precise this syntactic computation that we have in mind.
+
+\begin{definition}[Formal Monomials.]
+  Let $\Phi$ be an arithmetic circuit. 
+The \emph{formal monomials} at any node $v\in \Phi$, which shall be denoted by $\FM(v)$, shall be inductively defined as follows:
+  \begin{quote}
+    If $v$ is a leaf labelled by a variable $x_i$, then $\FM(v) = \inbrace{x_i}$. 
+If it is labelled by a constant, then $\FM(v) = \inbrace{1}$.
+    
+    If $v = v_1 + v_2$, then $\FM(v) = \FM(v_1) \union \FM(v_2)$. 
+    
+    If $v = v_1 \times v_2$, then 
+    \begin{eqnarray*}
+      \FM(v) &=& \FM(v_1)\cdot \FM(v_2)\\
+      &\eqdef& \setdef{m_1\cdot m_2}{m_1 \in \FM(v_1), m_2\in \FM(v_2)}.
+    \end{eqnarray*}
+  \end{quote}
+\end{definition}
+
+\noindent Note that for any node $v$ in any circuit we have $\Mon(f_{v}) \subseteq \FM(v)$ but in a monotone circuit over $\RR$ this containment is in fact an equality at every node. 
+This motivates our definition of a slightly more general notion of a monotone circuit as follows.
+
+\begin{definition}[Monotone circuits]\label{defn:monotone-circuit}
+  A circuit $C$ is said to be \emph{syntactically monotone} (simply monotone for short) if $\Mon(f_{v}) = \FM(v)$ for every node $v$ in $C$.
+\end{definition}
 
 
 %%% Local Variables: 

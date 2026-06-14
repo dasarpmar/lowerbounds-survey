@@ -35,13 +35,7 @@ So throughout this chapter, we shall fix a basis $\set{\vece_{i1},\ldots, \vece_
 
 \subsection{Tensors as polynomials}
 
-In our setting, it would be useful to think of tensors as a restricted form of multilinear polynomials that are called \emph{set-multilinear polynomials}.
-
-\begin{definition}[Set-multilinear polynomials]\label{defn:set-multilinear}
-  Let $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ be a partition of variables and let $|\vecx_i| = m_i$.
-A polynomial $f(\vecx)$ is said to be \emph{set-multilinear} with respect to the above partition if every monomial $m$ in $f$ satisfies $\abs{m \intersection X_i} = 1$ for all $i \in [d]$.
-\end{definition}
-In other words, each monomial in $f$ picks up at most one variable from each part in the partition. It is easy to see that many natural polynomials such as $\Det$ or $\Perm$ or $\NW$ are all set-multilinear for an appropriate partition of variables. 
+In our setting, it would be useful to think of tensors as set-multilinear polynomials (\autoref{defn:set-multilinear}). 
 
 \begin{observation}\label{obs:tensor-to-sml}
   For any tensor $T$ of shape $[m_1] \times \cdots \times [m_d]$, we can associate a set-multilinear polynomial $f(\vecx)$ with $\vecx = \vecx_1 \sqcup \cdots \sqcup \vecx_d$ and $\vecx_i = \set{x_{i1}, \ldots, x_{im_i}}$ as

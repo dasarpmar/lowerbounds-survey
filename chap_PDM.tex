@@ -5,19 +5,6 @@ Nisan~\cite{nis91} introduced the notion of the partial derivative matrix in the
 
 \section{Non-commutative models of computation}
 
-A non-commutative polynomials over many variables, denoted by $\F\inbrace{x_1,\ldots, x_n}$, are formal polynomials over the variables wherein the variables do not commute.
-Hence, a polynomial $x_1x_2 - x_2x_1$ in $\F\set{x_1,\ldots, x_n}$ is a non-zero polynomial.
-They naturally can be added or multiplied but the order in which the variables are multiplied become important.
-Hence,
-\[
-(x_1 + x_2)(x_1 + x_2) \spaced{=} x_1^2 + x_2x_1 + x_1x_2 + x_2^2 \spaced{\neq} x_1^2 + 2x_1x_2 + x_2^2
-\]
-Each monomial is no longer identifiable by just an exponent vector but is rather a \emph{word} on the set $\set{x_1,\ldots, x_n}$. 
-
-In this space, we can continue to talk about arithmetic circuits or algebraic branching programs where we always keep track of the order of variables multiplied.
-In arithmetic circuits or formulas, every $\times$ gate has labelled left and right children.
-In an algebraic branching program, the weight of a path from source to sink is the product of the edge weights \emph{in the order from left to right}.
-
 Nisan \cite{nis91} asked the question of whether we can prove lower bounds in this more restricted model of computation. In his paper, he introduced the complexity measure via the \emph{Partial Derivative Matrix}, and used it to not just prove lower bounds but exactly calculate the size of the smallest non-commutative ABP computing a homogeneous polynomial $f$. \\
 
 \begin{exercise}

@@ -69,7 +69,7 @@ The proof of the above lemma would repeated use \autoref{lem:factorial-ratio}.
 \frac{\binom{n-a}{\ell -b}}{\binom{n}{\ell}} & = & \frac{(n-a)!}{n!} \cdot \frac{\ell!}{(\ell -b)!}\cdot \frac{(n-\ell)!}{(n-\ell-a+b)!}\\
 & \stackrel{\poly}{\approx}& \frac{1}{n^a} \cdot \ell^b \cdot \frac{(n-\ell)^a}{(n-\ell)^b}\\
 & = & \frac{\inparen{\frac{n}{2}}^a(1 +\epsilon)^a}{n^a} \cdot \frac{(1-\epsilon)^{b}}{(1+\epsilon)^b}\\
-& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2)).
+& = & 2^{-a} \cdot (1+\epsilon)^{a - 2b} \cdot \exp(O(b\cdot \epsilon^2)). \qedhere
 \end{eqnarray*}
 \end{proof}
 
