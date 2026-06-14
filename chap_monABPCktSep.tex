@@ -1,4 +1,4 @@
-\chapter{Separating monotone circuits and monotone ABPs}\label{chap:monABPCktSep}
+\chapter{Separations between circuits, ABPs and formulas in the monotone setting}\label{chap:monABPCktSep}
 
 \newcommand{\MonChi}{\operatorname{Mon}}
 \newcommand{\EIP}{\operatorname{EIP}}
@@ -6,7 +6,12 @@
 As mentioned earlier, we know that Formulas $\subseteq$ ABP $\subseteq$ Circuits and it is a major open problem to show if any of these are strict containments.
 Currently we do not even know how to prove super-polynomial lower bounds for any of these classes.
 However, we have just seen that we have techniques to prove lower bounds in the monotone setting.
-A natural question is therefore if any of these containments are strict in the monotone setting. In this chapter, we shall see a beautiful lower bound of Hrube\v{s} and Yehudayoff~\cite{HY16}.
+A natural question is therefore if any of these containments are strict in the monotone setting. 
+
+\section{Monotone Formulas vs Monotone ABP}
+
+\section{Monotone ABP vs Monotone Circuits}
+In this chapter, we shall see a beautiful lower bound of Hrube\v{s} and Yehudayoff~\cite{HY16}.
 
 \begin{theorem}[Hrube\v{s} and Yehudayoff~\cite{HY16}]\label{thm:mon-abp-ckt-sep}
   There is an explicit $n$-variate degree $d$ polynomial $P$ that is computable by a $\poly(n,d)$ sized monotone algebraic circuit such that any monotone algebraic ABP computing it must have size $(nd)^{\Omega(\log nd)}$.
@@ -36,7 +41,7 @@ What sort of weakness can we exploit for ABPs? There are many similarities betwe
 
 Although the above frontier decompositions look very similar, observe that for ABPs we have a much finer control of what the degree of $g_i$ and $h_i$ are unlike for algebraic circuits. Hrube\v{s} and Yehudayoff~\cite{HY16} show that this ``weakness'' can be exploited when working with the monotone setting.
 
-\section{The polynomial}
+\subsection{The polynomial}
 
 Let $d,m$ be parameters that will be set eventually (we will choose it such a way that $d = O(\log m)$).
 We shall identify $[m]$ with the additive group $\frac{\Z}{m\Z}$. Let $T_d$ denote the complete binary tree of depth $d$ (with $2^d$ leaves). A colouring of $T_d$ will be a function $\chi:V(T_d) \rightarrow [m]$, which just assigns colours from $[m]$ to the vertices of the tree $T_d$. We shall say that a colouring $\chi$ is \emph{valid} if for every internal node $u$ with children $v$ and $w$ in $T_d$ the colouring satisfies $\chi(u) = \chi(v) + \chi(w)$ (over $\frac{\Z}{m\Z}$).
@@ -72,7 +77,7 @@ P_{m,d} = \sum_{i=1}^{s} g_i h_i
 \]
 where $\deg(g_i) = k$ and $\deg(h_i) = 2^{d+1} - 1 - k$. We need to find the right value of $k$ that allows us to force $s$ to be large (and clearly $k = 2^d$ or $2^{d} -1$ are bad choices!). Hrube\v{s} and Yehudayoff~\cite{HY16}'s cool idea was to look at the \emph{isoperimetric profile} of the tree and choose $k$ accordingly.
 
-\section{Isoperimetric profiles}
+\subsection{Isoperimetric profiles}
 
 The following definitions can be made for general graphs but we will restrict ourselves to the tree $T_d$ as only that would be relevant here. For a parameter $k \leq \abs{V(T_d)}$, we shall define $\EIP(k)$ as
 \[
@@ -90,7 +95,7 @@ But the point is that there are many other values of $k$ for which $\EIP(k)$ is 
 
 This is not a hard proof but is certainly believable. Let us just assume this and proceed with their proof (the interested reader can see a proof of this in the paper of Hrube\v{s} and Yehudayoff~\cite{HY16}). From this point onwards, whenever we use the variable $k$, we mean this $d$-bit integer with binary representation $1010\cdots10$.
 
-\section{Lower bound}
+\subsection{Lower bound}
 
 Suppose that $P_{m,d}$ can be computed by a monotone ABP of size $s$. Then $P_{m,d}$ must have a monotone computation of the form
 \[
