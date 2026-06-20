@@ -493,28 +493,61 @@ In this section we shall revisit \autoref{thm:av} when it is applied to formulas
 Do the resulting depth four circuits have any additional structure when we start from a homogeneous formula?
 The alternate proof of Saptharishi and Vinay~\cite{saptharishivinay14} provides some insight into this. 
 
-We would need the following lemma that was present in the survey of Shpilka and Yehudayoff \cite{sy} and also in the result of Hrube\v{s} and Yehudayoff \cite{HY11a} that we shall see a proof of in \autoref{chap:multilinear} as \autoref{lem:mult-logproduct} and \autoref{lem:hom-logproduct}.
+We would need the following lemma that was present in the survey of Shpilka and Yehudayoff \cite{sy} and also in the result of Hrube\v{s} and Yehudayoff \cite{HY11a}.
 
+\subsection{Log-product decompositions}
 
-\begin{lemma}[\autoref{lem:hom-logproduct} stated without proof]\label{lem:hom-logproduct-restated}
+\begin{definition}\label{defn:mult-logproduct}
+  A multilinear polynomial $f\in \F[X]$ is called a \emph{multilinear log-product} polynomial if $f = g_1\dots g_t$ and there exists a partition of variables $X = X_1 \sqcup \dots \sqcup X_t$ such that
+  \begin{itemize}
+  \item $g_i \in \F[X_i]$ for all $i \in [t]$.
+  \item $\pfrac{1}{3}^i |X| \leq |X_i| \leq \pfrac{2}{3}^i |X|$ for all
+    $i$, and $|X_t| = 1$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lem:mult-logproduct}
+  Let $\Phi$ be a multilinear formula of size $s$ computing a polynomial $p$. 
+Then $p$ can be written as a sum of $(s+1)$ log-product multivariate polynomials.
+\end{lemma}
+\begin{proof}
+  Similar to \autoref{lem:formula-depth-reduction}, let $v$ be a node in $\Phi$ such that set of variables $X_v$ that it depends on satisfies $\frac{|X|}{3} \leq \abs{X_v} \leq \frac{2|X|}{3}$. 
+If $\Phi_v$ is the polynomial computed at this node, then $f$ can be written as
+  $$
+  f \spaced{=} \Phi_v \cdot g_1 + \Phi_{v=0} \quad\text{for some $g_1 \in \F[X\setminus X_v]$}.
+  $$
+  where $\Phi_{v=0}$ is the formula obtained by replacing the node $v$ by zero. 
+Note that the subtree at the node $v$ is completely disjoint from $\Phi_{v=0}$. 
+Hence the sum of the sizes of $\Phi_v$ and $\Phi_{v=0}$ is at most $s$. 
+Hence, $g_1 \in \F[X\setminus X_v]$ and $\frac{|X|}{3} \leq \abs{X \setminus X_v} \leq \frac{2|X|}{3}$. 
+Inducting on the formulas $\Phi_v$ and $\Phi_{v=0}$ gives the lemma.
+\end{proof}
+
+There are many variants of this formula depending on how you pick the node $v$ in the proof above.
+Here is another variant that find a node $v$ based on \emph{degree} rather than the number of variables that it depends on.
+We state it here without proof but it follows exactly as in the lines of \autoref{lem:mult-logproduct}.
+
+\begin{lemma}\label{lem:hom-logproduct}
   Let $\Phi$ be a homogeneous formula of size $s$ computing a polynomial $p$ of degree $d$.
 Then $p$ can be written as a sum of $(s+1)$ \emph{log-product} polynomials, that is,
-\begin{equation}\label{eqn:dred-formula-logproduct}
+\[
 p \spaced{=} f_1 + \cdots + f_{r}\quad\quad \text{with $r \leq s+1$}
-\end{equation}
+\]
 where for each $i \in [r]$, we have $f_i = f_{i1} \cdots f_{i\ell}$ satisfying
 \begin{itemize}
-\item each $f_{ij}$ is homogeneous, and $\sum_j \deg(f_{ij}) = d$,
+\item each $f_{ij}$ is homogeneous,
 \item $(1 / 3)^j \cdot d \leq \deg(f_{ij}) \leq (2/ 3)^j \cdot d$,
 \item $f_{i\ell} = 1$.
 \end{itemize}
 In particular, each $f_i$ factors into $\Omega(\log d)$ non-trivial factors of geometrically decreasing degrees. 
+
+Furthermore, if $\Phi$ was a multilinear formula to begin with, then so is the expression on the RHS. 
 \end{lemma}
 
-Furthermore, if $\Phi$ was a multilinear formula to begin with, then so is the expression on the RHS.
-And if $\Phi$ was set-multilinear, then so is the expression on the RHS.
 In other words, it says that a homogeneous formula has a homogeneous depth-$4$ formula of the form $\Sigma^{[s+1]}\Pi^{[\log d]}\Sigma\Pi^{[2d/3]}$.
 We can now describe the mild extension of \autoref{thm:av} applied for homogeneous formulas. 
+
+Essentially, these log-product decompositions preserve any syntactic restrictions in the original formula (i.e. multilinearity, homogeneity, set-multilinearity, monotonicity etc.). 
 
 \begin{theorem}[\autoref{thm:av} for homogeneous formulas]\label{thm:av-formulas}
 Let $f$ be a homogeneous $n$-variate degree $d$ polynomial computed by a size $s$ homogeneous formula. 
