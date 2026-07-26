@@ -4,7 +4,7 @@
 # -----------------------------------------------------
 # Post-{commit,checkout,merge} hook for the gitinfo package
 #
-prefixes="."              # Default --- in the working copy root
+prefixes="src"              # Default --- in the working copy root
 for pref in $prefixes
 	do
 	git rev-parse HEAD > $pref/sha.tex
