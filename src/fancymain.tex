@@ -20,16 +20,9 @@
 \usepackage{microtype}
 \usepackage[colorlinks]{hyperref}
 \usepackage[capitalize,nameinlink]{cleveref}
+\usepackage{gitinfo}
 
 \input{version}
-
-\newcommand{\gitsha}{unknown}
-\IfFileExists{./sha.tex}{%
-  \newread\gitshareader
-  \openin\gitshareader=sha.tex
-  \read\gitshareader to \gitsha
-  \closein\gitshareader
-}{}
 
 \hypersetup{
   linkcolor=[rgb]{0.3,0.3,0.6},
@@ -72,7 +65,7 @@
 \vspace{1ex}
 \begin{flushright}
   {\small\tt \url{https://github.com/dasarpmar/lowerbounds-survey}}\\[0.5ex]
-  {\small \IfFileExists{./sha.tex}{SHA: \gitsha\quad}{}Version \currentversion}
+  {\small SHA: \texttt{\gitHash}\quad{}Version \currentversion}
 \end{flushright}
 \null\vfill
 \vspace*{1cm}
