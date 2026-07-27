@@ -19,7 +19,7 @@
 \usepackage[capitalize,nameinlink]{cleveref}
 \usepackage{gitinfo2}
 
-\input{version}
+\InputIfFileExists{version.tex}{}{\newcommand{\currentversion}{unknown}}
 
 \hypersetup{
   linkcolor=[rgb]{0.3,0.3,0.6},
