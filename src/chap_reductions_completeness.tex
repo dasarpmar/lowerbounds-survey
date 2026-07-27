@@ -1,7 +1,7 @@
 \chapter{Reductions and Completeness}\label{chap:reduc-complete}
 
 For polynomials, the most natural form of reductions are via \emph{projections}. 
-We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by substituting variables of $f$ to other variables or field constants. 
+We shall say that a polynomial $f$ \emph{reduces} to $g$ via projections if $g$ may be obtained by substituting variables of $g$ to other variables or field constants. 
 Under such reductions, do we have natural complete polynomials for the classes $\VP$ and $\VNP$? 
 Valiant \cite{v79} showed that the $\Det_n$ and $\Perm_n$ are (almost) complete for the classes $\VP$ and $\VNP$ respectively. 
 We shall see the proof of this in this section. 
@@ -127,7 +127,7 @@ This allows us to write $\Det_n$ and $\Perm_n$ as
 
 \section{ABPs reduce to $\Det_n$}
 
-We shall now show that for any $f$ computable by an ABP, there is a matrix  $A$ each of whose entries are either variables of constants such that $\det(A) = f$. 
+We shall now show that for any $f$ computable by an ABP, there is a matrix  $A$ each of whose entries are either variables or constants such that $\det(A) = f$. 
 Since any ABP is a projection of the polynomial $\IMM_{n,d}$, we shall show that we can construct a matrix  $A$  such that $\det(A) = \IMM_{n,d}$. \\
 
 Consider the graph $G$ underlying the ABP that corresponds to the polynomial $\IMM_{n,d}$. 
