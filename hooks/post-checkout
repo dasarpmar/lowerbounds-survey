@@ -1,13 +1,16 @@
 #!/bin/sh
-# Copyright 2011 Brent Longborough
-# Please read gitinfo.pdf for licencing and other details
+# Copyright 2015 Brent Longborough
+# Please read gitinfo2.pdf for licencing and other details
 # -----------------------------------------------------
-# Post-{commit,checkout,merge} hook for the gitinfo package
+# Post-{commit,checkout,merge} hook for the gitinfo2 package
 #
 prefixes="src"              # Default --- in the working copy root
-for pref in $prefixes
-	do
-	git log -1 --date=short \
+
+# gitinfo2 auto-discovers .git/gitHeadInfo.gin by walking up from the
+# LaTeX source directory, so this is written once at the repo root.
+FIRSTTAG=$(git describe --tags --always --dirty='-*' 2>/dev/null)
+RELTAG=$(git describe --tags --long --always --dirty='-*' --match 'v[0-9]*' 2>/dev/null)
+git --no-pager log -1 --date=short --decorate=short \
 	--pretty=format:"\usepackage[%
 		shash={%h},
 		lhash={%H},
@@ -16,14 +19,18 @@ for pref in $prefixes
 		authsdate={%ad},
 		authidate={%ai},
 		authudate={%at},
-		commname={%an},
-		commemail={%ae},
-		commsdate={%ad},
-		commidate={%ai},
-		commudate={%at},
-		refnames={%d}
-	]{gitsetinfo}" HEAD > $pref/gitHeadInfo.gin
+		commname={%cn},
+		commemail={%ce},
+		commsdate={%cd},
+		commidate={%ci},
+		commudate={%ct},
+		refnames={%d},
+		firsttagdescribe={$FIRSTTAG},
+		reltag={$RELTAG}
+	]{gitexinfo}" HEAD > .git/gitHeadInfo.gin
 
+for pref in $prefixes
+	do
 	version=$(git describe --tags --always | sed 's/^v//')
 	cat > $pref/version.tex <<-EOV
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
