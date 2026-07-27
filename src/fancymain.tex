@@ -1,33 +1,25 @@
 \documentclass[12pt]{report}
-\usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{fullpage}
 \usepackage{amsthm}
 \usepackage[fleqn]{amsmath}
 \usepackage{amssymb}
 \usepackage[Bjornstrup]{fncychap}
-\usepackage{lipsum}
+\usepackage[T1]{fontenc}
 \usepackage{mathpazo}
 \usepackage{scrextend}
 \usepackage{todonotes}
 \usepackage[framemethod=TikZ]{mdframed}
 \usepackage{tikz}
-\usepackage{verbatim}
-\usepackage{thmtools,thm-restate}
+\usepackage{thmtools}
 \usepackage{ccicons}
 \usepackage{setspace}
 \usepackage{microtype}
 \usepackage[colorlinks]{hyperref}
 \usepackage[capitalize,nameinlink]{cleveref}
+\usepackage{gitinfo}
 
 \input{version}
-
-\newcommand{\gitsha}{unknown}
-\IfFileExists{./sha.tex}{%
-  \newread\gitshareader
-  \openin\gitshareader=sha.tex
-  \read\gitshareader to \gitsha
-  \closein\gitshareader
-}{}
 
 \hypersetup{
   linkcolor=[rgb]{0.3,0.3,0.6},
@@ -70,7 +62,7 @@
 \vspace{1ex}
 \begin{flushright}
   {\small\tt \url{https://github.com/dasarpmar/lowerbounds-survey}}\\[0.5ex]
-  {\small \IfFileExists{./sha.tex}{SHA: \gitsha\quad}{}Version \currentversion}
+  {\small SHA: \texttt{\gitHash}\quad{}Version \currentversion}
 \end{flushright}
 \null\vfill
 \vspace*{1cm}
@@ -100,9 +92,3 @@
 
 
 \end{document}
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
