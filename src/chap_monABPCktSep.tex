@@ -224,11 +224,3 @@ We will chose parameters now. Let $d = O(\log m)$ so that $P_{m,d}$ is a polynom
 
 Recall that for our chosen $k$, \autoref{lem:eip-for-good-k} tell us that $E(V_0,V_1) \geq d/4 = \Omega(\log m)$. If $P_{m,d}$ can be computed by a size $s$ monotone ABP, then $P_{m,d} = \sum_{i=1}^s g_i h_i$ where this expression is \emph{monotone} and $\deg(g_i) = k$ and $\deg(h_i) = D - k$.
 \autoref{lem:MonSep-partial-colourings-consistence} states that the degree and monotonicity constraints force the sparsity of $g_i\cdot h_i$ to be at most $m^{2^d} / m^{d/16}$. Since $P_{m,d}$ is a polynomial with $m^{2^d}$ monomials, we are forced to have $s \geq m^{d/16} = m^{\Omega(\log m)}$ which then completes the proof of \autoref{thm:mon-abp-ckt-sep}. \qed
-
-
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "fancymain"
-%%% End:
