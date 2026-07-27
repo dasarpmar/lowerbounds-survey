@@ -5,6 +5,7 @@ bundle = "https://data1.fullyjustified.net/tlextras-2022.0r0.tar"
 [[output]]
 name = "fancymain"
 type = "pdf"
+synctex = true
 inputs = [
     "fancymain.tex",
 ]
