@@ -122,11 +122,179 @@ Assume the underlying field is large enough. Find a polynomial sized constant de
 
 \section{Determinant}
 
-In \autoref{thm:det-abp}, we saw that the $n\times n$ symbolic determinant can be computed by an algebraic branching program of size $\poly(n)$. 
-We record that result again here as that is certainly an example of a non-trivial upper bound. 
 
-\begin{theorem*}[(restatement of \autoref{thm:det-abp})] The $n\times n$ symbolic determinant can be computed by an algebraic branching program of depth $n$ and width $O(n^3)$. 
-\end{theorem*}
+\section{$\Det_n$ can be computed by ABPs}
+
+A result that is often stated, but not proven explicitly, is the existence of a polynomial sized circuit for $\Det_n$. 
+This is often attributed by Berkowitz \cite{Berk84}. 
+In fact, $\Det_n$ has a polynomial sized ABP and this construction is due to Mahajan and Vinay~\cite{mv97} based on \emph{clow sequences}. 
+The construction is really neat and we shall describe the ABP explicitly here. 
+
+\[
+\Det_n \spaced{=} \abs{\begin{array}{ccc}
+x_{11} & \dots & x_{1n}\\
+\vdots & \ddots & \vdots \\
+x_{n1} & \dots & x_{nn}
+\end{array}
+}\]
+
+If the symbolic matrix on the RHS is the adjacency matrix of an $n$-vertex graph, then the determinant is just the sum of weighted signed cycle-covers of the graph. 
+A natural approach to compute this via an ABP is to somehow compute each cycle cover on one path of the ABP. 
+Unfortunately, if one were to try the \naive approach of building a cycle cover over many layers, to decide what our next vertex should be, we are forced to remember the entire partial construction thus far. 
+This ends up yielding an ABP with super-polynomial width (the width intuitively corresponds to the memory required). 
+
+The key insight of Mahajan and Vinay was to relax the notion of cycle covers to something weaker that can be built with less memory, to what they called \emph{clow sequences}. 
+
+\begin{definition}[Clow Sequences]
+Label the vertices of the graph as $1,\dots, n$. 
+A clow  of length $\ell$ is a closed walk on the graph $G$ of length $\ell$ such as $v_1,\dots, v_\ell,v_1$ such that $v_1 < v_i$ for all $i=2,\dots, \ell$. 
+We shall also refer to $v_1$ as the \emph{head of the clow}. 
+
+In other words, the head of a clow is the smallest vertex of the walk, and the head does not repeat in a clow (although other vertices can). 
+
+A clow sequence is a sequence of clows $(C_1,\dots, C_r)$ that additionally satisfy $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. 
+
+The length of a clow sequence is the sum of the lengths of the clows that it comprises of. 
+The weight of a clow sequence is just the product of weights of the edges it comprises of. 
+Also, the sign of a clow sequence of length $\ell$ that comprises of $r$ clows is $(-1)^{\ell + r}$. 
+\end{definition}
+
+Any cycle cover is, of course, a clow sequence. 
+Further, the sign of the cycle cover matches the above definition of the sign of a clow sequence. 
+But there are many clow sequences that visit some vertices multiple times, and hence are not cycle covers. 
+However, Mahajan and Vinay show that the sum of signed-weights of all clow sequences also yields the determinant. 
+
+\begin{lemma}[\cite{mv97}]\label{lem:mv-clowseq} If $A_G$ is the adjacency matrix of a graph $G$, then
+\begin{eqnarray*}
+\det(A_G) & = &  \sum_{C \in \mathrm{CycleCover(G)}} wt(C) \cdot \mathrm{sign}(C) \spaced{=} \det(A_G)\\
+& = & \sum_{C \in \mathrm{ClowSequence(G)}} wt(C) \cdot \mathrm{sign}(C).
+\end{eqnarray*}
+\end{lemma}
+
+They prove this by showing that the set of clow sequences that are not cycle covers can be partitioned into pairs $(C_1,C_2)$ such that $wt(C_1) = wt(C_2)$ and $\mathrm{sign}(C_1) = - \mathrm{sign}(C_2)$. 
+We shall see an explicit proof of this shortly, but first let us see why this yields an ABP. \\
+
+The ABP consists of $n+1$ layers labelled as layer $1,\dots, n+1$. 
+Besides layer $1$ and $n+1$, every other layer $\ell$ consists of $\Theta(n^2)$ nodes that we shall label as $v_{i,j}^{(\ell)}$ for $1\leq i\leq j\leq n$. 
+It is best to think of $i$ as representing the \emph{head of the current clow}, and $j$ as the \emph{current vertex in the clow}. 
+The length of the partial clow sequence constructed so far is captured by the layer index $\ell$. 
+
+The first layer consists of a single vertex that we shall call $s = v_{1,1}^{(1)}$ (to maintain the same notation)  and the last layer consists of a single vertex that we shall call $t$. 
+The edges between layers, and the weights are defined as follows:
+
+\begin{enumerate}
+\item For each node $v_{i,j}^{(\ell)}$ in layer $\ell \in [n]$, there is an edge to vertex $v_{i,k}^{(\ell+1)}$ for every $k > i$. 
+The weight of this edge is $x_{jk}$. 
+
+(This is like adding vertex $k > i$ to our current clow by taking edge $x_{jk}$. 
+The head continues to be $i$, and the current vertex is now $k$. )
+\item For each node $v_{i,j}^{(\ell)}$ in layer $\ell \in [n]$, there is an edge to vertex $v_{k,k}^{(\ell+1)}$ for every $k > i$. 
+The weight of this edge is $(-x_{ji})$. 
+
+(This is like ending the current clow by taking edge $x_{ji}$ back to the head, and starting a new clow with head as $k$. 
+Thus, the head of the current clow is $k$, and the current vertex is also $k$. 
+In this process, we increased the number of clows in the sequence by 1 and hence the weight being $(-x_{ji})$ accounts for the sign change as well.)
+
+\item For the last layer, each node $v_{i,j}^{(n)}$ has an edge to $t$ with weight $(-x_{ji})$. 
+
+(This just corresponds to ending the last clow in our sequence.)
+\end{enumerate}
+
+
+\noindent
+Summarizing this as a theorem, we have:
+
+\begin{theorem}[\cite{mv97}]\label{thm:det-abp}
+The polynomial $\Det_n$ can be computed by an ABP of size $O(n^3)$ over any field $\F$. 
+Thus, in particular, $\Det_n$ can be computed by a arithmetic circuit of size $\poly(n)$. 
+\end{theorem}
+
+
+\begin{proofof}{\autoref{lem:mv-clowseq}}
+Consider a clow sequence $C = (C_1,\dots, C_r)$ of length $n$, ordered so that $\mathrm{head}(C_1) < \dots < \mathrm{head}(C_r)$. 
+If $C$ is \emph{not} a cycle-cover, then some vertex must be repeated in $C$. 
+Starting from the last clow and proceeding backwards, let $i$ be an index such that $(C_{i+1},\dots, C_{r})$ is a union of disjoint cycles but $(C_{i},\dots, C_r)$ is not, and let $C_i = (v_1,\dots, v_k)$. 
+Let $j$ be the first index that makes the vertex $v_{j}$ show that $(C_i,\dots, C_r)$ not be a union of disjoint cycles. 
+Then, exactly one of the two situations must occur:
+\begin{description}
+ \item[Case 1:] $v_{j} = v_{j'}$ for some $j' < j$,
+
+ \item[Case 2:] $v_{j}$ occurs in one of the cycles $C_{i+1},\dots, C_r$. 
+\end{description}
+
+In the first case, the vertices $v_{j'+1},\dots, v_{j}$ are all distinct since $v_j$ was the first occurrence of a repeated node. 
+Define a new clow sequence  $\tilde{C}$ obtained by decomposing the clow $C_i$ with two clows $\inparen{(v_1,\dots, v_{j'},v_{j+1},\dots, v_k), (v_{j'},v_{j'+1},\dots,v_{j})}$. 
+Note that the second clow $(v_{j'},\dots, v_j)$ is an honest-to-god cycle that does not intersect with any of the cycles $C_{i+1},\dots, C_r$. 
+This transformation converts the clow sequence $C$ with $r$ clows to a clow sequence $C'$ of $r+1$ clows and hence $\mathrm{sign}(C) = - \mathrm{sign}(C')$. 
+
+In the second case, we have $v_j \in C_i$ also present in $C_{i'}$ for some $i' > i$. 
+Here we shall apply the inverse operation of combining the clows $C_i$ and $C_i'$ at the vertex $j$. 
+Formally, let us rotate $C_{i'}$ cyclically so that $C_{i'} = (v_1',\dots, v_k')$ with $v_1' = v_j$. 
+The new clow sequence $C'$ shall be constructed by replacing the clows $C_i$ and $C_{i'}$ by a new clow $(v_1,\dots, v_j, v_2',\dots, v_k', v_{j+1},\dots)$. 
+Since every vertex in $C_{i'}$ is greater than $\mathrm{head}(C_{i'})$ which is greater than $\mathrm{head}(C_i)$, this process does indeed result in a valid clow. 
+Once again, $\mathrm{sign}(C) = - \mathrm{sign}(C')$ as the number of clows in the sequence has reduced by exactly one.\\
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,thick,main node/.style={circle,fill=blue!20,draw,font=\tiny}]
+\node at (0,0.5) {\tiny head};
+\node[main node] (v1) at (0,0) {1};
+\node[main node] (v2) at (-1,-0.7) {2};
+\node[main node] (v3) at (-1,-2.3) {7};
+\node[main node] (v4) at (0.5,-2.8) {5};
+\node[main node] (v5) at (1.5,-2) {4};
+\node[main node] (v6) at (1.2,-0.5) {8};
+
+
+\path[bend right] (v1) edge (v2)
+(v2) edge (v3)
+(v3) edge (v4)
+(v4) edge (v5)
+(v5) edge (v6)
+(v6) edge (v1);
+
+
+\node[main node] (v61) at (2.5,-1.5) {3};
+\node[main node] (v62) at (3,-2.5) {9};
+\node[main node] (v63) at (2,-2.8) {6};
+
+\path[bend left] (v5) edge (v61)
+(v61) edge (v62)
+(v62) edge (v63)
+(v63) edge (v5);
+\node at (1,-4) {$(1,2,7,5,4,3,9,6,4,8,1)$};
+
+\node at (8,0.5) {\tiny head};
+\node[main node] (u1) at (8,0) {1};
+\node[main node] (u2) at (7,-0.7) {2};
+\node[main node] (u3) at (7,-2.3) {7};
+\node[main node] (u4) at (8.5,-2.8) {5};
+\node[main node,draw=red] (u5) at (9.5,-2) {4};
+\node[main node] (u6) at (9.2,-0.5) {8};
+\path[bend right] (u1) edge (u2)
+(u2) edge (u3)
+(u3) edge (u4)
+(u4) edge (u5)
+(u5) edge (u6)
+(u6) edge (u1);
+
+
+\node[main node,draw=red] (u50) at (11.5,-1.5) {4};
+\node at (12.5,-0.5) {\tiny head};
+\node[main node] (u51) at (12.5,-1) {3};
+\node[main node] (u52) at (13,-2) {9};
+\node[main node] (u53) at (12,-2.3) {6};
+\path[bend left] (u50) edge (u51)
+(u51) edge (u52)
+(u52) edge (u53)
+(u53) edge (u50);
+\node at (10,-4) {$(1,2,7,5,4,8,1),(3,9,6,4,3)$};
+
+\node at (5,-2) {\Huge $\Longleftrightarrow$};
+\end{tikzpicture}
+
+It is not hard to see that the two operations in the two different cases are exact inverses of each other. 
+Thus, this establishes a matching among all clow sequences that are not cycle covers, with every matched pair having opposing signs. 
+Thus, the overall contribution of clow sequences that are not cycle covers is zero. 
+\end{proofof}
 
 \section{Permanent}
 
