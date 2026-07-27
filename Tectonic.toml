@@ -3,9 +3,9 @@ name = "lowerbounds-survey-private"
 bundle = "https://data1.fullyjustified.net/tlextras-2022.0r0.tar"
 
 [[output]]
-name = "fancymain"
+name = "lowerbounds-survey"
 type = "pdf"
 synctex = true
 inputs = [
-    "fancymain.tex",
+    "lowerbounds-survey.tex",
 ]
